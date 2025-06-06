@@ -1,11 +1,11 @@
 .env
 .env.production
 
+*.local
 .DS_Store
 
 dist/
 .vite/
 .idea/
-*.local/
 dist-ssr/
 node_modules/

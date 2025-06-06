@@ -139,7 +139,7 @@ export const Response: User = {
 			skills: 'Creative Problem Solving, Analytical Skills, Strategy Alignment, Strategic Planning, Complexity Management.',
 		},
 	],
-	projects:[
+	projects: [
 		{
 			uuid: '00a0a12e-6af0-4f5a-b96d-3c95cc7c365c',
 			language: 'PHP / Vue',
@@ -152,7 +152,7 @@ export const Response: User = {
 		{
 			uuid: '00a0a12e-6af0-4f5a-b96d-3c95cc7c365c',
 			language: 'Vue / TypeScript',
-			title: 'Gus\'s personal website.',
+			title: "Gus's personal website.",
 			excerpt: 'Gus is a full-stack Software Engineer who has been building web technologies for more two decades.',
 			url: 'https://github.com/gocantodev/client',
 			created_at: '2021-11-03',
@@ -198,7 +198,7 @@ export const Response: User = {
 			uuid: '98b5d71a-1c78-4639-a9ed-343a8ba8c328',
 			language: 'GO',
 			title: 'converter-go',
-			excerpt: 'Currency converter that\'s data-agnostic.',
+			excerpt: "Currency converter that's data-agnostic.",
 			url: 'https://github.com/gocanto/go-converter',
 			created_at: '2021-09-02',
 			updated_at: '2021-10-11',
@@ -216,7 +216,7 @@ export const Response: User = {
 			uuid: 'e517a966-f7d0-46a1-9ee4-494b38a116e5',
 			language: 'PHP',
 			title: 'converter',
-			excerpt: 'Immutable PHP currency converter that\'s data-agnostic.',
+			excerpt: "Immutable PHP currency converter that's data-agnostic.",
 			url: 'https://github.com/gocanto/converter',
 			created_at: '2019-06-07',
 			updated_at: '2019-06-11',
@@ -238,7 +238,7 @@ export const Response: User = {
 			subject: 'PHP APIs',
 			location: 'Singapore',
 			created_at: '2019-02-11',
-			updated_at: '2019-02-11'
+			updated_at: '2019-02-11',
 		},
 		{
 			uuid: '249c50ad-2fd8-45af-a429-5e25d05a6bdd',
@@ -246,7 +246,7 @@ export const Response: User = {
 			subject: 'Systems design patters and conventions.',
 			location: 'Singapore',
 			created_at: '2018-12-04',
-			updated_at: '2018-12-04'
+			updated_at: '2018-12-04',
 		},
 		{
 			uuid: '36c88e42-b04d-4be1-a183-c53439468769',
@@ -254,7 +254,7 @@ export const Response: User = {
 			subject: 'Actions abstractions in Laravel controllers.',
 			location: 'Singapore',
 			created_at: '2018-10-04',
-			updated_at: '2018-10-04'
+			updated_at: '2018-10-04',
 		},
 	],
 };

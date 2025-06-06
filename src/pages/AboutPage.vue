@@ -28,8 +28,8 @@
 												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">GO</a>,
 												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
 												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I’m also comfortable with frameworks/libraries such as
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
+												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I’m also comfortable with frameworks/libraries such
+												as <a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
 												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
 												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
 												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
@@ -53,8 +53,8 @@
 										<div class="mt-5 space-y-5">
 											<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
 											<p v-if="user">
-												I’m happy to connect by <a class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${user.email}`">email</a> to discuss projects and ideas. While I’m
-												not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
+												I’m happy to connect by <a class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${user.email}`">email</a> to discuss
+												projects and ideas. While I’m not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
 											</p>
 										</div>
 									</div>
@@ -97,7 +97,7 @@ const aboutPicture = computed<string>(() => {
 	return AboutPicture;
 });
 
-const nickname = ref<string>("Gus");
+const nickname = ref<string>('Gus');
 
 onMounted(() => {
 	userStore.onBoot((profile: User) => {
