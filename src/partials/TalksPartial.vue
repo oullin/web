@@ -43,14 +43,6 @@ import type { Talks, User } from '@stores/users/userType.ts';
 
 const userStore = useUserStore();
 const talks: Talks[] = ref<Talks>([])
-//
-// function getImage(photo: string) {
-// 	try {
-// 		return require(`@images/${photo}`);
-// 	} catch (e) {
-// 		return require('@images/default-avatar.jpg');
-// 	}
-// }
 
 onMounted(() => {
 	userStore.onBoot((profile: User) => {
