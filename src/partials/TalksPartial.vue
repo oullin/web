@@ -24,7 +24,7 @@
 					<div class="flex-1 w-full flex justify-end items-end">
 						<svg xmlns="http://www.w3.org/2000/svg" width="41" height="41">
 							<circle class="fill-white" cx="20" cy="20" r="20" fill-opacity=".88" />
-							<path class="fill-teal-500" d="m24.765 19.5-6.263-4.375a.626.626 0 0 0-1.002.5v8.75c0 .5.564.812 1.002.5l6.263-4.375a.65.65 0 0 0 0-1Z" />
+							<path class="fill-fuchsia-500 dark:fill-teal-500" d="m24.765 19.5-6.263-4.375a.626.626 0 0 0-1.002.5v8.75c0 .5.564.812 1.002.5l6.263-4.375a.65.65 0 0 0 0-1Z" />
 						</svg>
 					</div>
 
