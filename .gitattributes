@@ -1,0 +1,20 @@
+* text=auto
+
+*.go text eol=lf
+*.go diff=go
+
+Dockerfile text eol=lf
+*.dockerfile text eol=lf
+
+*.sql text eol=lf
+*.sql diff=sql
+
+*.css text
+*.css diff=css
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+

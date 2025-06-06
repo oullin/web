@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"strict": true,
+		"jsx": "preserve",
+		"importHelpers": true,
+		"moduleResolution": "bundler",
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"useDefineForClassFields": true,
+		"allowImportingTsExtensions": true,
+		"sourceMap": true,
+		"baseUrl": ".",
+		"types": ["vite/client"],
+		"paths": {
+			"~*": ["./*"],
+			"@/*": ["./src/*"],
+			"@css/*": ["./src/css/*"],
+			"@pages/*": ["./src/pages/*"],
+			"@partials/*": ["./src/partials/*"],
+			"@images/*": ["./src/images/*"],
+			"@public/*": ["./src/public/*"],
+			"@fonts/*": ["./src/fonts/*"],
+			"@stores/*": ["./src/stores/*"]
+		},
+		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+	},
+	"include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue", "./src/**/*.d.ts", "./tests/**/*.ts", "./tests/**/*.tsx", "./vite.config.ts", "./tests/**/*.json"],
+	"exclude": ["node_modules", "dist"]
+}
