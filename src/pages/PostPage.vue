@@ -212,23 +212,11 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import WidgetNewsletterPartial from '@partials/WidgetNewsletterPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetPostsPartial from '@partials/WidgetPostsPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
-
-export default {
-	name: 'PostPage',
-	components: {
-		SideNavPartial,
-		HeaderPartial,
-		WidgetNewsletterPartial,
-		WidgetSponsorPartial,
-		WidgetPostsPartial,
-		FooterPartial,
-	},
-};
 </script>
