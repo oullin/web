@@ -36,13 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, Ref } from 'vue';
 import { image } from '@/public.ts';
 import { useUserStore } from '@stores/users/user.ts';
 import type { Talks, User } from '@stores/users/userType.ts';
 
 const userStore = useUserStore();
-const talks: Talks[] = ref<Talks>([])
+const talks: (Talks[] | Ref) = ref<Talks[]>([])
 
 onMounted(() => {
 	userStore.onBoot((profile: User) => {
