@@ -30,10 +30,10 @@
 												complex requirements into reliable, maintainable systems.
 											</p>
 										</div>
-										<section>
+										<section v-if="projects.length > 0">
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-												<ProjectCardPartial v-for="item in projects" :key="item.id" :item="item" />
+												<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
 											</div>
 										</section>
 
@@ -59,26 +59,22 @@
 </template>
 
 <script setup lang="ts">
-import SideNavPartial from '@partials/SideNavPartial.vue';
+import { ref, onMounted } from 'vue';
+import { useUserStore } from '@stores/users/user.ts';
+import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
+import SideNavPartial from '@partials/SideNavPartial.vue';
+import type { Project, User } from '@stores/users/userType.ts';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetNewsletterPartial from '@partials/WidgetNewsletterPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import FooterPartial from '@partials/FooterPartial.vue';
-import { useUserStore } from '@stores/users/user.ts';
-import type { Project, User } from '@stores/users/userType.ts';
-import { onMounted, ref } from '~node_modules/vue';
-
-
-
 
 const userStore = useUserStore();
-// const items: Project[] = ref<Project[]>([]);
+const projects: Project[] = ref<Project[]>([]);
 
-// onMounted(() => {
-// 	userStore.onBoot((profile: User) => {
-// 		projects.value = profile.projects;
-// 	});
-// });
-
+onMounted(() => {
+	userStore.onBoot((profile: User) => {
+		projects.value = profile.projects;
+	});
+});
 </script>
