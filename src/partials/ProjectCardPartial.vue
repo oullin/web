@@ -2,6 +2,8 @@
 	<a
 		class="rounded-lg border border-slate-200 hover:border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 transition-color ease-in-out p-5 group"
 		:href="item.url"
+		target="_blank"
+		rel="noopener noreferrer"
 	>
 		<div class="flex flex-col h-full">
 			<div class="grow">
