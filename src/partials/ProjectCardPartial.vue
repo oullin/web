@@ -32,11 +32,11 @@
 
 <script setup lang="ts">
 import { image } from '@/public.ts';
+import { defineProps } from '@vue/runtime-core';
+import type { Project } from '@stores/users/userType.ts';
 
-defineProps({
-	item: {
-		type: Object,
-		required: true,
-	},
-})
+const { item } = defineProps<{
+	item: Project;
+}>
+
 </script>
