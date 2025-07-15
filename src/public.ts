@@ -4,7 +4,7 @@ export function image(filename: string): string {
 	return `/${IMAGES_DIR}/${filename}`;
 }
 
-export function date(language?: string, options?: object): Intl.DateTimeFormat  {
+export function date(language?: string, options?: Intl.DateTimeFormatOptions): Intl.DateTimeFormat  {
 	const lang = language || "en-US";
 
 	const ops = options || {
