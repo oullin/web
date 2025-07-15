@@ -3,7 +3,7 @@
 		<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
 		<ul class="space-y-8">
 			<!-- Item -->
-			<li class="relative group" v-for="item in recommendations" :key="item.uuid">
+			<li class="relative group" v-for="item in processedRecommendations" :key="item.uuid">
 				<div class="flex items-start">
 					<div
 						class="absolute left-0 h-14 w-14 flex items-center justify-center dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
@@ -17,9 +17,7 @@
 							<div>{{ item.relation }}</div>
 							<div>{{ item.created_at }}</div>
 						</div>
-						<div class="text-sm text-slate-500 dark:text-slate-400">
-							{{ item.text }}
-						</div>
+						<div class="text-sm text-slate-500 dark:text-slate-400" v-html="item.html"></div>
 					</div>
 				</div>
 			</li>
@@ -28,10 +26,31 @@
 </template>
 
 <script setup lang="ts">
-import type { Recommendation } from '@stores/users/userType.ts';
+import { computed } from 'vue';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { image } from '@/public.ts';
+import type { Recommendation } from '@stores/users/userType.ts';
 
-defineProps<{
+
+marked.use({
+	breaks: true,
+	gfm: true,
+});
+
+const { recommendations } = defineProps<{
 	recommendations: Recommendation[]
 }>()
+
+const processedRecommendations = computed(() => {
+	return recommendations.map(item => {
+		const sanitisedHtml = DOMPurify.sanitize(marked.parse(item.text) as string);
+
+		return {
+			...item,
+			html: sanitisedHtml
+		};
+	});
+});
+
 </script>

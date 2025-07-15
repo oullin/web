@@ -287,9 +287,9 @@ export const Response: User = {
 		{
 			uuid: "7dc74d20-42e1-4f09-9c8d-20ecfc6caad7",
 			relation: "fellow colleague reporting to the C-Level.",
-			text: "Gus and I were peers at Perx during his time as Head of Engineering, he led several key initiatives — from scaling the engineering team and aligning cross-functional efforts across DevOps, backend, frontend, and data, to driving projects around infrastructure modernization, performance optimization, and cloud cost efficiency.\n" +
-				"\n" +
-				"He’s a hands-on and technically strong leader who enjoys solving complex engineering problems. Outside of work, Gustavo is highly disciplined when it comes to health and fitness — always consistent and focused, which says a lot about his overall approach to life and work.",
+			text: "Gus and I were peers at Perx during his tenure as Head of Engineering. He led several key initiatives, including scaling the engineering team and aligning cross-functional efforts across DevOps, backend, frontend, and data. Additionally, he drove projects focused on infrastructure modernisation, performance optimisation, and cloud cost efficiency." +
+				"<br/><br/>" +
+				"He's a hands-on and technically strong leader who enjoys solving complex engineering problems. Outside of work, Gustavo is highly disciplined when it comes to health and fitness, always consistent and focused, which says a lot about his overall approach to life and work.",
 			person: {
 				avatar: "recommendation/amrith-g.jpeg",
 				full_name: "Amrith G",
@@ -302,10 +302,10 @@ export const Response: User = {
 		{
 			uuid: "86fa5273-4e21-45e0-80de-5ec908cf6f81",
 			relation: "Bhupesh reported directly to me.",
-			text: "I had the privilege of working under Gustavo as an Engineering Manager, and his leadership has been nothing short of inspiring. Not only does he bring exceptional technical expertise and strategic thinking, but he also leads with empathy—something that truly sets him apart.\n" +
-				"\n" +
-				"Gustavo doesn’t just manage a team; he genuinely cares about each individual’s growth, challenges, and well-being. He understands the personal and professional struggles employees face and goes above and beyond to support them. This ability to balance technical excellence with emotional intelligence creates a culture of trust, collaboration, and high performance.\n" +
-				"\n" +
+			text: "I had the privilege of working under Gustavo as an Engineering Manager, and his leadership has been nothing short of inspiring. Not only does he bring exceptional technical expertise and strategic thinking, but he also leads with empathy—something that truly sets him apart." +
+				"<br/><br/>" +
+				"Gustavo doesn’t just manage a team; he genuinely cares about each individual’s growth, challenges, and well-being. He understands the personal and professional struggles employees face and goes above and beyond to support them. This ability to balance technical excellence with emotional intelligence creates a culture of trust, collaboration, and high performance." +
+				"<br/><br/>" +
 				"His problem-solving mindset, clear communication, and mentorship have had a lasting impact on both the team and the success of our projects. Working with him has been a learning experience, and I highly recommend him to any organization looking for a strong, people-focused engineering leader.",
 			person: {
 				avatar: "recommendation/bhupesh-pathak.jpeg",
@@ -319,10 +319,10 @@ export const Response: User = {
 		{
 			uuid: "dec7e524-34cc-405c-9b3a-01999852c9bb",
 			relation: "Victory reported directly to me.",
-			text: "I had a chance to work with Gus at Perx for the last 9 months. He consistently guided the team with clarity and supported our professional growth. \n" +
-				"\n" +
-				"Despite the challenges posed by an unclear structure and team dynamics, Gus has been dedicated to making processes smoother and more consistent across departments. \n" +
-				"\n" +
+			text: "I had a chance to work with Gus at Perx for the last 9 months. He consistently guided the team with clarity and supported our professional growth." +
+				"<br/><br/>" +
+				"Despite the challenges posed by an unclear structure and team dynamics, Gus has been dedicated to making processes smoother and more consistent across departments." +
+				"<br/><br/>" +
 				"His efforts to foster collaboration and improve workflows have had a meaningful impact on the team. I highly recommend Gus as a capable and inspiring engineering leader.",
 			person: {
 				avatar: "recommendation/victory-sometime.jpeg",
@@ -335,11 +335,11 @@ export const Response: User = {
 		},
 		{
 			uuid: "e4626228-99fa-4778-9a22-783174e7ab60",
-			relation: "was senior to me, but did not manage me directly.",
-			text: "Over the past two years, Gus has shown consistently high levels of technical skill and an innovative mindset, adapting through numerous changes and growth periods within our company. \n" +
-				"\n" +
-				"He is always eager to support the team in reaching its goals, displaying readiness to take action, and effective communication. His ability to think outside the box is a distinct strength. \n" +
-				"\n" +
+			relation: "was senior to me, but did not manage Gus directly.",
+			text: "Over the past two years, Gus has shown consistently high levels of technical skill and an innovative mindset, adapting through numerous changes and growth periods within our company." +
+				"<br/><br/>" +
+				"He is always eager to support the team in reaching its goals, displaying readiness to take action, and effective communication. His ability to think outside the box is a distinct strength." +
+				"<br/><br/>" +
 				"In this time, he also worked intentionally on his planning and leadership abilities, which have significantly complemented his already notable contributions to the team.",
 			person: {
 				avatar: "recommendation/damien-passavent.jpeg",
@@ -352,12 +352,8 @@ export const Response: User = {
 		},
 		{
 			uuid: "fa5c4084-e1b4-45dd-a314-e8d9f589f67e",
-			relation: "managed me directly.",
-			text: "Gustavo's blend of strong technical skills, problem-solving, and warm personality make him stand out.\n" +
-				"\n" +
-				"He's not only great at leading projects but also shines in teamwork, often stepping beyond his role to help others.\n" +
-				"\n" +
-				"As a mentor, he'd be invaluable, and his ability to communicate and innovate positions him perfectly for roles that bridge technical teams and clients.",
+			relation: "managed Gus directly.",
+			text: "Gustavo's blend of strong technical skills, problem-solving, and warm personality make him stand out. He's not only great at leading projects but also shines in teamwork, often stepping beyond his role to help others. As a mentor, he'd be invaluable, and his ability to communicate and innovate positions him perfectly for roles that bridge technical teams and clients.",
 			person: {
 				avatar: "recommendation/claudio-reggiani.jpeg",
 				full_name: "Claudio Reggiani",
@@ -370,15 +366,11 @@ export const Response: User = {
 		{
 			uuid: "0e587fa2-b678-4ca5-9eed-0f115c4a092d",
 			relation: "was senior to me, but did not manage me directly.",
-			text: "I have worked with Gustavo as a Sr Engineer in my department at Aspire. \n"+
-				"\n" +
-				"It was the second time we worked together and it has been a great pleasure to see how far Gustavo progressed in the last few years.\n" +
-				"\n" +
-				"Gustavo has an exceptional depth of knowledge in software development and consistently expands his high-quality knowledge with new technologies to better fit scaling team and systems. \n" +
-				"\n" +
-				"He constantly demonstrated ambition and drive to learn and improve each stage of the engineering process.\n" +
-				"\n" +
-				"With his level of knowledge and skills I can wholeheartedly recommend Gustavo for senior technical roles, as well as leadership positions where he can leverage this experience even more.",
+			text: "I have worked with Gustavo as a Sr Engineer in my department at Aspire. It was the second time we worked together and it has been a great pleasure to see how far Gustavo progressed in the last few years." +
+				"<br/><br/>" +
+				"Gustavo has an exceptional depth of knowledge in software development and consistently expands his high-quality knowledge with new technologies to better fit scaling team and systems." +
+				"<br/><br/>" +
+				"He constantly demonstrated ambition and drive to learn and improve each stage of the engineering process. With his level of knowledge and skills I can wholeheartedly recommend Gustavo for senior technical roles, as well as leadership positions where he can leverage this experience even more.",
 			person: {
 				avatar: "recommendation/jarek-tkaczyk.jpeg",
 				full_name: "Jarek Tkaczyk",
@@ -390,13 +382,13 @@ export const Response: User = {
 		},
 		{
 			uuid: "a5029b3e-3ad2-45a4-8e98-2599cdf21697",
-			relation: "managed me directly.",
-			text: "I had the pleasure of working alongside Gustavo for more than three years during his time at BeMyGuest.\n" +
-				"\n" +
-				"Working within a tech team at a startup can be a very challenging experience, there are competing pressures to deliver new features as quickly as possible, whilst at the same time we have to work hard to maintain stability and quality within the code we produce.\n" +
-				"\n" +
-				"Gustavo was an excellent and enthusiastic ambassador for this approach and led many initiatives to improve our systems, testing and architecture, leading to his work having a very positive impact on the overall quality of BeMyGuest's products.\n" +
-				"\n" +
+			relation: "managed Gus directly.",
+			text: "I had the pleasure of working alongside Gustavo for more than three years during his time at BeMyGuest." +
+				"<br/><br/>" +
+				"Working within a tech team at a startup can be a very challenging experience, there are competing pressures to deliver new features as quickly as possible, whilst at the same time we have to work hard to maintain stability and quality within the code we produce." +
+				"<br/><br/>" +
+				"Gustavo was an excellent and enthusiastic ambassador for this approach and led many initiatives to improve our systems, testing and architecture, leading to his work having a very positive impact on the overall quality of BeMyGuest's products." +
+				"<br/><br/>" +
 				"I would highly recommend Gustavo, his combination of attention to detail, with an irrepressible drive to continue learning makes him a valuable asset within any software engineering team.",
 			person: {
 				avatar: "recommendation/ross-riley.jpeg",
@@ -410,15 +402,11 @@ export const Response: User = {
 		{
 			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
 			relation: "fellow software engineer",
-			text: "I have worked with Gus as a fellow Software Engineer since 2017. He is a highly adaptable, encouraging and supportive colleague and an effective team lead.\n" +
-				"\n" +
-				"His software development skill, whether its backend, full stack, is of exceptional high quality.\n" +
-				"\n" +
-				"During our stint in the company, he took the time to spearhead some of the initiatives to improve and updating the software development process and applications.\n" +
-				"\n" +
-				"He always has a positive attitude and a desire to produce quality work.\n" +
-				"\n" +
-				"Gus is as great a person as he was a colleague, a team lead and his next employer will be lucky to have him",
+			text: "I have worked with Gus as a fellow Software Engineer since 2017. He is a highly adaptable, encouraging and supportive colleague and an effective team lead." +
+				"<br/><br/>" +
+				"His software development skill, whether its backend, full stack, is of exceptional high quality. During our stint in the company, he took the time to spearhead some of the initiatives to improve and updating the software development process and applications." +
+				"<br/><br/>" +
+				"He always has a positive attitude and a desire to produce quality work. Gus is as great a person as he was a colleague, a team lead and his next employer will be lucky to have him",
 			person: {
 				avatar: "recommendation/kong-kw.jpg",
 				full_name: "Kong KW",
@@ -430,14 +418,10 @@ export const Response: User = {
 		},
 		{
 			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
-			relation: "managed me directly.",
-			text: "It was a pleasure to have an opportunity to work with Gustavo. He's a brilliant developer and analyst, with a head full of new ideas. \n" +
-				"\n" +
-				"He's not afraid of approaching the most complex problems and testing new waters to find the best solutions. \n" +
-				"\n" +
-				"He's got a great personality and always fun to have around in your team. Always keen to share his knowledge thru training or giving public presentations. \n" +
-				"\n" +
-				"He's got that deep internal drive to learn every day and test new ideas in real life, which I always find very valuable.",
+			relation: "managed Gus directly.",
+			text: "It was a pleasure to have an opportunity to work with Gustavo. He's a brilliant developer and analyst, with a head full of new ideas. He's not afraid of approaching the most complex problems and testing new waters to find the best solutions." +
+				"<br/><br/>" +
+				"He's got a great personality and always fun to have around in your team. Always keen to share his knowledge thru training or giving public presentations. He's got that deep internal drive to learn every day and test new ideas in real life, which I always find very valuable.",
 			person: {
 				avatar: "recommendation/dawid-makowski.jpeg",
 				full_name: "Dawid Makowski",
@@ -455,8 +439,8 @@ export const Response: User = {
 			school: "Universidad 'Alejandro de Humboldt",
 			degree: "Bachelor's degree",
 			field: "Computer Science",
-			description: "As a computer scientist, I see computer science as the study of computers and computational processes, covering their underlying principles, design, real‑world applications, and even their impact on society. \n" +
-				"\n" +
+			description: "As a computer scientist, I see computer science as the study of computers and computational processes, covering their underlying principles, design, real‑world applications, and even their impact on society." +
+				"<br/><br/>" +
 				"My work spans both the theoretical side—think algorithms and data structures—and the hands‑on side, like building software and exploring artificial intelligence. At its core, computer science is about understanding how computers operate and using that insight to solve problems and develop new technologies.",
 			graduated_at: "2012",
 			issuing_country: "Venezuela"
@@ -467,9 +451,9 @@ export const Response: User = {
 			school: "IUT Valencia",
 			degree: "Associate's degree",
 			field: "Computer Science",
-			description: "Having completed my Associate’s in Computer Science, I’ve built a strong foundation in how computers work—learning the basics of algorithm design and data organization alongside hands‑on experience writing software and experimenting with entry‑level enterprise software. \n"+
-				"\n" +
-				"For me, computer science means using both theory and practical skills to tackle real‑world challenges and bring new tech ideas to life.\n",
+			description: "Having completed my Associate’s in Computer Science, I’ve built a strong foundation in how computers work—learning the basics of algorithm design and data organization alongside hands‑on experience writing software and experimenting with entry‑level enterprise software."+
+				"<br/><br/>" +
+				"For me, computer science means using both theory and practical skills to tackle real‑world challenges and bring new tech ideas to life.",
 			graduated_at: "2007",
 			issuing_country: "Venezuela"
 		}
