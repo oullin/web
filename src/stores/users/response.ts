@@ -285,6 +285,55 @@ export const Response: User = {
 	],
 	recommendations: [
 		{
+			uuid: "7dc74d20-42e1-4f09-9c8d-20ecfc6caad7",
+			relation: "fellow colleague reporting to the C-Level.",
+			text: "Gus and I were peers at Perx during his time as Head of Engineering, he led several key initiatives — from scaling the engineering team and aligning cross-functional efforts across DevOps, backend, frontend, and data, to driving projects around infrastructure modernization, performance optimization, and cloud cost efficiency.\n" +
+				"\n" +
+				"He’s a hands-on and technically strong leader who enjoys solving complex engineering problems. Outside of work, Gustavo is highly disciplined when it comes to health and fitness — always consistent and focused, which says a lot about his overall approach to life and work.",
+			person: {
+				avatar: "recommendation/amrith-g.jpeg",
+				full_name: "Amrith G",
+				company: "Perx Technologies",
+				designation: "Head of Marketing",
+			},
+			created_at: '2025-03-26',
+			updated_at: '2025-03-26',
+		},
+		{
+			uuid: "86fa5273-4e21-45e0-80de-5ec908cf6f81",
+			relation: "Bhupesh reported directly to me.",
+			text: "I had the privilege of working under Gustavo as an Engineering Manager, and his leadership has been nothing short of inspiring. Not only does he bring exceptional technical expertise and strategic thinking, but he also leads with empathy—something that truly sets him apart.\n" +
+				"\n" +
+				"Gustavo doesn’t just manage a team; he genuinely cares about each individual’s growth, challenges, and well-being. He understands the personal and professional struggles employees face and goes above and beyond to support them. This ability to balance technical excellence with emotional intelligence creates a culture of trust, collaboration, and high performance.\n" +
+				"\n" +
+				"His problem-solving mindset, clear communication, and mentorship have had a lasting impact on both the team and the success of our projects. Working with him has been a learning experience, and I highly recommend him to any organization looking for a strong, people-focused engineering leader.",
+			person: {
+				avatar: "recommendation/bhupesh-pathak.jpeg",
+				full_name: "Bhupesh Pathak",
+				company: "Perx Technologies",
+				designation: "Senior Software Engineer",
+			},
+			created_at: '2025-02-26',
+			updated_at: '2025-02-26',
+		},
+		{
+			uuid: "dec7e524-34cc-405c-9b3a-01999852c9bb",
+			relation: "Victory reported directly to me.",
+			text: "I had a chance to work with Gus at Perx for the last 9 months. He consistently guided the team with clarity and supported our professional growth. \n" +
+				"\n" +
+				"Despite the challenges posed by an unclear structure and team dynamics, Gus has been dedicated to making processes smoother and more consistent across departments. \n" +
+				"\n" +
+				"His efforts to foster collaboration and improve workflows have had a meaningful impact on the team. I highly recommend Gus as a capable and inspiring engineering leader.",
+			person: {
+				avatar: "recommendation/victory-sometime.jpeg",
+				full_name: "Victory SOMETIME",
+				company: "Perx Technologies",
+				designation: "Senior Software Engineer",
+			},
+			created_at: '2025-02-19',
+			updated_at: '2025-02-19',
+		},
+		{
 			uuid: "e4626228-99fa-4778-9a22-783174e7ab60",
 			relation: "was senior to me, but did not manage me directly.",
 			text: "Over the past two years, Gus has shown consistently high levels of technical skill and an innovative mindset, adapting through numerous changes and growth periods within our company. \n" +
