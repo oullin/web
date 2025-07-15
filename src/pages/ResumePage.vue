@@ -18,7 +18,7 @@
 									<h1 class="h1 font-aspekta mb-12">My resume</h1>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<RecommendationPartial />
+										<RecommendationPartial v-if="user" :recommendations="user.recommendations" />
 										<AwardsPartial />
 										<EducationPartial />
 										<ExperiencePartial v-if="user" :experience="user.experience" />
