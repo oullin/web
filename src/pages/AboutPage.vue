@@ -67,7 +67,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSocialPartial />
-								<WidgetNewsletterPartial />
+								<WidgetSkillsPartial />
 							</div>
 						</aside>
 					</div>
@@ -88,7 +88,7 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
-import WidgetNewsletterPartial from '@partials/WidgetNewsletterPartial.vue';
+import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 
 const userStore = useUserStore();
 const user = ref<User | null>(null);

@@ -18,9 +18,8 @@
 									<h1 class="h1 font-aspekta mb-12">My resume</h1>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<RecommendationPartial />
-										<AwardsPartial />
-										<EducationPartial />
+										<RecommendationPartial v-if="user" :recommendations="user.recommendations" />
+										<EducationPartial v-if="user" :education="user.education" />
 										<ExperiencePartial v-if="user" :experience="user.experience" />
 									</div>
 								</section>
@@ -46,7 +45,6 @@
 
 <script setup lang="ts">
 import HeaderPartial from '@partials/HeaderPartial.vue';
-import AwardsPartial from '@partials/AwardsPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import EducationPartial from '@partials/EducationPartial.vue';
