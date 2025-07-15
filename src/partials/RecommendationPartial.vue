@@ -13,7 +13,7 @@
 					<div class="pl-20 space-y-1">
 						<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.person.full_name }}</div>
 						<div class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ item.person.company }}</div>
-						<div class="flex justify-between text-xs dark:text-teal-500 text-fuchsia-500 pb-2 ">
+						<div class="flex justify-between text-xs dark:text-teal-500 text-slate-400 pb-2 ">
 							<div>{{ item.relation }}</div>
 							<div>{{ item.formattedDate }}</div>
 						</div>

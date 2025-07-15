@@ -436,7 +436,7 @@ export const Response: User = {
 		{
 			uuid: "a0fde63b-016b-4121-959f-18a950b8bc81",
 			icon: "education/uah_logo.jpeg",
-			school: "Universidad 'Alejandro de Humboldt",
+			school: "Universidad Alejandro de Humboldt",
 			degree: "Bachelor's degree",
 			field: "Computer Science",
 			description: "As a computer scientist, I see computer science as the study of computers and computational processes, covering their underlying principles, design, real‑world applications, and even their impact on society." +
