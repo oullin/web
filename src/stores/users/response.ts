@@ -152,7 +152,7 @@ export const Response: User = {
 			updated_at: '2023-10-05',
 		},
 		{
-			uuid: '00a0a12e-6af0-4f5a-b96d-3c95cc7c365c',
+			uuid: '2d178e11-a584-4e20-a493-3b84007dd358',
 			language: 'Vue / TypeScript',
 			title: "Gus's personal website.",
 			excerpt: 'Gus is a full-stack Software Engineer who has been building web technologies for more two decades.',
