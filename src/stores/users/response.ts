@@ -285,8 +285,63 @@ export const Response: User = {
 	],
 	recommendations: [
 		{
+			uuid: "e4626228-99fa-4778-9a22-783174e7ab60",
+			relation: "was senior to me, but did not manage me directly.",
+			text: "Over the past two years, Gus has shown consistently high levels of technical skill and an innovative mindset, adapting through numerous changes and growth periods within our company. \n" +
+				"\n" +
+				"He is always eager to support the team in reaching its goals, displaying readiness to take action, and effective communication. His ability to think outside the box is a distinct strength. \n" +
+				"\n" +
+				"In this time, he also worked intentionally on his planning and leadership abilities, which have significantly complemented his already notable contributions to the team.",
+			person: {
+				avatar: "recommendation/damien-passavent.jpeg",
+				full_name: "Damien Passavent",
+				company: "Aspire",
+				designation: "Chief Product Officer",
+			},
+			created_at: '2024-04-10',
+			updated_at: '2024-04-10',
+		},
+		{
+			uuid: "fa5c4084-e1b4-45dd-a314-e8d9f589f67e",
+			relation: "managed me directly.",
+			text: "Gustavo's blend of strong technical skills, problem-solving, and warm personality make him stand out.\n" +
+				"\n" +
+				"He's not only great at leading projects but also shines in teamwork, often stepping beyond his role to help others.\n" +
+				"\n" +
+				"As a mentor, he'd be invaluable, and his ability to communicate and innovate positions him perfectly for roles that bridge technical teams and clients.",
+			person: {
+				avatar: "recommendation/claudio-reggiani.jpeg",
+				full_name: "Claudio Reggiani",
+				company: "Aspire",
+				designation: "Engineering Manger",
+			},
+			created_at: '2024-04-10',
+			updated_at: '2024-04-10',
+		},
+		{
+			uuid: "0e587fa2-b678-4ca5-9eed-0f115c4a092d",
+			relation: "was senior to me, but did not manage me directly.",
+			text: "I have worked with Gustavo as a Sr Engineer in my department at Aspire. \n"+
+				"\n" +
+				"It was the second time we worked together and it has been a great pleasure to see how far Gustavo progressed in the last few years.\n" +
+				"\n" +
+				"Gustavo has an exceptional depth of knowledge in software development and consistently expands his high-quality knowledge with new technologies to better fit scaling team and systems. \n" +
+				"\n" +
+				"He constantly demonstrated ambition and drive to learn and improve each stage of the engineering process.\n" +
+				"\n" +
+				"With his level of knowledge and skills I can wholeheartedly recommend Gustavo for senior technical roles, as well as leadership positions where he can leverage this experience even more.",
+			person: {
+				avatar: "recommendation/jarek-tkaczyk.jpeg",
+				full_name: "Jarek Tkaczyk",
+				company: "Aspire",
+				designation: "Head of Engineering",
+			},
+			created_at: '2023-02-27',
+			updated_at: '2023-02-27',
+		},
+		{
 			uuid: "a5029b3e-3ad2-45a4-8e98-2599cdf21697",
-			relation: "Direct Supervisor",
+			relation: "managed me directly.",
 			text: "I had the pleasure of working alongside Gustavo for more than three years during his time at BeMyGuest.\n" +
 				"\n" +
 				"Working within a tech team at a startup can be a very challenging experience, there are competing pressures to deliver new features as quickly as possible, whilst at the same time we have to work hard to maintain stability and quality within the code we produce.\n" +
@@ -305,7 +360,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
-			relation: "Fellow Software Engineer",
+			relation: "fellow software engineer",
 			text: "I have worked with Gus as a fellow Software Engineer since 2017. He is a highly adaptable, encouraging and supportive colleague and an effective team lead.\n" +
 				"\n" +
 				"His software development skill, whether its backend, full stack, is of exceptional high quality.\n" +
@@ -326,7 +381,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
-			relation: "Direct Supervisor",
+			relation: "managed me directly.",
 			text: "It was a pleasure to have an opportunity to work with Gustavo. He's a brilliant developer and analyst, with a head full of new ideas. \n" +
 				"\n" +
 				"He's not afraid of approaching the most complex problems and testing new waters to find the best solutions. \n" +
