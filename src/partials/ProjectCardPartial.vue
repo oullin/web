@@ -1,15 +1,22 @@
 <template>
-	<router-link
+	<a
 		class="rounded-lg border border-slate-200 hover:border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 transition-color ease-in-out p-5 group"
-		:to="item.slug"
+		:href="item.url"
+		target="_blank"
+		rel="noopener noreferrer"
 	>
 		<div class="flex flex-col h-full">
 			<div class="grow">
 				<div class="flex items-center justify-between space-x-2">
 					<div class="h-10 w-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full mb-2">
-						<img :src="item.icon" width="18" height="18" :alt="item.title" />
+						<img
+							:src="image(item.icon)"
+							width="18"
+							height="18"
+							:alt="item.title"
+						/>
 					</div>
-					<div v-if="item.openSource" class="text-xs inline-flex items-center font-medium bg-green-100 text-green-600 rounded-full text-center px-2 h-5">Open-Source</div>
+					<div v-if="item.isOpenSource" class="text-xs inline-flex items-center font-medium bg-green-100 text-green-600 rounded-full text-center px-2 h-5">Open-Source</div>
 				</div>
 				<div class="text-lg font-aspekta font-[650] mb-1">{{ item.title }}</div>
 				<p class="text-sm text-slate-500 dark:text-slate-400 mb-2">{{ item.excerpt }}</p>
@@ -20,17 +27,15 @@
 				</svg>
 			</div>
 		</div>
-	</router-link>
+	</a>
 </template>
 
-<script>
-export default {
-	name: 'ProjectCardPartial',
-	props: {
-		item: {
-			type: Object,
-			required: true,
-		},
-	},
-};
+<script setup lang="ts">
+import { image } from '@/public.ts';
+import type { Project } from '@stores/users/userType.ts';
+
+const { item } = defineProps<{
+	item: Project;
+}>()
+
 </script>

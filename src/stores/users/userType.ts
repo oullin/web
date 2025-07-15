@@ -28,6 +28,8 @@ export interface Project {
 	excerpt: string;
 	description?: string;
 	url: string;
+	isOpenSource: boolean;
+	icon: string;
 	created_at: string;
 	updated_at: string;
 }
