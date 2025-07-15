@@ -447,5 +447,31 @@ export const Response: User = {
 			created_at: '2019-07-16',
 			updated_at: '2019-07-16',
 		},
+	],
+	education: [
+		{
+			uuid: "a0fde63b-016b-4121-959f-18a950b8bc81",
+			icon: "education/uah_logo.jpeg",
+			school: "Universidad 'Alejandro de Humboldt",
+			degree: "Bachelor's degree",
+			field: "Computer Science",
+			description: "As a computer scientist, I see computer science as the study of computers and computational processes, covering their underlying principles, design, real‑world applications, and even their impact on society. \n" +
+				"\n" +
+				"My work spans both the theoretical side—think algorithms and data structures—and the hands‑on side, like building software and exploring artificial intelligence. At its core, computer science is about understanding how computers operate and using that insight to solve problems and develop new technologies.",
+			graduated_at: "2012",
+			issuing_country: "Venezuela"
+		},
+		{
+			uuid: "606e8e34-f189-425c-bc1d-cb7f8ec30dd8",
+			icon: "education/iut_valencia.jpeg",
+			school: "IUT Valencia",
+			degree: "Associate's degree",
+			field: "Computer Science",
+			description: "Having completed my Associate’s in Computer Science, I’ve built a strong foundation in how computers work—learning the basics of algorithm design and data organization alongside hands‑on experience writing software and experimenting with entry‑level enterprise software. \n"+
+				"\n" +
+				"For me, computer science means using both theory and practical skills to tackle real‑world challenges and bring new tech ideas to life.\n",
+			graduated_at: "2007",
+			issuing_country: "Venezuela"
+		}
 	]
 };
