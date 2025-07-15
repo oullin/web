@@ -198,7 +198,7 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetNewsletterPartial />
+								<WidgetSkillsPartial />
 								<WidgetSponsorPartial />
 								<WidgetPostsPartial />
 							</div>
@@ -215,7 +215,7 @@
 <script setup>
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
-import WidgetNewsletterPartial from '@partials/WidgetNewsletterPartial.vue';
+import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetPostsPartial from '@partials/WidgetPostsPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';

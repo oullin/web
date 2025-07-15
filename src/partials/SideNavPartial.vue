@@ -70,19 +70,6 @@
 								</a>
 							</router-link>
 						</li>
-
-						<!-- subscribe -->
-						<li class="py-2">
-							<router-link v-slot="{ href, navigate, isExactActive }" to="/subscribe" custom>
-								<a class="h6 blog-side-nav-router-link-a" :class="bindIconClassFor(isExactActive)" :href="href" @click="navigate">
-									<span class="sr-only">Subscribe</span>
-									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="21">
-										<path fill-opacity=".16" d="m13.4 18-3-7.4-7.4-3L19 2z" />
-										<path d="M13.331 15.169 17.37 3.63 5.831 7.669l5.337 2.163 2.163 5.337Zm-3.699-3.801L.17 7.53 20.63.37l-7.161 20.461-3.837-9.463Z" />
-									</svg>
-								</a>
-							</router-link>
-						</li>
 					</ul>
 				</nav>
 			</div>

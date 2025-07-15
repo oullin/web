@@ -25,7 +25,7 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetNewsletterPartial />
+								<WidgetSkillsPartial />
 								<WidgetSponsorPartial />
 							</div>
 						</aside>
@@ -47,7 +47,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
-import WidgetNewsletterPartial from '@partials/WidgetNewsletterPartial.vue';
+import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 
 import { useUserStore } from '@stores/users/user.ts';
 import { onMounted } from 'vue';
