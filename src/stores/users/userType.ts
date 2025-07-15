@@ -46,6 +46,22 @@ export interface Talks {
 	updated_at: string;
 }
 
+export interface Recommendation {
+	uuid: string;
+	relation: string;
+	text: string;
+	person: RecommendationPerson;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface RecommendationPerson {
+	avatar: string;
+	full_name: string;
+	company: string;
+	designation: string;
+}
+
 export interface User {
 	nickname: string;
 	handle: string;
@@ -57,4 +73,5 @@ export interface User {
 	experience: Experience[];
 	projects: Project[];
 	talks: Talks[];
+	recommendations: Recommendation[];
 }

@@ -283,4 +283,65 @@ export const Response: User = {
 			updated_at: '2018-10-04',
 		},
 	],
+	recommendations: [
+		{
+			uuid: "a5029b3e-3ad2-45a4-8e98-2599cdf21697",
+			relation: "Direct Supervisor",
+			text: "I had the pleasure of working alongside Gustavo for more than three years during his time at BeMyGuest.\n" +
+				"\n" +
+				"Working within a tech team at a startup can be a very challenging experience, there are competing pressures to deliver new features as quickly as possible, whilst at the same time we have to work hard to maintain stability and quality within the code we produce.\n" +
+				"\n" +
+				"Gustavo was an excellent and enthusiastic ambassador for this approach and led many initiatives to improve our systems, testing and architecture, leading to his work having a very positive impact on the overall quality of BeMyGuest's products.\n" +
+				"\n" +
+				"I would highly recommend Gustavo, his combination of attention to detail, with an irrepressible drive to continue learning makes him a valuable asset within any software engineering team.",
+			person: {
+				avatar: "recommendation/ross-riley.jpeg",
+				full_name: "Ross Riley",
+				company: "BeMyGuest - Tours & Activities",
+				designation: "CTO",
+			},
+			created_at: '2021-11-27',
+			updated_at: '2021-11-27',
+		},
+		{
+			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
+			relation: "Fellow Software Engineer",
+			text: "I have worked with Gus as a fellow Software Engineer since 2017. He is a highly adaptable, encouraging and supportive colleague and an effective team lead.\n" +
+				"\n" +
+				"His software development skill, whether its backend, full stack, is of exceptional high quality.\n" +
+				"\n" +
+				"During our stint in the company, he took the time to spearhead some of the initiatives to improve and updating the software development process and applications.\n" +
+				"\n" +
+				"He always has a positive attitude and a desire to produce quality work.\n" +
+				"\n" +
+				"Gus is as great a person as he was a colleague, a team lead and his next employer will be lucky to have him",
+			person: {
+				avatar: "recommendation/kong-kw.jpg",
+				full_name: "Kong KW",
+				company: "BeMyGuest - Tours & Activities",
+				designation: "Senior Software Engineer",
+			},
+			created_at: '2021-10-20',
+			updated_at: '2021-10-20',
+		},
+		{
+			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
+			relation: "Direct Supervisor",
+			text: "It was a pleasure to have an opportunity to work with Gustavo. He's a brilliant developer and analyst, with a head full of new ideas. \n" +
+				"\n" +
+				"He's not afraid of approaching the most complex problems and testing new waters to find the best solutions. \n" +
+				"\n" +
+				"He's got a great personality and always fun to have around in your team. Always keen to share his knowledge thru training or giving public presentations. \n" +
+				"\n" +
+				"He's got that deep internal drive to learn every day and test new ideas in real life, which I always find very valuable.",
+			person: {
+				avatar: "recommendation/dawid-makowski.jpeg",
+				full_name: "Dawid Makowski",
+				company: "BeMyGuest - Tours & Activities",
+				designation: "CTO",
+			},
+			created_at: '2019-07-16',
+			updated_at: '2019-07-16',
+		},
+	]
 };
