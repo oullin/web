@@ -286,7 +286,7 @@ export const Response: User = {
 	recommendations: [
 		{
 			uuid: "7dc74d20-42e1-4f09-9c8d-20ecfc6caad7",
-			relation: "fellow colleague reporting to the C-Level.",
+			relation: "Amrith was a fellow colleague reporting to the C-Level.",
 			text: "Gus and I were peers at Perx during his tenure as Head of Engineering. He led several key initiatives, including scaling the engineering team and aligning cross-functional efforts across DevOps, backend, frontend, and data. Additionally, he drove projects focused on infrastructure modernisation, performance optimisation, and cloud cost efficiency." +
 				"<br/><br/>" +
 				"He's a hands-on and technically strong leader who enjoys solving complex engineering problems. Outside of work, Gustavo is highly disciplined when it comes to health and fitness, always consistent and focused, which says a lot about his overall approach to life and work.",
@@ -301,7 +301,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "86fa5273-4e21-45e0-80de-5ec908cf6f81",
-			relation: "Bhupesh reported directly to me.",
+			relation: "Bhupesh reported directly to Gus.",
 			text: "I had the privilege of working under Gustavo as an Engineering Manager, and his leadership has been nothing short of inspiring. Not only does he bring exceptional technical expertise and strategic thinking, but he also leads with empathy—something that truly sets him apart." +
 				"<br/><br/>" +
 				"Gustavo doesn’t just manage a team; he genuinely cares about each individual’s growth, challenges, and well-being. He understands the personal and professional struggles employees face and goes above and beyond to support them. This ability to balance technical excellence with emotional intelligence creates a culture of trust, collaboration, and high performance." +
@@ -318,7 +318,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "dec7e524-34cc-405c-9b3a-01999852c9bb",
-			relation: "Victory reported directly to me.",
+			relation: "Victory reported directly to Gus.",
 			text: "I had a chance to work with Gus at Perx for the last 9 months. He consistently guided the team with clarity and supported our professional growth." +
 				"<br/><br/>" +
 				"Despite the challenges posed by an unclear structure and team dynamics, Gus has been dedicated to making processes smoother and more consistent across departments." +
@@ -335,7 +335,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "e4626228-99fa-4778-9a22-783174e7ab60",
-			relation: "was senior to me, but did not manage Gus directly.",
+			relation: "Damien was a senior to Gus, but did not manage him directly.",
 			text: "Over the past two years, Gus has shown consistently high levels of technical skill and an innovative mindset, adapting through numerous changes and growth periods within our company." +
 				"<br/><br/>" +
 				"He is always eager to support the team in reaching its goals, displaying readiness to take action, and effective communication. His ability to think outside the box is a distinct strength." +
@@ -352,7 +352,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "fa5c4084-e1b4-45dd-a314-e8d9f589f67e",
-			relation: "managed Gus directly.",
+			relation: "Claudio managed Gus directly.",
 			text: "Gustavo's blend of strong technical skills, problem-solving, and warm personality make him stand out. He's not only great at leading projects but also shines in teamwork, often stepping beyond his role to help others. As a mentor, he'd be invaluable, and his ability to communicate and innovate positions him perfectly for roles that bridge technical teams and clients.",
 			person: {
 				avatar: "recommendation/claudio-reggiani.jpeg",
@@ -365,7 +365,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "0e587fa2-b678-4ca5-9eed-0f115c4a092d",
-			relation: "was senior to me, but did not manage me directly.",
+			relation: "Jarek was a senior to Gus, but did not manage him directly.",
 			text: "I have worked with Gustavo as a Sr Engineer in my department at Aspire. It was the second time we worked together and it has been a great pleasure to see how far Gustavo progressed in the last few years." +
 				"<br/><br/>" +
 				"Gustavo has an exceptional depth of knowledge in software development and consistently expands his high-quality knowledge with new technologies to better fit scaling team and systems." +
@@ -382,7 +382,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "a5029b3e-3ad2-45a4-8e98-2599cdf21697",
-			relation: "managed Gus directly.",
+			relation: "Ross managed Gus directly.",
 			text: "I had the pleasure of working alongside Gustavo for more than three years during his time at BeMyGuest." +
 				"<br/><br/>" +
 				"Working within a tech team at a startup can be a very challenging experience, there are competing pressures to deliver new features as quickly as possible, whilst at the same time we have to work hard to maintain stability and quality within the code we produce." +
@@ -401,7 +401,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
-			relation: "fellow software engineer",
+			relation: "Kong was a fellow software engineer",
 			text: "I have worked with Gus as a fellow Software Engineer since 2017. He is a highly adaptable, encouraging and supportive colleague and an effective team lead." +
 				"<br/><br/>" +
 				"His software development skill, whether its backend, full stack, is of exceptional high quality. During our stint in the company, he took the time to spearhead some of the initiatives to improve and updating the software development process and applications." +
@@ -418,7 +418,7 @@ export const Response: User = {
 		},
 		{
 			uuid: "1ca2026d-9d52-4da9-bbe2-5adba175d4c4",
-			relation: "managed Gus directly.",
+			relation: "Dawid managed Gus directly.",
 			text: "It was a pleasure to have an opportunity to work with Gustavo. He's a brilliant developer and analyst, with a head full of new ideas. He's not afraid of approaching the most complex problems and testing new waters to find the best solutions." +
 				"<br/><br/>" +
 				"He's got a great personality and always fun to have around in your team. Always keen to share his knowledge thru training or giving public presentations. He's got that deep internal drive to learn every day and test new ideas in real life, which I always find very valuable.",

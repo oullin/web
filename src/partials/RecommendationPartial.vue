@@ -13,9 +13,9 @@
 					<div class="pl-20 space-y-1">
 						<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.person.full_name }}</div>
 						<div class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ item.person.company }}</div>
-						<div>
+						<div class="flex justify-between text-xs dark:text-teal-500 text-fuchsia-500 pb-2 ">
 							<div>{{ item.relation }}</div>
-							<div>{{ item.created_at }}</div>
+							<div>{{ item.formattedDate }}</div>
 						</div>
 						<div class="text-sm text-slate-500 dark:text-slate-400" v-html="item.html"></div>
 					</div>
@@ -29,7 +29,7 @@
 import { computed } from 'vue';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import { image } from '@/public.ts';
+import { image, date } from '@/public.ts';
 import type { Recommendation } from '@stores/users/userType.ts';
 
 
@@ -48,7 +48,8 @@ const processedRecommendations = computed(() => {
 
 		return {
 			...item,
-			html: sanitisedHtml
+			html: sanitisedHtml,
+			formattedDate: date().format(new Date(item.created_at)),
 		};
 	});
 });
