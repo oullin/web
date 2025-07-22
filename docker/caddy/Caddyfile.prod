@@ -1,0 +1,26 @@
+# Production Caddyfile
+# IMPORTANT: Replace your-domain.com with your actual domain name
+your-domain.com {
+    log
+
+    # Optional: Proxy API requests to a backend service
+    handle_path /api/* {
+        reverse_proxy my_api_service:3000
+    }
+
+    # Serve the Vue.js application
+    handle {
+        root * /usr/share/caddy
+        encode gzip zstd
+        file_server
+        try_files {path} /index.html
+    }
+
+    # Recommended security headers
+    header {
+        Strict-Transport-Security "max-age=31536000;"
+        X-Frame-Options "DENY"
+        X-Content-Type-Options "nosniff"
+        Permissions-Policy "interest-cohort=()"
+    }
+}
