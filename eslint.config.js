@@ -71,6 +71,13 @@ export default [
 		},
 	},
 
+	{
+		files: ['src/partials/EducationPartial.vue', 'src/partials/RecommendationPartial.vue'],
+		rules: {
+			'vue/no-v-html': 'off',
+		},
+	},
+
 	// --- Prettier Integration (must be last) ---
 	configPrettier,
 ];
