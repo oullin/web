@@ -1,0 +1,56 @@
+services:
+    # Vue App.
+    app-builder:
+        image: app-builder-image:${TAG:-latest}
+        container_name: app-builder
+        build:
+            context: .
+            dockerfile: docker/Dockerfile.local
+            target: builder
+        networks:
+            - web_internal
+
+    # LOCAL Service
+    caddy-local:
+        image: caddy:2.10.0-alpine
+        profiles:
+            - local
+        container_name: web_caddy_local
+        ports:
+            - "8080:80"
+        volumes:
+            - ./dist:/usr/share/caddy
+            - ./caddy/WebCaddyfile.local:/etc/caddy/Caddyfile
+        networks:
+            - web_internal
+
+    # PRODUCTION Service
+    caddy-prod:
+        profiles:
+            - prod
+        container_name: web_caddy_prod
+        image: web-prod-builder:${TAG:-latest}
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: docker/Dockerfile.prod
+            args:
+                BUILDER_IMAGE: app-builder-image:${TAG:-latest}
+        volumes:
+            - oullin_web_data:/data
+            - oullin_web_config:/config
+        depends_on:
+            - app-builder
+        # Connects to the existing shared network from API's.
+        networks:
+            - caddy_net
+
+networks:
+    web_internal:
+        driver: bridge
+    caddy_net:
+        external: true
+
+volumes:
+    oullin_web_data:
+    oullin_web_config:

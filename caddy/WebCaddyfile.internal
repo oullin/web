@@ -1,0 +1,7 @@
+# This file is for the internal web_caddy_prod container.
+# Its only job is to serve the static files over HTTP on port 80.
+:80 {
+	root * /usr/share/caddy
+	file_server
+	try_files {path} /index.html
+}
