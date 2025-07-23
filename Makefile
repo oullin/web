@@ -5,6 +5,7 @@ ROOT_PATH := $(shell pwd)
 
 format:
 	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html}' --ignore-path .prettierignore
+	make lint-fix
 
 env-fresh:
 	rm -rf $(ROOT_PATH)/node_modules
