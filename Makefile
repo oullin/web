@@ -1,5 +1,5 @@
 .PHONY: format env-fresh lint-fix
-.PHONY: build-fresh local-up local-down
+.PHONY: prod-fresh prod-up local-fresh local-up
 
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
@@ -17,19 +17,21 @@ env-fresh:
 lint-fix:
 	npx eslint . --fix
 
-build-fresh:
-	docker compose down --remove-orphans && \
-	docker container prune -f && \
-	docker image prune -f && \
-	docker volume prune -f && \
-	docker network prune -f && \
-	docker system prune -a --volumes -f && \
-	docker ps -aq | xargs --no-run-if-empty docker stop && \
-	docker ps -aq | xargs --no-run-if-empty docker rm && \
+# --- Build
+prod-fresh:
+	docker compose --profile prod down --volumes --rmi all --remove-orphans
 	docker ps
+	make prod-up
+
+prod-up:
+	docker compose --profile prod build --no-cache
+	docker compose --profile prod up -d
+
+local-fresh:
+	docker compose --profile local down --volumes --rmi all --remove-orphans
+	docker ps
+	make local-up
 
 local-up:
-	docker compose --profile local up --build -d
-
-local-down:
-	docker compose --profile local down
+	docker compose --profile local build --no-cache
+	docker compose --profile local up -d

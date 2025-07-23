@@ -1,13 +1,14 @@
-version: '3.8'
-
 services:
     # Vue App.
     app-builder:
         image: app-builder-image:${TAG:-latest}
+        container_name: app-builder
         build:
             context: .
             dockerfile: docker/Dockerfile.local
             target: builder
+        networks:
+            - web_internal
 
     # LOCAL Service
     caddy-local:
@@ -20,6 +21,8 @@ services:
         volumes:
             - ./dist:/usr/share/caddy
             - ./caddy/WebCaddyfile.local:/etc/caddy/Caddyfile
+        networks:
+            - web_internal
 
     # PRODUCTION Service
     caddy-prod:
@@ -43,6 +46,8 @@ services:
             - caddy_net
 
 networks:
+    web_internal:
+        driver: bridge
     caddy_net:
         external: true
 
