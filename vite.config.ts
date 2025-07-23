@@ -13,6 +13,15 @@ export default defineConfig({
 		'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
 	},
 	plugins: [vue(), tailwindcss()],
+	server: {
+		proxy: {
+			'/api': {
+				target: 'http://localhost:8080',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api/, '')
+			}
+		},
+	},
 	resolve: {
 		alias: [
 			{

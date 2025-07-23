@@ -52,11 +52,29 @@ import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import { useUserStore } from '@stores/users/user.ts';
 import { onMounted } from 'vue';
 
+import { fetchUserProfile } from '@stores/api/client.ts'
+
 const userStore = useUserStore();
 
 onMounted(() => {
+	const userProfileResponse = fetchUserProfile();
+
+	console.log("\n--- Consuming the response from fetchUserProfile ---");
+	if (userProfileResponse) {
+		console.log("Response received:");
+		console.log(userProfileResponse);
+		// Example of accessing a specific field:
+		console.log(`\nWelcome, ${userProfileResponse.name} (@${userProfileResponse.handle})!`);
+	} else {
+		console.log("Failed to get a response.");
+	}
+
+
 	userStore.onBoot(() => {
-		console.log('[home]: app booted...');
+		console.log('[home]: app booted...', import.meta.env.VITE_API_URL);
+
+
+
 	});
 });
 </script>
