@@ -9,12 +9,7 @@
 			<div class="grow">
 				<div class="flex items-center justify-between space-x-2">
 					<div class="h-10 w-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full mb-2">
-						<img
-							:src="image(item.icon)"
-							width="18"
-							height="18"
-							:alt="item.title"
-						/>
+						<img :src="image(item.icon)" width="18" height="18" :alt="item.title" />
 					</div>
 					<div v-if="item.isOpenSource" class="text-xs inline-flex items-center font-medium bg-green-100 text-green-600 rounded-full text-center px-2 h-5">Open-Source</div>
 				</div>
@@ -36,6 +31,5 @@ import type { Project } from '@stores/users/userType.ts';
 
 const { item } = defineProps<{
 	item: Project;
-}>()
-
+}>();
 </script>

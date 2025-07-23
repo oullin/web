@@ -80,13 +80,13 @@
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, Router, useRouter } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
-import { computed } from 'vue';
+import { computed, Ref } from 'vue';
 
 const router: Router = useRouter();
 const currentRoute: Ref<RouteLocationNormalizedLoaded> = router.currentRoute;
 
 const isHome = computed<boolean>(() => {
-	// TypeScript knows currentRoute.value is of type RouteLocationNormalizedLoaded
+	// TypeScript knows the currentRoute.value is of type RouteLocationNormalizedLoaded
 	// The 'fullPath' property on RouteLocationNormalizedLoaded is typed as string.
 	// The comparison 'string === string' results in a boolean.
 	// The <boolean> generic on computed explicitly states the return type of the computed ref.

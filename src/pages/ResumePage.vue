@@ -59,7 +59,7 @@ import type { User } from '@stores/users/userType';
 import { useUserStore } from '@stores/users/user.ts';
 
 const userStore = useUserStore();
-const user: User = ref<User | null>(null);
+const user = ref<User | null>(null);
 
 onMounted(() => {
 	userStore.onBoot((profile: User) => {

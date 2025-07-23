@@ -5,8 +5,9 @@
 		<!-- Cards -->
 		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
 			<a
+				v-for="project in projects"
+				:key="project.uuid"
 				class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 odd:-rotate-1 even:rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out p-5"
-				v-for="project in projects" :key="project.uuid"
 				:href="project.url"
 				target="_blank"
 				rel="noopener noreferrer"
@@ -32,7 +33,6 @@
 				</div>
 			</a>
 		</div>
-
 	</section>
 </template>
 
@@ -42,7 +42,7 @@ import { useUserStore } from '@stores/users/user.ts';
 import type { Project, User } from '@stores/users/userType.ts';
 
 const userStore = useUserStore();
-const projects: Project[] = ref<Project[]>([]);
+const projects = ref<Project[]>([]);
 
 onMounted(() => {
 	userStore.onBoot((profile: User) => {

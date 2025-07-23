@@ -40,7 +40,7 @@ export interface Talks {
 	subject: string;
 	location: string;
 	url?: string;
-	photo?: string;
+	photo: string;
 	description?: string;
 	created_at: string;
 	updated_at: string;

@@ -21,13 +21,11 @@
 									<div class="space-y-10">
 										<div class="mb-5">
 											<p>
-												Over the years, I’ve built and shared command-line tools and frameworks to tackle real engineering challenges—complete
-												with clear docs and automated tests—and partnered with banks, insurers, and fintechs to deliver custom software that balances
-												performance, security, and scalability.
+												Over the years, I’ve built and shared command-line tools and frameworks to tackle real engineering challenges—complete with clear docs and automated
+												tests—and partnered with banks, insurers, and fintechs to deliver custom software that balances performance, security, and scalability.
 											</p>
 											<p class="mt-2">
-												Feel free to dive into my open-source repos and client case studies to see how I turn
-												complex requirements into reliable, maintainable systems.
+												Feel free to dive into my open-source repos and client case studies to see how I turn complex requirements into reliable, maintainable systems.
 											</p>
 										</div>
 										<section v-if="projects.length > 0">
@@ -36,7 +34,6 @@
 												<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
 											</div>
 										</section>
-
 									</div>
 								</section>
 							</div>
