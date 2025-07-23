@@ -17,6 +17,7 @@
 							<div>{{ item.relation }}</div>
 							<div>{{ item.formattedDate }}</div>
 						</div>
+						<!-- eslint-disable-next-line vue/no-v-html -->
 						<div class="text-sm text-slate-500 dark:text-slate-400" v-html="item.html"></div>
 					</div>
 				</div>

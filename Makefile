@@ -1,13 +1,14 @@
-SHELL := /bin/bash
-
 .PHONY: format env-fresh lint-fix
+
+SHELL := /bin/bash
+ROOT_PATH := $(shell pwd)
 
 format:
 	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html}' --ignore-path .prettierignore
 
 env-fresh:
-	rm -rf node_modules
-	rm package-lock.json
+	rm -rf $(ROOT_PATH)/node_modules
+	rm $(ROOT_PATH)/package-lock.json
 	npm cache clean --force
 	npm install
 
