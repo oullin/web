@@ -32,16 +32,19 @@ services:
             context: .
             dockerfile: docker/Dockerfile.prod
             args:
-                # Updated image name argument
                 BUILDER_IMAGE: app-builder-image:${TAG:-latest}
-        ports:
-            - "80:80"
-            - "443:443"
         volumes:
             - oullin_web_data:/data
             - oullin_web_config:/config
         depends_on:
             - app-builder
+        # Connects to the existing shared network from API's.
+        networks:
+            - caddy_net
+
+networks:
+    caddy_net:
+        external: true
 
 volumes:
     oullin_web_data:
