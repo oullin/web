@@ -1,17 +1,14 @@
 SHELL := /bin/bash
 
-.PHONY: format env\:fresh lint\:check lint\:fix
+.PHONY: format env-fresh lint-fix
 
 format:
 	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html}' --ignore-path .prettierignore
 
-env\:fresh:
+env-fresh:
 	rm -rf node_modules
 	npm cache clean --force
 	npm install
 
-lint\:check:
-	npx eslint . --ext .js,.jsx,.cjs,.mjs,.vue
-
-lint\:fix:
-	npx eslint . --ext .js,.jsx,.cjs,.mjs,.vue --fix
+lint-fix:
+	npx eslint . --fix
