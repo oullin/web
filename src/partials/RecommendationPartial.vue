@@ -13,7 +13,7 @@
 					<div class="pl-20 space-y-1">
 						<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.person.full_name }}</div>
 						<div class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ item.person.company }}</div>
-						<div class="flex justify-between text-xs dark:text-teal-500 text-slate-400 pb-2 ">
+						<div class="flex justify-between text-xs dark:text-teal-500 text-slate-400 pb-2">
 							<div>{{ item.relation }}</div>
 							<div>{{ item.formattedDate }}</div>
 						</div>
@@ -33,18 +33,17 @@ import DOMPurify from 'dompurify';
 import { image, date } from '@/public.ts';
 import type { Recommendation } from '@stores/users/userType.ts';
 
-
 marked.use({
 	breaks: true,
 	gfm: true,
 });
 
 const { recommendations } = defineProps<{
-	recommendations: Recommendation[]
-}>()
+	recommendations: Recommendation[];
+}>();
 
 const processedRecommendations = computed(() => {
-	return recommendations.map(item => {
+	return recommendations.map((item) => {
 		const sanitisedHtml = DOMPurify.sanitize(marked.parse(item.text) as string);
 
 		return {
@@ -54,5 +53,4 @@ const processedRecommendations = computed(() => {
 		};
 	});
 });
-
 </script>
