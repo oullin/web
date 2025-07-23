@@ -32,9 +32,8 @@
 						<div class="text-xs text-slate-500 uppercase">Year <span class="text-slate-400 dark:text-slate-600">·</span> {{ item.graduated_at }}</div>
 						<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.degree }}</div>
 						<div class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ item.school }}</div>
-						<!-- eslint-disable -->
+						<!-- eslint-disable-next-line vue/no-v-html -->
 						<div class="text-sm text-slate-500 dark:text-slate-400" v-html="item.html"></div>
-						<!-- eslint-enable -->
 					</div>
 				</div>
 			</li>
