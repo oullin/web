@@ -42,7 +42,7 @@ import { useUserStore } from '@stores/users/user.ts';
 import type { Project, User } from '@stores/users/userType.ts';
 
 const userStore = useUserStore();
-const projects: Project[] = ref<Project[]>([]);
+const projects = ref<Project[]>([]);
 
 onMounted(() => {
 	userStore.onBoot((profile: User) => {

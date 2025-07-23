@@ -35,7 +35,7 @@ import { useUserStore } from '@stores/users/user.ts';
 import type { Talks, User } from '@stores/users/userType.ts';
 
 const userStore = useUserStore();
-const talks: Talks[] = ref<Talks[]>([]);
+const talks = ref<Talks[]>([]);
 
 onMounted(() => {
 	userStore.onBoot((profile: User) => {
