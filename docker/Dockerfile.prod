@@ -1,0 +1,13 @@
+# Use the pre-built Vue image as the builder
+# Updated default image name
+ARG BUILDER_IMAGE=app-builder-image:latest
+FROM ${BUILDER_IMAGE} AS builder
+
+# Final image uses the specific Caddy version
+FROM caddy:2.10.0-alpine
+
+# Copy built assets from the builder stage into Caddy's webroot
+COPY --from=builder /app/dist /usr/share/caddy
+
+# Copy the production Caddy configuration file into the image
+COPY caddy/WebCaddyfile.prod /etc/caddy/Caddyfile

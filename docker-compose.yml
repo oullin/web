@@ -1,61 +1,48 @@
 version: '3.8'
 
 services:
-    # This service ONLY builds the Vue app. The resulting image is used
-    # by the production Caddy service.
-    vue-builder:
-        image: my-vue-app-builder:${TAG:-latest}
+    # Vue App.
+    app-builder:
+        image: app-builder-image:${TAG:-latest}
         build:
             context: .
-            dockerfile: docker/vue/Dockerfile
-            target: builder # Only run up to the 'builder' stage
+            dockerfile: docker/Dockerfile.local
+            target: builder
 
-    # LOCAL Development Service
-    # Serves the './dist' folder from your host machine.
+    # LOCAL Service
     caddy-local:
-        image: caddy:2-alpine
+        image: caddy:2.10.0-alpine
         profiles:
             - local
-        container_name: caddy_local
+        container_name: web_caddy_local
         ports:
             - "8080:80"
         volumes:
-            # Mount the dist folder you built locally
             - ./dist:/usr/share/caddy
-            # Mount the local Caddyfile
-            - ./docker/caddy/Caddyfile.local:/etc/caddy/Caddyfile
+            - ./caddy/WebCaddyfile.local:/etc/caddy/Caddyfile
 
     # PRODUCTION Service
-    # Builds a lean Caddy image containing only the compiled Vue app.
     caddy-prod:
         profiles:
             - prod
-        container_name: caddy_prod
-        image: my-vue-caddy-prod:${TAG:-latest}
+        container_name: web_caddy_prod
+        image: web-prod-builder:${TAG:-latest}
         restart: unless-stopped
         build:
-            # Use an inline Dockerfile to combine the builder and Caddy
             context: .
-            dockerfile_inline: |
-                # Use the pre-built Vue image as the builder
-                FROM my-vue-app-builder:${TAG:-latest} AS builder
-                # Final image is the Caddy server
-                FROM caddy:2-alpine
-                # Copy built assets from the builder stage
-                COPY --from=builder /app/dist /usr/share/caddy
-                # Copy the production Caddyfile into the image
-                COPY docker/caddy/Caddyfile.prod /etc/caddy/Caddyfile
+            dockerfile: docker/Dockerfile.prod
+            args:
+                # Updated image name argument
+                BUILDER_IMAGE: app-builder-image:${TAG:-latest}
         ports:
-            # Ports 80 and 443 are required for Caddy's automatic HTTPS
             - "80:80"
             - "443:443"
         volumes:
-            # Named volumes for Caddy's state (certificates, etc.)
-            - caddy_data:/data
-            - caddy_config:/config
+            - oullin_web_data:/data
+            - oullin_web_config:/config
         depends_on:
-            - vue-builder # Ensures the vue app is built before this service builds
+            - app-builder
 
 volumes:
-    caddy_data:
-    caddy_config:
+    oullin_web_data:
+    oullin_web_config:
