@@ -3,7 +3,7 @@
 		<h2 class="font-aspekta text-xl font-[650] mb-5">Popular Talks</h2>
 
 		<!-- Cards -->
-		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+		<div v-if="talks.length" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
 			<a
 				v-for="talk in talks"
 				:key="talk.uuid"
