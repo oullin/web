@@ -3,7 +3,7 @@
 		<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
 		<ul class="space-y-8">
 			<!-- Item -->
-			<li class="relative group" v-for="item in processedRecommendations" :key="item.uuid">
+			<li v-for="item in processedRecommendations" :key="item.uuid" class="relative group">
 				<div class="flex items-start">
 					<div
 						class="absolute left-0 h-14 w-14 flex items-center justify-center dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"

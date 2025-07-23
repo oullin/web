@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, Router, useRouter } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
-import { computed } from 'vue';
+import { computed, Ref } from 'vue';
 
 const router: Router = useRouter();
 const currentRoute: Ref<RouteLocationNormalizedLoaded> = router.currentRoute;

@@ -6,9 +6,9 @@
 		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
 
 			<a
-				class="relative aspect-video rounded-lg overflow-hidden bg-linear-to-tr from-slate-800 to-slate-700 odd:rotate-1 even:-rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out shadow-xl"
 				v-for="talk in talks"
 				:key="talk.uuid"
+				class="relative aspect-video rounded-lg overflow-hidden bg-linear-to-tr from-slate-800 to-slate-700 odd:rotate-1 even:-rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out shadow-xl"
 				:href="talk.url"
 				target="_blank"
 				rel="noopener noreferrer"

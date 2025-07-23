@@ -3,7 +3,7 @@
 		<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Education</h2>
 		<ul class="space-y-8">
 			<!-- Item -->
-			<li class="relative group" v-for="item in processedEducation" :key="item.uuid">
+			<li v-for="item in processedEducation" :key="item.uuid" class="relative group">
 				<div
 					class="flex items-start before:absolute before:left-0 before:h-full before:w-px before:bg-slate-200 dark:before:bg-slate-800 before:self-start before:ml-[28px] before:-translate-x-1/2 before:translate-y-8 group-last-of-type:before:hidden"
 				>
