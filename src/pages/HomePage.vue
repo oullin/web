@@ -52,7 +52,7 @@ import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import { useUserStore } from '@stores/users/user.ts';
 import { onMounted } from 'vue';
 import { useProfile } from '@stores/api/profile.ts';
-import { HttpError } from '@stores/api/http-error.ts';
+import { debugError } from '@stores/api/http-error.ts';
 
 const userStore = useUserStore();
 
@@ -66,12 +66,7 @@ onMounted(async () => {
 			console.log(`Welcome, ${userProfileResponse.data.name}!`);
 		}
 	} catch (error) {
-		if (error instanceof HttpError) {
-			console.error(`API Error: Status ${error.status}`);
-			console.error('Server Response:', error.body);
-		} else {
-			console.error('An unexpected error occurred:', error);
-		}
+		debugError(error);
 	}
 
 	userStore.onBoot(() => {
