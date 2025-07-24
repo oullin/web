@@ -51,30 +51,31 @@ import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 
 import { useUserStore } from '@stores/users/user.ts';
 import { onMounted } from 'vue';
-
-import { fetchUserProfile } from '@stores/api/client.ts'
+import { useProfile } from '@stores/api/profile.ts';
+import { HttpError } from '@stores/api/http-error.ts';
 
 const userStore = useUserStore();
 
-onMounted(() => {
-	const userProfileResponse = fetchUserProfile();
+onMounted(async () => {
+	console.log('Attempting to fetch user profile...');
 
-	console.log("\n--- Consuming the response from fetchUserProfile ---");
-	if (userProfileResponse) {
-		console.log("Response received:");
-		console.log(userProfileResponse);
-		// Example of accessing a specific field:
-		console.log(`\nWelcome, ${userProfileResponse.name} (@${userProfileResponse.handle})!`);
-	} else {
-		console.log("Failed to get a response.");
+	try {
+		const userProfileResponse = await useProfile();
+
+		if (userProfileResponse.data) {
+			console.log(`Welcome, ${userProfileResponse.data.name}!`);
+		}
+	} catch (error) {
+		if (error instanceof HttpError) {
+			console.error(`API Error: Status ${error.status}`);
+			console.error('Server Response:', error.body);
+		} else {
+			console.error('An unexpected error occurred:', error);
+		}
 	}
-
 
 	userStore.onBoot(() => {
 		console.log('[home]: app booted...', import.meta.env.VITE_API_URL);
-
-
-
 	});
 });
 </script>
