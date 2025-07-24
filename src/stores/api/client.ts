@@ -1,50 +1,30 @@
-interface ApiClientOptions {
-	basedURL: string;
-	apiKey: string;
-	apiUsername: string;
-	apiSignature: string; // This might be dynamically generated per request in a real scenario
-}
-
-interface ApiResponse<T> {
-	version: string;
-	data: T;
-}
-
-class ApiClient {
+class ApiClient
+{
 	private readonly apiKey: string;
 	private readonly apiUsername: string;
 	private readonly apiSignature: string;
-	private readonly userAgent: string;
 	private readonly basedURL: string;
 
 	constructor(options: ApiClientOptions) {
 		this.apiKey = options.apiKey;
+		this.basedURL = options.basedURL;
 		this.apiUsername = options.apiUsername;
 		this.apiSignature = options.apiSignature;
-		this.userAgent = 'oullin/web-app';
-		this.basedURL = options.basedURL;
 	}
 
 	private createHeaders(): Headers {
 		const headers = new Headers();
 
-		headers.append('Content-Type', 'application/json');
-		headers.append('User-Agent', this.userAgent);
 		headers.append('X-API-Key', this.apiKey);
+		headers.append('User-Agent', 'oullin/web-app');
 		headers.append('X-API-Username', this.apiUsername);
 		headers.append('X-API-Signature', this.apiSignature);
+
+		headers.append('Content-Type', 'application/json');
 
 		return headers;
 	}
 
-	/**
-	 * Performs a GET request to the specified URL.
-	 * @template T - The expected type of the JSON response data.
-	 * @param {string} url - The full URL to send the GET request to.
-	 * @param {RequestInit} [options] - Optional fetch options to merge with the request.
-	 * @returns {Promise<T>} A promise that resolves with the JSON response data.
-	 * @throws {Error} Throws an error if the network request fails or the API returns a non-2xx status code.
-	 */
 	public async get<T>(url: string, options?: RequestInit): Promise<T> {
 		const headers = this.createHeaders();
 
@@ -56,31 +36,16 @@ class ApiClient {
 			});
 
 			if (!response.ok) {
-				// Attempt to get more detailed error info from the response body
 				const errorBody = await response.text();
 				throw new Error(`API request failed with status ${response.status}: ${response.statusText}. Body: ${errorBody}`);
 			}
 
-			// Assuming the response will always be JSON
-			return response.json() as Promise<T>;
+			return await response.json() as Promise<T>;
 
 		} catch (error) {
-			console.error("Failed to execute GET request:", error);
-			// Re-throw the error to be handled by the caller
-			throw error;
+			throw error instanceof Error ? error : new Error(`An unexpected error occurred: ${String(error)}`);
 		}
 	}
-}
-
-// --- Example Usage ---
-
-// 1. Define the expected shape of your API response
-interface UserProfile {
-	nickname: string;
-	handle: string;
-	name: string;
-	email: string;
-	profession: string;
 }
 
 // 2. Main function to demonstrate the client
