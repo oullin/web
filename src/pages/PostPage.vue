@@ -1,5 +1,5 @@
 <template>
-	<div class="max-w-7xl mx-auto">
+	<div v-if="post" class="max-w-7xl mx-auto">
 		<div class="min-h-screen flex">
 			<SideNavPartial />
 
@@ -32,14 +32,15 @@
 										<div class="flex items-center justify-between mb-1">
 											<!-- Post date -->
 											<div class="text-xs text-slate-500 uppercase">
-												<span class="text-sky-500">—</span> Dec 24, 2023 <span class="text-slate-400 dark:text-slate-600">·</span> 4 Min read
+												<span class="text-sky-500">—</span> {{ date().format(new Date(post.published_at)) }} <span class="text-slate-400 dark:text-slate-600">·</span>
+												{{ getReadingTime(post.content) }}
 											</div>
 											<!-- Share buttons -->
 											<ul class="inline-flex">
 												<li>
 													<a
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
-														href="#0"
+														:href="xURLFor(post)"
 														aria-label="Twitter"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -52,13 +53,15 @@
 												<li>
 													<a
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
-														href="#0"
-														aria-label="Facebook"
+														:href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
+														aria-label="LinkedIn"
+														target="_blank"
+														rel="noopener noreferrer"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 															<path
-																d="M14.023 24 14 17h-3v-3h3v-2c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V14H21l-1 3h-2.72v7h-3.257Z"
-															></path>
+																d="M24,24H20V18.33c0-1.41-.5-2.37-1.75-2.37a1.9,1.9,0,0,0-1.75,1.25c-.06.44-.08,1.06-.08,1.69V24H12V12h4v1.73a3.86,3.86,0,0,1,3.47-1.93c2.52,0,4.53,1.65,4.53,5.15V24ZM8,10a2,2,0,1,1,2-2A2,2,0,0,1,8,10ZM6,24H10V12H6Z"
+															/>
 														</svg>
 													</a>
 												</li>
@@ -67,6 +70,7 @@
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
 														href="#0"
 														aria-label="Share"
+														@click.prevent="sharePost(post)"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 															<path
@@ -77,119 +81,13 @@
 												</li>
 											</ul>
 										</div>
-										<h1 class="h1 font-aspekta mb-4">How to Control CSS Animations with JavaScript</h1>
+										<h1 class="h1 font-aspekta mb-4">{{ post.title }}</h1>
 									</header>
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
-										<p>When it comes to animations on the web, developers need to measure the animation's requirements with the right technology -- CSS or JavaScript.</p>
-										<img class="w-full" src="../images/post-image.jpg" width="692" height="390" alt="Post" />
-										<div class="space-y-4">
-											<p>
-												Web designers sometimes believe that animating in CSS is more difficult than animating in JavaScript.
-												<strong class="font-medium text-slate-800 dark:text-slate-100">While CSS animation does have some limitations</strong>, most of the time it's more
-												capable than we give it credit for! Not to mention, typically more performant.
-											</p>
-											<p>
-												Coupled with a touch of JavaScript, CSS animations and transitions are able to accomplish hardware-accelerated animations and interactions more
-												efficiently than most JavaScript libraries. Let's jump straight in!
-											</p>
-											<p>Let's jump straight in!</p>
-										</div>
-										<div class="space-y-4">
-											<h2 class="h2 font-aspekta text-slate-800 dark:text-slate-100">Manipulating CSS Transitions</h2>
-											<p>
-												There are countless questions on coding forums related to triggering and pausing an element's transition. The solution is actually quite simple using
-												JavaScript.
-											</p>
-											<p>To trigger an element's transition, toggle a class name on that element that triggers it.</p>
-											<p>
-												To pause an element's transition, use getComputedStyle and getPropertyValue at the point in the transition you want to pause it.
-												<a class="font-medium text-sky-500 hover:underline" href="#0">Then set those CSS properties</a> of that element equal to those values you just got.
-											</p>
-										</div>
-										<div class="space-y-4">
-											<h2 class="h2 font-aspekta text-slate-800 dark:text-slate-100">Using CSS “Callback Functions”</h2>
-											<p>
-												Some of the most useful yet little-known JavaScript tricks for manipulating CSS transitions and animations are the DOM events they fire. Like:
-												<strong class="font-medium text-slate-800 dark:text-slate-100">animationend, animationstart, and animationiteration for animations</strong> and
-												transitionend for transitions. You might guess what they do. These animation events fire when the animation on an element ends, starts, or completes one
-												iteration, respectively.
-											</p>
-											<p>
-												These events need to be vendor prefixed at this time, so in this demo, we use a function developed by Craig Buckler called PrefixedEvent, which has the
-												parameters element, type, and callback to help make these events cross-browser. Here is his useful article on capturing CSS animations with JavaScript.
-												And
-												<a class="font-medium text-sky-500 hover:underline" href="#0">here is another one</a> determining which animation (name) the event is firing for.
-											</p>
-										</div>
-										<div class="space-y-4">
-											<h2 class="h2 font-aspekta text-slate-800 dark:text-slate-100">Manipulating CSS Transitions</h2>
-											<p>
-												Like we just learned, we can watch elements and react to animation-related events: animationStart, animationIteration, and animationEnd. But what
-												happens if you want to change the CSS animation mid-animation? This requires a bit of trickery!
-											</p>
-										</div>
-										<div class="space-y-4">
-											<h3 class="h3 font-aspekta text-slate-800 dark:text-slate-100">The animation-play-state Property</h3>
-											<p>
-												The animation-play-state property of CSS is incredibly helpful when you simply need to pause an animation and potentially continue it later. You can
-												change that CSS through JavaScript like this (mind your prefixes):
-											</p>
-										</div>
-										<pre class="overflow-x-auto text-sm text-slate-500 bg-slate-800 p-4 rounded-sm leading-tight">
-<code class="font-pt-mono"><span class="text-sky-300">element</span>.<span class="text-sky-300">style</span>.<span class="text-sky-300">webkitAnimationPlayState</span> <span class="text-fuchsia-400">=</span> <span class="text-emerald-400">"paused"</span>;
-
-<span class="text-sky-300">element</span>.<span class="text-sky-300">style</span>.<span class="text-sky-300">webkitAnimationPlayState</span> <span class="text-fuchsia-400">=</span> <span class="text-emerald-400">"running"</span>;</code>
-</pre>
-										<div class="space-y-4">
-											<h3 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Obtaining the Current Keyvalue Percentage</h3>
-											<p>
-												Unfortunately, at this time, there is no way to get the exact current “percentage completed” of a CSS keyframe animation.
-												<strong class="font-medium text-slate-800 dark:text-slate-100">The best method to approximate it is using a setInterval function</strong> that iterates
-												100 times during the animation, which is essentially: the animation duration in ms / 100. For example, if the animation is 4 seconds long, then the
-												setInterval needs to run every 40 milliseconds (4000/100).
-											</p>
-										</div>
-										<pre class="overflow-x-auto text-sm text-slate-500 bg-slate-800 p-4 rounded-sm leading-tight">
-<code class="font-pt-mono"><span class="text-sky-300">var showPercent</span> <span class="text-fuchsia-400">=</span> <span class="text-sky-300">window</span>.<span class="text-sky-300">setInterval</span>(<span class="text-emerald-400">function</span>() {
-
-  <span class="text-emerald-400">if</span> (<span class="text-sky-300">currentPercent</span> <span class="text-fuchsia-400">&lt;</span> <span class="text-pink-400">100</span>) {
-
-    <span class="text-sky-300">currentPercent</span> <span class="text-fuchsia-400">+=</span> <span class="text-pink-400">1</span>;
-
-  } <span class="text-emerald-400">else</span> {
-
-    <span class="text-sky-300">currentPercent</span> <span class="text-fuchsia-400">=</span> <span class="text-pink-400">0</span>;
-
-  }
-
-  // Updates a div that displays the current percent
-
-  <span class="text-sky-300">result</span>.<span class="text-sky-300">innerHTML</span> <span class="text-fuchsia-400">=</span> <span class="text-sky-300">currentPercent</span>;
-
-}, <span class="text-fuchsia-400">40</span>);</code>
-</pre>
-										<div class="space-y-4">
-											<h2 class="h2 font-aspekta text-slate-800 dark:text-slate-100">Use Your Head</h2>
-											<p>
-												Before starting to code, thinking about and planning how a transition or animation should run is the best way to minimize your problems and get the
-												effect you desire. Even better than Googling for solutions later! The techniques and tricks overviewed in this article may not always be the best way to
-												create the animation your project calls for.
-											</p>
-											<p>
-												Here's a little example of <strong class="font-medium text-slate-800 dark:text-slate-100">where getting clever with HTML and CSS</strong> alone can
-												solve a problem where you might have thought to go to JavaScript.
-											</p>
-										</div>
-										<div class="space-y-4">
-											<h2 class="h2 font-aspekta text-slate-800 dark:text-slate-100">In Conclusion</h2>
-											<ul class="list-disc list-inside space-y-2">
-												<li>Developers used to need to choose between CSS and JavaScript.</li>
-												<li>In JavaScript, CSS transitions are generally easier to work with than CSS animations.</li>
-												<li>CSS Matrices are generally a pain to deal with, especially for beginners.</li>
-												<li>Thinking about what should be done and planning how to do it.</li>
-											</ul>
-										</div>
+										<p>{{ post.excerpt }}</p>
+										<img class="w-full" :src="post.cover_image_url" width="692" height="390" :alt="post.title" />
+										<div ref="postContainer" class="space-y-4" v-html="htmlContent"></div>
 									</div>
 								</article>
 							</div>
@@ -200,7 +98,6 @@
 							<div class="space-y-6">
 								<WidgetSkillsPartial />
 								<WidgetSponsorPartial />
-								<WidgetPostsPartial />
 							</div>
 						</aside>
 					</div>
@@ -212,11 +109,93 @@
 	</div>
 </template>
 
-<script setup>
-import SideNavPartial from '@partials/SideNavPartial.vue';
+<script setup lang="ts">
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import { useRoute } from 'vue-router';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import { date, getReadingTime } from '@/public.ts';
+import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
+import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetPostsPartial from '@partials/WidgetPostsPartial.vue';
-import FooterPartial from '@partials/FooterPartial.vue';
+import type { PostResponse } from '@api/response/posts-response.ts';
+import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
+
+// --- syntax highlight
+import hljs from 'highlight.js';
+import { useDarkMode } from '@/dark-mode.ts';
+
+// --- Component
+const route = useRoute();
+const apiStore = useApiStore();
+const { isDark } = useDarkMode();
+const post = ref<PostResponse>();
+const slug = ref<string>(route.params.slug as string);
+const postContainer = ref<HTMLElement | null>(null);
+
+marked.use({
+	breaks: true,
+	gfm: true,
+});
+
+const htmlContent = computed(() => {
+	if (post.value && post.value.content) {
+		return DOMPurify.sanitize(marked.parse(post.value.content) as string);
+	}
+
+	return '';
+});
+
+const xURLFor = (post: PostResponse) => {
+	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
+};
+
+const fullURLFor = (post: PostResponse) => {
+	return `${window.location.origin}/posts/${post.slug}`;
+};
+
+async function sharePost(post: PostResponse) {
+	const shareData = {
+		title: post.title,
+		text: post.excerpt,
+		url: fullURLFor(post),
+	};
+	try {
+		await navigator.share(shareData);
+	} catch (err) {
+		console.error("Couldn't share the post:", err);
+	}
+}
+
+watchEffect(() => {
+	if (isDark.value) {
+		import('highlight.js/styles/github-dark.css');
+	} else {
+		import('highlight.js/styles/github.css');
+	}
+});
+
+watch(htmlContent, async () => {
+	// Wait for Vue to update the DOM
+	await nextTick();
+
+	// Find all code blocks in the container and highlight them
+	if (postContainer.value) {
+		const blocks = postContainer.value.querySelectorAll('pre code');
+		blocks.forEach((block) => {
+			hljs.highlightElement(block as HTMLElement);
+		});
+	}
+});
+
+onMounted(async () => {
+	try {
+		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
+	} catch (error) {
+		debugError(error);
+	}
+});
 </script>

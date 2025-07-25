@@ -15,3 +15,30 @@ export function date(language?: string, options?: Intl.DateTimeFormatOptions): I
 
 	return new Intl.DateTimeFormat(lang, ops);
 }
+
+export function getReadingTime(text: string, wpm: number = 225): string {
+	if (!text || !text.trim() || wpm <= 0) {
+		return '1 min read';
+	}
+
+	const wordCount: number = text.trim().split(/\s+/).length;
+	const totalMinutes: number = Math.ceil(wordCount / wpm);
+
+	// Ensure a minimum of 1 minute for any content
+	const minutes: number = Math.max(1, totalMinutes);
+
+	// --- Formatting Steps ---
+	if (minutes < 60) {
+		return `${minutes} min read`;
+	}
+
+	const hours: number = Math.floor(minutes / 60);
+	const remainingMinutes: number = minutes % 60;
+	const hourText: string = hours > 1 ? 'hours' : 'hour';
+
+	if (remainingMinutes === 0) {
+		return `${hours} ${hourText} read`;
+	}
+
+	return `${hours} ${hourText} ${remainingMinutes} min read`;
+}
