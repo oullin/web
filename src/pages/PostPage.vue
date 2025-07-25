@@ -115,7 +115,7 @@ import 'highlight.js/styles/github-dark.css';
 const route = useRoute();
 const apiStore = useApiStore();
 const post = ref<PostsResponse>();
-const slug = ref<string>(route.params.slug);
+const slug = ref<string>(route.params.slug as string);
 const postContainer = ref<HTMLElement | null>(null);
 
 marked.use({

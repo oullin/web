@@ -40,11 +40,11 @@ export const useApiStore = defineStore(STORE_KEY, {
 				return parseError(error);
 			}
 		},
-		async getPost(slug: string): Promise<ApiResponse<PostsResponse>> {
+		async getPost(slug: string): Promise<PostsResponse> {
 			const url = `posts/${slug}`;
 
 			try {
-				return await this.client.get<ApiResponse<PostsResponse>>(url);
+				return await this.client.get<PostsResponse>(url);
 			} catch (error) {
 				return parseError(error);
 			}
