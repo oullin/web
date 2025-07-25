@@ -72,7 +72,7 @@ export default [
 	},
 
 	{
-		files: ['src/partials/EducationPartial.vue', 'src/partials/RecommendationPartial.vue'],
+		files: ['src/partials/EducationPartial.vue', 'src/partials/RecommendationPartial.vue', 'src/pages/PostPage.vue'],
 		rules: {
 			'vue/no-v-html': 'off',
 		},
