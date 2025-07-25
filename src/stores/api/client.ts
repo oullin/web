@@ -1,6 +1,16 @@
-import { HttpError } from '@stores/api/http-error.ts';
+import { HttpError } from '@api/http-error.ts';
+
+const ENV_PROD = 'production';
+
+export const defaultCreds: ApiClientOptions = {
+	env: import.meta.env.VITE_API_ENV as string,
+	apiKey: import.meta.env.VITE_PUBLIC_KEY as string,
+	apiUsername: import.meta.env.VITE_ACCOUNT_NAME as string,
+	apiSignature: import.meta.env.VITE_PUBLIC_SIGNATURE as string,
+};
 
 export interface ApiClientOptions {
+	env: string;
 	apiKey: string;
 	apiUsername: string;
 	apiSignature: string;
@@ -11,23 +21,27 @@ export interface ApiResponse<T> {
 	data: T;
 }
 
-export const Credentials = (): ApiClientOptions => ({
-	apiKey: import.meta.env.VITE_PUBLIC_KEY as string,
-	apiUsername: import.meta.env.VITE_ACCOUNT_NAME as string,
-	apiSignature: import.meta.env.VITE_PUBLIC_SIGNATURE as string,
-});
-
 export class ApiClient {
+	private readonly env: string;
 	private readonly apiKey: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
 	private readonly apiSignature: string;
 
 	constructor(options: ApiClientOptions) {
+		this.env = options.env;
 		this.apiKey = options.apiKey;
 		this.apiUsername = options.apiUsername;
 		this.apiSignature = options.apiSignature;
 		this.basedURL = `${import.meta.env.VITE_API_URL}`;
+	}
+
+	public isProd(): boolean {
+		return this.env.trim().toLowerCase() === ENV_PROD;
+	}
+
+	public isDev(): boolean {
+		return !this.isProd();
 	}
 
 	private createHeaders(): Headers {

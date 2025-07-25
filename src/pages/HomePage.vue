@@ -44,23 +44,22 @@ import TalksPartial from '@partials/TalksPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
+import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
-import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 
-import { useUserStore } from '@stores/users/user.ts';
 import { onMounted } from 'vue';
-import { useProfile } from '@stores/api/profile.ts';
-import { debugError } from '@stores/api/http-error.ts';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
 
-const userStore = useUserStore();
+const apiStore = useApiStore();
 
 onMounted(async () => {
 	console.log('Attempting to fetch user profile...');
 
 	try {
-		const userProfileResponse = await useProfile();
+		const userProfileResponse = await apiStore.getProfile();
 
 		if (userProfileResponse.data) {
 			console.log(`Welcome, ${userProfileResponse.data.name}!`);
@@ -68,9 +67,5 @@ onMounted(async () => {
 	} catch (error) {
 		debugError(error);
 	}
-
-	userStore.onBoot(() => {
-		console.log('[home]: app booted...', import.meta.env.VITE_API_URL);
-	});
 });
 </script>
