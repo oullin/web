@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { parseError } from '@api/http-error.ts';
 import { ProfileResponse } from '@api/response/profile-response.ts';
 import { ApiClient, ApiResponse, defaultCreds } from '@api/client.ts';
-import { PostsResponse } from '@api/response/posts-response.ts';
+import type { PostsResponse } from '@api/response/posts-response.ts';
 
 const STORE_KEY = 'api-client-store';
 

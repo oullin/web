@@ -109,10 +109,7 @@ export class ApiClient {
 		const payload = await response.json();
 
 		if (eTag) {
-			console.log(`%c[CACHE] 200 OK for "${url}". Updating cache with new ETag.`, 'color: orange;');
 			this.setToCache(url, eTag, payload);
-		} else {
-			console.warn(`[CACHE] Response from "${url}" is missing the ETag header. Caching skipped.`);
 		}
 
 		return payload;

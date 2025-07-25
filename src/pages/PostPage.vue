@@ -200,7 +200,6 @@
 							<div class="space-y-6">
 								<WidgetSkillsPartial />
 								<WidgetSponsorPartial />
-								<WidgetPostsPartial />
 							</div>
 						</aside>
 					</div>
@@ -212,11 +211,20 @@
 	</div>
 </template>
 
-<script setup>
-import SideNavPartial from '@partials/SideNavPartial.vue';
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
+
+import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
+import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetPostsPartial from '@partials/WidgetPostsPartial.vue';
-import FooterPartial from '@partials/FooterPartial.vue';
+
+const route = useRoute();
+const slug = ref<string>(route.params.slug);
+
+onMounted(() => {
+	console.log('The slug for this post is:', slug.value);
+});
 </script>

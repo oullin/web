@@ -31,7 +31,8 @@ const router: Router = createRouter({
 			component: HomePage,
 		},
 		{
-			path: '/post',
+			path: '/post/:slug',
+			name: 'PostDetail',
 			component: PostPage,
 		},
 		{
