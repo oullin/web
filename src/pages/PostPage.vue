@@ -59,7 +59,9 @@
 														rel="noopener noreferrer"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-															<path d="M24,24H20V18.33c0-1.41-.5-2.37-1.75-2.37a1.9,1.9,0,0,0-1.75,1.25c-.06.44-.08,1.06-.08,1.69V24H12V12h4v1.73a3.86,3.86,0,0,1,3.47-1.93c2.52,0,4.53,1.65,4.53,5.15V24ZM8,10a2,2,0,1,1,2-2A2,2,0,0,1,8,10ZM6,24H10V12H6Z"/>
+															<path
+																d="M24,24H20V18.33c0-1.41-.5-2.37-1.75-2.37a1.9,1.9,0,0,0-1.75,1.25c-.06.44-.08,1.06-.08,1.69V24H12V12h4v1.73a3.86,3.86,0,0,1,3.47-1.93c2.52,0,4.53,1.65,4.53,5.15V24ZM8,10a2,2,0,1,1,2-2A2,2,0,0,1,8,10ZM6,24H10V12H6Z"
+															/>
 														</svg>
 													</a>
 												</li>
@@ -117,17 +119,19 @@ import { date, getReadingTime } from '@/public.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
-import { onMounted, ref, computed, watch, nextTick } from 'vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import type { PostsResponse } from '@api/response/posts-response.ts';
+import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 
 // --- syntax highlight
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github-dark.css';
+import { useDarkMode } from '@/dark-mode.ts';
 
+// --- Component
 const route = useRoute();
 const apiStore = useApiStore();
+const { isDark } = useDarkMode();
 const post = ref<PostsResponse>();
 const slug = ref<string>(route.params.slug as string);
 const postContainer = ref<HTMLElement | null>(null);
@@ -147,11 +151,11 @@ const htmlContent = computed(() => {
 
 const xURLFor = (post: PostsResponse) => {
 	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
-}
+};
 
 const fullURLFor = (post: PostsResponse) => {
 	return `${window.location.origin}/posts/${post.slug}`;
-}
+};
 
 async function sharePost(post: PostsResponse) {
 	const shareData = {
@@ -165,6 +169,14 @@ async function sharePost(post: PostsResponse) {
 		console.error("Couldn't share the post:", err);
 	}
 }
+
+watchEffect(() => {
+	if (isDark.value) {
+		import('highlight.js/styles/github-dark.css');
+	} else {
+		import('highlight.js/styles/github.css');
+	}
+});
 
 watch(htmlContent, async () => {
 	// Wait for Vue to update the DOM

@@ -24,7 +24,7 @@
 
 				<!-- Light switch -->
 				<div class="flex flex-col justify-center">
-					<input id="light-switch" v-model="darkMode" type="checkbox" name="light-switch" class="light-switch sr-only" />
+					<input id="light-switch" type="checkbox" name="light-switch" class="light-switch sr-only" @click="toggleDarkMode" />
 					<label class="relative cursor-pointer p-2" for="light-switch">
 						<svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 							<path
@@ -52,19 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { useDarkMode } from '@/dark-mode.ts';
 
-const darkMode = ref<string | null>(localStorage.getItem('dark-mode'));
-
-watch(darkMode, () => {
-	const el: HTMLElement = document.documentElement;
-
-	if (darkMode.value) {
-		localStorage.setItem('dark-mode', 'true');
-		el.classList.add('dark');
-	} else {
-		localStorage.setItem('dark-mode', 'false');
-		el.classList.remove('dark');
-	}
-});
+const { toggleDarkMode } = useDarkMode();
 </script>
