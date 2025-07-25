@@ -30,7 +30,7 @@ import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
-import type { PostResponse, PostsCollectionResponse } from '@api/response/post-response.ts';
+import type { PostResponse, PostsCollectionResponse } from '@api/response/posts-response.ts';
 
 const apiStore = useApiStore();
 const collection = ref<PostsCollectionResponse>();

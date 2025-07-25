@@ -121,7 +121,7 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import type { PostResponse } from '@api/response/post-response.ts';
+import type { PostResponse } from '@api/response/posts-response.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 
 // --- syntax highlight
