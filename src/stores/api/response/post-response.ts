@@ -1,4 +1,12 @@
-export interface PostsResponse {
+export interface PostsCollectionResponse {
+	page: number;
+	total: number;
+	page_size: number;
+	total_pages: number;
+	data: PostResponse[];
+}
+
+export interface PostResponse {
 	uuid: string;
 	author: PostsAuthorResponse;
 	categories: PostsCategoryResponse[];

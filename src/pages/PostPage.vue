@@ -121,7 +121,7 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import type { PostsResponse } from '@api/response/posts-response.ts';
+import type { PostResponse } from '@api/response/post-response.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 
 // --- syntax highlight
@@ -132,7 +132,7 @@ import { useDarkMode } from '@/dark-mode.ts';
 const route = useRoute();
 const apiStore = useApiStore();
 const { isDark } = useDarkMode();
-const post = ref<PostsResponse>();
+const post = ref<PostResponse>();
 const slug = ref<string>(route.params.slug as string);
 const postContainer = ref<HTMLElement | null>(null);
 
@@ -149,15 +149,15 @@ const htmlContent = computed(() => {
 	return '';
 });
 
-const xURLFor = (post: PostsResponse) => {
+const xURLFor = (post: PostResponse) => {
 	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
 };
 
-const fullURLFor = (post: PostsResponse) => {
+const fullURLFor = (post: PostResponse) => {
 	return `${window.location.origin}/posts/${post.slug}`;
 };
 
-async function sharePost(post: PostsResponse) {
+async function sharePost(post: PostResponse) {
 	const shareData = {
 		title: post.title,
 		text: post.excerpt,
@@ -193,7 +193,7 @@ watch(htmlContent, async () => {
 
 onMounted(async () => {
 	try {
-		post.value = (await apiStore.getPost(slug.value)) as PostsResponse;
+		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 	} catch (error) {
 		debugError(error);
 	}

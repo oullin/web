@@ -19,8 +19,8 @@
 		</ul>
 
 		<!-- Articles list -->
-		<div>
-			<ArticleItemPartial v-for="item in items" :key="item.id" :item="item" />
+		<div v-if="items.length > 0">
+			<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
 		</div>
 	</section>
 </template>
@@ -30,14 +30,16 @@ import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
-import type { PostsResponse } from '@api/response/posts-response.ts';
+import type { PostResponse, PostsCollectionResponse } from '@api/response/post-response.ts';
 
 const apiStore = useApiStore();
-const items = ref<PostsResponse[]>([]);
+const collection = ref<PostsCollectionResponse>();
+const items = ref<PostResponse[]>([]);
 
 onMounted(async () => {
 	try {
-		items.value = (await apiStore.getPosts()).data as PostsResponse;
+		collection.value = await apiStore.getPosts();
+		items.value = collection.value.data as PostResponse[];
 	} catch (error) {
 		debugError(error);
 	}

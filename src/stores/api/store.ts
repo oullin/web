@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { parseError } from '@api/http-error.ts';
 import { ProfileResponse } from '@api/response/profile-response.ts';
 import { ApiClient, ApiResponse, defaultCreds } from '@api/client.ts';
-import type { PostsResponse } from '@api/response/posts-response.ts';
+import type { PostResponse, PostsCollectionResponse } from '@api/response/post-response.ts';
 
 const STORE_KEY = 'api-client-store';
 
@@ -31,20 +31,20 @@ export const useApiStore = defineStore(STORE_KEY, {
 				return parseError(error);
 			}
 		},
-		async getPosts(): Promise<ApiResponse<PostsResponse>> {
+		async getPosts(): Promise<PostsCollectionResponse> {
 			const url = 'posts';
 
 			try {
-				return await this.client.get<ApiResponse<PostsResponse>>(url);
+				return await this.client.get<PostsCollectionResponse>(url);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
-		async getPost(slug: string): Promise<PostsResponse> {
+		async getPost(slug: string): Promise<PostResponse> {
 			const url = `posts/${slug}`;
 
 			try {
-				return await this.client.get<PostsResponse>(url);
+				return await this.client.get<PostResponse>(url);
 			} catch (error) {
 				return parseError(error);
 			}
