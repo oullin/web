@@ -40,7 +40,7 @@
 												<li>
 													<a
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
-														href="#0"
+														:href="xURLFor(post)"
 														aria-label="Twitter"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -53,8 +53,22 @@
 												<li>
 													<a
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
+														:href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
+														aria-label="LinkedIn"
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+															<path d="M24,24H20V18.33c0-1.41-.5-2.37-1.75-2.37a1.9,1.9,0,0,0-1.75,1.25c-.06.44-.08,1.06-.08,1.69V24H12V12h4v1.73a3.86,3.86,0,0,1,3.47-1.93c2.52,0,4.53,1.65,4.53,5.15V24ZM8,10a2,2,0,1,1,2-2A2,2,0,0,1,8,10ZM6,24H10V12H6Z"/>
+														</svg>
+													</a>
+												</li>
+												<li>
+													<a
+														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
 														href="#0"
 														aria-label="Share"
+														@click.prevent="sharePost(post)"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 															<path
@@ -130,6 +144,27 @@ const htmlContent = computed(() => {
 
 	return '';
 });
+
+const xURLFor = (post: PostsResponse) => {
+	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
+}
+
+const fullURLFor = (post: PostsResponse) => {
+	return `${window.location.origin}/posts/${post.slug}`;
+}
+
+async function sharePost(post: PostsResponse) {
+	const shareData = {
+		title: post.title,
+		text: post.excerpt,
+		url: fullURLFor(post),
+	};
+	try {
+		await navigator.share(shareData);
+	} catch (err) {
+		console.error("Couldn't share the post:", err);
+	}
+}
 
 watch(htmlContent, async () => {
 	// Wait for Vue to update the DOM
