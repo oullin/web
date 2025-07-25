@@ -16,6 +16,11 @@ export interface ApiClientOptions {
 	apiSignature: string;
 }
 
+export interface CacheEntry<T> {
+	etag: string;
+	data: T;
+}
+
 export interface ApiResponse<T> {
 	version: string;
 	data: T;
@@ -34,6 +39,24 @@ export class ApiClient {
 		this.apiUsername = options.apiUsername;
 		this.apiSignature = options.apiSignature;
 		this.basedURL = `${import.meta.env.VITE_API_URL}`;
+	}
+
+	private getCacheKey(url: string): string {
+		return `api-cache-${url}`;
+	}
+
+	private getFromCache<T>(url: string): CacheEntry<T> | null {
+		const key = this.getCacheKey(url);
+		const item = localStorage.getItem(key);
+
+		return item ? JSON.parse(item) : null;
+	}
+
+	private setToCache<T>(url: string, etag: string, data: T): void {
+		const key = this.getCacheKey(url);
+		const item: CacheEntry<T> = { etag, data };
+
+		localStorage.setItem(key, JSON.stringify(item));
 	}
 
 	public isProd(): boolean {
@@ -60,16 +83,38 @@ export class ApiClient {
 	public async get<T>(url: string): Promise<T> {
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
+		const cached = this.getFromCache<T>(url);
+
+		if (cached) {
+			headers.append('If-None-Match', cached.etag);
+		}
 
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
 			headers: headers,
 		});
 
-		if (response.ok) {
-			return (await response.json()) as Promise<T>;
+		if (response.status === 304) {
+			console.log(`%c[CACHE] 304 Not Modified for "${url}". Serving from cache.`, 'color: #007acc;');
+
+			// We can safely assert cached is not null here.
+			return cached!.data;
 		}
 
-		throw new HttpError(response, await response.text());
+		if (!response.ok) {
+			throw new HttpError(response, await response.text());
+		}
+
+		const eTag = response.headers.get('ETag');
+		const payload = await response.json();
+
+		if (eTag) {
+			console.log(`%c[CACHE] 200 OK for "${url}". Updating cache with new ETag.`, 'color: orange;');
+			this.setToCache(url, eTag, payload);
+		} else {
+			console.warn(`[CACHE] Response from "${url}" is missing the ETag header. Caching skipped.`);
+		}
+
+		return payload;
 	}
 }
