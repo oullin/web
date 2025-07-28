@@ -3,6 +3,7 @@ import { parseError } from '@api/http-error.ts';
 import { ProfileResponse } from '@api/response/profile-response.ts';
 import { ApiClient, ApiResponse, defaultCreds } from '@api/client.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/posts-response.ts';
+import { CategoriesCollectionResponse } from '@api/response/categories-response.ts';
 
 const STORE_KEY = 'api-client-store';
 
@@ -31,8 +32,17 @@ export const useApiStore = defineStore(STORE_KEY, {
 				return parseError(error);
 			}
 		},
+		async getCategories(): Promise<CategoriesCollectionResponse> {
+			const url = 'categories?limit=5';
+
+			try {
+				return await this.client.get<CategoriesCollectionResponse>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
 		async getPosts(): Promise<PostsCollectionResponse> {
-			const url = 'posts';
+			const url = 'posts?limit=5';
 
 			try {
 				return await this.client.get<PostsCollectionResponse>(url);
