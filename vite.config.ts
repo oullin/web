@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
+import aliases from './aliases';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -13,21 +14,7 @@ export default defineConfig({
 		'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
 	},
 	plugins: [vue(), tailwindcss()],
-	resolve: {
-		alias: [
-			{
-				find: /^~.+/,
-				replacement: '$1',
-			},
-			{ find: '@', replacement: path.resolve(__dirname, './src') },
-			{ find: '@css', replacement: path.resolve(__dirname, './src/css') },
-			{ find: '@pages', replacement: path.resolve(__dirname, './src/pages') },
-			{ find: '@fonts', replacement: path.resolve(__dirname, './src/fonts') },
-			{ find: '@images', replacement: path.resolve(__dirname, './src/images') },
-			{ find: '@public', replacement: path.resolve(__dirname, './src/public') },
-			{ find: '@partials', replacement: path.resolve(__dirname, './src/partials') },
-			{ find: '@stores', replacement: path.resolve(__dirname, './src/stores') },
-			{ find: '@api', replacement: path.resolve(__dirname, './src/stores/api') },
-		],
-	},
+        resolve: {
+                alias: aliases,
+        },
 });

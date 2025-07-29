@@ -27,10 +27,14 @@ afterEach(() => {
 });
 
 describe('ApiClient', () => {
-	it('detects prod and dev modes', () => {
-		expect(client.isProd()).toBe(false);
-		expect(client.isDev()).toBe(true);
-	});
+        it('detects prod and dev modes', () => {
+                expect(client.isProd()).toBe(false);
+                expect(client.isDev()).toBe(true);
+
+                const prod = new ApiClient({ ...options, env: 'production' });
+                expect(prod.isProd()).toBe(true);
+                expect(prod.isDev()).toBe(false);
+        });
 
 	it('handles post success and error responses', async () => {
 		const data = { ok: true };
