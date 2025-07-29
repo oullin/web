@@ -2,12 +2,14 @@ import { defineStore } from 'pinia';
 import { parseError } from '@api/http-error.ts';
 import { ProfileResponse } from '@api/response/profile-response.ts';
 import { ApiClient, ApiResponse, defaultCreds } from '@api/client.ts';
-import type { PostResponse, PostsCollectionResponse } from '@api/response/posts-response.ts';
+import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/posts-response.ts';
+import { CategoriesCollectionResponse } from '@api/response/categories-response.ts';
 
 const STORE_KEY = 'api-client-store';
 
 export interface ApiStoreState {
 	client: ApiClient;
+	searchTerm: string;
 }
 
 const client = new ApiClient(defaultCreds);
@@ -15,8 +17,12 @@ const client = new ApiClient(defaultCreds);
 export const useApiStore = defineStore(STORE_KEY, {
 	state: (): ApiStoreState => ({
 		client: client,
+		searchTerm: '',
 	}),
 	actions: {
+		setSearchTerm(term: string): void {
+			this.searchTerm = term;
+		},
 		boot(): void {
 			if (this.client.isDev()) {
 				console.log('API client booted ...');
@@ -31,11 +37,20 @@ export const useApiStore = defineStore(STORE_KEY, {
 				return parseError(error);
 			}
 		},
-		async getPosts(): Promise<PostsCollectionResponse> {
-			const url = 'posts';
+		async getCategories(): Promise<CategoriesCollectionResponse> {
+			const url = 'categories?limit=5';
 
 			try {
-				return await this.client.get<PostsCollectionResponse>(url);
+				return await this.client.get<CategoriesCollectionResponse>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getPosts(filters: PostsFilters): Promise<PostsCollectionResponse> {
+			const url = 'posts?limit=5';
+
+			try {
+				return await this.client.post<PostsCollectionResponse>(url, filters);
 			} catch (error) {
 				return parseError(error);
 			}

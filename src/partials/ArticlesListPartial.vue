@@ -4,17 +4,18 @@
 
 		<!-- Filters -->
 		<ul class="flex flex-wrap text-sm border-b border-slate-100 dark:border-slate-800">
-			<li class="px-3 -mb-px">
-				<a class="block py-3 font-medium text-slate-500 border-b-2 border-fuchsia-500 dark:text-slate-300 dark:border-teal-500" href="#">Coding</a>
-			</li>
-			<li class="px-3 -mb-px">
-				<a class="block py-3 text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" href="#">Startups</a>
-			</li>
-			<li class="px-3 -mb-px">
-				<a class="block py-3 text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" href="#">Tutorials</a>
-			</li>
-			<li class="px-3 -mb-px">
-				<a class="block py-3 text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300" href="#">Indie Hacking</a>
+			<li v-for="category in categories" :key="category.uuid" class="px-3 -mb-px">
+				<a
+					href="#"
+					:class="
+						filters.category === category.slug
+							? 'text-slate-800 border-fuchsia-500 dark:text-slate-200 dark:border-teal-500'
+							: 'text-slate-500 border-transparent hover:border-slate-300 dark:text-slate-300 dark:hover:border-slate-700'
+					"
+					class="block py-3 font-medium border-b-2"
+					@click.prevent="selectCategory(category.slug)"
+					>{{ category.name }}</a
+				>
 			</li>
 		</ul>
 
@@ -26,20 +27,67 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import debounce from 'lodash/debounce';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
+import { onMounted, reactive, ref, watch } from 'vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
-import type { PostResponse, PostsCollectionResponse } from '@api/response/posts-response.ts';
+import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/posts-response.ts';
+import { CategoriesCollectionResponse, CategoryResponse } from '@api/response/categories-response.ts';
 
 const apiStore = useApiStore();
-const collection = ref<PostsCollectionResponse>();
 const items = ref<PostResponse[]>([]);
 
+const categoriesCollection = ref<CategoriesCollectionResponse>();
+const categories = ref<CategoryResponse[]>([]);
+
+const selectCategory = (categorySlug: string) => {
+	filters.category = categorySlug;
+};
+
+const filters = reactive<PostsFilters>({
+	category: '',
+	text: '',
+});
+
+const fetchPosts = async () => {
+	try {
+		const collection: PostsCollectionResponse = await apiStore.getPosts(filters);
+
+		items.value = collection.data as PostResponse[];
+	} catch (error) {
+		debugError(error);
+	}
+};
+
+// --- Categories' Filter:
+watch(
+	() => filters.category,
+	debounce(() => {
+		fetchPosts();
+	}, 500),
+);
+
+// --- Search: filter post by the given search criteria.
+watch(
+	() => apiStore.searchTerm,
+	(newSearchTerm: string): void => {
+		filters.text = newSearchTerm.trim();
+		fetchPosts();
+	},
+);
+
+// --- Mount the Vue component
 onMounted(async () => {
 	try {
-		collection.value = await apiStore.getPosts();
-		items.value = collection.value.data as PostResponse[];
+		categoriesCollection.value = await apiStore.getCategories();
+		categories.value = categoriesCollection.value.data as CategoryResponse[];
+
+		if (categories.value.length > 0) {
+			filters.category = categories.value[0].slug;
+
+			await fetchPosts();
+		}
 	} catch (error) {
 		debugError(error);
 	}

@@ -44,3 +44,11 @@ export interface PostsTagResponse {
 	name: string;
 	description: string;
 }
+
+export interface PostsFilters {
+	text?: string;
+	title?: string;
+	author?: string;
+	category?: string;
+	tag?: string;
+}

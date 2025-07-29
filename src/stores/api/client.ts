@@ -80,6 +80,23 @@ export class ApiClient {
 		return headers;
 	}
 
+	public async post<T>(url: string, data: object): Promise<T> {
+		const headers = this.createHeaders();
+		const fullUrl = new URL(url, this.basedURL);
+
+		const response = await fetch(fullUrl.href, {
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify(data),
+		});
+
+		if (!response.ok) {
+			throw new HttpError(response, await response.text());
+		}
+
+		return await response.json();
+	}
+
 	public async get<T>(url: string): Promise<T> {
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
