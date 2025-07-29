@@ -5,8 +5,8 @@ export default defineConfig({
         resolve: {
                 alias: aliases,
         },
-	test: {
-		environment: 'jsdom',
+        test: {
+                environment: 'happy-dom',
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'html'],
