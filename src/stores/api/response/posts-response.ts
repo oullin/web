@@ -46,9 +46,9 @@ export interface PostsTagResponse {
 }
 
 export interface PostsFilters {
-	text: ?string;
-	title: ?string;
-	author: ?string;
-	category: ?string;
-	tag: ?string;
+	text?: string;
+	title?: string;
+	author?: string;
+	category?: string;
+	tag?: string;
 }

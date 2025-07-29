@@ -9,6 +9,7 @@ const STORE_KEY = 'api-client-store';
 
 export interface ApiStoreState {
 	client: ApiClient;
+	searchTerm: string;
 }
 
 const client = new ApiClient(defaultCreds);
@@ -16,8 +17,12 @@ const client = new ApiClient(defaultCreds);
 export const useApiStore = defineStore(STORE_KEY, {
 	state: (): ApiStoreState => ({
 		client: client,
+		searchTerm: '',
 	}),
 	actions: {
+		setSearchTerm(term: string): void {
+			this.searchTerm = term;
+		},
 		boot(): void {
 			if (this.client.isDev()) {
 				console.log('API client booted ...');

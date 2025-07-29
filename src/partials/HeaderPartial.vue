@@ -3,14 +3,17 @@
 		<div class="flex items-center justify-between h-16 before:block">
 			<div class="grow flex justify-end space-x-4">
 				<!-- Search form -->
-				<form class="w-full max-w-[276px]">
+				<form class="w-full max-w-[276px]" @submit.prevent="performSearch">
 					<div class="flex flex-wrap">
 						<div class="w-full">
 							<label class="block text-sm sr-only" for="search">Search</label>
 							<div class="relative flex items-center">
-								<input id="search" type="search" class="form-input py-1 w-full pl-10" />
+								<input id="search" v-model="searchQuery" type="search" class="form-input py-1 w-full pl-10" :class="{ 'border-red-500': validationError }" @keyup="onSearchInput" />
 								<div class="absolute inset-0 right-auto flex items-center justify-center">
-									<svg class="w-4 h-4 shrink-0 mx-3" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+									<svg v-if="validationError" class="w-4 h-4 shrink-0 mx-3" viewBox="0 0 16 16" title="Clear search" @click="clearSearchAndError">
+										<path class="stroke-current text-red-500 cursor-pointer" stroke-width="2" stroke-linecap="round" d="M4 4l8 8m0-8l-8 8" />
+									</svg>
+									<svg v-else class="w-4 h-4 shrink-0 mx-3" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 										<path
 											class="blog-header-search-icon"
 											d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zm8.707 12.293a.999.999 0 11-1.414 1.414L11.9 13.314a8.019 8.019 0 001.414-1.414l2.393 2.393z"
@@ -52,7 +55,43 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import debounce from 'lodash/debounce';
 import { useDarkMode } from '@/dark-mode.ts';
+import { useApiStore } from '@api/store.ts';
 
 const { toggleDarkMode } = useDarkMode();
+const apiStore = useApiStore();
+
+const searchQuery = ref('');
+const validationError = ref<string>('');
+
+const clearSearchAndError = () => {
+	onSearchInput.cancel();
+	searchQuery.value = '';
+	performSearch();
+};
+
+const onSearchInput = debounce(() => {
+	performSearch();
+}, 500);
+
+const performSearch = () => {
+	validationError.value = '';
+	const query = searchQuery.value.trim();
+
+	if (query === '') {
+		apiStore.setSearchTerm(query);
+
+		return;
+	}
+
+	if (query.length < 5) {
+		validationError.value = 'Search term must be at least 5 characters.';
+
+		return;
+	}
+
+	apiStore.setSearchTerm(query);
+};
 </script>

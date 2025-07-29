@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import debounce from 'lodash/debounce';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { onMounted, reactive, ref, watch } from 'vue';
@@ -40,40 +41,43 @@ const items = ref<PostResponse[]>([]);
 const categoriesCollection = ref<CategoriesCollectionResponse>();
 const categories = ref<CategoryResponse[]>([]);
 
-let debounceTimer: number;
+const selectCategory = (categorySlug: string) => {
+	filters.category = categorySlug;
+};
 
 const filters = reactive<PostsFilters>({
 	category: '',
+	text: '',
 });
 
 const fetchPosts = async () => {
 	try {
 		const collection: PostsCollectionResponse = await apiStore.getPosts(filters);
+
 		items.value = collection.data as PostResponse[];
 	} catch (error) {
 		debugError(error);
 	}
 };
 
-const selectCategory = (categorySlug: string) => {
-	filters.category = categorySlug;
-};
-
-//Watch for changes to the category and call fetchPosts with a debouncing
+// --- Categories' Filter:
 watch(
 	() => filters.category,
-	(newCategory, oldCategory) => {
-		// Ensure it doesn't run on the initial load before a category is set
-		if (oldCategory) {
-			clearTimeout(debounceTimer);
+	debounce(() => {
+		fetchPosts();
+	}, 500),
+);
 
-			debounceTimer = setTimeout(() => {
-				fetchPosts();
-			}, 500);
-		}
+// --- Search: filter post by the given search criteria.
+watch(
+	() => apiStore.searchTerm,
+	(newSearchTerm: string): void => {
+		filters.text = newSearchTerm.trim();
+		fetchPosts();
 	},
 );
 
+// --- Mount the Vue component
 onMounted(async () => {
 	try {
 		categoriesCollection.value = await apiStore.getCategories();
