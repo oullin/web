@@ -8,7 +8,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"dompurify": "^3.2.6",
@@ -37,6 +38,8 @@
 		"tailwindcss": "^4.1.4",
 		"typescript": "^5.8.3",
 		"vite": "^6.3.5",
-		"vue-eslint-parser": "^10.2.0"
+		"vue-eslint-parser": "^10.2.0",
+		"vitest": "^1.5.0",
+		"@vitest/coverage-v8": "^1.5.0"
 	}
 }
