@@ -31,7 +31,6 @@ import { computed } from 'vue';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { image, date } from '@/public.ts';
-// import type { Recommendation } from '@stores/users/userType.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 
 marked.use({
