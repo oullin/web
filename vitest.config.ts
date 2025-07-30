@@ -6,7 +6,8 @@ export default defineConfig({
                 alias: aliases,
         },
         test: {
-                environment: 'happy-dom',
+                environment: 'node',
+                setupFiles: ['./tests/setup.ts'],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'html'],
