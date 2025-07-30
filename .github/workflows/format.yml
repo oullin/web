@@ -24,8 +24,7 @@ jobs:
                   node-version: 20
                   cache: 'npm'
 
-            - run: npm install
-
+            # Use npx so dependencies are fetched without altering the lock file
             - run: make format
 
             - run: |
