@@ -14,7 +14,7 @@ or add new features, you’re welcome to send a pull request and join the projec
 > This is where the mindful movement of “Ollin” truly comes alive, one request at a time.
 
 ### Testing the Format Workflow
-A dedicated GitHub Action validates the formatting workflow on every pull request.
+A dedicated GitHub Action validates the formatting workflow on pull requests labeled `test`.
 To run the same check locally, simply execute:
 
 ```bash
