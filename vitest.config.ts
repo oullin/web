@@ -8,15 +8,15 @@ export default defineConfig({
         test: {
                 environment: 'node',
                 setupFiles: ['./tests/setup.ts'],
-		coverage: {
-			provider: 'v8',
-			reporter: ['text', 'html'],
-			lines: 85,
-			functions: 85,
-			branches: 85,
-			statements: 85,
-			all: true,
-			include: ['src/stores/**/*.ts'],
-		},
+                coverage: {
+                        provider: 'v8',
+                        reporter: ['text', 'html'],
+                        lines: 100,
+                        functions: 100,
+                        branches: 100,
+                        statements: 100,
+                        all: true,
+                        include: ['src/stores/**/*.ts'],
+                },
 	},
 });

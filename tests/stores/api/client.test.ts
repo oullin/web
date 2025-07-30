@@ -59,17 +59,23 @@ describe('ApiClient', () => {
 		expect(result).toEqual({ cached: true });
 	});
 
-	it('stores response with etag in cache', async () => {
-		const data = { foo: 'bar' };
-		(fetch as any).mockResolvedValue(
-			new Response(JSON.stringify(data), {
-				status: 200,
-				headers: { ETag: 'abc' },
-			}),
-		);
+        it('stores response with etag in cache', async () => {
+                const data = { foo: 'bar' };
+                (fetch as any).mockResolvedValue(
+                        new Response(JSON.stringify(data), {
+                                status: 200,
+                                headers: { ETag: 'abc' },
+                        }),
+                );
 
-		const result = await client.get('test');
-		expect(result).toEqual(data);
-		expect(localStorage.getItem('api-cache-test')).not.toBeNull();
-	});
+                const result = await client.get('test');
+                expect(result).toEqual(data);
+                expect(localStorage.getItem('api-cache-test')).not.toBeNull();
+        });
+
+        it('throws HttpError on failed get', async () => {
+                (fetch as any).mockResolvedValue(new Response('nope', { status: 404, statusText: 'NF' }));
+
+                await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
+        });
 });

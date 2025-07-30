@@ -18,12 +18,24 @@ describe('useUserStore', () => {
 		expect(store.getStorageKey()).toBe(storageKey);
 	});
 
-	it('boots and loads profile from seed', () => {
-		store.boot();
-		expect(store.profile?.nickname).toBe(Response.nickname);
-		const saved = JSON.parse(localStorage.getItem(storageKey)!);
-		expect(saved.nickname).toBe(Response.nickname);
-	});
+        it('boots and loads profile from seed', () => {
+                store.boot();
+                expect(store.profile?.nickname).toBe(Response.nickname);
+                const saved = JSON.parse(localStorage.getItem(storageKey)!);
+                expect(saved.nickname).toBe(Response.nickname);
+        });
+
+        it('boot reads existing profile', () => {
+                localStorage.setItem(storageKey, JSON.stringify({ ...Response, nickname: 'Bob' }));
+                store.boot();
+                expect(store.profile?.nickname).toBe('Bob');
+        });
+
+        it('boot falls back to seed on bad data', () => {
+                localStorage.setItem(storageKey, 'invalid json');
+                store.boot();
+                expect(store.profile?.nickname).toBe(Response.nickname);
+        });
 
 	it('onBoot initializes social media and callback', () => {
 		let called = false;
@@ -34,13 +46,17 @@ describe('useUserStore', () => {
 		expect(store.socialMedia?.github.handle).toBe('gocanto');
 	});
 
-	it('booted helpers work', () => {
-		expect(store.booted()).toBe(false);
-		expect(store.hasNotBooted()).toBe(true);
-		store.boot();
-		expect(store.booted()).toBe(true);
-		expect(store.hasNotBooted()).toBe(false);
-	});
+        it('booted helpers work', () => {
+                expect(store.booted()).toBe(false);
+                expect(store.hasNotBooted()).toBe(true);
+                store.boot();
+                expect(store.booted()).toBe(true);
+                expect(store.hasNotBooted()).toBe(false);
+        });
+
+        it('returns empty social map when not booted', () => {
+                expect(store.getSocialMedia()).toEqual({});
+        });
 
 	it('returns social media map', () => {
 		store.boot();
