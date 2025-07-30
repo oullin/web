@@ -25,8 +25,8 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSkillsPartial />
 								<WidgetSponsorPartial />
+								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -49,11 +49,13 @@ import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
 
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
+import type { ProfileResponse } from '@api/response/profile-response.ts';
 
 const apiStore = useApiStore();
+const profile = ref<ProfileResponse | null>(null);
 
 onMounted(async () => {
 	console.log('Attempting to fetch user profile...');
@@ -62,7 +64,7 @@ onMounted(async () => {
 		const userProfileResponse = await apiStore.getProfile();
 
 		if (userProfileResponse.data) {
-			console.log(`Welcome, ${userProfileResponse.data.name}!`);
+			profile.value = userProfileResponse.data;
 		}
 	} catch (error) {
 		debugError(error);
