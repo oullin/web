@@ -73,8 +73,13 @@ const profile = ref<ProfileResponse | null>(null);
 
 onMounted(async () => {
 	try {
-		const userProfileResponse = await apiStore.getProfile();
-		const projectsResponse = await apiStore.getProjects();
+		const [
+			userProfileResponse,
+			projectsResponse,
+		] = await Promise.all([
+			apiStore.getProfile(),
+			apiStore.getProjects(),
+		])
 
 		if (userProfileResponse.data) {
 			profile.value = userProfileResponse.data;

@@ -65,10 +65,17 @@ const recommendations = ref<RecommendationsResponse[] | null>(null);
 
 onMounted(async () => {
 	try {
-		const profileResponse = await apiStore.getProfile();
-		const experienceResponse = await apiStore.getExperience();
-		const recommendationsResponse = await apiStore.getRecommendations();
-		const educationResponse = await apiStore.getEducation();
+		const [
+			profileResponse,
+			experienceResponse,
+			recommendationsResponse,
+			educationResponse,
+		] = await Promise.all([
+			apiStore.getProfile(),
+			apiStore.getExperience(),
+			apiStore.getRecommendations(),
+			apiStore.getEducation(),
+		]);
 
 		if (profileResponse.data) {
 			profile.value = profileResponse.data;
