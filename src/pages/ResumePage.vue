@@ -55,11 +55,7 @@ import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-
-import type { ProfileResponse } from '@api/response/profile-response.ts';
-import type { EducationResponse } from '@api/response/education-response.ts';
-import type { ExperienceResponse } from '@api/response/experience-response.ts';
-import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
+import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);

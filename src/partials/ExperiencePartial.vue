@@ -40,7 +40,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import type { ExperienceResponse } from '@api/response/experience-response.ts';
+import type { ExperienceResponse } from '@api/response/index.ts';
 
 const props = defineProps<{
 	experience: Array<ExperienceResponse>;

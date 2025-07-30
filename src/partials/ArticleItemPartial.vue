@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { date } from '@/public.ts';
-import type { PostResponse } from '@api/response/posts-response.ts';
+import type { PostResponse } from '@api/response/index.ts';
 
 defineProps<{
 	item: PostResponse;

@@ -52,14 +52,12 @@ import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
 import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import type { ProfileResponse } from '@api/response/profile-response.ts';
+import type { ProfileResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 
 onMounted(async () => {
-	console.log('Attempting to fetch user profile...');
-
 	try {
 		const userProfileResponse = await apiStore.getProfile();
 

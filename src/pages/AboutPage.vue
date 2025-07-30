@@ -90,7 +90,7 @@ import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import type { ProfileResponse } from '@api/response/profile-response.ts';
+import type { ProfileResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
 const nickname = ref<string>('Gus');

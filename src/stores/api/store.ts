@@ -2,12 +2,16 @@ import { defineStore } from 'pinia';
 import { parseError } from '@api/http-error.ts';
 import { ApiClient, ApiResponse, defaultCreds } from '@api/client.ts';
 
-import type { ProfileResponse } from '@api/response/profile-response.ts';
-import type { EducationResponse } from '@api/response/education-response.ts';
-import type { ExperienceResponse } from '@api/response/experience-response.ts';
-import type { CategoriesCollectionResponse } from '@api/response/categories-response.ts';
-import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
-import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/posts-response.ts';
+import type {
+	ProfileResponse,
+	EducationResponse,
+	ExperienceResponse,
+	CategoriesCollectionResponse,
+	RecommendationsResponse,
+	PostResponse,
+	PostsCollectionResponse,
+	PostsFilters,
+} from '@api/response/index.ts';
 
 const STORE_KEY = 'api-client-store';
 
