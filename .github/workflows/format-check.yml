@@ -12,6 +12,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      # Run formatting without installing dependencies
+      - run: npm install
+
       - run: make format
       - run: git diff --exit-code

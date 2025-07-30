@@ -18,7 +18,8 @@ A dedicated GitHub Action validates the formatting workflow on every pull reques
 To run the same check locally, simply execute:
 
 ```bash
+npm install
 make format
 ```
 
-The `make` command relies on `npx` to fetch Prettier and ESLint automatically, so no prior `npm install` is required. If `git diff` shows no changes, the workflow will succeed.
+This ensures all linting and formatting tools are installed. If `git diff` shows no changes, the workflow will succeed.
