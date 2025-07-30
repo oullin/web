@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - main
+    workflow_dispatch:
 
 permissions:
     contents: write
@@ -23,7 +24,7 @@ jobs:
                   node-version: 20
                   cache: 'npm'
 
-            - run: npm ci
+            - run: npm install --no-package-lock
 
             - run: make format
 
