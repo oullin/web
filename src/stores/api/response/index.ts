@@ -18,3 +18,9 @@ export type { PostsCollectionResponse, PostResponse, PostsAuthorResponse, PostsC
 
 import type { ProjectsResponse } from '@api/response/projects-response.ts';
 export type { ProjectsResponse };
+
+import type { TalksResponse } from '@api/response/talks-response.ts';
+export type { TalksResponse };
+
+import type { SocialResponse } from '@api/response/social-response.ts';
+export type { SocialResponse };

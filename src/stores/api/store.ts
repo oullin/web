@@ -12,6 +12,8 @@ import type {
 	PostsCollectionResponse,
 	PostsFilters,
 	ProjectsResponse,
+	TalksResponse,
+	SocialResponse,
 } from '@api/response/index.ts';
 
 const STORE_KEY = 'api-client-store';
@@ -69,6 +71,24 @@ export const useApiStore = defineStore(STORE_KEY, {
 
 			try {
 				return await this.client.get<ApiResponse<ProjectsResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getTalks(): Promise<ApiResponse<TalksResponse[]>> {
+			const url = 'talks';
+
+			try {
+				return await this.client.get<ApiResponse<TalksResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getSocial(): Promise<ApiResponse<SocialResponse[]>> {
+			const url = 'social';
+
+			try {
+				return await this.client.get<ApiResponse<SocialResponse[]>>(url);
 			} catch (error) {
 				return parseError(error);
 			}
