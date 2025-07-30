@@ -15,9 +15,9 @@
 							<div class="max-w-[700px]">
 								<section>
 									<!-- Page title -->
-									<h1 class="h1 blog-h1">I'm {{ nickname }}. I live in Singapore, where I enjoy the present.</h1>
+									<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
 
-									<img class="rounded-lg w-full mb-5" :src="aboutPicture" :alt="`Portrait of: ${nickname}`" />
+									<img class="rounded-lg w-full mb-5" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" />
 
 									<!-- Page content -->
 									<div class="space-y-8 text-slate-500">
@@ -52,9 +52,9 @@
 
 										<div class="mt-5 space-y-5">
 											<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
-											<p v-if="user">
-												I’m happy to connect by <a class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${user.email}`">email</a> to discuss
-												projects and ideas. While I’m not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
+											<p v-if="profile">
+												I’m happy to connect by <a class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`">email</a> to
+												discuss projects and ideas. While I’m not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
 											</p>
 										</div>
 									</div>
@@ -67,7 +67,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSocialPartial />
-								<WidgetSkillsPartial />
+								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -81,8 +81,6 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
-import type { User } from '@stores/users/userType';
-import { useUserStore } from '@stores/users/user.ts';
 import AboutPicture from '@images/profile/about.jpg';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
@@ -90,19 +88,34 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 
-const userStore = useUserStore();
-const user = ref<User | null>(null);
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import type { ProfileResponse } from '@api/response/profile-response.ts';
+
+const apiStore = useApiStore();
+const nickname = ref<string>('Gus');
+const profile = ref<ProfileResponse | null>(null);
 
 const aboutPicture = computed<string>(() => {
 	return AboutPicture;
 });
 
-const nickname = ref<string>('Gus');
+const formattedNickname = computed((): string => {
+	const str = nickname.value;
 
-onMounted(() => {
-	userStore.onBoot((profile: User) => {
-		user.value = profile;
-		nickname.value = profile.nickname;
-	});
+	return str.charAt(0).toUpperCase() + str.slice(1);
+});
+
+onMounted(async () => {
+	try {
+		const userProfileResponse = await apiStore.getProfile();
+
+		if (userProfileResponse.data) {
+			profile.value = userProfileResponse.data;
+			nickname.value = profile.value.nickname;
+		}
+	} catch (error) {
+		debugError(error);
+	}
 });
 </script>
