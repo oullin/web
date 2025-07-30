@@ -12,7 +12,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: npm install
+      - run: npm install --no-package-lock
 
       - run: make format
       - run: git diff --exit-code

@@ -18,7 +18,7 @@ A dedicated GitHub Action validates the formatting workflow on every pull reques
 To run the same check locally, simply execute:
 
 ```bash
-npm install
+npm install --no-package-lock
 make format
 ```
 
