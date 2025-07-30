@@ -38,15 +38,22 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useUserStore } from '@stores/users/user.ts';
-import type { Project, User } from '@stores/users/userType.ts';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import type { ProjectsResponse } from '@api/response/index.ts';
 
-const userStore = useUserStore();
-const projects = ref<Project[]>([]);
+const apiStore = useApiStore();
+const projects = ref<ProjectsResponse[]>([]);
 
-onMounted(() => {
-	userStore.onBoot((profile: User) => {
-		projects.value = profile.projects.slice(0, 2);
-	});
+onMounted(async () => {
+	try {
+		const projectsResponse = await apiStore.getProjects();
+
+		if (projectsResponse.data) {
+			projects.value = projectsResponse.data.slice(0, 2);
+		}
+	} catch (error) {
+		debugError(error);
+	}
 });
 </script>

@@ -32,8 +32,8 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { onMounted, reactive, ref, watch } from 'vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
-import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/posts-response.ts';
-import { CategoriesCollectionResponse, CategoryResponse } from '@api/response/categories-response.ts';
+import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/index.ts';
+import type { CategoriesCollectionResponse, CategoryResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
 const items = ref<PostResponse[]>([]);

@@ -29,17 +29,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { image } from '@/public.ts';
-import { useUserStore } from '@stores/users/user.ts';
-import type { Talks, User } from '@stores/users/userType.ts';
+import { ref, onMounted } from 'vue';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import type { TalksResponse } from '@api/response/index.ts';
 
-const userStore = useUserStore();
-const talks = ref<Talks[]>([]);
+const apiStore = useApiStore();
+const talks = ref<TalksResponse[]>([]);
 
-onMounted(() => {
-	userStore.onBoot((profile: User) => {
-		talks.value = profile.talks;
-	});
+onMounted(async () => {
+	try {
+		const talksResponse = await apiStore.getTalks();
+
+		if (talksResponse.data) {
+			talks.value = talksResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	}
 });
 </script>

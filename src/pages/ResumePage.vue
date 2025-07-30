@@ -18,9 +18,9 @@
 									<h1 class="h1 font-aspekta mb-12">My resume</h1>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<RecommendationPartial v-if="user" :recommendations="user.recommendations" />
-										<EducationPartial v-if="user" :education="user.education" />
-										<ExperiencePartial v-if="user" :experience="user.experience" />
+										<EducationPartial v-if="education" :education="education" />
+										<ExperiencePartial v-if="experience" :experience="experience" />
+										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
 									</div>
 								</section>
 							</div>
@@ -29,9 +29,8 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSkillsPartial />
 								<WidgetLangPartial />
-								<WidgetReferencesPartial />
+								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -52,18 +51,44 @@ import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
-import WidgetReferencesPartial from '@partials/WidgetReferencesPartial.vue';
 
 import { ref, onMounted } from 'vue';
-import type { User } from '@stores/users/userType';
-import { useUserStore } from '@stores/users/user.ts';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
-const userStore = useUserStore();
-const user = ref<User | null>(null);
+const apiStore = useApiStore();
+const profile = ref<ProfileResponse | null>(null);
+const education = ref<EducationResponse[] | null>(null);
+const experience = ref<ExperienceResponse[] | null>(null);
+const recommendations = ref<RecommendationsResponse[] | null>(null);
 
-onMounted(() => {
-	userStore.onBoot((profile: User) => {
-		user.value = profile;
-	});
+onMounted(async () => {
+	try {
+		const [profileResponse, experienceResponse, recommendationsResponse, educationResponse] = await Promise.all([
+			apiStore.getProfile(),
+			apiStore.getExperience(),
+			apiStore.getRecommendations(),
+			apiStore.getEducation(),
+		]);
+
+		if (profileResponse.data) {
+			profile.value = profileResponse.data;
+		}
+
+		if (experienceResponse.data) {
+			experience.value = experienceResponse.data;
+		}
+
+		if (recommendationsResponse.data) {
+			recommendations.value = recommendationsResponse.data;
+		}
+
+		if (educationResponse.data) {
+			education.value = educationResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	}
 });
 </script>

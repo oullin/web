@@ -1,3 +1,5 @@
+import { result } from 'lodash';
+
 const IMAGES_DIR = 'images';
 
 export function image(filename: string): string {
@@ -41,4 +43,22 @@ export function getReadingTime(text: string, wpm: number = 225): string {
 	}
 
 	return `${hours} ${hourText} ${remainingMinutes} min read`;
+}
+
+export function getRandomInt(min: number, max: number): number {
+	//example: min=1, max=8
+
+	// Math.random() returns a floating-point number between 0 (inclusive) and 1 (exclusive).
+	// We multiply it by (max - min + 1) to expand the range.
+	const randomFloat = Math.random() * (max - min + 1);
+
+	// Math.floor() rounds the number down to the nearest whole number.
+	// This gives us an integer from 0 to 7.
+	const randomIntInRange = Math.floor(randomFloat);
+
+	// We add the minimum value (min) to shift the range.
+	// This changes the range from [0, 7] to [1, 8].
+	const result = randomIntInRange + min;
+
+	return result < 0 ? 1 : result;
 }

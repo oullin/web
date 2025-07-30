@@ -1,9 +1,20 @@
 import { defineStore } from 'pinia';
 import { parseError } from '@api/http-error.ts';
-import { ProfileResponse } from '@api/response/profile-response.ts';
 import { ApiClient, ApiResponse, defaultCreds } from '@api/client.ts';
-import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/posts-response.ts';
-import { CategoriesCollectionResponse } from '@api/response/categories-response.ts';
+
+import type {
+	ProfileResponse,
+	EducationResponse,
+	ExperienceResponse,
+	CategoriesCollectionResponse,
+	RecommendationsResponse,
+	PostResponse,
+	PostsCollectionResponse,
+	PostsFilters,
+	ProjectsResponse,
+	TalksResponse,
+	SocialResponse,
+} from '@api/response/index.ts';
 
 const STORE_KEY = 'api-client-store';
 
@@ -33,6 +44,60 @@ export const useApiStore = defineStore(STORE_KEY, {
 
 			try {
 				return await this.client.get<ApiResponse<ProfileResponse>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getExperience(): Promise<ApiResponse<ExperienceResponse[]>> {
+			const url = 'experience';
+
+			try {
+				return await this.client.get<ApiResponse<ExperienceResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getRecommendations(): Promise<ApiResponse<RecommendationsResponse[]>> {
+			const url = 'recommendations';
+
+			try {
+				return await this.client.get<ApiResponse<RecommendationsResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getProjects(): Promise<ApiResponse<ProjectsResponse[]>> {
+			const url = 'projects';
+
+			try {
+				return await this.client.get<ApiResponse<ProjectsResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getTalks(): Promise<ApiResponse<TalksResponse[]>> {
+			const url = 'talks';
+
+			try {
+				return await this.client.get<ApiResponse<TalksResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getSocial(): Promise<ApiResponse<SocialResponse[]>> {
+			const url = 'social';
+
+			try {
+				return await this.client.get<ApiResponse<SocialResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getEducation(): Promise<ApiResponse<EducationResponse[]>> {
+			const url = 'education';
+
+			try {
+				return await this.client.get<ApiResponse<EducationResponse[]>>(url);
 			} catch (error) {
 				return parseError(error);
 			}

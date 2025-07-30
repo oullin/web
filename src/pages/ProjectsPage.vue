@@ -22,7 +22,7 @@
 										<div class="mb-5">
 											<p>
 												Over the years, I’ve built and shared command-line tools and frameworks to tackle real engineering challenges—complete with clear docs and automated
-												tests—and partnered with banks, insurers, and fintechs to deliver custom software that balances performance, security, and scalability.
+												tests—and partnered with banks, insurers, and fintech to deliver custom software that balances performance, security, and scalability.
 											</p>
 											<p class="mt-2">
 												Feel free to dive into my open-source repos and client case studies to see how I turn complex requirements into reliable, maintainable systems.
@@ -42,8 +42,8 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSkillsPartial />
 								<WidgetSponsorPartial />
+								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -57,21 +57,33 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useUserStore } from '@stores/users/user.ts';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
-import type { Project, User } from '@stores/users/userType.ts';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
+import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 
-const userStore = useUserStore();
-const projects: Project[] = ref<Project[]>([]);
+const apiStore = useApiStore();
+const projects = ref<ProjectsResponse[]>([]);
+const profile = ref<ProfileResponse | null>(null);
 
-onMounted(() => {
-	userStore.onBoot((profile: User) => {
-		projects.value = profile.projects;
-	});
+onMounted(async () => {
+	try {
+		const [userProfileResponse, projectsResponse] = await Promise.all([apiStore.getProfile(), apiStore.getProjects()]);
+
+		if (userProfileResponse.data) {
+			profile.value = userProfileResponse.data;
+		}
+
+		if (projectsResponse.data) {
+			projects.value = projectsResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	}
 });
 </script>
