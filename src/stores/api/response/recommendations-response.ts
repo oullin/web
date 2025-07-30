@@ -2,6 +2,7 @@ export interface RecommendationsResponse {
 	uuid: string;
 	relation: string;
 	text: string;
+	created_at: string;
 	person: RecommendationPerson;
 }
 

@@ -11,7 +11,7 @@
 					<div class="h-10 w-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full mb-2">
 						<img :src="getIconSrc()" width="18" height="18" :alt="item.title" />
 					</div>
-					<div v-if="item.isOpenSource" class="text-xs inline-flex items-center font-medium bg-green-100 text-green-600 rounded-full text-center px-2 h-5">Open-Source</div>
+					<div v-if="item.is_open_source" class="text-xs inline-flex items-center font-medium bg-green-100 text-green-600 rounded-full text-center px-2 h-5">Open-Source</div>
 				</div>
 				<div class="text-lg font-aspekta font-[650] mb-1">{{ item.title }}</div>
 				<p class="text-sm text-slate-500 dark:text-slate-400 mb-2">{{ item.excerpt }}</p>

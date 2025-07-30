@@ -4,6 +4,8 @@ export interface ProjectsResponse {
 	title: string;
 	excerpt: string;
 	url: string;
+	icon: string;
+	is_open_source: boolean;
 	created_at: string;
 	updated_at: string;
 }
