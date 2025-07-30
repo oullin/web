@@ -15,3 +15,6 @@ export type { RecommendationsResponse };
 
 import { PostsCollectionResponse, PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsFilters } from '@api/response/posts-response.ts';
 export type { PostsCollectionResponse, PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsFilters };
+
+import type { ProjectsResponse } from '@api/response/projects-response.ts';
+export type { ProjectsResponse };
