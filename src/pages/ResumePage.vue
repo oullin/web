@@ -18,7 +18,7 @@
 									<h1 class="h1 font-aspekta mb-12">My resume</h1>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<RecommendationPartial v-if="user" :recommendations="user.recommendations" />
+										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
 										<EducationPartial v-if="user" :education="user.education" />
 										<ExperiencePartial v-if="experience" :experience="experience" />
 									</div>
@@ -60,10 +60,12 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/profile-response.ts';
 import type { ExperienceResponse } from '@api/response/experience-response.ts';
+import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
+const recommendations = ref<RecommendationsResponse[] | null>(null);
 
 const userStore = useUserStore();
 const user = ref<User | null>(null);
@@ -76,6 +78,7 @@ onMounted(async () => {
 	try {
 		const profileResponse = await apiStore.getProfile();
 		const experienceResponse = await apiStore.getExperience();
+		const recommendationsResponse = await apiStore.getRecommendations();
 
 		if (profileResponse.data) {
 			profile.value = profileResponse.data;
@@ -83,6 +86,10 @@ onMounted(async () => {
 
 		if (experienceResponse.data) {
 			experience.value = experienceResponse.data;
+		}
+
+		if (recommendationsResponse.data) {
+			recommendations.value = recommendationsResponse.data;
 		}
 	} catch (error) {
 		debugError(error);
