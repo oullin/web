@@ -14,8 +14,10 @@ class LocalStorageMock {
 	}
 }
 
-// @ts-ignore
+declare global {
+	var localStorage: Storage | undefined;
+}
+
 if (!globalThis.localStorage) {
-	// @ts-ignore
-	globalThis.localStorage = new LocalStorageMock();
+	globalThis.localStorage = new LocalStorageMock() as Storage;
 }

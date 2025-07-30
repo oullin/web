@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const aliases: AliasOptions = [
+	// allow importing modules with a leading ~ like CSS preprocessors produce
 	{ find: /^~.+/, replacement: '$1' },
 	{ find: '@', replacement: path.resolve(__dirname, './src') },
 	{ find: '@css', replacement: path.resolve(__dirname, './src/css') },
