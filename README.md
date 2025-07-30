@@ -12,3 +12,4 @@ and reacts instantly to what you do.
 or add new features, you’re welcome to send a pull request and join the project.
 
 > This is where the mindful movement of “Ollin” truly comes alive, one request at a time.
+\n### Testing the Format Workflow\nA dedicated GitHub Action validates the formatting workflow on every pull request.\nTo run the same check locally, ensure you have `make` and `npm` installed, then execute:\n\n```bash\nnpm install\nmake format\n```\n\nIf `git diff` shows no changes, the workflow will succeed.
