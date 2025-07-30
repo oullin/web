@@ -38,12 +38,16 @@ describe('ApiClient', () => {
 
 	it('handles post success and error responses', async () => {
 		const data = { ok: true };
-		(fetch as any).mockResolvedValue(new Response(JSON.stringify(data), { status: 200 }));
+               (fetch as vi.Mock).mockResolvedValue(
+                       new Response(JSON.stringify(data), { status: 200 }),
+               );
 
 		const result = await client.post('test', { id: 1 });
 		expect(result).toEqual(data);
 
-		(fetch as any).mockResolvedValue(new Response('fail', { status: 500, statusText: 'err' }));
+               (fetch as vi.Mock).mockResolvedValue(
+                       new Response('fail', { status: 500, statusText: 'err' }),
+               );
 
 		await expect(client.post('test', { id: 2 })).rejects.toBeInstanceOf(HttpError);
 	});
@@ -53,7 +57,7 @@ describe('ApiClient', () => {
 		const cacheKey = 'api-cache-test';
 		localStorage.setItem(cacheKey, JSON.stringify({ etag: 'x', data: { cached: true } }));
 
-		(fetch as any).mockResolvedValue(new Response(null, { status: 304 }));
+               (fetch as vi.Mock).mockResolvedValue(new Response(null, { status: 304 }));
 
 		const result = await client.get('test');
 		expect(result).toEqual({ cached: true });
@@ -61,7 +65,7 @@ describe('ApiClient', () => {
 
         it('stores response with etag in cache', async () => {
                 const data = { foo: 'bar' };
-                (fetch as any).mockResolvedValue(
+               (fetch as vi.Mock).mockResolvedValue(
                         new Response(JSON.stringify(data), {
                                 status: 200,
                                 headers: { ETag: 'abc' },
@@ -74,7 +78,9 @@ describe('ApiClient', () => {
         });
 
         it('throws HttpError on failed get', async () => {
-                (fetch as any).mockResolvedValue(new Response('nope', { status: 404, statusText: 'NF' }));
+               (fetch as vi.Mock).mockResolvedValue(
+                       new Response('nope', { status: 404, statusText: 'NF' }),
+               );
 
                 await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
         });

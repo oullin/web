@@ -10,10 +10,12 @@ describe('HttpError utilities', () => {
 		await expect(parseError('boom')).rejects.toThrow('An unexpected error occurred: boom');
 	});
 
-	it('parseError handles HttpError', async () => {
-		const err = new HttpError(makeResponse(404, 'NF'), 'nope');
-		await expect(parseError(err)).rejects.toThrow('An error occurred in the API.');
-	});
+       it('parseError handles HttpError', async () => {
+               const err = new HttpError(makeResponse(404, 'NF'), 'nope');
+               await expect(parseError(err)).rejects.toThrow(
+                       'An error occurred in the API. status [API request failed with status 404: NF] / message [nope]',
+               );
+       });
 
 	it('debugError logs details', () => {
 		const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
