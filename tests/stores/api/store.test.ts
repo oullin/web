@@ -50,36 +50,36 @@ describe('useApiStore', () => {
 		await expect(store.getProfile()).rejects.toThrow('parsed');
 	});
 
-        it('gets categories', async () => {
-                client.get.mockResolvedValue({ list: [] });
-                const res = await store.getCategories();
-                expect(res).toEqual({ list: [] });
-        });
+	it('gets categories', async () => {
+		client.get.mockResolvedValue({ list: [] });
+		const res = await store.getCategories();
+		expect(res).toEqual({ list: [] });
+	});
 
-        it('handles category errors', async () => {
-                client.get.mockRejectedValue(new Error('fail'));
-                await expect(store.getCategories()).rejects.toThrow('parsed');
-        });
+	it('handles category errors', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+		await expect(store.getCategories()).rejects.toThrow('parsed');
+	});
 
-        it('gets posts', async () => {
-                client.post.mockResolvedValue({ list: [] });
-                const res = await store.getPosts({});
-                expect(res).toEqual({ list: [] });
-        });
+	it('gets posts', async () => {
+		client.post.mockResolvedValue({ list: [] });
+		const res = await store.getPosts({});
+		expect(res).toEqual({ list: [] });
+	});
 
-        it('handles posts errors', async () => {
-                client.post.mockRejectedValue(new Error('nope'));
-                await expect(store.getPosts({})).rejects.toThrow('parsed');
-        });
+	it('handles posts errors', async () => {
+		client.post.mockRejectedValue(new Error('nope'));
+		await expect(store.getPosts({})).rejects.toThrow('parsed');
+	});
 
-        it('gets single post', async () => {
-                client.get.mockResolvedValue({ slug: 'a' });
-                const res = await store.getPost('a');
-                expect(res).toEqual({ slug: 'a' });
-        });
+	it('gets single post', async () => {
+		client.get.mockResolvedValue({ slug: 'a' });
+		const res = await store.getPost('a');
+		expect(res).toEqual({ slug: 'a' });
+	});
 
-        it('handles single post errors', async () => {
-                client.get.mockRejectedValue(new Error('x'));
-                await expect(store.getPost('b')).rejects.toThrow('parsed');
-        });
+	it('handles single post errors', async () => {
+		client.get.mockRejectedValue(new Error('x'));
+		await expect(store.getPost('b')).rejects.toThrow('parsed');
+	});
 });
