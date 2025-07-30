@@ -42,10 +42,10 @@
 import { computed } from 'vue';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import type { Education } from '@stores/users/userType.ts';
+import { EducationResponse } from '@api/response/education-response.ts';
 
 const { education } = defineProps<{
-	education: Education[];
+	education: Array<EducationResponse>;
 }>();
 
 const processedEducation = computed(() => {

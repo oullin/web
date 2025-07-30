@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import { parseError } from '@api/http-error.ts';
-import { ProfileResponse } from '@api/response/profile-response.ts';
 import { ApiClient, ApiResponse, defaultCreds } from '@api/client.ts';
-import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/posts-response.ts';
-import type { CategoriesCollectionResponse } from '@api/response/categories-response.ts';
+
+import type { ProfileResponse } from '@api/response/profile-response.ts';
+import type { EducationResponse } from '@api/response/education-response.ts';
 import type { ExperienceResponse } from '@api/response/experience-response.ts';
-import { RecommendationsResponse } from '@api/response/recommendations-response.ts';
+import type { CategoriesCollectionResponse } from '@api/response/categories-response.ts';
+import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
+import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/posts-response.ts';
 
 const STORE_KEY = 'api-client-store';
 
@@ -53,6 +55,15 @@ export const useApiStore = defineStore(STORE_KEY, {
 
 			try {
 				return await this.client.get<ApiResponse<RecommendationsResponse[]>>(url);
+			} catch (error) {
+				return parseError(error);
+			}
+		},
+		async getEducation(): Promise<ApiResponse<EducationResponse[]>> {
+			const url = 'education';
+
+			try {
+				return await this.client.get<ApiResponse<EducationResponse[]>>(url);
 			} catch (error) {
 				return parseError(error);
 			}

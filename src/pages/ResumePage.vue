@@ -18,9 +18,9 @@
 									<h1 class="h1 font-aspekta mb-12">My resume</h1>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
-										<EducationPartial v-if="user" :education="user.education" />
+										<EducationPartial v-if="education" :education="education" />
 										<ExperiencePartial v-if="experience" :experience="experience" />
+										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
 									</div>
 								</section>
 							</div>
@@ -53,32 +53,26 @@ import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 
 import { ref, onMounted } from 'vue';
-import type { User } from '@stores/users/userType';
-import { useUserStore } from '@stores/users/user.ts';
-
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
+
 import type { ProfileResponse } from '@api/response/profile-response.ts';
+import type { EducationResponse } from '@api/response/education-response.ts';
 import type { ExperienceResponse } from '@api/response/experience-response.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
+const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
 
-const userStore = useUserStore();
-const user = ref<User | null>(null);
-
 onMounted(async () => {
-	userStore.onBoot((profile: User) => {
-		user.value = profile;
-	});
-
 	try {
 		const profileResponse = await apiStore.getProfile();
 		const experienceResponse = await apiStore.getExperience();
 		const recommendationsResponse = await apiStore.getRecommendations();
+		const educationResponse = await apiStore.getEducation();
 
 		if (profileResponse.data) {
 			profile.value = profileResponse.data;
@@ -90,6 +84,10 @@ onMounted(async () => {
 
 		if (recommendationsResponse.data) {
 			recommendations.value = recommendationsResponse.data;
+		}
+
+		if (educationResponse.data) {
+			education.value = educationResponse.data;
 		}
 	} catch (error) {
 		debugError(error);
