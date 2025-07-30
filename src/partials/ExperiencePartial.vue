@@ -3,7 +3,7 @@
 		<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Work Experience</h2>
 		<ul class="space-y-8">
 			<!-- Item -->
-			<li v-for="item in experience" :key="item.uuid" class="relative group">
+			<li v-for="item in props.experience" :key="item.uuid" class="relative group">
 				<div
 					class="flex items-start before:absolute before:left-0 before:h-full before:w-px before:bg-slate-200 dark:before:bg-slate-800 before:self-start before:ml-[28px] before:-translate-x-1/2 before:translate-y-8 group-last-of-type:before:hidden"
 				>
@@ -39,15 +39,10 @@
 		</ul>
 	</div>
 </template>
+<script setup lang="ts">
+import type { ExperienceResponse } from '@api/response/experience-response.ts';
 
-<script>
-export default {
-	name: 'ExperiencePartial',
-	props: {
-		experience: {
-			type: Array,
-			required: true,
-		},
-	},
-};
+const props = defineProps<{
+	experience: Array<ExperienceResponse>;
+}>();
 </script>
