@@ -1,10 +1,12 @@
 import { defineConfig } from 'vitest/config';
 import aliases from './aliases';
+import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-	resolve: {
-		alias: aliases,
-	},
+        plugins: [vue()],
+        resolve: {
+                alias: aliases,
+        },
         test: {
                 environment: 'jsdom',
 		setupFiles: ['./tests/setup.ts'],
