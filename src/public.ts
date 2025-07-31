@@ -1,4 +1,3 @@
-import { result } from 'lodash';
 
 const IMAGES_DIR = 'images';
 
