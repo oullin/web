@@ -9,8 +9,9 @@ describe('WidgetSkillsPartial', () => {
     const wrapper = mount(WidgetSkillsPartial, { props: { skills } });
     const div = wrapper.find('li div');
     await div.trigger('mouseenter');
-    expect((wrapper.vm as any).tooltip.show).toBe(true);
+    const vm = wrapper.vm as unknown as { tooltip: { show: boolean } };
+    expect(vm.tooltip.show).toBe(true);
     await div.trigger('mouseleave');
-    expect((wrapper.vm as any).tooltip.show).toBe(false);
+    expect(vm.tooltip.show).toBe(false);
   });
 });

@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
+import type { RecommendationsResponse } from '@api/response/index.ts';
 
 vi.mock('@/public.ts', () => ({
   image: (p: string) => `/img/${p}`,
@@ -8,7 +9,7 @@ vi.mock('@/public.ts', () => ({
 }));
 
 describe('RecommendationPartial', () => {
-  const data = [{
+  const data: RecommendationsResponse[] = [{
     uuid: faker.string.uuid(),
     relation: 'friend',
     text: '**great**',
@@ -17,8 +18,9 @@ describe('RecommendationPartial', () => {
       full_name: faker.person.fullName(),
       company: faker.company.name(),
       avatar: faker.image.avatar(),
+      designation: '',
     },
-  }] as any;
+  }];
 
   it('sanitises and formats recommendation', () => {
     const wrapper = mount(RecommendationPartial, { props: { recommendations: data } });

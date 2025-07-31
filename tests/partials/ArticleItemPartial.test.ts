@@ -1,20 +1,36 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
+import type { PostResponse } from '@api/response/index.ts';
 
 vi.mock('@/public.ts', () => ({
   date: () => ({ format: () => 'formatted' })
 }));
 
 describe('ArticleItemPartial', () => {
-  const item = {
+  const item: PostResponse = {
     uuid: faker.string.uuid(),
     slug: faker.lorem.slug(),
     title: faker.lorem.words(2),
     excerpt: faker.lorem.sentence(),
+    content: '',
     cover_image_url: faker.image.url(),
     published_at: faker.date.past().toISOString(),
-  } as any;
+    created_at: faker.date.past().toISOString(),
+    updated_at: faker.date.recent().toISOString(),
+    author: {
+      uuid: faker.string.uuid(),
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      username: faker.internet.userName(),
+      display_name: faker.person.fullName(),
+      bio: '',
+      picture_file_name: '',
+      profile_picture_url: faker.image.url(),
+    },
+    categories: [],
+    tags: [],
+  };
 
   it('renders item information', () => {
     const wrapper = mount(ArticleItemPartial, { props: { item } });

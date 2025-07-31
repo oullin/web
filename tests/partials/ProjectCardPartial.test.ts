@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
+import type { ProjectsResponse } from '@api/response/index.ts';
 
 vi.mock('@/public.ts', () => ({
   image: (p: string) => `/img/${p}`,
@@ -8,13 +9,17 @@ vi.mock('@/public.ts', () => ({
 }));
 
 describe('ProjectCardPartial', () => {
-  const item = {
+  const item: ProjectsResponse = {
     uuid: faker.string.uuid(),
     title: faker.lorem.word(),
     excerpt: '',
     url: '/',
     is_open_source: false,
-  } as any;
+    created_at: '',
+    updated_at: '',
+    language: '',
+    icon: '',
+  };
 
   it('uses random icon path', () => {
     const wrapper = mount(ProjectCardPartial, { props: { item } });
