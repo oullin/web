@@ -1,13 +1,14 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
+import { nextTick } from 'vue';
 import TalksPartial from '@partials/TalksPartial.vue';
-import type { TalksResponse } from '@api/response/index.ts';
+import type { ApiResponse, TalksResponse } from '@api/response/index.ts';
 
 const talks: TalksResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		title: faker.lorem.word(),
-		subject: faker.lorem.words(2),
+        {
+                uuid: faker.string.uuid(),
+                title: faker.lorem.word(),
+                subject: faker.lorem.words(2),
 		location: faker.location.city(),
 		url: faker.internet.url(),
 		photo: faker.image.urlPicsumPhotos(),
@@ -15,16 +16,23 @@ const talks: TalksResponse[] = [
 		updated_at: faker.date.recent().toISOString(),
 	},
 ];
-const getTalks = vi.fn(() => Promise.resolve({ data: talks }));
+const getTalks = vi.fn<[], Promise<ApiResponse<TalksResponse[]>>>(() =>
+        Promise.resolve({ version: '1.0.0', data: talks }),
+);
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getTalks }) }));
 
 describe('TalksPartial', () => {
-	it('loads talks on mount', async () => {
-		const wrapper = mount(TalksPartial);
-		await flushPromises();
-		expect(getTalks).toHaveBeenCalled();
-		const anchor = wrapper.find('a');
-		expect(anchor.exists()).toBe(true);
-		expect(anchor.text()).toContain(talks[0].title);
-	});
+        it('loads talks on mount', async () => {
+                const wrapper = mount(TalksPartial);
+                await flushPromises();
+                await nextTick();
+
+                expect(getTalks).toHaveBeenCalledTimes(1);
+                const anchor = wrapper.find('a');
+                expect(anchor.exists()).toBe(true);
+                expect(anchor.attributes('href')).toBe(talks[0].url);
+                expect(anchor.text()).toContain(talks[0].title);
+                expect(wrapper.text()).toContain(talks[0].subject);
+                expect(wrapper.text()).toContain(talks[0].location);
+        });
 });
