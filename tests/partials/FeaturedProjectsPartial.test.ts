@@ -2,8 +2,9 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { faker } from '@faker-js/faker';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
+import type { ProjectsResponse } from '@api/response/index.ts';
 
-const projects = [
+const projects: ProjectsResponse[] = [
   { uuid: faker.string.uuid(), title: faker.lorem.words(1), excerpt: '', url: '/' },
   { uuid: faker.string.uuid(), title: faker.lorem.words(1), excerpt: '', url: '/' },
   { uuid: faker.string.uuid(), title: faker.lorem.words(1), excerpt: '', url: '/' },

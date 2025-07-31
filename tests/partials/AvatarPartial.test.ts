@@ -11,8 +11,8 @@ describe('AvatarPartial', () => {
   });
 
   it('accepts custom size classes', () => {
-    const width = `w-${faker.number.int({ min: 5, max: 20 })}`;
-    const height = `h-${faker.number.int({ min: 5, max: 20 })}`;
+    const width: string = `w-${faker.number.int({ min: 5, max: 20 })}`;
+    const height: string = `h-${faker.number.int({ min: 5, max: 20 })}`;
     const wrapper = mount(AvatarPartial, { props: { width, height } });
     const img = wrapper.find('img');
     expect(img.classes()).toContain(width);

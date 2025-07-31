@@ -2,8 +2,9 @@ import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import { faker } from '@faker-js/faker';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
+import type { SocialResponse } from '@api/response/index.ts';
 
-const social = [{
+const social: SocialResponse[] = [{
   uuid: faker.string.uuid(),
   name: faker.company.name(),
   url: '/',

@@ -19,7 +19,7 @@ describe('HeaderPartial', () => {
 
   it('submits valid search', () => {
     const wrapper = mount(HeaderPartial);
-    const query = faker.lorem.words(2);
+    const query: string = faker.lorem.words(2);
     wrapper.vm.searchQuery = query;
     wrapper.vm.performSearch();
     expect(setSearchTerm).toHaveBeenCalledWith(query);

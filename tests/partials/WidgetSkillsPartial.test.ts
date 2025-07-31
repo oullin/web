@@ -1,8 +1,14 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
+import type { ProfileSkillResponse } from '@api/response/index.ts';
 
-const skills = [{ uuid: faker.string.uuid(), item: faker.lorem.word(), percentage: 80 }];
+const skills: ProfileSkillResponse[] = [{
+  uuid: faker.string.uuid(),
+  item: faker.lorem.word(),
+  percentage: 80,
+  description: '',
+}];
 
 describe('WidgetSkillsPartial', () => {
   it('shows tooltip on hover', async () => {
