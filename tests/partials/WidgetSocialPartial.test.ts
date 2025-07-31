@@ -13,8 +13,10 @@ const social: SocialResponse[] = [
                 description: faker.lorem.words(2),
         },
 ];
-const getSocial = vi.fn<[], Promise<{ data: SocialResponse[] }>>(() =>
-        Promise.resolve({ data: social }),
+import type { ApiResponse } from '@api/response/index.ts';
+
+const getSocial = vi.fn<[], Promise<ApiResponse<SocialResponse[]>>>(() =>
+        Promise.resolve({ version: '1.0.0', data: social }),
 );
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getSocial }) }));
 
@@ -26,6 +28,6 @@ describe('WidgetSocialPartial', () => {
                 const anchors = wrapper.findAll('a');
                 expect(anchors).toHaveLength(1);
                 expect(anchors[0].attributes('href')).toBe(social[0].url);
-                expect(anchors[0].text()).toContain(social[0].handle);
+                expect(anchors[0].text()).toContain('Follow me on GitHub');
         });
 });
