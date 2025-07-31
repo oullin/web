@@ -1,20 +1,19 @@
 import { mount, flushPromises } from '@vue/test-utils';
-import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi } from 'vitest';
 import TalksPartial from '@partials/TalksPartial.vue';
 import type { ApiResponse, TalksResponse } from '@api/response/index.ts';
 
 const talks: TalksResponse[] = [
         {
-                uuid: faker.string.uuid(),
-                title: faker.lorem.word(),
-                subject: faker.lorem.words(2),
-		location: faker.location.city(),
-		url: faker.internet.url(),
-		photo: faker.image.urlPicsumPhotos(),
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
-	},
+                uuid: '123e4567-e89b-12d3-a456-426614174000',
+                title: 'Test Talk Title',
+                subject: 'Test Subject',
+                location: 'Test City',
+                url: '/test-talk',
+                photo: 'https://example.com/photo.jpg',
+                created_at: '2024-01-01T00:00:00Z',
+                updated_at: '2024-01-02T00:00:00Z',
+        },
 ];
 const getTalks = vi.fn<[], Promise<ApiResponse<TalksResponse[]>>>(() =>
         Promise.resolve({ version: '1.0.0', data: talks }),
