@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
+import { describe, it, expect, vi } from 'vitest';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 

@@ -1,6 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { nextTick } from 'vue';
+import { describe, it, expect, vi } from 'vitest';
 import TalksPartial from '@partials/TalksPartial.vue';
 import type { ApiResponse, TalksResponse } from '@api/response/index.ts';
 

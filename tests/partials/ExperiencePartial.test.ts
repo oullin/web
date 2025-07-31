@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
+import { describe, it, expect } from 'vitest';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import type { ExperienceResponse } from '@api/response/index.ts';
 

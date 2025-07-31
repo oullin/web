@@ -1,5 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
+import { describe, it, expect, vi } from 'vitest';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
 import type { ProjectsResponse } from '@api/response/index.ts';
 

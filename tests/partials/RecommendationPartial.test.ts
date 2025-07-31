@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
+import { describe, it, expect, vi } from 'vitest';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import type { RecommendationsResponse } from '@api/response/index.ts';
 

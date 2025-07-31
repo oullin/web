@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { describe, it, expect } from 'vitest';
 import FooterPartial from '@partials/FooterPartial.vue';
 
 describe('FooterPartial', () => {
