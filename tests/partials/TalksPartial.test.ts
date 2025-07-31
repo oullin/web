@@ -1,6 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { nextTick } from 'vue';
 import { describe, it, expect, vi } from 'vitest';
 import TalksPartial from '@partials/TalksPartial.vue';
 import type { ApiResponse, TalksResponse } from '@api/response/index.ts';
@@ -26,12 +25,13 @@ describe('TalksPartial', () => {
         it('loads talks on mount', async () => {
                 const wrapper = mount(TalksPartial);
                 await flushPromises();
-                await nextTick();
 
                 expect(getTalks).toHaveBeenCalledTimes(1);
                 const anchor = wrapper.find('a');
                 expect(anchor.exists()).toBe(true);
                 expect(anchor.attributes('href')).toBe(talks[0].url);
                 expect(anchor.text()).toContain(talks[0].title);
+                expect(wrapper.text()).toContain(talks[0].subject);
+                expect(wrapper.text()).toContain(talks[0].location);
         });
 });

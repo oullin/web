@@ -63,6 +63,7 @@ const getRecommendations = vi.fn<[], Promise<{ version: string; data: Recommenda
 const getEducation = vi.fn<[], Promise<{ version: string; data: EducationResponse[] }>>(() => Promise.resolve({ version: '1.0.0', data: education }));
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getExperience, getRecommendations, getEducation }) }));
+vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('ResumePage', () => {
     it('fetches data on mount', async () => {
@@ -86,5 +87,27 @@ describe('ResumePage', () => {
         expect(getRecommendations).toHaveBeenCalled();
         expect(getEducation).toHaveBeenCalled();
         expect(wrapper.find('h1').text()).toContain('My resume');
+    });
+
+    it('handles fetch failures', async () => {
+        const error = new Error('oops');
+        getProfile.mockRejectedValueOnce(error);
+        const wrapper = mount(ResumePage, {
+            global: {
+                stubs: {
+                    SideNavPartial: true,
+                    HeaderPartial: true,
+                    FooterPartial: true,
+                    WidgetLangPartial: true,
+                    WidgetSkillsPartial: true,
+                    EducationPartial: true,
+                    ExperiencePartial: true,
+                    RecommendationPartial: true,
+                },
+            },
+        });
+        await flushPromises();
+        const { debugError } = await import('@api/http-error.ts');
+        expect(debugError).toHaveBeenCalledWith(error);
     });
 });

@@ -27,6 +27,7 @@ const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() =>
 );
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile }) }));
+vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('HomePage', () => {
     it('loads profile on mount', async () => {
@@ -48,5 +49,28 @@ describe('HomePage', () => {
         await flushPromises();
         expect(getProfile).toHaveBeenCalledTimes(1);
         expect(wrapper.find('.skills').exists()).toBe(true);
+    });
+
+    it('handles profile load errors', async () => {
+        const error = new Error('oops');
+        getProfile.mockRejectedValueOnce(error);
+        const wrapper = mount(HomePage, {
+            global: {
+                stubs: {
+                    SideNavPartial: true,
+                    HeaderPartial: true,
+                    HeroPartial: true,
+                    FooterPartial: true,
+                    ArticlesListPartial: true,
+                    FeaturedProjectsPartial: true,
+                    TalksPartial: true,
+                    WidgetSponsorPartial: true,
+                    WidgetSkillsPartial: true,
+                },
+            },
+        });
+        await flushPromises();
+        const { debugError } = await import('@api/http-error.ts');
+        expect(debugError).toHaveBeenCalledWith(error);
     });
 });

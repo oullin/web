@@ -37,6 +37,7 @@ vi.mock('marked', () => ({ marked: { use: vi.fn(), parse: vi.fn(() => '<p></p>')
 vi.mock('dompurify', () => ({ default: { sanitize: vi.fn((html: string) => html) } }));
 vi.mock('highlight.js', () => ({ default: { highlightElement: vi.fn() } }));
 vi.mock('@/dark-mode.ts', () => ({ useDarkMode: () => ({ isDark: ref(false) }) }));
+vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('PostPage', () => {
     it('fetches post on mount', async () => {
@@ -55,5 +56,46 @@ describe('PostPage', () => {
         await flushPromises();
         expect(getPost).toHaveBeenCalledWith(post.slug);
         expect(wrapper.text()).toContain(post.title);
+    });
+
+    it('processes markdown content', async () => {
+        const { marked } = await import('marked');
+        const DOMPurify = await import('dompurify');
+        const wrapper = mount(PostPage, {
+            global: {
+                stubs: {
+                    SideNavPartial: true,
+                    HeaderPartial: true,
+                    FooterPartial: true,
+                    WidgetSponsorPartial: true,
+                    WidgetSkillsPartial: true,
+                    RouterLink: { template: '<a><slot /></a>' },
+                },
+            },
+        });
+        await flushPromises();
+        expect(marked.parse).toHaveBeenCalledWith(post.content);
+        expect(DOMPurify.default.sanitize).toHaveBeenCalled();
+        expect(wrapper.html()).toContain('<p></p>');
+    });
+
+    it('handles post errors gracefully', async () => {
+        const error = new Error('fail');
+        getPost.mockRejectedValueOnce(error);
+        const wrapper = mount(PostPage, {
+            global: {
+                stubs: {
+                    SideNavPartial: true,
+                    HeaderPartial: true,
+                    FooterPartial: true,
+                    WidgetSponsorPartial: true,
+                    WidgetSkillsPartial: true,
+                    RouterLink: { template: '<a><slot /></a>' },
+                },
+            },
+        });
+        await flushPromises();
+        const { debugError } = await import('@api/http-error.ts');
+        expect(debugError).toHaveBeenCalledWith(error);
     });
 });

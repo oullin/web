@@ -19,12 +19,13 @@ const getSocial = vi.fn<[], Promise<{ data: SocialResponse[] }>>(() =>
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getSocial }) }));
 
 describe('WidgetSocialPartial', () => {
-	it('fetches social links', async () => {
-		const wrapper = mount(WidgetSocialPartial);
-		await flushPromises();
-		expect(getSocial).toHaveBeenCalled();
-		const anchors = wrapper.findAll('a');
-		expect(anchors).toHaveLength(1);
-		expect(anchors[0].attributes('href')).toBe(social[0].url);
-	});
+        it('fetches social links', async () => {
+                const wrapper = mount(WidgetSocialPartial);
+                await flushPromises();
+                expect(getSocial).toHaveBeenCalled();
+                const anchors = wrapper.findAll('a');
+                expect(anchors).toHaveLength(1);
+                expect(anchors[0].attributes('href')).toBe(social[0].url);
+                expect(anchors[0].text()).toContain(social[0].handle);
+        });
 });

@@ -44,6 +44,7 @@ const getProjects = vi.fn<[], Promise<{ version: string; data: ProjectsResponse[
 );
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getProjects }) }));
+vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('ProjectsPage', () => {
     it('loads profile and projects', async () => {
@@ -65,5 +66,25 @@ describe('ProjectsPage', () => {
         const items = wrapper.findAll('.project');
         expect(items).toHaveLength(projects.length);
         expect(wrapper.text()).toContain(projects[0].title);
+    });
+
+    it('handles API errors', async () => {
+        const error = new Error('oops');
+        getProfile.mockRejectedValueOnce(error);
+        const wrapper = mount(ProjectsPage, {
+            global: {
+                stubs: {
+                    SideNavPartial: true,
+                    HeaderPartial: true,
+                    WidgetSponsorPartial: true,
+                    WidgetSkillsPartial: true,
+                    FooterPartial: true,
+                    ProjectCardPartial: true,
+                },
+            },
+        });
+        await flushPromises();
+        const { debugError } = await import('@api/http-error.ts');
+        expect(debugError).toHaveBeenCalledWith(error);
     });
 });
