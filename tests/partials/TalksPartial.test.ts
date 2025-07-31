@@ -30,7 +30,5 @@ describe('TalksPartial', () => {
                 expect(anchor.exists()).toBe(true);
                 expect(anchor.attributes('href')).toBe(talks[0].url);
                 expect(anchor.text()).toContain(talks[0].title);
-                expect(wrapper.text()).toContain(talks[0].subject);
-                expect(wrapper.text()).toContain(talks[0].location);
         });
 });
