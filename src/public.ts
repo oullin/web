@@ -1,4 +1,3 @@
-
 const IMAGES_DIR = 'images';
 
 export function image(filename: string): string {
