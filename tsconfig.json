@@ -29,6 +29,6 @@
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
-	"include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue", "./src/**/*.d.ts", "./tests/**/*.ts", "./tests/**/*.tsx", "./vite.config.ts", "./tests/**/*.json"],
+        "include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue", "./src/**/*.d.ts", "./tests/**/*.ts", "./tests/**/*.tsx", "./vite.config.ts", "./playwright.config.ts", "./tests/**/*.json"],
 	"exclude": ["node_modules", "dist"]
 }
