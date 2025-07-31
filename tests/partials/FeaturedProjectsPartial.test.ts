@@ -52,8 +52,9 @@ describe('FeaturedProjectsPartial', () => {
 		const wrapper = mount(FeaturedProjectsPartial);
 		await flushPromises();
 		expect(getProjects).toHaveBeenCalled();
-		const anchors = wrapper.findAll('a');
-		expect(anchors).toHaveLength(2);
-		expect(anchors[0].text()).toContain(projects[0].title);
+                const anchors = wrapper.findAll('a');
+                expect(anchors).toHaveLength(2);
+                expect(anchors[0].text()).toContain(projects[0].title);
+                expect(anchors[0].attributes('href')).toBe(projects[0].url);
 	});
 });
