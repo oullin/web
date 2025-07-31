@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { useApiStore } from '@api/store.ts';
+import type { ApiClient } from '@api/client.ts';
 
 vi.mock('@api/http-error.ts', async () => {
 	const mod = await vi.importActual<typeof import('@api/http-error.ts')>('@api/http-error.ts');
@@ -24,7 +25,7 @@ describe('useApiStore', () => {
 		setActivePinia(createPinia());
 		store = useApiStore();
 		client = new FakeClient();
-		store.client = client as any;
+                store.client = client as unknown as ApiClient;
 	});
 
 	it('sets search term', () => {
