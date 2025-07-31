@@ -4,26 +4,43 @@ import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
 import type { ProjectsResponse } from '@api/response/index.ts';
 
 const projects: ProjectsResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		title: faker.lorem.words(1),
-		excerpt: faker.lorem.sentence(),
-		url: faker.internet.url(),
-	},
-	{
-		uuid: faker.string.uuid(),
-		title: faker.lorem.words(1),
-		excerpt: faker.lorem.sentence(),
-		url: faker.internet.url(),
-	},
-	{
-		uuid: faker.string.uuid(),
-		title: faker.lorem.words(1),
-		excerpt: faker.lorem.sentence(),
-		url: faker.internet.url(),
-	},
+        {
+                uuid: faker.string.uuid(),
+                title: faker.lorem.words(1),
+                excerpt: faker.lorem.sentence(),
+                url: faker.internet.url(),
+                language: faker.lorem.word(),
+                icon: faker.image.avatarGitHub(),
+                is_open_source: true,
+                created_at: faker.date.past().toISOString(),
+                updated_at: faker.date.recent().toISOString(),
+        },
+        {
+                uuid: faker.string.uuid(),
+                title: faker.lorem.words(1),
+                excerpt: faker.lorem.sentence(),
+                url: faker.internet.url(),
+                language: faker.lorem.word(),
+                icon: faker.image.avatarGitHub(),
+                is_open_source: true,
+                created_at: faker.date.past().toISOString(),
+                updated_at: faker.date.recent().toISOString(),
+        },
+        {
+                uuid: faker.string.uuid(),
+                title: faker.lorem.words(1),
+                excerpt: faker.lorem.sentence(),
+                url: faker.internet.url(),
+                language: faker.lorem.word(),
+                icon: faker.image.avatarGitHub(),
+                is_open_source: true,
+                created_at: faker.date.past().toISOString(),
+                updated_at: faker.date.recent().toISOString(),
+        },
 ];
-const getProjects = vi.fn(() => Promise.resolve({ data: projects }));
+const getProjects = vi.fn<[], Promise<{ version: string; data: ProjectsResponse[] }>>(
+        () => Promise.resolve({ version: '1.0.0', data: projects }),
+);
 
 vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({ getProjects }),

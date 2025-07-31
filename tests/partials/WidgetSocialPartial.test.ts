@@ -4,14 +4,17 @@ import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import type { SocialResponse } from '@api/response/index.ts';
 
 const social: SocialResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		name: 'github',
-		url: faker.internet.url(),
-		description: faker.lorem.words(2),
-	},
+        {
+                uuid: faker.string.uuid(),
+                name: 'github',
+                handle: faker.internet.userName(),
+                url: faker.internet.url(),
+                description: faker.lorem.words(2),
+        },
 ];
-const getSocial = vi.fn(() => Promise.resolve({ data: social }));
+const getSocial = vi.fn<[], Promise<{ data: SocialResponse[] }>>(() =>
+        Promise.resolve({ data: social }),
+);
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getSocial }) }));
 
 describe('WidgetSocialPartial', () => {
