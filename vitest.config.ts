@@ -5,8 +5,8 @@ export default defineConfig({
 	resolve: {
 		alias: aliases,
 	},
-	test: {
-		environment: 'node',
+        test: {
+                environment: 'jsdom',
 		setupFiles: ['./tests/setup.ts'],
 		coverage: {
 			provider: 'v8',
@@ -16,7 +16,7 @@ export default defineConfig({
 			branches: 85,
 			statements: 90,
 			all: true,
-			include: ['src/stores/**/*.ts'],
+                        include: ['src/stores/**/*.ts', 'src/partials/**/*.vue'],
 		},
 	},
 });
