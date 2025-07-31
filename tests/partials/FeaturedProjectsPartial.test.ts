@@ -1,11 +1,12 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
+import { faker } from '@faker-js/faker';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
 
 const projects = [
-  { uuid:'1', title:'A', excerpt:'', url:'/' },
-  { uuid:'2', title:'B', excerpt:'', url:'/' },
-  { uuid:'3', title:'C', excerpt:'', url:'/' }
+  { uuid: faker.string.uuid(), title: faker.lorem.words(1), excerpt: '', url: '/' },
+  { uuid: faker.string.uuid(), title: faker.lorem.words(1), excerpt: '', url: '/' },
+  { uuid: faker.string.uuid(), title: faker.lorem.words(1), excerpt: '', url: '/' },
 ];
 const getProjects = vi.fn(() => Promise.resolve({ data: projects }));
 

@@ -1,8 +1,17 @@
 import { mount } from '@vue/test-utils';
+import { faker } from '@faker-js/faker';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
 
 const experience = [
-  { uuid:'1', start_date:'2020', end_date:'2021', position:'Dev', company:'ACME', summary:'sum', skills:'js' }
+  {
+    uuid: faker.string.uuid(),
+    start_date: faker.date.past().getFullYear().toString(),
+    end_date: faker.date.recent().getFullYear().toString(),
+    position: faker.person.jobTitle(),
+    company: faker.company.name(),
+    summary: faker.lorem.sentence(),
+    skills: faker.lorem.word(),
+  },
 ] as any;
 
 describe('ExperiencePartial', () => {

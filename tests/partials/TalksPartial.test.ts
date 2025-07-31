@@ -1,8 +1,15 @@
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
+import { faker } from '@faker-js/faker';
 import TalksPartial from '@partials/TalksPartial.vue';
 
-const getTalks = vi.fn(() => Promise.resolve({ data: [{ uuid:'1', title:'t', url:'/', photo:'a.jpg' }] }));
+const talks = [{
+  uuid: faker.string.uuid(),
+  title: faker.lorem.word(),
+  url: '/',
+  photo: faker.image.urlPicsumPhotos(),
+}];
+const getTalks = vi.fn(() => Promise.resolve({ data: talks }));
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getTalks }) }));
 
 describe('TalksPartial', () => {

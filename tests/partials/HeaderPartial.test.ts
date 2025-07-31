@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { faker } from '@faker-js/faker';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 
 const toggleDarkMode = vi.fn();
@@ -18,9 +19,10 @@ describe('HeaderPartial', () => {
 
   it('submits valid search', () => {
     const wrapper = mount(HeaderPartial);
-    wrapper.vm.searchQuery = 'valid search';
+    const query = faker.lorem.words(2);
+    wrapper.vm.searchQuery = query;
     wrapper.vm.performSearch();
-    expect(setSearchTerm).toHaveBeenCalledWith('valid search');
+    expect(setSearchTerm).toHaveBeenCalledWith(query);
   });
 
   it('toggles dark mode', () => {

@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { faker } from '@faker-js/faker';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 
 vi.mock('@/public.ts', () => ({
@@ -7,7 +8,13 @@ vi.mock('@/public.ts', () => ({
 }));
 
 describe('ProjectCardPartial', () => {
-  const item = { uuid: '1', title: 'x', excerpt: '', url: '/', is_open_source: false } as any;
+  const item = {
+    uuid: faker.string.uuid(),
+    title: faker.lorem.word(),
+    excerpt: '',
+    url: '/',
+    is_open_source: false,
+  } as any;
 
   it('uses random icon path', () => {
     const wrapper = mount(ProjectCardPartial, { props: { item } });

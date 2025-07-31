@@ -1,3 +1,7 @@
+import { faker } from '@faker-js/faker';
+
+faker.seed(123);
+
 class LocalStorageMock {
 	private store: Record<string, string> = {};
 	clear() {

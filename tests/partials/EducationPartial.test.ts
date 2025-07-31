@@ -1,8 +1,15 @@
 import { mount } from '@vue/test-utils';
+import { faker } from '@faker-js/faker';
 import EducationPartial from '@partials/EducationPartial.vue';
 
 const education = [
-  { uuid: '1', degree: 'BSc', school: 'U', graduated_at: '2020', description: '**hi**' }
+  {
+    uuid: faker.string.uuid(),
+    degree: faker.word.words(1),
+    school: faker.company.name(),
+    graduated_at: '2020',
+    description: '**hi**',
+  },
 ] as any;
 
 describe('EducationPartial', () => {

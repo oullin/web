@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { faker } from '@faker-js/faker';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 
 vi.mock('@/public.ts', () => ({
@@ -8,11 +9,15 @@ vi.mock('@/public.ts', () => ({
 
 describe('RecommendationPartial', () => {
   const data = [{
-    uuid: '1',
+    uuid: faker.string.uuid(),
     relation: 'friend',
     text: '**great**',
-    created_at: '2020-01-01',
-    person: { full_name: 'Joe', company: 'ACME', avatar: 'a.png' },
+    created_at: faker.date.past().toISOString(),
+    person: {
+      full_name: faker.person.fullName(),
+      company: faker.company.name(),
+      avatar: faker.image.avatar(),
+    },
   }] as any;
 
   it('sanitises and formats recommendation', () => {
