@@ -5,10 +5,13 @@ on:
 
 jobs:
   format-check:
-    if: contains(github.event.pull_request.labels.*.name, 'test')
+    if: contains(github.event.pull_request.labels.*.name, 'testing')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.USER_TOKEN }}
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
