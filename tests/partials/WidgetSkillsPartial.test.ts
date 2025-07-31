@@ -15,15 +15,15 @@ const skills: ProfileSkillResponse[] = [
 ];
 
 describe('WidgetSkillsPartial', () => {
-        it('shows tooltip on hover', async () => {
-                const wrapper = mount(WidgetSkillsPartial, { props: { skills } });
-                const div = wrapper.find('li div');
-                await div.trigger('mouseenter');
-                await nextTick();
-                expect(document.body.textContent).toContain(skills[0].item);
+	it('shows tooltip on hover', async () => {
+		const wrapper = mount(WidgetSkillsPartial, { props: { skills } });
+		const div = wrapper.find('li div');
+		await div.trigger('mouseenter');
+		await nextTick();
+		expect(document.body.textContent).toContain(skills[0].item);
 
-                await div.trigger('mouseleave');
-                await nextTick();
-                expect(document.body.textContent).not.toContain(skills[0].item);
-        });
+		await div.trigger('mouseleave');
+		await nextTick();
+		expect(document.body.textContent).not.toContain(skills[0].item);
+	});
 });

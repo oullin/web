@@ -4,57 +4,55 @@ import { describe, it, expect, vi } from 'vitest';
 import ResumePage from '@pages/ResumePage.vue';
 import type { ProfileResponse, ProfileSkillResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
-const skills: ProfileSkillResponse[] = [
-    { uuid: faker.string.uuid(), percentage: 50, item: faker.lorem.word(), description: faker.lorem.sentence() },
-];
+const skills: ProfileSkillResponse[] = [{ uuid: faker.string.uuid(), percentage: 50, item: faker.lorem.word(), description: faker.lorem.sentence() }];
 const profile: ProfileResponse = {
-    nickname: faker.person.firstName(),
-    handle: faker.internet.userName(),
-    name: faker.person.fullName(),
-    email: faker.internet.email(),
-    profession: faker.person.jobTitle(),
-    skills,
+	nickname: faker.person.firstName(),
+	handle: faker.internet.userName(),
+	name: faker.person.fullName(),
+	email: faker.internet.email(),
+	profession: faker.person.jobTitle(),
+	skills,
 };
 const education: EducationResponse[] = [
-    {
-        uuid: faker.string.uuid(),
-        icon: faker.image.avatarGitHub(),
-        school: faker.company.name(),
-        degree: faker.word.words(1),
-        field: faker.lorem.word(),
-        description: faker.lorem.sentence(),
-        graduated_at: '2020',
-        issuing_country: faker.location.country(),
-    },
+	{
+		uuid: faker.string.uuid(),
+		icon: faker.image.avatarGitHub(),
+		school: faker.company.name(),
+		degree: faker.word.words(1),
+		field: faker.lorem.word(),
+		description: faker.lorem.sentence(),
+		graduated_at: '2020',
+		issuing_country: faker.location.country(),
+	},
 ];
 const experience: ExperienceResponse[] = [
-    {
-        uuid: faker.string.uuid(),
-        company: faker.company.name(),
-        employment_type: 'full-time',
-        location_type: 'remote',
-        position: faker.person.jobTitle(),
-        start_date: '2020',
-        end_date: '2021',
-        summary: faker.lorem.sentence(),
-        country: faker.location.country(),
-        city: faker.location.city(),
-        skills: faker.lorem.word(),
-    },
+	{
+		uuid: faker.string.uuid(),
+		company: faker.company.name(),
+		employment_type: 'full-time',
+		location_type: 'remote',
+		position: faker.person.jobTitle(),
+		start_date: '2020',
+		end_date: '2021',
+		summary: faker.lorem.sentence(),
+		country: faker.location.country(),
+		city: faker.location.city(),
+		skills: faker.lorem.word(),
+	},
 ];
 const recommendations: RecommendationsResponse[] = [
-    {
-        uuid: faker.string.uuid(),
-        relation: 'friend',
-        text: faker.lorem.sentence(),
-        created_at: faker.date.past().toISOString(),
-        person: {
-            avatar: faker.image.avatar(),
-            full_name: faker.person.fullName(),
-            company: faker.company.name(),
-            designation: faker.person.jobTitle(),
-        },
-    },
+	{
+		uuid: faker.string.uuid(),
+		relation: 'friend',
+		text: faker.lorem.sentence(),
+		created_at: faker.date.past().toISOString(),
+		person: {
+			avatar: faker.image.avatar(),
+			full_name: faker.person.fullName(),
+			company: faker.company.name(),
+			designation: faker.person.jobTitle(),
+		},
+	},
 ];
 
 const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
@@ -66,48 +64,48 @@ vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getExperienc
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('ResumePage', () => {
-    it('fetches data on mount', async () => {
-        const wrapper = mount(ResumePage, {
-            global: {
-                stubs: {
-                    SideNavPartial: true,
-                    HeaderPartial: true,
-                    FooterPartial: true,
-                    WidgetLangPartial: true,
-                    WidgetSkillsPartial: true,
-                    EducationPartial: true,
-                    ExperiencePartial: true,
-                    RecommendationPartial: true,
-                },
-            },
-        });
-        await flushPromises();
-        expect(getProfile).toHaveBeenCalled();
-        expect(getExperience).toHaveBeenCalled();
-        expect(getRecommendations).toHaveBeenCalled();
-        expect(getEducation).toHaveBeenCalled();
-        expect(wrapper.find('h1').text()).toContain('My resume');
-    });
+	it('fetches data on mount', async () => {
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					WidgetLangPartial: true,
+					WidgetSkillsPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+		await flushPromises();
+		expect(getProfile).toHaveBeenCalled();
+		expect(getExperience).toHaveBeenCalled();
+		expect(getRecommendations).toHaveBeenCalled();
+		expect(getEducation).toHaveBeenCalled();
+		expect(wrapper.find('h1').text()).toContain('My resume');
+	});
 
-    it('handles fetch failures', async () => {
-        const error = new Error('oops');
-        getProfile.mockRejectedValueOnce(error);
-        const wrapper = mount(ResumePage, {
-            global: {
-                stubs: {
-                    SideNavPartial: true,
-                    HeaderPartial: true,
-                    FooterPartial: true,
-                    WidgetLangPartial: true,
-                    WidgetSkillsPartial: true,
-                    EducationPartial: true,
-                    ExperiencePartial: true,
-                    RecommendationPartial: true,
-                },
-            },
-        });
-        await flushPromises();
-        const { debugError } = await import('@api/http-error.ts');
-        expect(debugError).toHaveBeenCalledWith(error);
-    });
+	it('handles fetch failures', async () => {
+		const error = new Error('oops');
+		getProfile.mockRejectedValueOnce(error);
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					WidgetLangPartial: true,
+					WidgetSkillsPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+		await flushPromises();
+		const { debugError } = await import('@api/http-error.ts');
+		expect(debugError).toHaveBeenCalledWith(error);
+	});
 });

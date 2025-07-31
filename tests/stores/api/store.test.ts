@@ -25,7 +25,7 @@ describe('useApiStore', () => {
 		setActivePinia(createPinia());
 		store = useApiStore();
 		client = new FakeClient();
-                store.client = client as unknown as ApiClient;
+		store.client = client as unknown as ApiClient;
 	});
 
 	it('sets search term', () => {
@@ -79,74 +79,74 @@ describe('useApiStore', () => {
 		expect(res).toEqual({ slug: 'a' });
 	});
 
-        it('handles single post errors', async () => {
-                client.get.mockRejectedValue(new Error('x'));
-                await expect(store.getPost('b')).rejects.toThrow('parsed');
-        });
+	it('handles single post errors', async () => {
+		client.get.mockRejectedValue(new Error('x'));
+		await expect(store.getPost('b')).rejects.toThrow('parsed');
+	});
 
-        it('gets experience', async () => {
-                client.get.mockResolvedValue({ exp: true });
-                const res = await store.getExperience();
-                expect(res).toEqual({ exp: true });
-        });
+	it('gets experience', async () => {
+		client.get.mockResolvedValue({ exp: true });
+		const res = await store.getExperience();
+		expect(res).toEqual({ exp: true });
+	});
 
-        it('handles experience errors', async () => {
-                client.get.mockRejectedValue(new Error('fail'));
-                await expect(store.getExperience()).rejects.toThrow('parsed');
-        });
+	it('handles experience errors', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+		await expect(store.getExperience()).rejects.toThrow('parsed');
+	});
 
-        it('gets recommendations', async () => {
-                client.get.mockResolvedValue({ list: ['a'] });
-                const res = await store.getRecommendations();
-                expect(res).toEqual({ list: ['a'] });
-        });
+	it('gets recommendations', async () => {
+		client.get.mockResolvedValue({ list: ['a'] });
+		const res = await store.getRecommendations();
+		expect(res).toEqual({ list: ['a'] });
+	});
 
-        it('handles recommendations errors', async () => {
-                client.get.mockRejectedValue(new Error('fail'));
-                await expect(store.getRecommendations()).rejects.toThrow('parsed');
-        });
+	it('handles recommendations errors', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+		await expect(store.getRecommendations()).rejects.toThrow('parsed');
+	});
 
-        it('gets projects', async () => {
-                client.get.mockResolvedValue({ list: [1] });
-                const res = await store.getProjects();
-                expect(res).toEqual({ list: [1] });
-        });
+	it('gets projects', async () => {
+		client.get.mockResolvedValue({ list: [1] });
+		const res = await store.getProjects();
+		expect(res).toEqual({ list: [1] });
+	});
 
-        it('handles projects errors', async () => {
-                client.get.mockRejectedValue(new Error('fail'));
-                await expect(store.getProjects()).rejects.toThrow('parsed');
-        });
+	it('handles projects errors', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+		await expect(store.getProjects()).rejects.toThrow('parsed');
+	});
 
-        it('gets talks', async () => {
-                client.get.mockResolvedValue({ list: [] });
-                const res = await store.getTalks();
-                expect(res).toEqual({ list: [] });
-        });
+	it('gets talks', async () => {
+		client.get.mockResolvedValue({ list: [] });
+		const res = await store.getTalks();
+		expect(res).toEqual({ list: [] });
+	});
 
-        it('handles talks errors', async () => {
-                client.get.mockRejectedValue(new Error('fail'));
-                await expect(store.getTalks()).rejects.toThrow('parsed');
-        });
+	it('handles talks errors', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+		await expect(store.getTalks()).rejects.toThrow('parsed');
+	});
 
-        it('gets social', async () => {
-                client.get.mockResolvedValue({ list: [] });
-                const res = await store.getSocial();
-                expect(res).toEqual({ list: [] });
-        });
+	it('gets social', async () => {
+		client.get.mockResolvedValue({ list: [] });
+		const res = await store.getSocial();
+		expect(res).toEqual({ list: [] });
+	});
 
-        it('handles social errors', async () => {
-                client.get.mockRejectedValue(new Error('fail'));
-                await expect(store.getSocial()).rejects.toThrow('parsed');
-        });
+	it('handles social errors', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+		await expect(store.getSocial()).rejects.toThrow('parsed');
+	});
 
-        it('gets education', async () => {
-                client.get.mockResolvedValue({ list: [] });
-                const res = await store.getEducation();
-                expect(res).toEqual({ list: [] });
-        });
+	it('gets education', async () => {
+		client.get.mockResolvedValue({ list: [] });
+		const res = await store.getEducation();
+		expect(res).toEqual({ list: [] });
+	});
 
-        it('handles education errors', async () => {
-                client.get.mockRejectedValue(new Error('fail'));
-                await expect(store.getEducation()).rejects.toThrow('parsed');
-        });
+	it('handles education errors', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+		await expect(store.getEducation()).rejects.toThrow('parsed');
+	});
 });
