@@ -9,7 +9,7 @@ permissions:
     pull-requests: write
 
 jobs:
-    format-check:
+    format:
         if: ${{ github.event.pull_request.draft == false || contains(github.event.pull_request.labels.*.name, 'testing') }}
         runs-on: ubuntu-latest
         steps:
@@ -27,5 +27,9 @@ jobs:
             - run: npm ci
 
             - run: make format
+
+            - run: |
+                  git config user.name "${{ secrets.USER_NAME }}"
+                  git config user.email "${{ secrets.USER_EMAIL }}"
 
             - run: git diff --exit-code
