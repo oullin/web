@@ -24,7 +24,7 @@ jobs:
                   cache: 'npm'
                   cache-dependency-path: package-lock.json
 
-            - run: npm install --no-package-lock
+            - run: npm ci
 
             - run: make format
 
