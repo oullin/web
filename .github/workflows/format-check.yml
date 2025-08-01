@@ -1,27 +1,31 @@
 name: Test Format Workflow
 
 on:
-  pull_request:
-    types: [opened, reopened, ready_for_review, synchronize, labeled]
+    pull_request:
+        types: [opened, reopened, ready_for_review, synchronize, labeled]
+
+permissions:
+    contents: write
+    pull-requests: write
 
 jobs:
-  format-check:
-    if: ${{ github.event.pull_request.draft == false || contains(github.event.pull_request.labels.*.name, 'testing') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
+    format-check:
+        if: ${{ github.event.pull_request.draft == false || contains(github.event.pull_request.labels.*.name, 'testing') }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  fetch-depth: 0
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'npm'
+                  cache-dependency-path: package-lock.json
 
-      - run: npm install --no-package-lock
+            - run: npm install --no-package-lock
 
-      - run: make format
+            - run: make format
 
-      - run: git diff --exit-code
+            - run: git diff --exit-code
