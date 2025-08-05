@@ -1,5 +1,6 @@
 .env
 .env.production
+stats.html
 
 *.local
 .DS_Store
