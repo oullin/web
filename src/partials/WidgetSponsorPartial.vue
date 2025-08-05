@@ -10,7 +10,7 @@
 			<span class="text-xs text-slate-400 dark:text-slate-500">*Sponsor</span>
 		</div>
 		<div class="font-aspekta font-[650] mb-1">{{ sponsor.title }}</div>
-		<p class="text-sm text-slate-500 dark:text-slate-400">{{ sponsor.description }} <a>link</a></p>
+		<p class="text-sm text-slate-500 dark:text-slate-400">{{ sponsor.description }}</p>
 	</div>
 </template>
 
