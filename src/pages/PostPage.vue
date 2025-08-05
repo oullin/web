@@ -125,7 +125,7 @@ import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 
 // --- syntax highlight
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/core'
 import { useDarkMode } from '@/dark-mode.ts';
 
 // --- Component
