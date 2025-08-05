@@ -1,5 +1,8 @@
 <template>
-	<div class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 p-5">
+	<div
+        class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 p-5"
+        @click="sendEmail"
+    >
 		<div class="flex items-center space-x-3 mb-2">
 			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" class="fill-current blog-side-nav-router-link-a-active">
 				<path
@@ -23,5 +26,16 @@ interface Sponsor {
 const sponsor: Sponsor = {
 	title: 'Build The Site/App You Want!',
 	description: 'Your website should be an asset, not an engineering challenge.',
+};
+
+const sendEmail = () => {
+    const recipient = 'otnacog@gmail.com';
+    const subject = `Inquiry about: ${sponsor.title}`;
+    const body = `Hello,\n\nI'm interested in learning more about your services.\n\n"${sponsor.description}"\n\nThanks,`;
+
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+
+    window.location.href = `mailto:${recipient}?subject=${encodedSubject}&body=${encodedBody}`;
 };
 </script>
