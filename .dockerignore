@@ -1,0 +1,10 @@
+.github
+.idea
+tests
+node_modules
+src
+.editorconfig
+.env
+.env.example
+package.json
+package-lock.json
