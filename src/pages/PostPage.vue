@@ -96,7 +96,6 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSkillsPartial />
 								<WidgetSponsorPartial />
 							</div>
 						</aside>
@@ -114,19 +113,16 @@ import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
+import { useDarkMode } from '@/dark-mode.ts';
+import highlight from 'highlight.js/lib/core';
 import { debugError } from '@api/http-error.ts';
-import { date, getReadingTime } from '@/public.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
-import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
+import { date, getReadingTime, initializeHighlighter } from '@/public.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
-
-// --- syntax highlight
-import hljs from 'highlight.js/lib/core'
-import { useDarkMode } from '@/dark-mode.ts';
 
 // --- Component
 const route = useRoute();
@@ -186,12 +182,14 @@ watch(htmlContent, async () => {
 	if (postContainer.value) {
 		const blocks = postContainer.value.querySelectorAll('pre code');
 		blocks.forEach((block) => {
-			hljs.highlightElement(block as HTMLElement);
+            highlight.highlightElement(block as HTMLElement);
 		});
 	}
 });
 
 onMounted(async () => {
+    await initializeHighlighter(highlight);
+
 	try {
 		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 	} catch (error) {
