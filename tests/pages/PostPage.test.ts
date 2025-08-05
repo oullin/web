@@ -36,18 +36,18 @@ vi.mock('vue-router', () => ({ useRoute: () => ({ params: { slug: post.slug } })
 vi.mock('marked', () => ({ marked: { use: vi.fn(), parse: vi.fn(() => '<p></p>') } }));
 vi.mock('dompurify', () => ({ default: { sanitize: vi.fn((html: string) => html) } }));
 vi.mock('highlight.js/lib/core', () => ({
-        default: {
-                highlightElement: vi.fn(),
-                registerLanguage: vi.fn(),
-                registerAliases: vi.fn(),
-        },
+	default: {
+		highlightElement: vi.fn(),
+		registerLanguage: vi.fn(),
+		registerAliases: vi.fn(),
+	},
 }));
 vi.mock('@/dark-mode.ts', () => ({ useDarkMode: () => ({ isDark: ref(false) }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 vi.mock('@/public.ts', () => ({
-        initializeHighlighter: vi.fn(),
-        date: () => ({ format: () => '' }),
-        getReadingTime: () => '',
+	initializeHighlighter: vi.fn(),
+	date: () => ({ format: () => '' }),
+	getReadingTime: () => '',
 }));
 
 describe('PostPage', () => {
