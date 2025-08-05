@@ -16,7 +16,7 @@
 								<!-- Back -->
 								<div class="mb-3">
 									<router-link
-										class="inline-flex text-sky-500 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
+										class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
 										to="/"
 									>
 										<span class="sr-only">Back</span>
@@ -32,16 +32,19 @@
 										<div class="flex items-center justify-between mb-1">
 											<!-- Post date -->
 											<div class="text-xs text-slate-500 uppercase">
-												<span class="text-sky-500">—</span> {{ date().format(new Date(post.published_at)) }} <span class="text-slate-400 dark:text-slate-600">·</span>
+												<span class="text-fuchsia-500 dark:text-teal-600">—</span> {{ date().format(new Date(post.published_at)) }}
+												<span class="text-slate-400 dark:text-slate-600">·</span>
 												{{ getReadingTime(post.content) }}
 											</div>
 											<!-- Share buttons -->
 											<ul class="inline-flex">
 												<li>
 													<a
-														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
+														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
 														:href="xURLFor(post)"
 														aria-label="Twitter"
+														target="_blank"
+														rel="noopener noreferrer"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 															<path
@@ -52,7 +55,7 @@
 												</li>
 												<li>
 													<a
-														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
+														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
 														:href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
 														aria-label="LinkedIn"
 														target="_blank"
@@ -67,8 +70,8 @@
 												</li>
 												<li>
 													<a
-														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
-														href="#0"
+														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
+														href="#"
 														aria-label="Share"
 														@click.prevent="sharePost(post)"
 													>

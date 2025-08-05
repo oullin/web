@@ -1,0 +1,7 @@
+.github
+.idea
+tests
+node_modules
+.editorconfig
+.env
+.env.example
