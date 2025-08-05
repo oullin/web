@@ -1,5 +1,5 @@
 <template>
-	<div class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 p-5" @click="sendEmail">
+	<div class="cursor-pointer rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 p-5" @click="sendEmail">
 		<div class="flex items-center space-x-3 mb-2">
 			<svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" class="fill-current blog-side-nav-router-link-a-active">
 				<path
@@ -10,7 +10,7 @@
 			<span class="text-xs text-slate-400 dark:text-slate-500">*Sponsor</span>
 		</div>
 		<div class="font-aspekta font-[650] mb-1">{{ sponsor.title }}</div>
-		<p class="text-sm text-slate-500 dark:text-slate-400">{{ sponsor.description }}</p>
+		<p class="text-sm text-slate-500 dark:text-slate-400">{{ sponsor.description }} <a>link</a></p>
 	</div>
 </template>
 
