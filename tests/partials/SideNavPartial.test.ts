@@ -4,11 +4,14 @@ import { createRouter, createMemoryHistory } from 'vue-router';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 
 const router = createRouter({
-	history: createMemoryHistory(),
-	routes: [
-		{ path: '/', name: 'home' },
-		{ path: '/about', name: 'about' },
-	],
+        history: createMemoryHistory(),
+        routes: [
+                { path: '/', name: 'home', component: { template: '<div />' } },
+                { path: '/about', name: 'about', component: { template: '<div />' } },
+                { path: '/subscribe', name: 'subscribe', component: { template: '<div />' } },
+                { path: '/projects', name: 'projects', component: { template: '<div />' } },
+                { path: '/resume', name: 'resume', component: { template: '<div />' } },
+        ],
 });
 
 describe('SideNavPartial', () => {

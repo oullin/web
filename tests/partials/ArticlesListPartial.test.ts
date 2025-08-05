@@ -81,13 +81,15 @@ vi.mock('@api/store.ts', () => ({
 }));
 
 describe('ArticlesListPartial', () => {
-	it('loads posts on mount', async () => {
-		const wrapper = mount(ArticlesListPartial);
-		await flushPromises();
-		expect(getCategories).toHaveBeenCalled();
-		expect(getPosts).toHaveBeenCalled();
-		const items = wrapper.findAllComponents({ name: 'ArticleItemPartial' });
-		expect(items).toHaveLength(1);
+        it('loads posts on mount', async () => {
+                const wrapper = mount(ArticlesListPartial, {
+                        global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
+                });
+                await flushPromises();
+                expect(getCategories).toHaveBeenCalled();
+                expect(getPosts).toHaveBeenCalled();
+                const items = wrapper.findAllComponents({ name: 'ArticleItemPartial' });
+                expect(items).toHaveLength(1);
 		expect(wrapper.text()).toContain(posts[0].title);
 	});
 });
