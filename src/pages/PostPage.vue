@@ -32,7 +32,8 @@
 										<div class="flex items-center justify-between mb-1">
 											<!-- Post date -->
 											<div class="text-xs text-slate-500 uppercase">
-												<span class="text-fuchsia-500 dark:text-teal-600">—</span> {{ date().format(new Date(post.published_at)) }} <span class="text-slate-400 dark:text-slate-600">·</span>
+												<span class="text-fuchsia-500 dark:text-teal-600">—</span> {{ date().format(new Date(post.published_at)) }}
+												<span class="text-slate-400 dark:text-slate-600">·</span>
 												{{ getReadingTime(post.content) }}
 											</div>
 											<!-- Share buttons -->
@@ -42,8 +43,8 @@
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
 														:href="xURLFor(post)"
 														aria-label="Twitter"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
+														target="_blank"
+														rel="noopener noreferrer"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 															<path
