@@ -34,7 +34,10 @@ describe('ArticleItemPartial', () => {
 	};
 
 	it('renders item information', () => {
-		const wrapper = mount(ArticleItemPartial, { props: { item } });
+		const wrapper = mount(ArticleItemPartial, {
+			props: { item },
+			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
+		});
 		expect(wrapper.text()).toContain('formatted');
 		expect(wrapper.text()).toContain(item.title);
 		expect(wrapper.find('img').attributes('src')).toBe(item.cover_image_url);

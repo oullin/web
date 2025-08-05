@@ -82,7 +82,9 @@ vi.mock('@api/store.ts', () => ({
 
 describe('ArticlesListPartial', () => {
 	it('loads posts on mount', async () => {
-		const wrapper = mount(ArticlesListPartial);
+		const wrapper = mount(ArticlesListPartial, {
+			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
+		});
 		await flushPromises();
 		expect(getCategories).toHaveBeenCalled();
 		expect(getPosts).toHaveBeenCalled();
