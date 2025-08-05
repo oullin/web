@@ -42,6 +42,8 @@
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
 														:href="xURLFor(post)"
 														aria-label="Twitter"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 															<path
@@ -68,7 +70,7 @@
 												<li>
 													<a
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-sky-500 dark:hover:text-sky-500 transition duration-150 ease-in-out"
-														href="#0"
+														href="#"
 														aria-label="Share"
 														@click.prevent="sharePost(post)"
 													>
