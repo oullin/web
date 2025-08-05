@@ -182,13 +182,13 @@ watch(htmlContent, async () => {
 	if (postContainer.value) {
 		const blocks = postContainer.value.querySelectorAll('pre code');
 		blocks.forEach((block) => {
-            highlight.highlightElement(block as HTMLElement);
+			highlight.highlightElement(block as HTMLElement);
 		});
 	}
 });
 
 onMounted(async () => {
-    await initializeHighlighter(highlight);
+	await initializeHighlighter(highlight);
 
 	try {
 		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
