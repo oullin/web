@@ -1,11 +1,19 @@
 services:
     # Vue App.
     app-builder:
+        env_file:
+            -   .env
         image: app-builder-image:${TAG:-latest}
         container_name: app-builder
         build:
+            args:
+                - VITE_API_ENV=${VITE_API_ENV}
+                - VITE_API_URL=${VITE_API_URL}
+                - VITE_ACCOUNT_NAME=${VITE_ACCOUNT_NAME}
+                - VITE_PUBLIC_KEY=${VITE_PUBLIC_KEY}
+                - VITE_PUBLIC_SIGNATURE=${VITE_PUBLIC_SIGNATURE}
             context: .
-            dockerfile: docker/Dockerfile.local
+            dockerfile: docker/Dockerfile
             target: builder
         networks:
             - web_internal
@@ -17,10 +25,10 @@ services:
             - local
         container_name: web_caddy_local
         ports:
-            - "8080:80"
+            - "8081:80"
         volumes:
             - ./dist:/usr/share/caddy
-            - ./caddy/WebCaddyfile.local:/etc/caddy/Caddyfile
+            - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
         networks:
             - web_internal
 
