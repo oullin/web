@@ -33,7 +33,7 @@ jobs:
               run: npm ci
 
             - name: Install OpenAI CLI
-              run: npm install -g @openai/cli
+              run: npm install -g openai
 
             - name: Bump dependencies via Codex
               env:
