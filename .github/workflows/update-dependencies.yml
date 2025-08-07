@@ -10,8 +10,7 @@ on:
 jobs:
     update-deps:
         name: Update Dependencies via OpenAI Codex
-        # Run on schedule, manual dispatch, or when a PR is labeled 'dependencies'
-        if: |
+        if: >
             github.event_name == 'schedule' ||
             github.event_name == 'workflow_dispatch' ||
             (github.event_name == 'pull_request' && github.event.label.name == 'dependencies')
@@ -32,18 +31,20 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Install OpenAI CLI
-              run: npm install -g openai
+            - name: Install jq and curl
+              run: sudo apt-get update && sudo apt-get install -y jq curl
 
-            - name: Bump dependencies via Codex
+            - name: Bump dependencies via Codex REST API
               env:
                   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
               run: |
-                  openai api edits.create \
-                    -m code-davinci-003 \
-                    -i package.json \
-                    -p "Update all dependencies to their latest major versions" \
-                    > package.json.edited
+                  input=$(jq -Rs . package.json)
+                  instruction="Update all dependencies to their latest major versions"
+                  curl https://api.openai.com/v1/edits \
+                    -H "Authorization: Bearer $OPENAI_API_KEY" \
+                    -H "Content-Type: application/json" \
+                    -d "{\"model\":\"code-davinci-003\",\"input\":$input,\"instruction\":\"$instruction\"}" \
+                    | jq -r '.choices[0].text' > package.json.edited
                   mv package.json.edited package.json
 
             - name: Install updated packages
