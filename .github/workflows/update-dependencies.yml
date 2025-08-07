@@ -2,56 +2,50 @@ name: Update Dependencies (Codex)
 
 on:
     schedule:
-        - cron: '0 3 1 * *'      # At 03:00 UTC on the 1st of each month
-    workflow_dispatch:        # Manual trigger
+        - cron: '0 3 1 * *'       # At 03:00 UTC on the 1st of each month
+    workflow_dispatch:         # Manual trigger
     pull_request:
-        types: [labeled]        # Trigger when a label is added to a PR
+        types:
+            - labeled              # Trigger when a label is added to a PR
 
 jobs:
     update-deps:
         name: Update Dependencies via OpenAI Codex
-        if: >
-            github.event_name == 'schedule' ||
-            github.event_name == 'workflow_dispatch' ||
-            (github.event_name == 'pull_request' && github.event.label.name == 'dependencies')
         runs-on: ubuntu-latest
+        env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.label.name == 'dependencies') }}
 
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
               with:
-                  persist-credentials: true  # Needed to push commits
+                  persist-credentials: true  # Allow pushing commits using the GITHUB_TOKEN
 
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: '20.x'
-                  cache: npm
+                  cache: 'npm'
 
-            - name: Install dependencies
+            - name: Install project dependencies
               run: npm ci
 
             - name: Install jq and curl
               run: sudo apt-get update && sudo apt-get install -y jq curl
 
-            - name: Bump dependencies via Codex REST API
-              env:
-                  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            - name: Bump dependencies via Codex Completions API
               run: |
                   set -o pipefail
-                  input=$(jq -Rs . package.json)
-                  instruction="Rewrite the entire package.json file in JSON format, updating all dependencies and devDependencies to their latest major versions. Return only the full JSON content."
-                  response=$(curl -sS https://api.openai.com/v1/edits \
-                    -H "Authorization: Bearer $OPENAI_API_KEY" \
-                    -H "Content-Type: application/json" \
-                    -d "{\"model\":\"code-davinci-003\",\"input\":$input,\"instruction\":\"$instruction\"}")
-                  echo "$response" | jq -r '.choices[0].text' > package.json.edited
-                  if [ ! -s package.json.edited ]; then
-                    echo "Error: Codex returned empty edit. Aborting."
-                    echo "Response: $response"
-                    exit 1
-                  fi
-                  mv package.json.edited package.json
+                  json=$(jq -c . package.json)
+                  prompt="Here is a package.json file: $json
+                    Re-write it in JSON format, updating all dependencies and devDependencies to their latest major versions. Return only the full JSON content."
+                  response=$(curl -sS https://api.openai.com/v1/completions \
+                  -H "Authorization: Bearer $OPENAI_API_KEY" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"model\":\"code-davinci-003\",\"prompt\":$(jq -Rn --arg p "$prompt" '$p'),\"max_tokens\":2000,\"temperature\":0}")
+
+                  echo "$response" | jq -r '.choices[0].text' | sed -E 's/^```json|```$//g' > package.json
 
             - name: Install updated packages
               run: npm ci
@@ -67,4 +61,4 @@ jobs:
                   branch: automated/update-dependencies
                   title: "chore: update dependencies via Codex"
                   body: "This pull request updates all project dependencies to their latest major versions. Changes were generated automatically by OpenAI Codex."
-                  labels: dependencies, automated
+                  labels: "dependencies"
