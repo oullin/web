@@ -1,0 +1,60 @@
+name: Update Dependencies (Codex)
+
+on:
+    schedule:
+        - cron: '0 3 1 * *'   # At 03:00 UTC on the 1st of each month
+    workflow_dispatch:        # Manual trigger
+    pull_request:
+        types: [labeled]
+
+jobs:
+    update-deps:
+        name: Update Dependencies via OpenAI Codex
+        # Run on schedule, manual dispatch, or when a PR is labelled 'dependencies'
+        if: |
+            github.event_name == 'schedule' ||
+            github.event_name == 'workflow_dispatch' ||
+            (github.event_name == 'pull_request' && github.event.label.name == 'dependencies')
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+              with:
+                  persist-credentials: true  # Needed to push commits
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '20.x'
+
+            - name: Install OpenAI CLI
+              run: npm install -g openai
+
+            - name: Bump dependencies via Codex
+              env:
+                  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+              run: |
+                  openai api edits.create \
+                    -m code-davinci-003 \
+                    -i package.json \
+                    -p "Update all dependencies to their latest major versions" \
+                    > package.json.edited
+
+                  mv package.json.edited package.json
+
+            - name: Install updated packages
+              run: npm ci
+
+            - name: Run tests
+              run: npm test
+
+            - name: Create Pull Request
+              uses: peter-evans/create-pull-request@v5
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  commit-message: "chore: update dependencies via Codex"
+                  branch: automated/update-dependencies
+                  title: "chore: update dependencies via Codex"
+                  body: "This pull request updates all project dependencies to their latest major versions. Changes were generated automatically by OpenAI Codex."
+                  labels: dependencies, automated
