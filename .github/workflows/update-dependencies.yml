@@ -40,14 +40,15 @@ jobs:
                   json=$(jq -c . package.json)
                   # Build prompt
                   prompt="Here is a package.json file: $json
-                Rewrite it in JSON format, updating all dependencies and devDependencies to their latest major versions. Return only the full JSON content."
-              # Call OpenAI completions
-                response=$(curl -sS https://api.openai.com/v1/completions \
-                -H "Authorization: Bearer $OPENAI_API_KEY" \
-                -H "Content-Type: application/json" \
+                    Rewrite it in JSON format, updating all dependencies and devDependencies to their latest major versions. Return only the full JSON content."
+                  # Call OpenAI completions
+                  response=$(curl -sS https://api.openai.com/v1/completions \
+                    -H "Authorization: Bearer $OPENAI_API_KEY" \
+                    -H "Content-Type: application/json" \
                     -d "{\"model\":\"code-davinci-003\",\"prompt\":$(jq -Rn --arg p "$prompt" '$p'),\"max_tokens\":2000,\"temperature\":0}")
+
                   # Extract JSON and strip fences
-                echo "$response" | jq -r '.choices[0].text' | sed -E 's/^```json|```$//g' > package.json.edited
+                  echo "$response" | jq -r '.choices[0].text' | sed -E 's/^```json|```$//g' > package.json.edited
 
             - name: Validate edited package.json
               run: |
@@ -74,6 +75,4 @@ jobs:
                   branch: automated/update-dependencies
                   title: "chore: update dependencies via Codex"
                   body: "This pull request updates all project dependencies to their latest major versions. Changes generated automatically by OpenAI Codex."
-                  labels: |
-                      dependencies
-                      automated
+                  labels: "dependencies"
