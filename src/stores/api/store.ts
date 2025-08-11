@@ -41,90 +41,100 @@ export const useApiStore = defineStore(STORE_KEY, {
 		},
 		async getProfile(): Promise<ApiResponse<ProfileResponse>> {
 			const url = 'profile';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<ApiResponse<ProfileResponse>>(url);
+				return await this.client.get<ApiResponse<ProfileResponse>>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getExperience(): Promise<ApiResponse<ExperienceResponse[]>> {
 			const url = 'experience';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<ApiResponse<ExperienceResponse[]>>(url);
+				return await this.client.get<ApiResponse<ExperienceResponse[]>>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getRecommendations(): Promise<ApiResponse<RecommendationsResponse[]>> {
 			const url = 'recommendations';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<ApiResponse<RecommendationsResponse[]>>(url);
+				return await this.client.get<ApiResponse<RecommendationsResponse[]>>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getProjects(): Promise<ApiResponse<ProjectsResponse[]>> {
 			const url = 'projects';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<ApiResponse<ProjectsResponse[]>>(url);
+				return await this.client.get<ApiResponse<ProjectsResponse[]>>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getTalks(): Promise<ApiResponse<TalksResponse[]>> {
 			const url = 'talks';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<ApiResponse<TalksResponse[]>>(url);
+				return await this.client.get<ApiResponse<TalksResponse[]>>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getSocial(): Promise<ApiResponse<SocialResponse[]>> {
 			const url = 'social';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<ApiResponse<SocialResponse[]>>(url);
+				return await this.client.get<ApiResponse<SocialResponse[]>>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getEducation(): Promise<ApiResponse<EducationResponse[]>> {
 			const url = 'education';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<ApiResponse<EducationResponse[]>>(url);
+				return await this.client.get<ApiResponse<EducationResponse[]>>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getCategories(): Promise<CategoriesCollectionResponse> {
 			const url = 'categories?limit=5';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<CategoriesCollectionResponse>(url);
+				return await this.client.get<CategoriesCollectionResponse>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getPosts(filters: PostsFilters): Promise<PostsCollectionResponse> {
 			const url = 'posts?limit=5';
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.post<PostsCollectionResponse>(url, filters);
+				return await this.client.post<PostsCollectionResponse>(url, nonce, filters);
 			} catch (error) {
 				return parseError(error);
 			}
 		},
 		async getPost(slug: string): Promise<PostResponse> {
 			const url = `posts/${slug}`;
+			const nonce = this.client.createNonce();
 
 			try {
-				return await this.client.get<PostResponse>(url);
+				return await this.client.get<PostResponse>(url, nonce);
 			} catch (error) {
 				return parseError(error);
 			}

@@ -6,7 +6,6 @@ const options: ApiClientOptions = {
 	env: 'development',
 	apiKey: 'k',
 	apiUsername: 'u',
-	apiSignature: 's',
 };
 
 const url = 'http://example.com/';
