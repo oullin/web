@@ -10,19 +10,18 @@ const options: ApiClientOptions = {
 
 const url = 'http://example.com/';
 
-// Ensure environment variable for base url
-process.env.VITE_API_URL = url;
-
 let client: ApiClient;
 
 beforeEach(() => {
-	client = new ApiClient(options);
-	localStorage.clear();
-	vi.stubGlobal('fetch', vi.fn());
+        vi.stubEnv('VITE_API_URL', url);
+        client = new ApiClient(options);
+        localStorage.clear();
+        vi.stubGlobal('fetch', vi.fn());
 });
 
 afterEach(() => {
-	vi.restoreAllMocks();
+        vi.restoreAllMocks();
+        vi.unstubAllEnvs();
 });
 
 describe('ApiClient', () => {
