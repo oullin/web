@@ -37,6 +37,15 @@ describe('ApiClient', () => {
 		expect(prod.isDev()).toBe(false);
 	});
 
+	it('creates unique 32-character hex nonces', () => {
+		const first = client.createNonce();
+		const second = client.createNonce();
+
+		expect(first).toMatch(/^[a-f0-9]{32}$/);
+		expect(second).toMatch(/^[a-f0-9]{32}$/);
+		expect(first).not.toBe(second);
+	});
+
 	it('handles post success and error responses', async () => {
 		const data = { ok: true };
 		(fetch as vi.Mock).mockResolvedValue(new Response(JSON.stringify(data), { status: 200 }));
