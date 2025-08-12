@@ -28,23 +28,23 @@ afterEach(() => {
 });
 
 describe('ApiClient', () => {
-        it('detects prod and dev modes', () => {
-                expect(client.isProd()).toBe(false);
-                expect(client.isDev()).toBe(true);
+	it('detects prod and dev modes', () => {
+		expect(client.isProd()).toBe(false);
+		expect(client.isDev()).toBe(true);
 
-                const prod = new ApiClient({ ...options, env: 'production' });
-                expect(prod.isProd()).toBe(true);
-                expect(prod.isDev()).toBe(false);
-        });
+		const prod = new ApiClient({ ...options, env: 'production' });
+		expect(prod.isProd()).toBe(true);
+		expect(prod.isDev()).toBe(false);
+	});
 
-       it('creates unique 32-character hex nonces', () => {
-               const first = client.createNonce();
-               const second = client.createNonce();
+	it('creates unique 32-character hex nonces', () => {
+		const first = client.createNonce();
+		const second = client.createNonce();
 
-               expect(first).toMatch(/^[a-f0-9]{32}$/);
-               expect(second).toMatch(/^[a-f0-9]{32}$/);
-               expect(first).not.toBe(second);
-       });
+		expect(first).toMatch(/^[a-f0-9]{32}$/);
+		expect(second).toMatch(/^[a-f0-9]{32}$/);
+		expect(first).not.toBe(second);
+	});
 
 	it('handles post success and error responses', async () => {
 		const data = { ok: true };

@@ -12,10 +12,10 @@ vi.mock('@api/http-error.ts', async () => {
 });
 
 class FakeClient {
-        isDev = vi.fn(() => true);
-        get = vi.fn();
-        post = vi.fn();
-        createNonce = vi.fn(() => 'nonce');
+	isDev = vi.fn(() => true);
+	get = vi.fn();
+	post = vi.fn();
+	createNonce = vi.fn(() => 'nonce');
 }
 
 describe('useApiStore', () => {
