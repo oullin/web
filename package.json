@@ -10,7 +10,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "vitest run --coverage",
-		"build:stats": "VITE_VISUALIZER=true vite build"
+		"build:stats": "VITE_VISUALIZER=true vite build",
+        "preinstall": "node -e \"const [maj,min]=process.versions.node.split('.').map(Number);if(maj!==22||min<12){console.error('Node 22.12+ required. Detected '+process.versions.node);process.exit(1)}\""
 	},
 	"dependencies": {
 		"dompurify": "^3.2.6",
