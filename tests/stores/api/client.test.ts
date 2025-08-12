@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+
 import { ApiClient, ApiClientOptions } from '@api/client.ts';
 import { HttpError } from '@api/http-error.ts';
 
@@ -11,10 +12,12 @@ const options: ApiClientOptions = {
 const url = 'http://example.com/';
 
 let client: ApiClient;
+let nonce: string;
 
 beforeEach(() => {
         vi.stubEnv('VITE_API_URL', url);
         client = new ApiClient(options);
+        nonce = 'nonce';
         localStorage.clear();
         vi.stubGlobal('fetch', vi.fn());
 });
@@ -38,13 +41,13 @@ describe('ApiClient', () => {
 		const data = { ok: true };
 		(fetch as vi.Mock).mockResolvedValue(new Response(JSON.stringify(data), { status: 200 }));
 
-		const result = await client.post('test', { id: 1 });
-		expect(result).toEqual(data);
+                const result = await client.post('test', nonce, { id: 1 });
+                expect(result).toEqual(data);
 
-		(fetch as vi.Mock).mockResolvedValue(new Response('fail', { status: 500, statusText: 'err' }));
+                (fetch as vi.Mock).mockResolvedValue(new Response('fail', { status: 500, statusText: 'err' }));
 
-		await expect(client.post('test', { id: 2 })).rejects.toBeInstanceOf(HttpError);
-	});
+                await expect(client.post('test', nonce, { id: 2 })).rejects.toBeInstanceOf(HttpError);
+        });
 
 	it('caches get requests and serves from cache', async () => {
 		// prefill cache
@@ -53,9 +56,9 @@ describe('ApiClient', () => {
 
 		(fetch as vi.Mock).mockResolvedValue(new Response(null, { status: 304 }));
 
-		const result = await client.get('test');
-		expect(result).toEqual({ cached: true });
-	});
+                const result = await client.get('test', nonce);
+                expect(result).toEqual({ cached: true });
+        });
 
 	it('stores response with etag in cache', async () => {
 		const data = { foo: 'bar' };
@@ -66,14 +69,14 @@ describe('ApiClient', () => {
 			}),
 		);
 
-		const result = await client.get('test');
-		expect(result).toEqual(data);
-		expect(localStorage.getItem('api-cache-test')).not.toBeNull();
-	});
+                const result = await client.get('test', nonce);
+                expect(result).toEqual(data);
+                expect(localStorage.getItem('api-cache-test')).not.toBeNull();
+        });
 
 	it('throws HttpError on failed get', async () => {
 		(fetch as vi.Mock).mockResolvedValue(new Response('nope', { status: 404, statusText: 'NF' }));
 
-		await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
-	});
+                await expect(client.get('oops', nonce)).rejects.toBeInstanceOf(HttpError);
+        });
 });
