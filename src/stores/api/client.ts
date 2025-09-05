@@ -31,14 +31,14 @@ export class ApiClient {
 	private readonly apiKey: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
-	private readonly timestamp: string;
+	private readonly timestamp: number;
 
 	constructor(options: ApiClientOptions) {
 		this.env = options.env;
 		this.apiKey = options.apiKey;
 		this.apiUsername = options.apiUsername;
 		this.basedURL = `${import.meta.env.VITE_API_URL}`;
-		this.timestamp = Math.floor(Date.now() / 1000).toString();
+		this.timestamp = Math.floor(Date.now() / 1000);
 	}
 
 	public createNonce(): string {
@@ -77,16 +77,18 @@ export class ApiClient {
 		headers.append('X-API-Key', this.apiKey);
 		headers.append('X-Request-ID', uuidv4());
 		headers.append('User-Agent', 'oullin/web-app');
-		headers.append('X-API-Timestamp', this.timestamp);
+		headers.append('X-API-Timestamp', this.timestamp.toString());
 		headers.append('X-API-Username', this.apiUsername);
 		headers.append('Content-Type', 'application/json');
 
 		return headers;
 	}
 
-	private async getSignature(nonce: string): Promise<SignatureResponse> {
+	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
 		const headers = this.createHeaders();
 		const fullUrl = new URL('generate-signature', this.basedURL);
+
+		headers.append('X-API-Intended-Origin', origin);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
@@ -106,10 +108,11 @@ export class ApiClient {
 		return await response.json();
 	}
 
-	private async appendSignature(nonce: string, headers: Headers) {
-		const sigResp = await this.getSignature(nonce);
+	private async appendSignature(nonce: string, headers: Headers, origin: string) {
+		const sigResp = await this.getSignature(nonce, origin);
 
 		headers.append('X-API-Nonce', nonce);
+		headers.append('X-API-Intended-Origin', origin);
 		headers.append('X-API-Signature', sigResp.signature);
 	}
 
@@ -117,7 +120,7 @@ export class ApiClient {
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
 
-		await this.appendSignature(nonce, headers);
+		await this.appendSignature(nonce, headers, fullUrl.href);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
@@ -141,7 +144,7 @@ export class ApiClient {
 			headers.append('If-None-Match', cached.etag);
 		}
 
-		await this.appendSignature(nonce, headers);
+		await this.appendSignature(nonce, headers, fullUrl.href);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
