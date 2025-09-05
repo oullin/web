@@ -1,5 +1,6 @@
-import { HttpError } from '@api/http-error.ts';
 import { v4 as uuidv4 } from 'uuid';
+import { HttpError } from '@api/http-error.ts';
+import { SignatureResponse } from '@api/response/signature-response.ts';
 
 const ENV_PROD = 'production';
 
@@ -30,14 +31,14 @@ export class ApiClient {
 	private readonly apiKey: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
-	private readonly timestamp: string;
+	private readonly timestamp: number;
 
 	constructor(options: ApiClientOptions) {
 		this.env = options.env;
 		this.apiKey = options.apiKey;
 		this.apiUsername = options.apiUsername;
 		this.basedURL = `${import.meta.env.VITE_API_URL}`;
-		this.timestamp = Math.floor(Date.now() / 1000).toString();
+		this.timestamp = Math.floor(Date.now() / 1000);
 	}
 
 	public createNonce(): string {
@@ -76,66 +77,50 @@ export class ApiClient {
 		headers.append('X-API-Key', this.apiKey);
 		headers.append('X-Request-ID', uuidv4());
 		headers.append('User-Agent', 'oullin/web-app');
-		headers.append('X-API-Timestamp', this.timestamp);
+		headers.append('X-API-Timestamp', this.timestamp.toString());
 		headers.append('X-API-Username', this.apiUsername);
 		headers.append('Content-Type', 'application/json');
 
 		return headers;
 	}
 
-	private async sha256Hex(text: string): Promise<string> {
-		const enc = new TextEncoder();
+	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
+		const headers = this.createHeaders();
+		const fullUrl = new URL('generate-signature', this.basedURL);
 
-		const buf = await crypto.subtle.digest('SHA-256', enc.encode(text));
+		headers.append('X-API-Intended-Origin', origin);
 
-		return Array.from(new Uint8Array(buf))
-			.map((b) => b.toString(16).padStart(2, '0'))
-			.join('');
+		const response = await fetch(fullUrl.href, {
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify({
+				nonce: nonce,
+				public_key: this.apiKey,
+				username: this.apiUsername,
+				timestamp: this.timestamp,
+			}),
+		});
+
+		if (!response.ok) {
+			throw new HttpError(response, await response.text());
+		}
+
+		return await response.json();
 	}
 
-	private async hmacSha256Hex(secret: string, message: string): Promise<string> {
-		const enc = new TextEncoder();
-		const key = await crypto.subtle.importKey(
-			'raw',
-			enc.encode(secret),
-			{
-				name: 'HMAC',
-				hash: 'SHA-256',
-			},
-			false,
-			['sign'],
-		);
+	private async appendSignature(nonce: string, headers: Headers, origin: string) {
+		const sigResp = await this.getSignature(nonce, origin);
 
-		const sig = await crypto.subtle.sign('HMAC', key, enc.encode(message));
-
-		return Array.from(new Uint8Array(sig))
-			.map((b) => b.toString(16).padStart(2, '0'))
-			.join('');
-	}
-
-	private getSortedQuery(u: string): string {
-		const params = new URL(u).searchParams;
-
-		params.sort();
-		return params.toString();
-	}
-
-	private async getSignature(method: string, uri: URL, body: string, nonce: string): Promise<string> {
-		const content = await this.sha256Hex(body);
-
-		const canonical = [method.toUpperCase(), uri.pathname || '/', this.getSortedQuery(uri.href), this.apiUsername, this.apiKey, this.timestamp, nonce, content].join('\n');
-
-		return await this.hmacSha256Hex(this.apiKey, canonical);
+		headers.append('X-API-Nonce', nonce);
+		headers.append('X-API-Intended-Origin', origin);
+		headers.append('X-API-Signature', sigResp.signature);
 	}
 
 	public async post<T>(url: string, nonce: string, data: object): Promise<T> {
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
-		const content: string = JSON.stringify(data);
-		const signature = await this.getSignature('POST', fullUrl, content, nonce);
 
-		headers.append('X-API-Nonce', nonce);
-		headers.append('X-API-Signature', signature);
+		await this.appendSignature(nonce, headers, fullUrl.href);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
@@ -159,9 +144,7 @@ export class ApiClient {
 			headers.append('If-None-Match', cached.etag);
 		}
 
-		const signature = await this.getSignature('GET', fullUrl, '', nonce);
-		headers.append('X-API-Signature', signature);
-		headers.append('X-API-Nonce', nonce);
+		await this.appendSignature(nonce, headers, fullUrl.href);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
