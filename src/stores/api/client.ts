@@ -31,14 +31,12 @@ export class ApiClient {
 	private readonly apiKey: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
-	private readonly timestamp: number;
 
 	constructor(options: ApiClientOptions) {
 		this.env = options.env;
 		this.apiKey = options.apiKey;
 		this.apiUsername = options.apiUsername;
 		this.basedURL = `${import.meta.env.VITE_API_URL}`;
-		this.timestamp = Math.floor(Date.now() / 1000);
 	}
 
 	public createNonce(): string {
@@ -71,15 +69,19 @@ export class ApiClient {
 		return !this.isProd();
 	}
 
+	private getCurrentTimestamp(): number {
+		return Math.floor(Date.now() / 1000);
+	}
+
 	private createHeaders(): Headers {
 		const headers = new Headers();
 
 		headers.append('X-API-Key', this.apiKey);
 		headers.append('X-Request-ID', uuidv4());
 		headers.append('User-Agent', 'oullin/web-app');
-		headers.append('X-API-Timestamp', this.timestamp.toString());
 		headers.append('X-API-Username', this.apiUsername);
 		headers.append('Content-Type', 'application/json');
+		headers.append('X-API-Timestamp', this.getCurrentTimestamp().toString());
 
 		return headers;
 	}
@@ -87,6 +89,10 @@ export class ApiClient {
 	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
 		const headers = this.createHeaders();
 		const fullUrl = new URL('generate-signature', this.basedURL);
+
+		if (this.isProd() && fullUrl.protocol !== 'https:') {
+			throw new Error('Signature endpoint must be accessed over HTTPS.');
+		}
 
 		headers.append('X-API-Intended-Origin', origin);
 
@@ -97,7 +103,7 @@ export class ApiClient {
 				nonce: nonce,
 				public_key: this.apiKey,
 				username: this.apiUsername,
-				timestamp: this.timestamp,
+				timestamp: this.getCurrentTimestamp(),
 			}),
 		});
 
@@ -109,14 +115,33 @@ export class ApiClient {
 	}
 
 	private async appendSignature(nonce: string, headers: Headers, origin: string) {
-		const sigResp = await this.getSignature(nonce, origin);
+		const retries = 3;
+		let lastError: Error | undefined;
 
-		headers.append('X-API-Nonce', nonce);
-		headers.append('X-API-Intended-Origin', origin);
-		headers.append('X-API-Signature', sigResp.signature);
+		for (let i = 0; i < retries; i++) {
+			try {
+				const sigResp = await this.getSignature(nonce, origin);
+
+				headers.append('X-API-Nonce', nonce);
+				headers.append('X-API-Intended-Origin', origin);
+				headers.append('X-API-Signature', sigResp.signature);
+
+				return;
+			} catch (error) {
+				lastError = error as Error;
+
+				if (i < retries - 1) {
+					// Exponential backoff: waits 1 s, then 2 s.
+					await new Promise((resolve) => setTimeout(resolve, Math.pow(2, i) * 1000));
+				}
+			}
+		}
+
+		throw lastError || new Error('Failed to get signature after multiple retries.');
 	}
 
-	public async post<T>(url: string, nonce: string, data: object): Promise<T> {
+	public async post<T>(url: string, data: object): Promise<T> {
+		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
 
@@ -135,7 +160,8 @@ export class ApiClient {
 		return await response.json();
 	}
 
-	public async get<T>(url: string, nonce: string): Promise<T> {
+	public async get<T>(url: string): Promise<T> {
+		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const cached = this.getFromCache<T>(url);
 		const fullUrl = new URL(url, this.basedURL);
