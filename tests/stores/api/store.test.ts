@@ -37,6 +37,7 @@ describe('useApiStore', () => {
 	it('boots in dev mode', () => {
 		const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
 		store.boot();
+		expect(client.isDev).toHaveBeenCalled();
 		expect(spy).toHaveBeenCalledWith('API client booted ...');
 		spy.mockRestore();
 	});
@@ -44,6 +45,7 @@ describe('useApiStore', () => {
 	it('gets profile', async () => {
 		client.get.mockResolvedValue({ data: { name: 'gus' } });
 		const res = await store.getProfile();
+		expect(client.get).toHaveBeenCalledWith('profile');
 		expect(res).toEqual({ data: { name: 'gus' } });
 	});
 
@@ -55,6 +57,7 @@ describe('useApiStore', () => {
 	it('gets categories', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getCategories();
+		expect(client.get).toHaveBeenCalledWith('categories?limit=5');
 		expect(res).toEqual({ list: [] });
 	});
 
@@ -64,8 +67,10 @@ describe('useApiStore', () => {
 	});
 
 	it('gets posts', async () => {
+		const filters = {};
 		client.post.mockResolvedValue({ list: [] });
-		const res = await store.getPosts({});
+		const res = await store.getPosts(filters);
+		expect(client.post).toHaveBeenCalledWith('posts?limit=5', filters);
 		expect(res).toEqual({ list: [] });
 	});
 
@@ -77,6 +82,7 @@ describe('useApiStore', () => {
 	it('gets single post', async () => {
 		client.get.mockResolvedValue({ slug: 'a' });
 		const res = await store.getPost('a');
+		expect(client.get).toHaveBeenCalledWith('posts/a');
 		expect(res).toEqual({ slug: 'a' });
 	});
 
@@ -88,6 +94,7 @@ describe('useApiStore', () => {
 	it('gets experience', async () => {
 		client.get.mockResolvedValue({ exp: true });
 		const res = await store.getExperience();
+		expect(client.get).toHaveBeenCalledWith('experience');
 		expect(res).toEqual({ exp: true });
 	});
 
@@ -99,6 +106,7 @@ describe('useApiStore', () => {
 	it('gets recommendations', async () => {
 		client.get.mockResolvedValue({ list: ['a'] });
 		const res = await store.getRecommendations();
+		expect(client.get).toHaveBeenCalledWith('recommendations');
 		expect(res).toEqual({ list: ['a'] });
 	});
 
@@ -110,6 +118,7 @@ describe('useApiStore', () => {
 	it('gets projects', async () => {
 		client.get.mockResolvedValue({ list: [1] });
 		const res = await store.getProjects();
+		expect(client.get).toHaveBeenCalledWith('projects');
 		expect(res).toEqual({ list: [1] });
 	});
 
@@ -121,6 +130,7 @@ describe('useApiStore', () => {
 	it('gets talks', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getTalks();
+		expect(client.get).toHaveBeenCalledWith('talks');
 		expect(res).toEqual({ list: [] });
 	});
 
@@ -132,6 +142,7 @@ describe('useApiStore', () => {
 	it('gets social', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getSocial();
+		expect(client.get).toHaveBeenCalledWith('social');
 		expect(res).toEqual({ list: [] });
 	});
 
@@ -143,6 +154,7 @@ describe('useApiStore', () => {
 	it('gets education', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getEducation();
+		expect(client.get).toHaveBeenCalledWith('education');
 		expect(res).toEqual({ list: [] });
 	});
 
