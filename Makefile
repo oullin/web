@@ -4,6 +4,18 @@
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
 
+BUILD_VERSION ?= latest
+BUILD_PACKAGE_OWNER := oullin_web
+
+NC     := \033[0m
+BOLD   := \033[1m
+CYAN   := \033[36m
+WHITE  := \033[37m
+GREEN  := \033[0;32m
+BLUE   := \033[0;34m
+RED    := \033[0;31m
+YELLOW := \033[1;33m
+
 format:
 	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html}' --ignore-path .prettierignore
 	make lint-fix
@@ -18,14 +30,25 @@ lint-fix:
 	npx eslint . --fix
 
 # --- Build
-prod-fresh:
-	docker compose --profile prod down --volumes --rmi all --remove-orphans
-	docker ps
-	make prod-up
+build-ci:
+	@printf "\n$(CYAN)Building production images for CI$(NC)\n"
+	# This 'build' command only builds the images; it does not run them.
+	@docker compose --profile prod build
 
-prod-up:
-	docker compose --profile prod build --no-cache
+build-release:
+	@printf "\n$(YELLOW)Tagging images to be released.$(NC)\n"
+	docker tag web-web ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
+
+	@printf "\n$(GREEN)Pushing release to GitHub registry.$(NC)\n"
+	docker push ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
+
+build-deploy:
+	docker compose --env-file ./.env --profile prod up -d
+
+build-prod-fresh:
+	docker compose --profile prod down --volumes --rmi all --remove-orphans --no-cache
 	docker compose --profile prod up -d
+	docker ps
 
 local-fresh:
 	docker compose --profile local down --volumes --rmi all --remove-orphans

@@ -1,0 +1,98 @@
+name: "WEB-VPS"
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-push:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04]
+
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      IMAGE_TAG: ${{ steps.set-tag.outputs.IMAGE_TAG }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Image Tag
+        id: set-tag
+        run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker with Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create .env File
+        run: echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+        shell: bash
+
+      - name: Build Release Images
+        run: make build-ci
+
+      - name: Log in to GitHub Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release Artifacts
+        run: make build-release BUILD_VERSION=${{ steps.set-tag.outputs.IMAGE_TAG }}
+
+  deploy-to-vps:
+    name: Deploy to VPS
+    needs: build-and-push
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: SSH and Pull Images on VPS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -Eeuo pipefail
+            IMAGE_TAG=${{ needs.build-and-push.outputs.IMAGE_TAG }}
+
+            echo "🔑 Logging into GitHub Container Registry ..."
+            echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            echo "🚚 Pulling latest images with tag: $IMAGE_TAG"
+            docker pull ghcr.io/oullin/oullin_web:$IMAGE_TAG
+
+            echo "🏷️ Retagging for Compose…"
+            docker tag ghcr.io/oullin/oullin_web:$IMAGE_TAG    api-web:latest
+
+            echo "🧹 Pruning old, unused Docker images ..."
+            docker image prune -f
+
+            echo "📂 Updating repository ..."
+            TARGET_DIR="${{ secrets.VPS_TARGET_DIR }}"
+            if [ ! -d "$TARGET_DIR/.git" ]; then
+              echo "Target directory is not a git repository. Cloning..."
+              git clone https://github.com/${{ github.repository }}.git "$TARGET_DIR"
+            fi
+
+            cd "$TARGET_DIR"
+            git config --global --add safe.directory "$PWD" || true
+            git fetch --prune origin main
+            (git checkout main || git switch main)
+            git reset --hard origin/main
+
+            echo "🚀 Restarting containers ..."
+            cd ${{ secrets.VPS_WEB_DIR }}
+            make build-deploy
+
+            echo "✅ Deployment completed!"
