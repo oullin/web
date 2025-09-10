@@ -44,7 +44,7 @@ build-release:
 	docker push ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
 
 build-deploy:
-	docker compose --env-file ./.env --profile prod up -d
+	docker compose --env-file ./.env --profile prod up -d --no-build
 
 build-prod-fresh:
 	docker compose --profile prod down --volumes --rmi all --remove-orphans --no-cache
