@@ -6,6 +6,7 @@ ROOT_PATH := $(shell pwd)
 
 BUILD_VERSION ?= latest
 BUILD_PACKAGE_OWNER := oullin_web
+WEB_TAG ?= web-prod-builder
 
 NC     := \033[0m
 BOLD   := \033[1m
@@ -37,7 +38,7 @@ build-ci:
 
 build-release:
 	@printf "\n$(YELLOW)Tagging images to be released.$(NC)\n"
-	docker tag web-web ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
+	docker tag $(WEB_TAG) ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
 
 	@printf "\n$(GREEN)Pushing release to GitHub registry.$(NC)\n"
 	docker push ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
