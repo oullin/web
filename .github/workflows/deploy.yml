@@ -106,12 +106,9 @@ jobs:
                 echo "✅ Git repository found. Updating..."
 
                 cd "$TARGET_DIR"
-                mv .env /tmp/.env.bak 2>/dev/null || true
 
                 git fetch --prune origin main
                 git reset --hard origin/main
-
-                mv /tmp/.env.bak .env 2>/dev/null || true
             else
                 echo "⚠️ Not a Git repository. Performing a clean clone while preserving .env..."
 
@@ -130,6 +127,11 @@ jobs:
             fi
 
             echo "🚀 Restarting containers ..."
+
+            if [ ! -f .env ]; then
+                echo "⚠️ .env file not found. Creating a new one from secrets..."
+                echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+            fi
 
             docker compose --env-file ./.env --profile prod up -d --no-build
 
