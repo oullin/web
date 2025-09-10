@@ -38,7 +38,21 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Create .env File
-        run: echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+        run: |
+            # Check if the secret is empty or not.
+            if [ -z "${{ secrets.ENV_FILE_CONTENT }}" ]; then
+                echo "Warning: The ENV_FILE_CONTENT secret is empty or not set."
+            else
+                # Check if the .env file already exists in the checkout.
+                if [ -f .env ]; then
+                    echo "Found existing .env file. Overwriting with content from secrets..."
+                else
+                    echo "No .env file found. Creating a new one from secrets..."
+                fi
+
+                # This command creates the file or overwrites it if it exists.
+                echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+            fi
         shell: bash
 
       - name: Build Release Images
