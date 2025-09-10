@@ -33,6 +33,8 @@ services:
 
     # PRODUCTION Service
     caddy-prod:
+        env_file:
+            - ./.env
         profiles:
             - prod
         container_name: web_caddy_prod
