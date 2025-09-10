@@ -106,8 +106,12 @@ jobs:
                 echo "✅ Git repository found. Updating..."
 
                 cd "$TARGET_DIR"
+                mv .env /tmp/.env.bak 2>/dev/null || tru
+
                 git fetch --prune origin main
                 git reset --hard origin/main
+
+                mv /tmp/.env.bak .env 2>/dev/null || true
             else
                 echo "⚠️ Not a Git repository. Performing a clean clone while preserving .env..."
 

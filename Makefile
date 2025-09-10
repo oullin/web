@@ -1,5 +1,5 @@
 .PHONY: format env-fresh lint-fix
-.PHONY: prod-fresh prod-up local-fresh local-up
+.PHONY: prod-up local-fresh local-up
 
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
@@ -45,11 +45,6 @@ build-release:
 
 build-deploy:
 	docker compose --env-file ./.env --profile prod up -d --no-build
-
-build-prod-fresh:
-	docker compose --profile prod down --volumes --rmi all --remove-orphans --no-cache
-	docker compose --profile prod up -d
-	docker ps
 
 local-fresh:
 	docker compose --profile local down --volumes --rmi all --remove-orphans
