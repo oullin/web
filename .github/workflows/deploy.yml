@@ -81,7 +81,7 @@ jobs:
             docker pull ghcr.io/oullin/oullin_web:$IMAGE_TAG
 
             echo "🏷️ Retagging for Compose…"
-            docker tag ghcr.io/${{ github.repository_owner }}/oullin_web:$IMAGE_TAG
+            docker tag ghcr.io/${{ github.repository_owner }}/oullin_web:$IMAGE_TAG web-prod-builder:latest
 
             echo "🧹 Pruning old, unused Docker images ..."
             docker image prune -f
