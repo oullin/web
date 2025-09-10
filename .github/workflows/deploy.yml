@@ -106,7 +106,7 @@ jobs:
                 echo "✅ Git repository found. Updating..."
 
                 cd "$TARGET_DIR"
-                mv .env /tmp/.env.bak 2>/dev/null || tru
+                mv .env /tmp/.env.bak 2>/dev/null || true
 
                 git fetch --prune origin main
                 git reset --hard origin/main
