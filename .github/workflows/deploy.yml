@@ -52,7 +52,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release Artifacts
-        run: make build-release BUILD_VERSION=${{ steps.set-tag.outputs.IMAGE_TAG }}
+        run: make build-release BUILD_PACKAGE_OWNER=${{ github.repository_owner }} BUILD_VERSION=${{ steps.set-tag.outputs.IMAGE_TAG }}
 
   deploy-to-vps:
     if: >

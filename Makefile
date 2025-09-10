@@ -5,8 +5,8 @@ SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
 
 BUILD_VERSION ?= latest
-BUILD_PACKAGE_OWNER := oullin_web
 WEB_TAG ?= web-prod-builder
+BUILD_PACKAGE_OWNER ?= oullin_web
 
 NC     := \033[0m
 BOLD   := \033[1m
