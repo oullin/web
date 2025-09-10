@@ -112,6 +112,7 @@ jobs:
             fi
 
             echo "🚀 Restarting containers ..."
-            make build-deploy
+
+            docker compose --env-file ./.env --profile prod up -d
 
             echo "✅ Deployment completed!"
