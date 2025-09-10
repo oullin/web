@@ -81,7 +81,7 @@ jobs:
             docker pull ghcr.io/oullin/oullin_web:$IMAGE_TAG
 
             echo "🏷️ Retagging for Compose…"
-            docker tag ghcr.io/oullin/oullin_web:$IMAGE_TAG    api-web:latest
+            docker tag ghcr.io/${{ github.repository_owner }}/oullin_web:$IMAGE_TAG
 
             echo "🧹 Pruning old, unused Docker images ..."
             docker image prune -f
@@ -113,6 +113,6 @@ jobs:
 
             echo "🚀 Restarting containers ..."
 
-            docker compose --env-file ./.env --profile prod up -d
+            docker compose --env-file ./.env --profile prod up -d --no-build
 
             echo "✅ Deployment completed!"
