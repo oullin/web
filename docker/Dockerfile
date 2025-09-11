@@ -5,8 +5,10 @@ FROM node:22-alpine AS builder
 
 ARG VITE_API_ENV
 ARG VITE_API_URL
+ARG VITE_HOST_URL
 ARG VITE_ACCOUNT_NAME
 ARG VITE_PUBLIC_KEY
+ARG ENV_API_LOCAL_DIR
 
 # Set the working directory inside the container
 WORKDIR /app
