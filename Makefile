@@ -1,12 +1,14 @@
-.PHONY: format env-fresh lint-fix
-.PHONY: prod-up local-fresh local-up
+.PHONY: format
 
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
 
+include $(ROOT_PATH)/.env
+
 BUILD_VERSION ?= latest
 WEB_TAG ?= web-prod-builder
 BUILD_PACKAGE_OWNER ?= oullin_web
+CADDY_MTLS_DIR = $(ROOT_PATH)/caddy/mtls
 
 NC     := \033[0m
 BOLD   := \033[1m
@@ -29,6 +31,21 @@ env-fresh:
 
 lint-fix:
 	npx eslint . --fix
+
+# --- Caddy
+caddy-gen-cert:
+	@echo "APP NAME ........ : $(API_LOCAL_DIR)		"
+	openssl genrsa -out $(CADDY_MTLS_DIR)/client.key 4096
+	openssl req -new -key $(CADDY_MTLS_DIR)/client.key -subj "/CN=web-caddy" -out $(CADDY_MTLS_DIR)/client.csr
+	openssl x509 -req \
+		-in $(CADDY_MTLS_DIR)/client.csr \
+		-CA $(ENV_API_LOCAL_DIR)/ca.pem -CAkey $(ENV_API_LOCAL_DIR)/ca.key \
+		-CAserial $(ENV_API_LOCAL_DIR)/ca.srl \
+		-out $(CADDY_MTLS_DIR)/client.pem \
+		-days 1095 -sha256 \
+		-extfile <(printf "extendedKeyUsage=clientAuth")
+	chmod 600 $(CADDY_MTLS_DIR)/client.key
+	chmod 644 $(CADDY_MTLS_DIR)/client.pem
 
 # --- Build
 build-ci:
