@@ -12,7 +12,6 @@ build-ci:
 build-release:
 	@printf "\n$(YELLOW)Tagging images to be released.$(NC)\n"
 	docker tag $(WEB_TAG) ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
-
 	@printf "\n$(GREEN)Pushing release to GitHub registry.$(NC)\n"
 	docker push ghcr.io/$(BUILD_PACKAGE_OWNER)/oullin_web:$(BUILD_VERSION)
 
