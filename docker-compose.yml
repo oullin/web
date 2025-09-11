@@ -52,6 +52,8 @@ services:
         volumes:
             - oullin_web_data:/data
             - oullin_web_config:/config
+            - ./caddy/mtls/client.pem:/etc/caddy/mtls/client.pem:ro
+            - ./caddy/mtls/client.key:/etc/caddy/mtls/client.key:ro
         depends_on:
             - app-builder
         # Connects to the existing shared network from API's.
