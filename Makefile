@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
 
-include $(ROOT_PATH)/.env
+-include $(ROOT_PATH)/.env
 
 BUILD_VERSION ?= latest
 WEB_TAG ?= web-prod-builder
