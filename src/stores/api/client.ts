@@ -29,6 +29,7 @@ export interface ApiResponse<T> {
 export class ApiClient {
 	private readonly env: string;
 	private readonly apiKey: string;
+	private readonly hostURL: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
 
@@ -36,6 +37,7 @@ export class ApiClient {
 		this.env = options.env;
 		this.apiKey = options.apiKey;
 		this.apiUsername = options.apiUsername;
+		this.hostURL = `${import.meta.env.VITE_HOST_URL}`;
 		this.basedURL = `${import.meta.env.VITE_API_URL}`;
 	}
 
@@ -88,7 +90,7 @@ export class ApiClient {
 
 	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
 		const headers = this.createHeaders();
-		const fullUrl = new URL('generate-signature', this.basedURL);
+		const fullUrl = new URL('relay/generate-signature', this.hostURL);
 
 		if (this.isProd() && fullUrl.protocol !== 'https:') {
 			throw new Error('Signature endpoint must be accessed over HTTPS.');

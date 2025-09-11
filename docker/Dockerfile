@@ -7,7 +7,6 @@ ARG VITE_API_ENV
 ARG VITE_API_URL
 ARG VITE_ACCOUNT_NAME
 ARG VITE_PUBLIC_KEY
-ARG VITE_PUBLIC_SIGNATURE
 
 # Set the working directory inside the container
 WORKDIR /app

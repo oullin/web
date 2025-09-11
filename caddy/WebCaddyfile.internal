@@ -4,4 +4,23 @@
 	root * /usr/share/caddy
 	file_server
 	try_files {path} /index.html
+
+	# Relay: browser calls this
+    @relay handle_path /relay/generate-signature*
+
+    handle @relay {
+        reverse_proxy https://oullin_proxy_prod:8443 {
+            # Map relay path -> real API path
+            uri replace ^/relay/generate-signature /api/generate-signature
+
+            transport http {
+                tls
+                # Keep it simple; or mount a root CA and use 'root_ca' instead.
+                tls_insecure_skip_verify
+
+                # Client cert for mTLS
+                client_certificate /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
+            }
+        }
+    }
 }
