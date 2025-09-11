@@ -90,7 +90,6 @@ export class ApiClient {
 
 	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
 		const headers = this.createHeaders();
-		// @todo Add comments here on the `why` of using `rely`
 		const fullUrl = new URL('relay/generate-signature', this.hostURL);
 
 		if (this.isProd() && fullUrl.protocol !== 'https:') {

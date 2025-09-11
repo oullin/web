@@ -34,7 +34,6 @@ lint-fix:
 
 # --- Caddy
 caddy-gen-cert:
-	@echo "APP NAME ........ : $(API_LOCAL_DIR)		"
 	openssl genrsa -out $(CADDY_MTLS_DIR)/client.key 4096
 	openssl req -new -key $(CADDY_MTLS_DIR)/client.key -subj "/CN=web-caddy" -out $(CADDY_MTLS_DIR)/client.csr
 	openssl x509 -req \
