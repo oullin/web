@@ -9,8 +9,10 @@ services:
             args:
                 VITE_API_ENV: ${VITE_API_ENV}
                 VITE_API_URL: ${VITE_API_URL}
+                VITE_HOST_URL: ${VITE_HOST_URL}
                 VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
                 VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+                ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
             context: .
             dockerfile: docker/Dockerfile
             target: builder
@@ -47,8 +49,10 @@ services:
                 BUILDER_IMAGE: app-builder-image:${TAG:-latest}
                 VITE_API_ENV: ${VITE_API_ENV}
                 VITE_API_URL: ${VITE_API_URL}
+                VITE_HOST_URL: ${VITE_HOST_URL}
                 VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
                 VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+                ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
         volumes:
             - oullin_web_data:/data
             - oullin_web_config:/config
