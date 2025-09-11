@@ -1,25 +1,19 @@
-# This file is for the internal web_caddy_prod container.
-# Its only job is to serve the static files over HTTP on port 80.
+# web/caddy/WebCaddyfile.internal
 :80 {
-	root * /usr/share/caddy
-	file_server
-	try_files {path} /index.html
+    root * /usr/share/caddy
+    file_server
+    try_files {path} /index.html
 
-	# Relay: browser calls this
-    @relay handle_path /relay/generate-signature*
-
+    @relay path /relay/generate-signature*
     handle @relay {
+        # rewrite relay path -> real API path
+        uri replace ^/relay/generate-signature /api/generate-signature
+
         reverse_proxy https://oullin_proxy_prod:8443 {
-            # Map relay path -> real API path
-            uri replace ^/relay/generate-signature /api/generate-signature
-
             transport http {
-                tls
-                # Keep it simple; or mount a root CA and use 'root_ca' instead.
-                tls_insecure_skip_verify
-
-                # Client cert for mTLS
-                client_certificate /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
+                tls # use HTTPS to upstream
+                tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
+                tls_trust_pool file /etc/caddy/mtls/ca.pem  # trust the API's CA
             }
         }
     }
