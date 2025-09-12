@@ -62,7 +62,8 @@ services:
             - ./caddy/mtls:/etc/caddy/mtls:ro
         # Connects to the existing shared network from API's.
         networks:
-            - caddy_net
+            caddy_net:
+                - aliases: [web]
 
 networks:
     web_internal:

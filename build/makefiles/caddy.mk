@@ -9,7 +9,7 @@ caddy-fresh:
 	@make caddy-gen-certs
 
 caddy-restart:
-	docker compose up -d --force-recreate web_caddy_prod
+	docker compose up -d --force-recreate caddy-prod
 
 caddy-validate:
 	docker run --rm \
