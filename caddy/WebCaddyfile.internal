@@ -11,7 +11,7 @@
                 transport http {
                     tls
                     tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
-                    tls_trust_pool file /etc/caddy/mtls/ca.pem
+                    tls_trust_pool file /etc/caddy/mtls/client.pem
                 }
             }
         }
