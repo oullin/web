@@ -63,7 +63,8 @@ services:
         # Connects to the existing shared network from API's.
         networks:
             caddy_net:
-                - aliases: [web]
+                aliases:
+                    - web
 
 networks:
     web_internal:
