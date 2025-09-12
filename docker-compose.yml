@@ -3,6 +3,8 @@ services:
     app-builder:
         env_file:
             - ./.env
+        profiles:
+            - builder # Prevent the app-builder service from starting during your production deployment
         image: app-builder-image:${TAG:-latest}
         container_name: app-builder
         build:
