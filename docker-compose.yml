@@ -58,8 +58,6 @@ services:
             - oullin_web_data:/data
             - oullin_web_config:/config
             - ./caddy/mtls:/etc/caddy/mtls:ro
-        depends_on:
-            - app-builder
         # Connects to the existing shared network from API's.
         networks:
             - caddy_net
