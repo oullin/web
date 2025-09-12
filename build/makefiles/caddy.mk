@@ -1,7 +1,5 @@
 .PHONY: caddy-gen-certs caddy-del-certs caddy-validate
 
-#include $(ROOT_PATH)/.env
-#CADDY_ROOT_PATH := $(shell pwd)
 CADDY_MTLS_DIR := $(ROOT_PATH)/caddy/mtls
 
 caddy-gen-certs:
