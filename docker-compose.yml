@@ -30,6 +30,7 @@ services:
         volumes:
             - ./dist:/usr/share/caddy
             - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
+            - ./caddy/mtls:/etc/caddy/mtls:ro
         networks:
             - web_internal
 
@@ -56,8 +57,7 @@ services:
         volumes:
             - oullin_web_data:/data
             - oullin_web_config:/config
-            - ./caddy/mtls/client.pem:/etc/caddy/mtls/client.pem:ro
-            - ./caddy/mtls/client.key:/etc/caddy/mtls/client.key:ro
+            - ./caddy/mtls:/etc/caddy/mtls:ro
             - ${ENV_API_LOCAL_DIR}/ca.pem:/etc/caddy/mtls/ca.pem:ro
         depends_on:
             - app-builder

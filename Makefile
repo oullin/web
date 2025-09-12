@@ -14,8 +14,8 @@ BLUE   := \033[0;34m
 RED    := \033[0;31m
 YELLOW := \033[1;33m
 
-include ./build/makefiles/caddy.mk
-include ./build/makefiles/build.mk
+include $(ROOT_PATH)/build/makefiles/caddy.mk
+include $(ROOT_PATH)/build/makefiles/build.mk
 
 # ---------
 

@@ -6,7 +6,6 @@ BUILD_PACKAGE_OWNER ?= oullin_web
 
 build-ci:
 	@printf "\n$(CYAN)Building production images for CI$(NC)\n"
-	# This 'build' command only builds the images; it does not run them.
 	@docker compose --profile prod build
 
 build-release:
