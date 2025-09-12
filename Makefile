@@ -1,4 +1,4 @@
-.PHONY: format env-fresh lint-fix local-fresh local-up
+.PHONY: format env-fresh lint-fix
 
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
@@ -31,12 +31,3 @@ env-fresh:
 
 lint-fix:
 	npx eslint . --fix
-
-local-fresh:
-	docker compose --profile local down --volumes --rmi all --remove-orphans
-	docker ps
-	make local-up
-
-local-up:
-	docker compose --profile local build --no-cache
-	docker compose --profile local up -d
