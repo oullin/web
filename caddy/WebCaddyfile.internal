@@ -12,7 +12,7 @@
         reverse_proxy https://oullin_proxy_prod:8443 {
             transport http {
                 tls # use HTTPS to upstream
-                client_certificate /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
+                tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
                 tls_trust_pool file /etc/caddy/mtls/ca.pem  # trust the API's CA
             }
         }
