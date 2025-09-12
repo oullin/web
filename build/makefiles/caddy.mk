@@ -1,4 +1,4 @@
-.PHONY: caddy-gen-certs caddy-del-certs caddy-validate caddy-fresh
+.PHONY: caddy-gen-certs caddy-del-certs caddy-validate caddy-fresh caddy-restart
 
 CADDY_MTLS_DIR := $(ROOT_PATH)/caddy/mtls
 
@@ -7,6 +7,15 @@ caddy-fresh:
 	@make caddy-del-certs
 	@echo " "
 	@make caddy-gen-certs
+
+caddy-restart:
+	docker compose up -d --force-recreate web_caddy_prod
+
+caddy-validate:
+	docker run --rm \
+      -v "$(ROOT_PATH)/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
+      -v "$(ROOT_PATH)/caddy/mtls:/etc/caddy/mtls:ro" \
+      caddy:2.10.0 caddy validate --config /etc/caddy/Caddyfile
 
 caddy-gen-certs:
 	@set -euo pipefail; \
@@ -61,9 +70,3 @@ caddy-del-certs:
 	else \
 	  printf "$(YELLOW)⚠️  %s does not exist$(NC)\n" "$$WEB_MTLS"; \
 	fi
-
-caddy-validate:
-	docker run --rm \
-      -v "$(ROOT_PATH)/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
-      -v "$(ROOT_PATH)/caddy/mtls:/etc/caddy/mtls:ro" \
-      caddy:2.10.0 caddy validate --config /etc/caddy/Caddyfile
