@@ -1,11 +1,8 @@
-# web/caddy/WebCaddyfile.internal
-:80 {
-    # This route block ensures handlers are checked in this specific order.
+oullin.io:80, www.oullin.io:80 {
     route {
-        # 1. First, check if the request matches the @relay path.
-        @relay path /relay/generate-signature*
-        handle @relay {
-            uri replace /relay/generate-signature /api/generate-signature
+        # Relay: strip "/relay" and forward to the internal mTLS endpoint
+        handle_path /relay/* {
+            rewrite * /api{path}
 
             reverse_proxy https://proxy:8443 {
                 transport http {
@@ -16,11 +13,16 @@
             }
         }
 
-        # 2. If it's not a relay request, then handle it as a static file.
+        # Static app
         handle {
             root * /usr/share/caddy
             try_files {path} /index.html
             file_server
         }
+    }
+
+    log {
+        output stdout
+        format json
     }
 }

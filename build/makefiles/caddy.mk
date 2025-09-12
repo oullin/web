@@ -17,19 +17,20 @@ caddy-validate:
       -v "$(ROOT_PATH)/caddy/mtls:/etc/caddy/mtls:ro" \
       caddy:2.10.0 caddy validate --config /etc/caddy/Caddyfile
 
-caddy-gen-sync:
-	cp "$(ENV_API_LOCAL_DIR)/ca.pem" "$(CADDY_MTLS_DIR)/ca.pem"
-	openssl genrsa -out "$(CADDY_MTLS_DIR)/client.key" 2048
+caddy-sync-certs:
+	@set -euo pipefail; \
+	cp "$(ENV_API_LOCAL_DIR)/ca.pem" "$(CADDY_MTLS_DIR)/ca.pem"; \
+	openssl genrsa -out "$(CADDY_MTLS_DIR)/client.key" 2048; \
 	openssl req -new -key "$(CADDY_MTLS_DIR)/client.key" \
 	  -out "$(CADDY_MTLS_DIR)/client.csr" \
-	  -subj "/CN=web-caddy"
-	printf "extendedKeyUsage = clientAuth\n" > "$(CADDY_MTLS_DIR)/client_ext.cnf"
+	  -subj "/CN=web-caddy"; \
+	printf "extendedKeyUsage = clientAuth\n" > "$(CADDY_MTLS_DIR)/client_ext.cnf"; \
 	openssl x509 -req -in "$(CADDY_MTLS_DIR)/client.csr" \
       -CA "$(ENV_API_LOCAL_DIR)/ca.pem" -CAkey "$(ENV_API_LOCAL_DIR)/ca.key" -CAcreateserial \
       -out "$(CADDY_MTLS_DIR)/client.pem" -days 825 -sha256 \
-      -extfile "$(CADDY_MTLS_DIR)/client_ext.cnf"
-	chmod 600 "$(CADDY_MTLS_DIR)/"*.key
-	chmod 644 "$(CADDY_MTLS_DIR)/"*.pem
+      -extfile "$(CADDY_MTLS_DIR)/client_ext.cnf"; \
+	chmod 600 "$(CADDY_MTLS_DIR)/"*.key; \
+	chmod 644 "$(CADDY_MTLS_DIR)/"*.pem;
 
 caddy-gen-certs:
 	@set -euo pipefail; \
