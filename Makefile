@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
 
-include $(ROOT_PATH)/.env
+-include $(ROOT_PATH)/.env
 
 NC     := \033[0m
 BOLD   := \033[1m
