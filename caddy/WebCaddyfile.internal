@@ -1,4 +1,4 @@
-oullin.io:80, www.oullin.io:80 {
+:80 {
     route {
         # Relay: strip "/relay" and forward to the internal mTLS endpoint
         handle_path /relay/* {
