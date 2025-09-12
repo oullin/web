@@ -13,7 +13,7 @@
             transport http {
                 tls # use HTTPS to upstream
                 tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
-                tls_trust_pool file /etc/caddy/mtls/ca.pem  # trust the API's CA
+                tls_trust_pool file /etc/caddy/mtls/client.pem  # trust the API's CA
             }
         }
     }
