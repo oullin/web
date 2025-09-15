@@ -3,9 +3,17 @@
 }
 
 :80 {
+    @relay_get {
+        path /relay/*
+        method GET
+    }
+
+    handle @relay_get {
+        respond 405
+    }
+
     # Strip /relay and forward to API mTLS gateway
     handle_path /relay/* {
-        uri strip_prefix /relay
         rewrite * /api{path}
 
         reverse_proxy https://oullin_proxy_prod:8443 {
