@@ -163,4 +163,12 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
+import { applySeo } from '@/seo';
+import ogImage from '@images/profile/about.jpg';
+
+applySeo({
+        title: 'Subscribe – Gustavo Ocanto',
+        description: 'Subscribe to receive the latest articles and updates.',
+        image: ogImage,
+});
 </script>

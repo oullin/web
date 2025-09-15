@@ -53,9 +53,18 @@ import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
+import { applySeo } from '@/seo';
+import ogImage from '@images/profile/about.jpg';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
+
+applySeo({
+        title: 'Gustavo Ocanto – Home',
+        description:
+                'Engineering leader building reliable and smooth software. Explore articles, projects and talks.',
+        image: ogImage,
+});
 
 onMounted(async () => {
 	try {

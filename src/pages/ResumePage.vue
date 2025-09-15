@@ -56,12 +56,21 @@ import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
+import { applySeo } from '@/seo';
+import ogImage from '@images/profile/about.jpg';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
+
+applySeo({
+        title: 'Resume – Gustavo Ocanto',
+        description:
+                'Review the experience, education, and recommendations of Gustavo Ocanto.',
+        image: ogImage,
+});
 
 onMounted(async () => {
 	try {
