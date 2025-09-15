@@ -87,7 +87,7 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
-import { applySeo } from '@/seo';
+import { seo } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
@@ -102,15 +102,15 @@ const aboutPicture = computed<string>(() => {
 });
 
 const formattedNickname = computed((): string => {
-        const str = nickname.value;
+	const str = nickname.value;
 
-        return str.charAt(0).toUpperCase() + str.slice(1);
+	return str.charAt(0).toUpperCase() + str.slice(1);
 });
 
-applySeo({
-        title: 'About – Gustavo Ocanto',
-        description: "I'm an engineering leader based in Singapore who enjoys the present.",
-        image: AboutPicture,
+seo.apply({
+	title: 'About',
+	description: "I'm an engineering leader based in Singapore who enjoys the present.",
+	image: AboutPicture,
 });
 
 onMounted(async () => {

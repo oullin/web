@@ -66,18 +66,17 @@ import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
-import { applySeo } from '@/seo';
+import { seo } from '@/support/seo';
 import ogImage from '@images/profile/about.jpg';
 
 const apiStore = useApiStore();
 const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
 
-applySeo({
-        title: 'Projects – Gustavo Ocanto',
-        description:
-                'Explore open source and client projects built to solve real engineering challenges.',
-        image: ogImage,
+seo.apply({
+	title: 'Projects',
+	description: 'Explore open source and client projects built to solve real engineering challenges.',
+	image: ogImage,
 });
 
 onMounted(async () => {

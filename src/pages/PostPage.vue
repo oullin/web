@@ -126,7 +126,7 @@ import type { PostResponse } from '@api/response/index.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import { date, getReadingTime, initializeHighlighter } from '@/public.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
-import { applySeo } from '@/seo';
+import { seo } from '@/support/seo';
 
 // --- Component
 const route = useRoute();
@@ -192,34 +192,34 @@ watch(htmlContent, async () => {
 });
 
 onMounted(async () => {
-        await initializeHighlighter(highlight);
+	await initializeHighlighter(highlight);
 
-        try {
-                post.value = (await apiStore.getPost(slug.value)) as PostResponse;
+	try {
+		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 
-                if (post.value) {
-                        applySeo({
-                                title: post.value.title,
-                                description: post.value.excerpt,
-                                image: post.value.cover_image_url,
-                                type: 'article',
-                                url: fullURLFor(post.value),
-                                jsonLd: {
-                                        '@context': 'https://schema.org',
-                                        '@type': 'Article',
-                                        headline: post.value.title,
-                                        description: post.value.excerpt,
-                                        image: post.value.cover_image_url,
-                                        datePublished: post.value.published_at,
-                                        author: {
-                                                '@type': 'Person',
-                                                name: post.value.author.display_name,
-                                        },
-                                },
-                        });
-                }
-        } catch (error) {
-                debugError(error);
-        }
+		if (post.value) {
+			seo.apply({
+				title: post.value.title,
+				description: post.value.excerpt,
+				image: post.value.cover_image_url,
+				type: 'article',
+				url: fullURLFor(post.value),
+				jsonLd: {
+					'@context': 'https://schema.org',
+					'@type': 'Article',
+					headline: post.value.title,
+					description: post.value.excerpt,
+					image: post.value.cover_image_url,
+					datePublished: post.value.published_at,
+					author: {
+						'@type': 'Person',
+						name: post.value.author.display_name,
+					},
+				},
+			});
+		}
+	} catch (error) {
+		debugError(error);
+	}
 });
 </script>
