@@ -6,6 +6,7 @@
 
 import type { PostResponse } from '@api/response/posts-response.ts';
 
+export const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined) ?? window.location.origin;
 export const SITE_NAME = 'Gustavo Ocanto';
 
 export interface SeoOptions {
@@ -28,8 +29,9 @@ export interface SeoOptions {
 
 export class Seo {
 	apply(options: SeoOptions): void {
-		const url = options.url ?? window.location.href;
-		const image = options.image ? new URL(options.image, window.location.origin).toString() : undefined;
+		const currentPath = window.location.pathname + window.location.search;
+		const url = options.url ?? new URL(currentPath, SITE_URL).toString();
+		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
 		const description = options.description;
 
@@ -73,7 +75,7 @@ export class Seo {
 			description: post.excerpt,
 			image: post.cover_image_url,
 			type: 'article',
-			url: new URL(`/posts/${post.slug}`, window.location.origin).toString(),
+			url: new URL(`/posts/${post.slug}`, SITE_URL).toString(),
 			jsonLd: {
 				'@context': 'https://schema.org',
 				'@type': 'Article',
