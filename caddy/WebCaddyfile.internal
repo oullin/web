@@ -9,8 +9,12 @@
         rewrite * /api{path}
 
         reverse_proxy https://oullin_proxy_prod:8443 {
-        transport http {
+
+            header_up Host oullin_proxy_prod
+
+            transport http {
                 tls
+                tls_server_name oullin_proxy_prod
                 tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
                 tls_trust_pool file /etc/caddy/mtls/ca.pem
             }
