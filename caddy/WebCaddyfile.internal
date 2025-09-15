@@ -1,5 +1,9 @@
 :80 {
     route {
+        handle_path /relay/* {
+            respond 204
+        }
+
         # Relay: strip "/relay" and forward to the internal mTLS endpoint
         handle_path /relay/* {
             rewrite * /api{path}
