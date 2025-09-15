@@ -1,3 +1,7 @@
+{
+    debug
+}
+
 :80 {
     # Strip /relay and forward to API mTLS gateway
     handle_path /relay/* {
@@ -5,18 +9,15 @@
         rewrite * /api{path}
 
         reverse_proxy https://proxy:8443 {
-            transport http {
+        transport http {
                 tls
                 tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
                 tls_trust_pool file /etc/caddy/mtls/ca.pem
             }
-
-            # surface upstream errors clearly during debugging
-            health_timeout 5s
-            flush_interval -1
         }
     }
 
+    # Static SPA
     handle {
         root * /usr/share/caddy
         try_files {path} /index.html
