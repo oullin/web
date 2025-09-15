@@ -198,25 +198,7 @@ onMounted(async () => {
 		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 
 		if (post.value) {
-			seo.apply({
-				title: post.value.title,
-				description: post.value.excerpt,
-				image: post.value.cover_image_url,
-				type: 'article',
-				url: fullURLFor(post.value),
-				jsonLd: {
-					'@context': 'https://schema.org',
-					'@type': 'Article',
-					headline: post.value.title,
-					description: post.value.excerpt,
-					image: post.value.cover_image_url,
-					datePublished: post.value.published_at,
-					author: {
-						'@type': 'Person',
-						name: post.value.author.display_name,
-					},
-				},
-			});
+			seo.applyFromPost(post.value);
 		}
 	} catch (error) {
 		debugError(error);
