@@ -1,28 +1,26 @@
 :80 {
-    route {
-        handle_path /relay/* {
-            respond 204
-        }
+    # Strip /relay and forward to API mTLS gateway
+    handle_path /relay/* {
+        uri strip_prefix /relay
+        rewrite * /api{path}
 
-        # Relay: strip "/relay" and forward to the internal mTLS endpoint
-        handle_path /relay/* {
-            rewrite * /api{path}
-
-            reverse_proxy https://proxy:8443 {
-                transport http {
-                    tls
-                    tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
-                    tls_trust_pool file /etc/caddy/mtls/ca.pem
-                }
+        reverse_proxy https://proxy:8443 {
+            transport http {
+                tls
+                tls_client_auth /etc/caddy/mtls/client.pem /etc/caddy/mtls/client.key
+                tls_trust_pool file /etc/caddy/mtls/ca.pem
             }
-        }
 
-        # Static app
-        handle {
-            root * /usr/share/caddy
-            try_files {path} /index.html
-            file_server
+            # surface upstream errors clearly during debugging
+            health_timeout 5s
+            flush_interval -1
         }
+    }
+
+    handle {
+        root * /usr/share/caddy
+        try_files {path} /index.html
+        file_server
     }
 
     log {
