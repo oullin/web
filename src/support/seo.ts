@@ -81,28 +81,6 @@ export class Seo {
 		this.setJsonLd(options.jsonLd);
 	}
 
-	applyFromPost(post: PostResponse): void {
-		this.apply({
-			title: post.title,
-			description: post.excerpt,
-			image: post.cover_image_url,
-			type: 'article',
-			url: new URL(`/posts/${post.slug}`, SITE_URL).toString(),
-			jsonLd: {
-				'@context': 'https://schema.org',
-				'@type': 'Article',
-				headline: post.title,
-				description: post.excerpt,
-				image: post.cover_image_url,
-				datePublished: post.published_at,
-				author: {
-					'@type': 'Person',
-					name: SITE_NAME,
-				},
-			},
-		});
-	}
-
 	private setMetaByName(name: string, content?: string): void {
 		if (!hasDocument) return;
 		if (!content) return;
