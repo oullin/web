@@ -112,6 +112,10 @@ useSeo({
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/about'),
 	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
+	jsonLd: {
+		'@type': 'AboutPage',
+		name: 'About',
+	},
 });
 
 onMounted(async () => {

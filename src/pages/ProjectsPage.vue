@@ -77,6 +77,10 @@ useSeo({
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/projects'),
 	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
+	jsonLd: {
+		'@type': 'CollectionPage',
+		name: 'Projects',
+	},
 });
 
 onMounted(async () => {

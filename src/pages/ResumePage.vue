@@ -69,6 +69,10 @@ useSeo({
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/resume'),
 	description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
+	jsonLd: {
+		'@type': 'ProfilePage',
+		name: 'Resume',
+	},
 });
 
 onMounted(async () => {

@@ -170,5 +170,9 @@ useSeo({
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/subscribe'),
 	description: `Subscribe to ${SITE_NAME}'s newsletter to updates of articles and cool things he is working on.`,
+	jsonLd: {
+		'@type': 'WebPage',
+		name: 'Subscribe',
+	},
 });
 </script>

@@ -63,6 +63,10 @@ useSeo({
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/'),
 	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
+	jsonLd: {
+		'@type': 'WebPage',
+		name: 'Home',
+	},
 });
 
 onMounted(async () => {
