@@ -12,11 +12,3 @@ and reacts instantly to what you do.
 or add new features, you’re welcome to send a pull request and join the project.
 
 > This is where the mindful movement of “Ollin” truly comes alive, one request at a time.
-
-## Automated formatting workflow
-
-The repository includes a GitHub Action that runs `make format` on pushes to the `main` branch. Formatting changes are pushed
-to the `github-actions/format` branch and opened as a pull request. To let the workflow create pull requests, store a
-personal access token with **repo** scope in the repository secrets under the name `GH_ACTIONS_TOKEN`. Use the
-`GH_ACTIONS_USERNAME` and `GH_ACTIONS_EMAIL` secrets to provide the commit identity the workflow should use when it pushes
-formatting updates.
