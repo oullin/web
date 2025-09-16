@@ -21,6 +21,7 @@ const STORE_KEY = 'api-client-store';
 export interface ApiStoreState {
 	client: ApiClient;
 	searchTerm: string;
+	isBooted: boolean;
 }
 
 const client = new ApiClient(defaultCreds);
@@ -29,6 +30,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 	state: (): ApiStoreState => ({
 		client: client,
 		searchTerm: '',
+		isBooted: false,
 	}),
 	actions: {
 		setSearchTerm(term: string): void {
@@ -38,6 +40,8 @@ export const useApiStore = defineStore(STORE_KEY, {
 			if (this.client.isDev()) {
 				console.log('API client booted ...');
 			}
+
+			this.isBooted = true;
 		},
 		async getProfile(): Promise<ApiResponse<ProfileResponse>> {
 			const url = 'profile';

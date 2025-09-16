@@ -9,6 +9,8 @@ import { useApiStore } from '@api/store.ts';
 const apiStore = useApiStore();
 
 onMounted(() => {
-	apiStore.boot();
+	if (!apiStore.isBooted) {
+		apiStore.boot();
+	}
 });
 </script>

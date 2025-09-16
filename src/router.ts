@@ -1,47 +1,50 @@
-import { createRouter, createWebHistory, Router } from 'vue-router';
+import { createRouter as _createRouter, createMemoryHistory, createWebHistory } from 'vue-router';
 
-const routerHistory = createWebHistory();
+export function createRouter() {
+	return _createRouter({
+		// --- Automatically selects the correct history mode for server/client.
+		history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
 
-const router: Router = createRouter({
-	scrollBehavior(to): void {
-		if (to.hash) {
-			window.scroll({ top: 0 });
-		} else {
-			const el: HTMLElement | null = document.querySelector('html');
+		routes: [
+			{
+				path: '/',
+				component: () => import('@pages/HomePage.vue'),
+			},
+			{
+				path: '/post/:slug',
+				name: 'PostDetail',
+				component: () => import('@pages/PostPage.vue'),
+			},
+			{
+				path: '/about',
+				component: () => import('@pages/AboutPage.vue'),
+			},
+			{
+				path: '/projects',
+				component: () => import('@pages/ProjectsPage.vue'),
+			},
+			{
+				path: '/resume',
+				component: () => import('@pages/ResumePage.vue'),
+			},
+		],
 
-			if (el === null) {
+		scrollBehavior(to) {
+			// This logic is for the browser only and will be skipped on the server.
+			if (typeof window === 'undefined') {
 				return;
 			}
 
-			el.style.scrollBehavior = 'auto';
-			window.scroll({ top: 0 });
-			el.style.scrollBehavior = '';
-		}
-	},
-	history: routerHistory,
-	routes: [
-		{
-			path: '/',
-			component: () => import('@pages/HomePage.vue'),
+			if (to.hash) {
+				window.scroll({ top: 0 });
+			} else {
+				const el = document.querySelector('html');
+				if (el) {
+					el.style.scrollBehavior = 'auto';
+					window.scroll({ top: 0 });
+					el.style.scrollBehavior = '';
+				}
+			}
 		},
-		{
-			path: '/post/:slug',
-			name: 'PostDetail',
-			component: () => import('@pages/PostPage.vue'),
-		},
-		{
-			path: '/about',
-			component: () => import('@pages/AboutPage.vue'),
-		},
-		{
-			path: '/projects',
-			component: () => import('@pages/ProjectsPage.vue'),
-		},
-		{
-			path: '/resume',
-			component: () => import('@pages/ResumePage.vue'),
-		},
-	],
-});
-
-export default router;
+	});
+}

@@ -1,17 +1,20 @@
-import { createApp, App as VueApp } from 'vue';
-import { createPinia, Pinia } from 'pinia';
+import { createSSRApp } from 'vue';
+import { createPinia } from 'pinia';
+import { createRouter } from '@/router';
 import { createUnhead } from '@unhead/vue';
 
-import router from '@/router';
-import App from '@/App.vue';
 import '@css/style.css';
+import App from '@/App.vue';
 
-const app: VueApp = createApp(App);
-const pinia: Pinia = createPinia();
-const unhead = createUnhead();
+export function createApp() {
+	const app = createSSRApp(App);
+	const pinia = createPinia();
+	const unhead = createUnhead();
+	const router = createRouter();
 
-app.use(router);
-app.use(pinia);
-app.use(unhead as any);
+	app.use(pinia);
+	app.use(router);
+	app.use(unhead as any); //hack for now!
 
-app.mount('#app');
+	return { app, router, pinia, unhead };
+}
