@@ -192,7 +192,7 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 			description: value.excerpt,
 			image: value.cover_image_url,
 			type: 'article',
-			url: new URL(`/posts/${value.slug}`, SITE_URL).toString(),
+			url: siteUrlFor(`/post/${value.slug}`),
 			jsonLd: {
 				'@context': 'https://schema.org',
 				'@type': 'Article',
