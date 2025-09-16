@@ -167,7 +167,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 
 seo.apply({
-	title: `Subscribe - ${SITE_NAME}`,
+	title: 'Subscribe',
 	description: `Subscribe to ${SITE_NAME}'s newsletter to updates of articles and cool things he is working on.`,
 	image: ogImage,
 });

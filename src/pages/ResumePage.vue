@@ -66,7 +66,7 @@ const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
 
 seo.apply({
-	title: `Resume - ${SITE_NAME}`,
+	title: 'Resume',
 	description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
 	image: ogImage,
 });

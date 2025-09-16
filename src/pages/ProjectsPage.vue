@@ -74,7 +74,7 @@ const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
 
 seo.apply({
-	title: `Projects - ${SITE_NAME}`,
+	title: 'Projects',
 	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
 	image: ogImage,
 });

@@ -108,7 +108,7 @@ const formattedNickname = computed((): string => {
 });
 
 seo.apply({
-	title: `About - ${SITE_NAME}`,
+	title: 'About',
 	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
 	image: AboutPicture,
 });

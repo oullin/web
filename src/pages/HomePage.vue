@@ -60,7 +60,7 @@ const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 
 seo.apply({
-	title: `Home`,
+	title: 'Home',
 	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
 	image: ogImage,
 });
