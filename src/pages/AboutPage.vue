@@ -108,9 +108,9 @@ const formattedNickname = computed((): string => {
 });
 
 useSeo({
-        title: 'About',
-        description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
-        image: AboutPicture,
+	title: 'About',
+	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
+	image: AboutPicture,
 });
 
 onMounted(async () => {

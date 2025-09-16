@@ -167,8 +167,8 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 
 useSeo({
-        title: 'Subscribe',
-        description: `Subscribe to ${SITE_NAME}'s newsletter to updates of articles and cool things he is working on.`,
-        image: ogImage,
+	title: 'Subscribe',
+	description: `Subscribe to ${SITE_NAME}'s newsletter to updates of articles and cool things he is working on.`,
+	image: ogImage,
 });
 </script>

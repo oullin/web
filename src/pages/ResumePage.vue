@@ -66,9 +66,9 @@ const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
 
 useSeo({
-        title: 'Resume',
-        description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
-        image: ogImage,
+	title: 'Resume',
+	description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
+	image: ogImage,
 });
 
 onMounted(async () => {

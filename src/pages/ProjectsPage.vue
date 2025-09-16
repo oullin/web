@@ -74,9 +74,9 @@ const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
 
 useSeo({
-        title: 'Projects',
-        description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
-        image: ogImage,
+	title: 'Projects',
+	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
+	image: ogImage,
 });
 
 onMounted(async () => {

@@ -139,8 +139,8 @@ const postContainer = ref<HTMLElement | null>(null);
 useSeoFromPost(post);
 
 marked.use({
-        breaks: true,
-        gfm: true,
+	breaks: true,
+	gfm: true,
 });
 
 const htmlContent = computed(() => {
@@ -197,7 +197,7 @@ onMounted(async () => {
 	await initializeHighlighter(highlight);
 
 	try {
-                post.value = (await apiStore.getPost(slug.value)) as PostResponse;
+		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 	} catch (error) {
 		debugError(error);
 	}

@@ -60,9 +60,9 @@ const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 
 useSeo({
-        title: 'Home',
-        description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
-        image: ogImage,
+	title: 'Home',
+	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
+	image: ogImage,
 });
 
 onMounted(async () => {
