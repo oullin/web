@@ -1,11 +1,9 @@
+import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } from 'vue';
 import type { PostResponse } from '@api/response/posts-response.ts';
 
-export const DEFAULT_SITE_URL = 'https://oullin.io'
+export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const SITE_NAME = 'Gustavo Ocanto';
-export const SITE_URL =
-	(import.meta.env?.VITE_SITE_URL as string | undefined) ??
-	(typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
-
+export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
 
@@ -21,23 +19,28 @@ interface SeoOptions {
 	robots?:
 		| string
 		| {
-		index?: boolean;       // default true
-		follow?: boolean;      // default true
-		archive?: boolean;     // default true
-		imageindex?: boolean;  // default true
-		nocache?: boolean;     // default false
-		noai?: boolean;
-	};
+				index?: boolean; // default true
+				follow?: boolean; // default true
+				archive?: boolean; // default true
+				imageindex?: boolean; // default true
+				nocache?: boolean; // default false
+				noai?: boolean;
+		  };
 	twitter?: {
 		card?: TwitterCard;
-		site?: string;    // e.g. @gocanto
+		site?: string; // e.g. @gocanto
 		creator?: string; // e.g. @gocanto
 	};
 	jsonLd?: Record<string, unknown>;
 }
 
+const hasDocument = typeof document !== 'undefined';
+const hasWindow = typeof window !== 'undefined';
+
 export class Seo {
 	apply(options: SeoOptions): void {
+		if (!hasDocument || !hasWindow) return;
+
 		const currentPath = window.location.pathname + window.location.search;
 		const url = options.url ?? new URL(currentPath, SITE_URL).toString();
 		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
@@ -78,29 +81,8 @@ export class Seo {
 		this.setJsonLd(options.jsonLd);
 	}
 
-	applyFromPost(post: PostResponse): void {
-		this.apply({
-			title: post.title,
-			description: post.excerpt,
-			image: post.cover_image_url,
-			type: 'article',
-			url: new URL(`/posts/${post.slug}`, SITE_URL).toString(),
-			jsonLd: {
-				'@context': 'https://schema.org',
-				'@type': 'Article',
-				headline: post.title,
-				description: post.excerpt,
-				image: post.cover_image_url,
-				datePublished: post.published_at,
-				author: {
-					'@type': 'Person',
-					name: SITE_NAME,
-				},
-			},
-		});
-	}
-
 	private setMetaByName(name: string, content?: string): void {
+		if (!hasDocument) return;
 		if (!content) return;
 
 		let element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
@@ -116,6 +98,7 @@ export class Seo {
 	}
 
 	private setMetaByProperty(property: string, content?: string): void {
+		if (!hasDocument) return;
 		if (!content) return;
 		let element = document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
 		if (!element) {
@@ -127,6 +110,7 @@ export class Seo {
 	}
 
 	private setLink(rel: string, href?: string): void {
+		if (!hasDocument) return;
 		if (!href) return;
 		let element = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
 		if (!element) {
@@ -138,6 +122,7 @@ export class Seo {
 	}
 
 	private setJsonLd(data?: Record<string, unknown>): void {
+		if (!hasDocument) return;
 		const id = 'seo-jsonld';
 		let script = document.getElementById(id) as HTMLScriptElement | null;
 		if (!data) {
@@ -158,14 +143,7 @@ export class Seo {
 		if (!robots) return 'index,follow';
 		if (typeof robots === 'string') return robots;
 
-		const {
-			index = true,
-			follow = true,
-			archive = true,
-			imageindex = true,
-			nocache = false,
-			noai = false,
-		} = robots;
+		const { index = true, follow = true, archive = true, imageindex = true, nocache = false, noai = false } = robots;
 
 		const tokens: string[] = [];
 		tokens.push(index ? 'index' : 'noindex');
@@ -181,3 +159,53 @@ export class Seo {
 }
 
 export const seo = new Seo();
+
+function resolveValue<T>(value: MaybeRefOrGetter<T>): T {
+	return typeof value === 'function' ? (value as () => T)() : unref(value);
+}
+
+export function useSeo(options: MaybeRefOrGetter<SeoOptions | null | undefined>): void {
+	if (!hasDocument || !hasWindow) return;
+
+	const stop = watchEffect(() => {
+		const resolved = resolveValue(options);
+
+		if (!resolved) return;
+
+		seo.apply(resolved);
+	});
+
+	onBeforeUnmount(() => {
+		stop();
+	});
+}
+
+export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | undefined>): void {
+	const seoOptions = computed<SeoOptions | undefined>(() => {
+		const value = resolveValue(post);
+
+		if (!value) return undefined;
+
+		return {
+			title: value.title,
+			description: value.excerpt,
+			image: value.cover_image_url,
+			type: 'article',
+			url: new URL(`/posts/${value.slug}`, SITE_URL).toString(),
+			jsonLd: {
+				'@context': 'https://schema.org',
+				'@type': 'Article',
+				headline: value.title,
+				description: value.excerpt,
+				image: value.cover_image_url,
+				datePublished: value.published_at,
+				author: {
+					'@type': 'Person',
+					name: SITE_NAME,
+				},
+			},
+		} satisfies SeoOptions;
+	});
+
+	useSeo(seoOptions);
+}

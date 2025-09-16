@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import { seo } from '@/support/seo';
+import { useSeoFromPost } from '@/support/seo';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
@@ -135,6 +135,8 @@ const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
 const slug = ref<string>(route.params.slug as string);
 const postContainer = ref<HTMLElement | null>(null);
+
+useSeoFromPost(post);
 
 marked.use({
 	breaks: true,
@@ -196,10 +198,6 @@ onMounted(async () => {
 
 	try {
 		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
-
-		if (post.value) {
-			seo.applyFromPost(post.value);
-		}
 	} catch (error) {
 		debugError(error);
 	}

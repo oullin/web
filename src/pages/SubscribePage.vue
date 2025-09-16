@@ -159,14 +159,14 @@
 </template>
 
 <script setup lang="ts">
-import { seo, SITE_NAME } from '@/support/seo';
+import { useSeo, SITE_NAME } from '@/support/seo';
 import ogImage from '@images/profile/about.jpg';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 
-seo.apply({
+useSeo({
 	title: 'Subscribe',
 	description: `Subscribe to ${SITE_NAME}'s newsletter to updates of articles and cool things he is working on.`,
 	image: ogImage,
