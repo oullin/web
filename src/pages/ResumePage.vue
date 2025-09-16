@@ -54,9 +54,8 @@ import RecommendationPartial from '@partials/RecommendationPartial.vue';
 
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
-import { useSeo, SITE_NAME } from '@/support/seo';
-import ogImage from '@images/profile/about.jpg';
 import { debugError } from '@api/http-error.ts';
+import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
@@ -67,8 +66,9 @@ const recommendations = ref<RecommendationsResponse[] | null>(null);
 
 useSeo({
 	title: 'Resume',
+	image: ABOUT_IMAGE,
+	url: siteUrlFor('/resume'),
 	description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
-	image: ogImage,
 });
 
 onMounted(async () => {

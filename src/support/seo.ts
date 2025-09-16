@@ -1,8 +1,9 @@
 import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } from 'vue';
 import type { PostResponse } from '@api/response/posts-response.ts';
 
-export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const SITE_NAME = 'Gustavo Ocanto';
+export const DEFAULT_SITE_URL = 'https://oullin.io';
+export const ABOUT_IMAGE = '/images/profile/about.jpg';
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';

@@ -53,16 +53,16 @@ import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
-import { useSeo, SITE_NAME } from '@/support/seo';
-import ogImage from '@images/profile/about.jpg';
+import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor } from '@/support/seo';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 
 useSeo({
 	title: 'Home',
+	image: ABOUT_IMAGE,
+	url: siteUrlFor('/'),
 	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
-	image: ogImage,
 });
 
 onMounted(async () => {
