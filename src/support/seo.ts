@@ -1,15 +1,15 @@
-/**
- * SEO manager for managing meta tags across the application.
- * Provides coverage for major browsers and social networks and
- * exposes JSON-LD injection to aid AI and other crawlers.
- */
-
 import type { PostResponse } from '@api/response/posts-response.ts';
 
-export const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined) ?? window.location.origin;
+export const DEFAULT_SITE_URL = 'https://oullin.io'
 export const SITE_NAME = 'Gustavo Ocanto';
+export const SITE_URL =
+	(import.meta.env?.VITE_SITE_URL as string | undefined) ??
+	(typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
 
-export interface SeoOptions {
+
+type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
+
+interface SeoOptions {
 	title?: string;
 	description?: string;
 	keywords?: string;
@@ -18,11 +18,20 @@ export interface SeoOptions {
 	siteName?: string;
 	type?: string;
 	themeColor?: string;
-	robots?: string;
+	robots?:
+		| string
+		| {
+		index?: boolean;       // default true
+		follow?: boolean;      // default true
+		archive?: boolean;     // default true
+		imageindex?: boolean;  // default true
+		nocache?: boolean;     // default false
+		noai?: boolean;
+	};
 	twitter?: {
-		card?: string;
-		site?: string;
-		creator?: string;
+		card?: TwitterCard;
+		site?: string;    // e.g. @gocanto
+		creator?: string; // e.g. @gocanto
 	};
 	jsonLd?: Record<string, unknown>;
 }
@@ -40,7 +49,7 @@ export class Seo {
 		// Generic meta
 		this.setMetaByName('description', description);
 		this.setMetaByName('keywords', options.keywords);
-		this.setMetaByName('robots', options.robots ?? 'index,follow');
+		this.setMetaByName('robots', this.buildRobots(options.robots));
 		this.setMetaByName('theme-color', options.themeColor ?? '#ffffff');
 		this.setMetaByName('msapplication-TileColor', options.themeColor ?? '#ffffff');
 		this.setMetaByName('application-name', title);
@@ -93,12 +102,16 @@ export class Seo {
 
 	private setMetaByName(name: string, content?: string): void {
 		if (!content) return;
+
 		let element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+
 		if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('name', name);
+
 			document.head.appendChild(element);
 		}
+
 		element.setAttribute('content', content);
 	}
 
@@ -140,8 +153,31 @@ export class Seo {
 		}
 		script.textContent = json;
 	}
+
+	private buildRobots(robots?: SeoOptions['robots']): string | undefined {
+		if (!robots) return 'index,follow';
+		if (typeof robots === 'string') return robots;
+
+		const {
+			index = true,
+			follow = true,
+			archive = true,
+			imageindex = true,
+			nocache = false,
+			noai = false,
+		} = robots;
+
+		const tokens: string[] = [];
+		tokens.push(index ? 'index' : 'noindex');
+		tokens.push(follow ? 'follow' : 'nofollow');
+
+		if (!archive) tokens.push('noarchive');
+		if (!imageindex) tokens.push('noimageindex');
+		if (nocache) tokens.push('nocache');
+		if (noai) tokens.push('noai', 'noimageai');
+
+		return tokens.join(',');
+	}
 }
 
 export const seo = new Seo();
-
-export default seo;
