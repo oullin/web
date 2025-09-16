@@ -54,7 +54,7 @@ import RecommendationPartial from '@partials/RecommendationPartial.vue';
 
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
-import { seo, SITE_NAME } from '@/support/seo';
+import { useSeo, SITE_NAME } from '@/support/seo';
 import ogImage from '@images/profile/about.jpg';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
@@ -65,10 +65,10 @@ const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
 
-seo.apply({
-	title: 'Resume',
-	description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
-	image: ogImage,
+useSeo({
+        title: 'Resume',
+        description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
+        image: ogImage,
 });
 
 onMounted(async () => {

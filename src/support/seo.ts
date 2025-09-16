@@ -1,3 +1,4 @@
+import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } from 'vue';
 import type { PostResponse } from '@api/response/posts-response.ts';
 
 export const DEFAULT_SITE_URL = 'https://oullin.io'
@@ -36,13 +37,18 @@ interface SeoOptions {
 	jsonLd?: Record<string, unknown>;
 }
 
+const hasDocument = typeof document !== 'undefined';
+const hasWindow = typeof window !== 'undefined';
+
 export class Seo {
-	apply(options: SeoOptions): void {
-		const currentPath = window.location.pathname + window.location.search;
-		const url = options.url ?? new URL(currentPath, SITE_URL).toString();
-		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
-		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
-		const description = options.description;
+        apply(options: SeoOptions): void {
+                if (!hasDocument || !hasWindow) return;
+
+                const currentPath = window.location.pathname + window.location.search;
+                const url = options.url ?? new URL(currentPath, SITE_URL).toString();
+                const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
+                const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
+                const description = options.description;
 
 		document.title = title;
 
@@ -100,12 +106,13 @@ export class Seo {
 		});
 	}
 
-	private setMetaByName(name: string, content?: string): void {
-		if (!content) return;
+        private setMetaByName(name: string, content?: string): void {
+                if (!hasDocument) return;
+                if (!content) return;
 
-		let element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+                let element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
 
-		if (!element) {
+                if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('name', name);
 
@@ -115,34 +122,37 @@ export class Seo {
 		element.setAttribute('content', content);
 	}
 
-	private setMetaByProperty(property: string, content?: string): void {
-		if (!content) return;
-		let element = document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
-		if (!element) {
-			element = document.createElement('meta');
-			element.setAttribute('property', property);
+        private setMetaByProperty(property: string, content?: string): void {
+                if (!hasDocument) return;
+                if (!content) return;
+                let element = document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
+                if (!element) {
+                        element = document.createElement('meta');
+                        element.setAttribute('property', property);
 			document.head.appendChild(element);
 		}
 		element.setAttribute('content', content);
 	}
 
-	private setLink(rel: string, href?: string): void {
-		if (!href) return;
-		let element = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
-		if (!element) {
-			element = document.createElement('link');
-			element.setAttribute('rel', rel);
+        private setLink(rel: string, href?: string): void {
+                if (!hasDocument) return;
+                if (!href) return;
+                let element = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
+                if (!element) {
+                        element = document.createElement('link');
+                        element.setAttribute('rel', rel);
 			document.head.appendChild(element);
 		}
 		element.setAttribute('href', href);
 	}
 
-	private setJsonLd(data?: Record<string, unknown>): void {
-		const id = 'seo-jsonld';
-		let script = document.getElementById(id) as HTMLScriptElement | null;
-		if (!data) {
-			if (script) script.remove();
-			return;
+        private setJsonLd(data?: Record<string, unknown>): void {
+                if (!hasDocument) return;
+                const id = 'seo-jsonld';
+                let script = document.getElementById(id) as HTMLScriptElement | null;
+                if (!data) {
+                        if (script) script.remove();
+                        return;
 		}
 		const json = JSON.stringify(data);
 		if (!script) {
@@ -181,3 +191,53 @@ export class Seo {
 }
 
 export const seo = new Seo();
+
+function resolveValue<T>(value: MaybeRefOrGetter<T>): T {
+        return typeof value === 'function' ? (value as () => T)() : unref(value);
+}
+
+export function useSeo(options: MaybeRefOrGetter<SeoOptions | null | undefined>): void {
+        if (!hasDocument || !hasWindow) return;
+
+        const stop = watchEffect(() => {
+                const resolved = resolveValue(options);
+
+                if (!resolved) return;
+
+                seo.apply(resolved);
+        });
+
+        onBeforeUnmount(() => {
+                stop();
+        });
+}
+
+export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | undefined>): void {
+        const seoOptions = computed<SeoOptions | undefined>(() => {
+                const value = resolveValue(post);
+
+                if (!value) return undefined;
+
+                return {
+                        title: value.title,
+                        description: value.excerpt,
+                        image: value.cover_image_url,
+                        type: 'article',
+                        url: new URL(`/posts/${value.slug}`, SITE_URL).toString(),
+                        jsonLd: {
+                                '@context': 'https://schema.org',
+                                '@type': 'Article',
+                                headline: value.title,
+                                description: value.excerpt,
+                                image: value.cover_image_url,
+                                datePublished: value.published_at,
+                                author: {
+                                        '@type': 'Person',
+                                        name: SITE_NAME,
+                                },
+                        },
+                } satisfies SeoOptions;
+        });
+
+        useSeo(seoOptions);
+}

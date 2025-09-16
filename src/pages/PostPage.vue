@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import { seo } from '@/support/seo';
+import { useSeoFromPost } from '@/support/seo';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
@@ -136,9 +136,11 @@ const post = ref<PostResponse>();
 const slug = ref<string>(route.params.slug as string);
 const postContainer = ref<HTMLElement | null>(null);
 
+useSeoFromPost(post);
+
 marked.use({
-	breaks: true,
-	gfm: true,
+        breaks: true,
+        gfm: true,
 });
 
 const htmlContent = computed(() => {
@@ -195,11 +197,7 @@ onMounted(async () => {
 	await initializeHighlighter(highlight);
 
 	try {
-		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
-
-		if (post.value) {
-			seo.applyFromPost(post.value);
-		}
+                post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 	} catch (error) {
 		debugError(error);
 	}
