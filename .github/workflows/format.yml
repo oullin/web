@@ -5,19 +5,53 @@ on:
         branches:
             - main
     workflow_dispatch:
+    pull_request:
+        types:
+            - opened
+            - reopened
+            - synchronize
+            - labeled
+            - unlabeled
+            - ready_for_review
+            - converted_to_draft
 
 permissions:
     contents: write
     pull-requests: write
 
+env:
+    FORMAT_BRANCH: github-actions/format
+
 jobs:
     format:
+        if: >-
+            github.event_name != 'pull_request' ||
+            (
+                github.event.pull_request.draft == true &&
+                contains(github.event.pull_request.labels.*.name, 'test-formatting')
+            )
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - name: Resolve authentication token
+              id: auth
+              run: |
+                  if [ "${{ github.event_name }}" = "pull_request" ]; then
+                      echo "token=${{ github.token }}" >> "$GITHUB_OUTPUT"
+                      echo "dry_run=true" >> "$GITHUB_OUTPUT"
+                  else
+                      if [ -z "${{ secrets.USER_TOKEN }}" ]; then
+                          echo "::error::USER_TOKEN secret must be configured to push formatting updates."
+                          exit 1
+                      fi
+                      echo "token=${{ secrets.USER_TOKEN }}" >> "$GITHUB_OUTPUT"
+                      echo "dry_run=false" >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Checkout repository
+              uses: actions/checkout@v4
               with:
-                  token: ${{ secrets.GH_ACTIONS_TOKEN }}
                   fetch-depth: 0
+                  token: ${{ steps.auth.outputs.token }}
 
             - uses: actions/setup-node@v4
               with:
@@ -29,20 +63,61 @@ jobs:
 
             - run: make format
 
-            - run: |
-                  git config user.name "${{ secrets.GH_ACTIONS_USERNAME }}"
-                  git config user.email "${{ secrets.GH_ACTIONS_EMAIL }}"
+            - name: Detect formatting changes
+              id: diff
+              run: |
+                  if git diff --quiet; then
+                      echo "changed=false" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "changed=true" >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Draft pull request dry run notice
+              if: steps.auth.outputs.dry_run == 'true'
+              run: echo "::notice::Draft pull request detected with 'test-formatting' label. Formatter running in dry-run mode."
+
+            - name: Formatting diff (dry run)
+              if: steps.auth.outputs.dry_run == 'true' && steps.diff.outputs.changed == 'true'
+              run: |
+                  git status -sb
+                  git --no-pager diff
+
+            - name: No formatting changes generated
+              if: steps.auth.outputs.dry_run == 'true' && steps.diff.outputs.changed != 'true'
+              run: echo "::notice::No formatting changes generated."
+
+            - name: No formatting changes to commit
+              if: steps.auth.outputs.dry_run != 'true' && steps.diff.outputs.changed != 'true'
+              run: echo "::notice::No formatting changes detected. Skipping pull request creation."
+
+            - name: Validate git identity secrets
+              if: steps.auth.outputs.dry_run != 'true' && steps.diff.outputs.changed == 'true'
+              run: |
+                  if [ -z "${{ secrets.USER_NAME }}" ] || [ -z "${{ secrets.USER_EMAIL }}" ]; then
+                      echo "::error::USER_NAME and USER_EMAIL secrets must be configured to create commits."
+                      exit 1
+                  fi
+
+            - name: Configure git user
+              if: steps.auth.outputs.dry_run != 'true' && steps.diff.outputs.changed == 'true'
+              run: |
+                  git config user.name "${{ secrets.USER_NAME }}"
+                  git config user.email "${{ secrets.USER_EMAIL }}"
 
             - name: Configure authenticated remote
+              if: steps.auth.outputs.dry_run != 'true' && steps.diff.outputs.changed == 'true'
               run: |
-                  git remote set-url origin "https://x-access-token:${{ secrets.GH_ACTIONS_TOKEN }}@github.com/${{ github.repository }}.git"
+                  git remote set-url origin "https://x-access-token:${{ steps.auth.outputs.token }}@github.com/${{ github.repository }}.git"
 
             - name: Create Pull Request
+              if: steps.auth.outputs.dry_run != 'true' && steps.diff.outputs.changed == 'true'
               uses: peter-evans/create-pull-request@v7
               with:
-                  token: ${{ secrets.GH_ACTIONS_TOKEN }}
+                  token: ${{ steps.auth.outputs.token }}
                   commit-message: 'chore: apply formatting via GitHub Actions'
                   title: 'chore: automated formatting'
                   body: 'This PR applies formatting changes generated by make format.'
-                  branch: github-actions/format
+                  branch: ${{ env.FORMAT_BRANCH }}
                   base: main
+                  author: "${{ secrets.USER_NAME }} <${{ secrets.USER_EMAIL }}>"
+                  committer: "${{ secrets.USER_NAME }} <${{ secrets.USER_EMAIL }}>"
