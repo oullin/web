@@ -42,7 +42,7 @@ export class Seo {
 		if (!hasDocument || !hasWindow) return;
 
 		const currentPath = window.location.pathname + window.location.search;
-		const url = options.url ?? new URL(currentPath, SITE_URL).toString();
+		const url = options.url ?? siteUrlFor(currentPath || '/');
 		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
 		const description = options.description;
@@ -208,4 +208,8 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 	});
 
 	useSeo(seoOptions);
+}
+
+export function siteUrlFor(path: string): string {
+	return new URL(path, SITE_URL).toString();
 }
