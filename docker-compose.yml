@@ -22,6 +22,34 @@ services:
         networks:
             - web_internal
 
+    # --- SPA's PRODUCTION NODE SERVER SERVICES FOR SSR ---
+    app-server:
+        env_file:
+            - ./.env
+        profiles:
+            - prod
+        container_name: oullin-app-server
+        image: app-builder-image:${TAG:-latest}
+        restart: unless-stopped
+        build:
+            args:
+                VITE_API_ENV: ${VITE_API_ENV}
+                VITE_API_URL: ${VITE_API_URL}
+                VITE_HOST_URL: ${VITE_HOST_URL}
+                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
+                VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+                ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
+            context: .
+            dockerfile: docker/Dockerfile
+        environment:
+            - NODE_ENV=production
+        depends_on:
+            - app-builder
+        networks:
+            caddy_net:
+                aliases:
+                    - web
+
     # --- LOCAL DEVELOPMENT SERVICES ---
     #     Runs the Vite dev server with hot-reloading
     app-local:

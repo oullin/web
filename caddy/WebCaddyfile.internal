@@ -27,9 +27,7 @@
 
     # Static SPA
     handle {
-        root * /usr/share/caddy
-        try_files {path} {path}/index.html /index.html
-        file_server
+        reverse_proxy app-server:5173
     }
 
     log {
