@@ -1,11 +1,8 @@
 import type { PostResponse } from '@api/response/posts-response.ts';
 
-export const DEFAULT_SITE_URL = 'https://oullin.io'
+export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const SITE_NAME = 'Gustavo Ocanto';
-export const SITE_URL =
-	(import.meta.env?.VITE_SITE_URL as string | undefined) ??
-	(typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
-
+export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
 
@@ -21,16 +18,16 @@ interface SeoOptions {
 	robots?:
 		| string
 		| {
-		index?: boolean;       // default true
-		follow?: boolean;      // default true
-		archive?: boolean;     // default true
-		imageindex?: boolean;  // default true
-		nocache?: boolean;     // default false
-		noai?: boolean;
-	};
+				index?: boolean; // default true
+				follow?: boolean; // default true
+				archive?: boolean; // default true
+				imageindex?: boolean; // default true
+				nocache?: boolean; // default false
+				noai?: boolean;
+		  };
 	twitter?: {
 		card?: TwitterCard;
-		site?: string;    // e.g. @gocanto
+		site?: string; // e.g. @gocanto
 		creator?: string; // e.g. @gocanto
 	};
 	jsonLd?: Record<string, unknown>;
@@ -158,14 +155,7 @@ export class Seo {
 		if (!robots) return 'index,follow';
 		if (typeof robots === 'string') return robots;
 
-		const {
-			index = true,
-			follow = true,
-			archive = true,
-			imageindex = true,
-			nocache = false,
-			noai = false,
-		} = robots;
+		const { index = true, follow = true, archive = true, imageindex = true, nocache = false, noai = false } = robots;
 
 		const tokens: string[] = [];
 		tokens.push(index ? 'index' : 'noindex');
