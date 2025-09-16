@@ -58,6 +58,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
+import { seo, SITE_NAME } from '@/support/seo';
+import ogImage from '@images/profile/about.jpg';
 import { debugError } from '@api/http-error.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
@@ -70,6 +72,12 @@ import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 const apiStore = useApiStore();
 const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
+
+seo.apply({
+	title: 'Projects',
+	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
+	image: ogImage,
+});
 
 onMounted(async () => {
 	try {

@@ -114,6 +114,7 @@
 <script setup lang="ts">
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { seo } from '@/support/seo';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
@@ -195,6 +196,10 @@ onMounted(async () => {
 
 	try {
 		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
+
+		if (post.value) {
+			seo.applyFromPost(post.value);
+		}
 	} catch (error) {
 		debugError(error);
 	}
