@@ -1,8 +1,10 @@
-# --- Builder Stage ---
-# Use a standard Node.js image as the base for building the application.
-# This stage compiles your source code into static assets.
+# docker/Dockerfile
+
+# --- Stage 1: Builder ---
+# This stage is nearly identical to your original. It builds the SSR application.
 FROM node:22-alpine AS builder
 
+# Define build-time arguments passed from docker-compose.yml
 ARG VITE_API_ENV
 ARG VITE_API_URL
 ARG VITE_HOST_URL
@@ -10,30 +12,33 @@ ARG VITE_ACCOUNT_NAME
 ARG VITE_PUBLIC_KEY
 ARG ENV_API_LOCAL_DIR
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and lock files first to leverage Docker layer caching
 COPY package*.json ./
-
-# Install project dependencies
-# Use 'npm ci' for cleaner, more reliable builds in CI/CD environments
+# Use 'npm ci' for reliable, fast, and clean installs
 RUN npm ci
 
-# Copy the rest of your application source code
 COPY . .
-
-# Run the build script (e.g., for Vue, React, Angular)
-# This creates the static files in a directory like '/app/dist'.
+# This now builds both the client and server bundles for SSR
 RUN npm run build
 
 
-# --- Artifact Stage ---
-# This is the final, lightweight production image using Caddy.
-FROM caddy:2.10.0-alpine
+# --- Stage 2: Production ---
+# This is the new final stage. It creates a lightweight Node.js server image.
+FROM node:22-alpine AS production
 
-# Copy only the built static assets from the 'builder' stage's output directory
-COPY --from=builder /app/dist /usr/share/caddy
+WORKDIR /app
 
-# Copy the Caddy configuration file
-COPY caddy/WebCaddyfile.internal /etc/caddy/Caddyfile
+# Copy only the necessary files from the 'builder' stage
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server.js ./
+
+# Install ONLY the production dependencies to keep the image small
+RUN npm install --omit=dev
+
+# Expose the port that the Node.js server will listen on
+EXPOSE 5173
+
+# The command to start the Node.js rendering server
+CMD [ "node", "server.js" ]

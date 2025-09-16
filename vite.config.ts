@@ -18,4 +18,15 @@ export default defineConfig({
 	resolve: {
 		alias: aliases,
 	},
+	build: {
+		outDir: './dist',
+		ssr: !process.env.VITE_CLIENT_BUILD,
+		rollupOptions: {
+			// This ensures the server and client entry points are correctly identified
+			input: {
+				app: './index.html',
+				server: './src/entry-server.ts'
+			}
+		}
+	},
 });
