@@ -155,7 +155,7 @@ const xURLFor = (post: PostResponse) => {
 	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
 };
 
-const fullURLFor = (post: PostResponse) => siteUrlFor(`/posts/${post.slug}`);
+const fullURLFor = (post: PostResponse) => siteUrlFor(`/post/${post.slug}`);
 
 async function sharePost(post: PostResponse) {
 	const shareData = {
