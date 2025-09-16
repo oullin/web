@@ -4,6 +4,13 @@ on:
     push:
         branches:
             - main
+    pull_request:
+        types:
+            - opened
+            - synchronize
+            - reopened
+            - ready_for_review
+            - converted_to_draft
     workflow_dispatch:
 
 permissions:
@@ -14,7 +21,16 @@ jobs:
     format:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout (pull requests)
+              if: github.event_name == 'pull_request'
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ github.token }}
+                  fetch-depth: 0
+
+            - name: Checkout (main or manual runs)
+              if: github.event_name != 'pull_request'
+              uses: actions/checkout@v4
               with:
                   token: ${{ secrets.GH_ACTIONS_TOKEN }}
                   fetch-depth: 0
@@ -29,15 +45,33 @@ jobs:
 
             - run: make format
 
+            - name: Draft pull request dry run notice
+              if: github.event_name == 'pull_request' && github.event.pull_request.draft == true
+              run: echo "::notice::Draft pull request detected. Skipping commit and pull request creation steps."
+
+            - name: Formatting diff (dry run)
+              if: github.event_name == 'pull_request'
+              run: |
+                  if git diff --quiet; then
+                      echo "::notice::No formatting changes generated."
+                  else
+                      echo "::notice::Formatting changes generated during dry run:"
+                      git status -sb
+                      git --no-pager diff
+                  fi
+
             - run: |
                   git config user.name "${{ secrets.GH_ACTIONS_USERNAME }}"
                   git config user.email "${{ secrets.GH_ACTIONS_EMAIL }}"
+              if: github.event_name != 'pull_request'
 
             - name: Configure authenticated remote
+              if: github.event_name != 'pull_request'
               run: |
                   git remote set-url origin "https://x-access-token:${{ secrets.GH_ACTIONS_TOKEN }}@github.com/${{ github.repository }}.git"
 
             - name: Create Pull Request
+              if: github.event_name != 'pull_request'
               uses: peter-evans/create-pull-request@v7
               with:
                   token: ${{ secrets.GH_ACTIONS_TOKEN }}
