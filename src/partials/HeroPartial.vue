@@ -9,10 +9,10 @@
 					<span class="blog-fun-title-word-highlight">leadership</span> as a service.
 				</h1>
 
-				<p class="text-lg text-slate-400 dark:text-slate-300 mb-5">Writer, Speaker, Developer, Founder, and Leadership.</p>
+				<p class="text-lg text-slate-400 dark:text-slate-300 mb-5">Writer, Speaker, Developer, AI Architect, Founder, and Leadership.</p>
 				<p class="mb-5 font-aspekta text-slate-500">
-					I'm a full-stack Software Engineer leader with over two decades of building complex web systems and products, specialising in areas like e-commerce, banking, cross-payment
-					solutions, cyber security, and customer success.
+					I'm a full-stack Software Engineer leader with over two decades of of experience in building complex web systems and products, specialising in areas like e-commerce, banking,
+					cross-payment solutions, cyber security, and customer success.
 				</p>
 			</div>
 		</div>

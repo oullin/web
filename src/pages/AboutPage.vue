@@ -81,13 +81,13 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
+import { seo, SITE_NAME } from '@/support/seo';
 import AboutPicture from '@images/profile/about.jpg';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
-import { seo } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
@@ -108,8 +108,8 @@ const formattedNickname = computed((): string => {
 });
 
 seo.apply({
-	title: 'About',
-	description: "I'm an engineering leader based in Singapore who enjoys the present.",
+	title: `About - ${SITE_NAME}`,
+	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
 	image: AboutPicture,
 });
 

@@ -53,15 +53,15 @@ import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
-import { seo } from '@/support/seo';
+import { seo, SITE_NAME } from '@/support/seo';
 import ogImage from '@images/profile/about.jpg';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 
 seo.apply({
-	title: 'Home',
-	description: 'Engineering leader building reliable and smooth software. Explore articles, projects and talks.',
+	title: `${SITE_NAME} - `,
+	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
 	image: ogImage,
 });
 
