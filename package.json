@@ -13,6 +13,7 @@
 		"build:stats": "VITE_VISUALIZER=true vite build"
 	},
 	"dependencies": {
+		"@unhead/vue": "^2.0.14",
 		"dompurify": "^3.2.6",
 		"highlight.js": "^11.11.1",
 		"lodash": "^4.17.21",
