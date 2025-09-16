@@ -30,8 +30,8 @@ jobs:
             - run: make format
 
             - run: |
-                  git config user.name "${{ secrets.USER_NAME }}"
-                  git config user.email "${{ secrets.USER_EMAIL }}"
+                  git config user.name "${{ secrets.GH_ACTIONS_USERNAME }}"
+                  git config user.email "${{ secrets.GH_ACTIONS_EMAIL }}"
 
             - name: Create Pull Request
               uses: peter-evans/create-pull-request@v7
