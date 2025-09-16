@@ -159,16 +159,16 @@
 </template>
 
 <script setup lang="ts">
-import SideNavPartial from '@partials/SideNavPartial.vue';
-import HeaderPartial from '@partials/HeaderPartial.vue';
-import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import FooterPartial from '@partials/FooterPartial.vue';
-import { seo } from '@/support/seo';
+import { seo, SITE_NAME } from '@/support/seo';
 import ogImage from '@images/profile/about.jpg';
+import HeaderPartial from '@partials/HeaderPartial.vue';
+import FooterPartial from '@partials/FooterPartial.vue';
+import SideNavPartial from '@partials/SideNavPartial.vue';
+import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 
 seo.apply({
-	title: 'Subscribe',
-	description: 'Subscribe to receive the latest articles and updates.',
+	title: `Subscribe - ${SITE_NAME}`,
+	description: `Subscribe to ${SITE_NAME}'s newsletter to updates of articles and cool things he is working on.`,
 	image: ogImage,
 });
 </script>
