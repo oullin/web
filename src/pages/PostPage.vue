@@ -114,6 +114,7 @@
 <script setup lang="ts">
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { seo } from '@/support/seo';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
@@ -126,7 +127,6 @@ import type { PostResponse } from '@api/response/index.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import { date, getReadingTime, initializeHighlighter } from '@/public.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
-import { seo } from '@/support/seo';
 
 // --- Component
 const route = useRoute();

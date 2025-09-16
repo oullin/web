@@ -71,7 +71,7 @@ export class Seo {
 
 	applyFromPost(post: PostResponse): void {
 		this.apply({
-			title: post.title,
+			title: `${SITE_NAME} | ${post.title}`,
 			description: post.excerpt,
 			image: post.cover_image_url,
 			type: 'article',
