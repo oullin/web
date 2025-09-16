@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import { useSeoFromPost } from '@/support/seo';
+import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
@@ -155,9 +155,7 @@ const xURLFor = (post: PostResponse) => {
 	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
 };
 
-const fullURLFor = (post: PostResponse) => {
-	return `${window.location.origin}/posts/${post.slug}`;
-};
+const fullURLFor = (post: PostResponse) => siteUrlFor(`/post/${post.slug}`);
 
 async function sharePost(post: PostResponse) {
 	const shareData = {

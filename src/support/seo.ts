@@ -1,8 +1,9 @@
 import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } from 'vue';
 import type { PostResponse } from '@api/response/posts-response.ts';
 
-export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const SITE_NAME = 'Gustavo Ocanto';
+export const DEFAULT_SITE_URL = 'https://oullin.io';
+export const ABOUT_IMAGE = '/images/profile/about.jpg';
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
@@ -42,7 +43,7 @@ export class Seo {
 		if (!hasDocument || !hasWindow) return;
 
 		const currentPath = window.location.pathname + window.location.search;
-		const url = options.url ?? new URL(currentPath, SITE_URL).toString();
+		const url = options.url ?? siteUrlFor(currentPath || '/');
 		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
 		const description = options.description;
@@ -191,7 +192,7 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 			description: value.excerpt,
 			image: value.cover_image_url,
 			type: 'article',
-			url: new URL(`/posts/${value.slug}`, SITE_URL).toString(),
+			url: siteUrlFor(`/post/${value.slug}`),
 			jsonLd: {
 				'@context': 'https://schema.org',
 				'@type': 'Article',
@@ -208,4 +209,8 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 	});
 
 	useSeo(seoOptions);
+}
+
+export function siteUrlFor(path: string): string {
+	return new URL(path, SITE_URL).toString();
 }

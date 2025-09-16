@@ -58,8 +58,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
-import { useSeo, SITE_NAME } from '@/support/seo';
-import ogImage from '@images/profile/about.jpg';
 import { debugError } from '@api/http-error.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
@@ -67,6 +65,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
+import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor } from '@/support/seo';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
@@ -75,8 +74,13 @@ const profile = ref<ProfileResponse | null>(null);
 
 useSeo({
 	title: 'Projects',
+	image: ABOUT_IMAGE,
+	url: siteUrlFor('/projects'),
 	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
-	image: ogImage,
+	jsonLd: {
+		'@type': 'CollectionPage',
+		name: 'Projects',
+	},
 });
 
 onMounted(async () => {
