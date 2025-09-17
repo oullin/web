@@ -48,20 +48,20 @@ vi.mock('highlight.js/lib/core', () => ({
 vi.mock('@/dark-mode.ts', () => ({ useDarkMode: () => ({ isDark: ref(false) }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 vi.mock('@/public.ts', () => ({
-        date: () => ({ format: () => '' }),
-        getReadingTime: () => '',
+	date: () => ({ format: () => '' }),
+	getReadingTime: () => '',
 }));
 
 describe('PostPage', () => {
-        beforeEach(() => {
-                vi.clearAllMocks();
-        });
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
 
-        it('fetches post on mount', async () => {
-                const wrapper = mount(PostPage, {
-                        global: {
-                                stubs: {
-                                        SideNavPartial: true,
+	it('fetches post on mount', async () => {
+		const wrapper = mount(PostPage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
 					HeaderPartial: true,
 					FooterPartial: true,
 					WidgetSponsorPartial: true,
@@ -71,35 +71,35 @@ describe('PostPage', () => {
 			},
 		});
 		await flushPromises();
-                expect(getPost).toHaveBeenCalledWith(post.slug);
-                expect(wrapper.text()).toContain(post.title);
-        });
+		expect(getPost).toHaveBeenCalledWith(post.slug);
+		expect(wrapper.text()).toContain(post.title);
+	});
 
-        it('initializes highlight.js on mount', async () => {
-                const wrapper = mount(PostPage, {
-                        global: {
-                                stubs: {
-                                        SideNavPartial: true,
-                                        HeaderPartial: true,
-                                        FooterPartial: true,
-                                        WidgetSponsorPartial: true,
-                                        WidgetSkillsPartial: true,
-                                        RouterLink: { template: '<a><slot /></a>' },
-                                },
-                        },
-                });
-                await flushPromises();
-                const highlightCore = await import('highlight.js/lib/core');
-                expect(initializeHighlighter).toHaveBeenCalledWith(highlightCore.default);
-                expect(initializeHighlighter).toHaveBeenCalledTimes(2);
-                expect(wrapper.exists()).toBe(true);
-        });
+	it('initializes highlight.js on mount', async () => {
+		const wrapper = mount(PostPage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					WidgetSponsorPartial: true,
+					WidgetSkillsPartial: true,
+					RouterLink: { template: '<a><slot /></a>' },
+				},
+			},
+		});
+		await flushPromises();
+		const highlightCore = await import('highlight.js/lib/core');
+		expect(initializeHighlighter).toHaveBeenCalledWith(highlightCore.default);
+		expect(initializeHighlighter).toHaveBeenCalledTimes(2);
+		expect(wrapper.exists()).toBe(true);
+	});
 
-        it('processes markdown content', async () => {
-                const DOMPurify = await import('dompurify');
-                const wrapper = mount(PostPage, {
-                        global: {
-                                stubs: {
+	it('processes markdown content', async () => {
+		const DOMPurify = await import('dompurify');
+		const wrapper = mount(PostPage, {
+			global: {
+				stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
 					FooterPartial: true,

@@ -3,30 +3,14 @@ import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 
 const SAMPLE_WITH_FRONT_MATTER = `---\ntitle: Example Title\nexcerpt: Example excerpt\nslug: example-slug\n---\n\n![hero](https://example.com/hero.jpg)\n\n## Heading\n\n- Item one\n- Item two\n\n| Col A | Col B |\n| ----- | ----- |\n| A     | B     |\n`;
 
-const EXPECTED_LANGUAGE_REGISTRATIONS = [
-        'bash',
-        'css',
-        'dockerfile',
-        'go',
-        'javascript',
-        'php',
-        'python',
-        'sql',
-        'typescript',
-        'xml',
-        'yaml',
-        'shell',
-        'sh',
-        'zsh',
-        'yml',
-];
+const EXPECTED_LANGUAGE_REGISTRATIONS = ['bash', 'css', 'dockerfile', 'go', 'javascript', 'php', 'python', 'sql', 'typescript', 'xml', 'yaml', 'shell', 'sh', 'zsh', 'yml'];
 
 const EXPECTED_ALIAS_REGISTRATIONS: Array<[string[], { languageName: string }]> = [
-        [['js', 'jsx', 'nodejs'], { languageName: 'javascript' }],
-        [['html', 'vue', 'angular'], { languageName: 'xml' }],
-        [['docker'], { languageName: 'dockerfile' }],
-        [['sh', 'shell', 'zsh'], { languageName: 'bash' }],
-        [['yml'], { languageName: 'yaml' }],
+	[['js', 'jsx', 'nodejs'], { languageName: 'javascript' }],
+	[['html', 'vue', 'angular'], { languageName: 'xml' }],
+	[['docker'], { languageName: 'dockerfile' }],
+	[['sh', 'shell', 'zsh'], { languageName: 'bash' }],
+	[['yml'], { languageName: 'yaml' }],
 ];
 
 describe('renderMarkdown', () => {
@@ -52,42 +36,38 @@ describe('renderMarkdown', () => {
 });
 
 describe('initializeHighlighter', () => {
-        it('registers languages and aliases once per highlighter core', async () => {
-                const registerLanguage = vi.fn();
-                const registerAliases = vi.fn();
+	it('registers languages and aliases once per highlighter core', async () => {
+		const registerLanguage = vi.fn();
+		const registerAliases = vi.fn();
 
-                const hljs = {
-                        registerLanguage,
-                        registerAliases,
-                } as unknown as import('highlight.js').HLJSApi;
+		const hljs = {
+			registerLanguage,
+			registerAliases,
+		} as unknown as import('highlight.js').HLJSApi;
 
-                await initializeHighlighter(hljs);
+		await initializeHighlighter(hljs);
 
-                expect(registerLanguage.mock.calls.map(([name]) => name)).toEqual(
-                        EXPECTED_LANGUAGE_REGISTRATIONS,
-                );
+		expect(registerLanguage.mock.calls.map(([name]) => name)).toEqual(EXPECTED_LANGUAGE_REGISTRATIONS);
 
-                expect(registerAliases.mock.calls).toEqual(EXPECTED_ALIAS_REGISTRATIONS);
+		expect(registerAliases.mock.calls).toEqual(EXPECTED_ALIAS_REGISTRATIONS);
 
-                await initializeHighlighter(hljs);
+		await initializeHighlighter(hljs);
 
-                expect(registerLanguage).toHaveBeenCalledTimes(EXPECTED_LANGUAGE_REGISTRATIONS.length);
-                expect(registerAliases).toHaveBeenCalledTimes(EXPECTED_ALIAS_REGISTRATIONS.length);
+		expect(registerLanguage).toHaveBeenCalledTimes(EXPECTED_LANGUAGE_REGISTRATIONS.length);
+		expect(registerAliases).toHaveBeenCalledTimes(EXPECTED_ALIAS_REGISTRATIONS.length);
 
-                const secondRegisterLanguage = vi.fn();
-                const secondRegisterAliases = vi.fn();
+		const secondRegisterLanguage = vi.fn();
+		const secondRegisterAliases = vi.fn();
 
-                const secondHljs = {
-                        registerLanguage: secondRegisterLanguage,
-                        registerAliases: secondRegisterAliases,
-                } as unknown as import('highlight.js').HLJSApi;
+		const secondHljs = {
+			registerLanguage: secondRegisterLanguage,
+			registerAliases: secondRegisterAliases,
+		} as unknown as import('highlight.js').HLJSApi;
 
-                await initializeHighlighter(secondHljs);
+		await initializeHighlighter(secondHljs);
 
-                expect(secondRegisterLanguage.mock.calls.map(([name]) => name)).toEqual(
-                        EXPECTED_LANGUAGE_REGISTRATIONS,
-                );
+		expect(secondRegisterLanguage.mock.calls.map(([name]) => name)).toEqual(EXPECTED_LANGUAGE_REGISTRATIONS);
 
-                expect(secondRegisterAliases.mock.calls).toEqual(EXPECTED_ALIAS_REGISTRATIONS);
-        });
+		expect(secondRegisterAliases.mock.calls).toEqual(EXPECTED_ALIAS_REGISTRATIONS);
+	});
 });

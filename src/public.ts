@@ -60,4 +60,3 @@ export function getRandomInt(min: number, max: number): number {
 
 	return result < 0 ? 1 : result;
 }
-
