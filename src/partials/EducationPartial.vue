@@ -40,9 +40,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { EducationResponse } from '@api/response/index.ts';
+import { renderMarkdown } from '@/support/markdown.ts';
 
 const { education } = defineProps<{
 	education: Array<EducationResponse>;
@@ -50,7 +50,7 @@ const { education } = defineProps<{
 
 const processedEducation = computed(() => {
 	return education.map((item) => {
-		const sanitisedHtml = DOMPurify.sanitize(marked.parse(item.description) as string);
+                const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.description));
 
 		return {
 			...item,
