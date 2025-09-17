@@ -50,7 +50,7 @@ const { education } = defineProps<{
 
 const processedEducation = computed(() => {
 	return education.map((item) => {
-                const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.description));
+		const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.description));
 
 		return {
 			...item,

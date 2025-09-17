@@ -9,8 +9,8 @@ const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>hi</strong></p>'
 vi.mock('@/support/markdown.ts', () => ({ renderMarkdown }));
 
 const education: EducationResponse[] = [
-        {
-                uuid: faker.string.uuid(),
+	{
+		uuid: faker.string.uuid(),
 		degree: faker.word.words(1),
 		school: faker.company.name(),
 		graduated_at: '2020',
@@ -22,9 +22,9 @@ const education: EducationResponse[] = [
 ];
 
 describe('EducationPartial', () => {
-        it('renders markdown as html', () => {
-                const wrapper = mount(EducationPartial, { props: { education } });
-                expect(renderMarkdown).toHaveBeenCalledWith('**hi**');
-                expect(wrapper.html()).toContain('<strong>hi</strong>');
-        });
+	it('renders markdown as html', () => {
+		const wrapper = mount(EducationPartial, { props: { education } });
+		expect(renderMarkdown).toHaveBeenCalledWith('**hi**');
+		expect(wrapper.html()).toContain('<strong>hi</strong>');
+	});
 });

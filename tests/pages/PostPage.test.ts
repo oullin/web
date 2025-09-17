@@ -72,8 +72,8 @@ describe('PostPage', () => {
 	});
 
 	it('processes markdown content', async () => {
-                const DOMPurify = await import('dompurify');
-                const wrapper = mount(PostPage, {
+		const DOMPurify = await import('dompurify');
+		const wrapper = mount(PostPage, {
 			global: {
 				stubs: {
 					SideNavPartial: true,
@@ -86,10 +86,10 @@ describe('PostPage', () => {
 			},
 		});
 		await flushPromises();
-                expect(renderMarkdown).toHaveBeenCalledWith(post.content);
-                expect(DOMPurify.default.sanitize).toHaveBeenCalled();
-                expect(wrapper.html()).toContain('<p></p>');
-        });
+		expect(renderMarkdown).toHaveBeenCalledWith(post.content);
+		expect(DOMPurify.default.sanitize).toHaveBeenCalled();
+		expect(wrapper.html()).toContain('<p></p>');
+	});
 
 	it('handles post errors gracefully', async () => {
 		const error = new Error('fail');

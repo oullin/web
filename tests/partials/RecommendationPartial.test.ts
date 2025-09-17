@@ -8,8 +8,8 @@ const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>great</strong></
 
 vi.mock('@/support/markdown.ts', () => ({ renderMarkdown }));
 vi.mock('@/public.ts', () => ({
-        image: (p: string) => `/img/${p}`,
-        date: () => ({ format: () => 'now' }),
+	image: (p: string) => `/img/${p}`,
+	date: () => ({ format: () => 'now' }),
 }));
 
 describe('RecommendationPartial', () => {
@@ -28,10 +28,10 @@ describe('RecommendationPartial', () => {
 		},
 	];
 
-        it('sanitises and formats recommendation', () => {
-                const wrapper = mount(RecommendationPartial, { props: { recommendations: data } });
-                expect(renderMarkdown).toHaveBeenCalledWith('**great**');
-                expect(wrapper.html()).toContain('<strong>great</strong>');
-                expect(wrapper.text()).toContain('now');
-        });
+	it('sanitises and formats recommendation', () => {
+		const wrapper = mount(RecommendationPartial, { props: { recommendations: data } });
+		expect(renderMarkdown).toHaveBeenCalledWith('**great**');
+		expect(wrapper.html()).toContain('<strong>great</strong>');
+		expect(wrapper.text()).toContain('now');
+	});
 });

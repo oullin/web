@@ -139,11 +139,11 @@ const postContainer = ref<HTMLElement | null>(null);
 useSeoFromPost(post);
 
 const htmlContent = computed(() => {
-        if (post.value && post.value.content) {
-                return DOMPurify.sanitize(renderMarkdown(post.value.content));
-        }
+	if (post.value && post.value.content) {
+		return DOMPurify.sanitize(renderMarkdown(post.value.content));
+	}
 
-        return '';
+	return '';
 });
 
 const xURLFor = (post: PostResponse) => {

@@ -34,16 +34,16 @@ import type { RecommendationsResponse } from '@api/response/recommendations-resp
 import { renderMarkdown } from '@/support/markdown.ts';
 
 const { recommendations } = defineProps<{
-        recommendations: Array<RecommendationsResponse>;
+	recommendations: Array<RecommendationsResponse>;
 }>();
 
 const processedRecommendations = computed(() => {
-        return recommendations.map((item) => {
-                const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.text));
+	return recommendations.map((item) => {
+		const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.text));
 
-                return {
-                        ...item,
-                        html: sanitisedHtml,
+		return {
+			...item,
+			html: sanitisedHtml,
 			formattedDate: date().format(new Date(item.created_at)),
 		};
 	});
