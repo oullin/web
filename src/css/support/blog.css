@@ -64,3 +64,127 @@
     @apply h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-fuchsia-500;
     @apply dark:group-hover:fill-teal-500;
 }
+
+/* --- markdown content --- */
+.post-markdown {
+    @apply text-base leading-relaxed text-slate-500 dark:text-slate-300;
+}
+
+.post-markdown h1,
+.post-markdown h2,
+.post-markdown h3,
+.post-markdown h4,
+.post-markdown h5,
+.post-markdown h6 {
+    @apply font-aspekta font-semibold text-slate-700 dark:text-slate-100;
+}
+
+.post-markdown h1 {
+    @apply text-4xl mt-10 mb-4;
+}
+
+.post-markdown h2 {
+    @apply text-3xl mt-10 mb-4;
+}
+
+.post-markdown h3 {
+    @apply text-2xl mt-8 mb-3;
+}
+
+.post-markdown h4 {
+    @apply text-xl mt-6 mb-2;
+}
+
+.post-markdown h5 {
+    @apply text-lg mt-6 mb-2;
+}
+
+.post-markdown h6 {
+    @apply text-base uppercase tracking-wide text-slate-400 dark:text-slate-500 mt-6 mb-2;
+}
+
+.post-markdown p,
+.post-markdown ul,
+.post-markdown ol,
+.post-markdown blockquote,
+.post-markdown pre,
+.post-markdown table,
+.post-markdown hr {
+    @apply mt-6;
+}
+
+.post-markdown > *:first-child {
+    @apply mt-0;
+}
+
+.post-markdown a {
+    @apply text-fuchsia-500 font-medium underline underline-offset-4 decoration-1 hover:text-fuchsia-600 transition;
+    @apply dark:text-teal-500 dark:hover:text-teal-400;
+}
+
+.post-markdown strong {
+    @apply text-slate-700 dark:text-slate-100;
+}
+
+.post-markdown em {
+    @apply italic;
+}
+
+.post-markdown ul {
+    @apply list-disc pl-6 space-y-2;
+}
+
+.post-markdown ol {
+    @apply list-decimal pl-6 space-y-2;
+}
+
+.post-markdown li > ul,
+.post-markdown li > ol {
+    @apply mt-2;
+}
+
+.post-markdown blockquote {
+    @apply border-l-4 border-fuchsia-500 dark:border-teal-600 pl-6 py-2 text-slate-600 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 rounded-r-xl;
+}
+
+.post-markdown hr {
+    @apply border-slate-200 dark:border-slate-700;
+}
+
+.post-markdown table {
+    @apply w-full text-sm border border-slate-200 dark:border-slate-700;
+    border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+    .post-markdown table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+.post-markdown thead {
+    @apply bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-200;
+}
+
+.post-markdown th,
+.post-markdown td {
+    @apply border border-slate-200 dark:border-slate-700 px-4 py-3 align-top text-left;
+}
+
+.post-markdown pre {
+    @apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 rounded-2xl p-6 overflow-x-auto text-sm;
+}
+
+.post-markdown code {
+    @apply font-pt-mono text-sm bg-slate-900/10 text-slate-700 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
+}
+
+.post-markdown pre code {
+    @apply bg-transparent px-0 py-0 text-inherit;
+}
+
+.post-markdown img {
+    @apply rounded-xl shadow-sm dark:shadow-none;
+    max-width: 100%;
+}

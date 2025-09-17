@@ -90,7 +90,7 @@
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
 										<img class="w-full" :src="post.cover_image_url" width="692" height="390" :alt="post.title" fetchpriority="high" aria-hidden="true" />
-										<div ref="postContainer" class="space-y-4" v-html="htmlContent"></div>
+										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>
 							</div>
@@ -124,8 +124,8 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import { date, getReadingTime, initializeHighlighter } from '@/public.ts';
-import { renderMarkdown } from '@/support/markdown.ts';
+import { date, getReadingTime } from '@/public.ts';
+import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 
 // --- Component
@@ -173,17 +173,23 @@ watchEffect(() => {
 	}
 });
 
-watch(htmlContent, async () => {
-	// Wait for Vue to update the DOM
-	await nextTick();
-
-	// Find all code blocks in the container and highlight them
-	if (postContainer.value) {
-		const blocks = postContainer.value.querySelectorAll('pre code');
-		blocks.forEach((block) => {
-			highlight.highlightElement(block as HTMLElement);
-		});
+watch(htmlContent, async (newContent) => {
+	if (!newContent) {
+		return;
 	}
+
+	await nextTick();
+	await initializeHighlighter(highlight);
+
+	const container = postContainer.value;
+	if (!container) {
+		return;
+	}
+
+	const blocks = container.querySelectorAll('pre code');
+	blocks.forEach((block) => {
+		highlight.highlightElement(block as HTMLElement);
+	});
 });
 
 onMounted(async () => {
