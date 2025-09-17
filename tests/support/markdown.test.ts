@@ -27,21 +27,14 @@ const EXPECTED_LANGUAGE_REGISTRATIONS = [
 ];
 
 const EXPECTED_ALIAS_REGISTRATIONS: Array<[string[], { languageName: string }]> = [
-	[['js', 'jsx', 'nodejs'], { languageName: 'javascript' }],
-	[['html', 'vue', 'angular'], { languageName: 'xml' }],
-	[['docker'], { languageName: 'dockerfile' }],
-	[['sh', 'shell', 'zsh'], { languageName: 'bash' }],
-	[['yml'], { languageName: 'yaml' }],
-	[['Curl'], { languageName: 'curl' }],
-	[['Go', 'GO'], { languageName: 'go' }],
-	[['JSON'], { languageName: 'json' }],
-	[['Makefile'], { languageName: 'makefile' }],
-	[['Nginx'], { languageName: 'nginx' }],
-	[['PHP'], { languageName: 'php' }],
-	[['Plaintext', 'Text', 'TXT'], { languageName: 'plaintext' }],
-	[['SQL'], { languageName: 'sql' }],
-	[['Python'], { languageName: 'python' }],
-	[['TypeScript', 'TS'], { languageName: 'typescript' }],
+        [['js', 'jsx', 'nodejs'], { languageName: 'javascript' }],
+        [['html', 'vue', 'angular'], { languageName: 'xml' }],
+        [['docker'], { languageName: 'dockerfile' }],
+        [['curl', 'Curl', 'CURL'], { languageName: 'bash' }],
+        [['sh', 'shell', 'zsh'], { languageName: 'bash' }],
+        [['yml'], { languageName: 'yaml' }],
+        [['Text', 'TXT'], { languageName: 'plaintext' }],
+        [['TS'], { languageName: 'typescript' }],
 ];
 
 describe('renderMarkdown', () => {

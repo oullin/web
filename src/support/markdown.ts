@@ -27,18 +27,11 @@ const LANGUAGE_ALIASES: ReadonlyArray<[string[], string]> = [
         [['js', 'jsx', 'nodejs'], 'javascript'],
         [['html', 'vue', 'angular'], 'xml'],
         [['docker'], 'dockerfile'],
+        [['curl', 'Curl', 'CURL'], 'bash'],
         [['sh', 'shell', 'zsh'], 'bash'],
         [['yml'], 'yaml'],
-        [['Curl'], 'curl'],
-        [['Go', 'GO'], 'go'],
-        [['JSON'], 'json'],
-        [['Makefile'], 'makefile'],
-        [['Nginx'], 'nginx'],
-        [['PHP'], 'php'],
-        [['Plaintext', 'Text', 'TXT'], 'plaintext'],
-        [['SQL'], 'sql'],
-        [['Python'], 'python'],
-        [['TypeScript', 'TS'], 'typescript'],
+        [['Text', 'TXT'], 'plaintext'],
+        [['TS'], 'typescript'],
 ];
 
 const LANGUAGE_FALLBACK_REGISTRATIONS: ReadonlyArray<readonly [string, string]> = [
