@@ -91,7 +91,7 @@ describe('PostPage', () => {
                 await flushPromises();
                 const highlightCore = await import('highlight.js/lib/core');
                 expect(initializeHighlighter).toHaveBeenCalledWith(highlightCore.default);
-                expect(initializeHighlighter).toHaveBeenCalledTimes(1);
+                expect(initializeHighlighter).toHaveBeenCalledTimes(2);
                 expect(wrapper.exists()).toBe(true);
         });
 

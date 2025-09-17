@@ -173,17 +173,23 @@ watchEffect(() => {
 	}
 });
 
-watch(htmlContent, async () => {
-	// Wait for Vue to update the DOM
-	await nextTick();
+watch(htmlContent, async (newContent) => {
+        if (!newContent) {
+                return;
+        }
 
-	// Find all code blocks in the container and highlight them
-	if (postContainer.value) {
-		const blocks = postContainer.value.querySelectorAll('pre code');
-		blocks.forEach((block) => {
-			highlight.highlightElement(block as HTMLElement);
-		});
-	}
+        await nextTick();
+        await initializeHighlighter(highlight);
+
+        const container = postContainer.value;
+        if (!container) {
+                return;
+        }
+
+        const blocks = container.querySelectorAll('pre code');
+        blocks.forEach((block) => {
+                highlight.highlightElement(block as HTMLElement);
+        });
 });
 
 onMounted(async () => {

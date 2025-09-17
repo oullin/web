@@ -49,6 +49,10 @@ describe('initializeHighlighter', () => {
                         'typescript',
                         'xml',
                         'yaml',
+                        'shell',
+                        'sh',
+                        'zsh',
+                        'yml',
                 ]);
 
                 expect(registerAliases.mock.calls).toEqual([
@@ -61,7 +65,7 @@ describe('initializeHighlighter', () => {
 
                 await initializeHighlighter(hljs);
 
-                expect(registerLanguage).toHaveBeenCalledTimes(11);
+                expect(registerLanguage).toHaveBeenCalledTimes(15);
                 expect(registerAliases).toHaveBeenCalledTimes(5);
         });
 });

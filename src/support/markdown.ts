@@ -27,6 +27,13 @@ const LANGUAGE_ALIASES: ReadonlyArray<[string[], string]> = [
         [['yml'], 'yaml'],
 ];
 
+const LANGUAGE_FALLBACK_REGISTRATIONS: ReadonlyArray<readonly [string, string]> = [
+        ['shell', 'bash'],
+        ['sh', 'bash'],
+        ['zsh', 'bash'],
+        ['yml', 'yaml'],
+];
+
 let highlighterInitialised = false;
 
 marked.setOptions({
@@ -69,11 +76,21 @@ export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {
 
         const modules = await Promise.all(LANGUAGE_LOADERS.map(([, loader]) => loader()));
 
+        const registeredLanguages = new Map<string, LanguageFn>();
+
         modules.forEach((module, index) => {
                 const [language] = LANGUAGE_LOADERS[index];
 
                 // highlight.js language modules default-export the registration function
+                registeredLanguages.set(language, module.default);
                 hljs.registerLanguage(language, module.default);
+        });
+
+        LANGUAGE_FALLBACK_REGISTRATIONS.forEach(([alias, canonical]) => {
+                const language = registeredLanguages.get(canonical);
+                if (language) {
+                        hljs.registerLanguage(alias, language);
+                }
         });
 
         LANGUAGE_ALIASES.forEach(([aliases, languageName]) => {
