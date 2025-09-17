@@ -152,7 +152,7 @@
 }
 
 .post-markdown table {
-    @apply w-full text-sm border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden;
+    @apply w-full text-sm border border-slate-200 dark:border-slate-700;
     border-collapse: collapse;
 }
 
