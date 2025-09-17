@@ -34,7 +34,7 @@ const LANGUAGE_FALLBACK_REGISTRATIONS: ReadonlyArray<readonly [string, string]> 
         ['yml', 'yaml'],
 ];
 
-let highlighterInitialised = false;
+const initializedCores = new WeakSet<object>();
 
 marked.setOptions({
         breaks: true,
@@ -70,9 +70,12 @@ export function renderMarkdown(markdown?: string | null): string {
 }
 
 export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {
-        if (highlighterInitialised) {
+        const coreObj = hljs as unknown as object;
+        if (initializedCores.has(coreObj)) {
                 return;
         }
+
+        initializedCores.add(coreObj);
 
         const modules = await Promise.all(LANGUAGE_LOADERS.map(([, loader]) => loader()));
 
@@ -96,6 +99,4 @@ export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {
         LANGUAGE_ALIASES.forEach(([aliases, languageName]) => {
                 hljs.registerAliases(aliases, { languageName });
         });
-
-        highlighterInitialised = true;
 }
