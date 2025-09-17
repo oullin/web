@@ -33,7 +33,9 @@ const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost }) }));
 vi.mock('vue-router', () => ({ useRoute: () => ({ params: { slug: post.slug } }) }));
-vi.mock('marked', () => ({ marked: { use: vi.fn(), parse: vi.fn(() => '<p></p>') } }));
+const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
+
+vi.mock('@/support/markdown.ts', () => ({ renderMarkdown }));
 vi.mock('dompurify', () => ({ default: { sanitize: vi.fn((html: string) => html) } }));
 vi.mock('highlight.js/lib/core', () => ({
 	default: {
@@ -70,7 +72,6 @@ describe('PostPage', () => {
 	});
 
 	it('processes markdown content', async () => {
-		const { marked } = await import('marked');
 		const DOMPurify = await import('dompurify');
 		const wrapper = mount(PostPage, {
 			global: {
@@ -85,7 +86,7 @@ describe('PostPage', () => {
 			},
 		});
 		await flushPromises();
-		expect(marked.parse).toHaveBeenCalledWith(post.content);
+		expect(renderMarkdown).toHaveBeenCalledWith(post.content);
 		expect(DOMPurify.default.sanitize).toHaveBeenCalled();
 		expect(wrapper.html()).toContain('<p></p>');
 	});

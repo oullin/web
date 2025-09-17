@@ -1,8 +1,12 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import EducationPartial from '@partials/EducationPartial.vue';
 import type { EducationResponse } from '@api/response/index.ts';
+
+const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>hi</strong></p>'));
+
+vi.mock('@/support/markdown.ts', () => ({ renderMarkdown }));
 
 const education: EducationResponse[] = [
 	{
@@ -20,6 +24,7 @@ const education: EducationResponse[] = [
 describe('EducationPartial', () => {
 	it('renders markdown as html', () => {
 		const wrapper = mount(EducationPartial, { props: { education } });
+		expect(renderMarkdown).toHaveBeenCalledWith('**hi**');
 		expect(wrapper.html()).toContain('<strong>hi</strong>');
 	});
 });

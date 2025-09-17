@@ -112,7 +112,6 @@
 </template>
 
 <script setup lang="ts">
-import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import { useRoute } from 'vue-router';
@@ -126,6 +125,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import { date, getReadingTime, initializeHighlighter } from '@/public.ts';
+import { renderMarkdown } from '@/support/markdown.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 
 // --- Component
@@ -138,14 +138,9 @@ const postContainer = ref<HTMLElement | null>(null);
 
 useSeoFromPost(post);
 
-marked.use({
-	breaks: true,
-	gfm: true,
-});
-
 const htmlContent = computed(() => {
 	if (post.value && post.value.content) {
-		return DOMPurify.sanitize(marked.parse(post.value.content) as string);
+		return DOMPurify.sanitize(renderMarkdown(post.value.content));
 	}
 
 	return '';

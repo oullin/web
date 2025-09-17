@@ -28,15 +28,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
-
-marked.use({
-	breaks: true,
-	gfm: true,
-});
+import { renderMarkdown } from '@/support/markdown.ts';
 
 const { recommendations } = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
@@ -44,7 +39,7 @@ const { recommendations } = defineProps<{
 
 const processedRecommendations = computed(() => {
 	return recommendations.map((item) => {
-		const sanitisedHtml = DOMPurify.sanitize(marked.parse(item.text) as string);
+		const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.text));
 
 		return {
 			...item,

@@ -4,6 +4,9 @@ import { describe, it, expect, vi } from 'vitest';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import type { RecommendationsResponse } from '@api/response/index.ts';
 
+const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>great</strong></p>'));
+
+vi.mock('@/support/markdown.ts', () => ({ renderMarkdown }));
 vi.mock('@/public.ts', () => ({
 	image: (p: string) => `/img/${p}`,
 	date: () => ({ format: () => 'now' }),
@@ -27,6 +30,7 @@ describe('RecommendationPartial', () => {
 
 	it('sanitises and formats recommendation', () => {
 		const wrapper = mount(RecommendationPartial, { props: { recommendations: data } });
+		expect(renderMarkdown).toHaveBeenCalledWith('**great**');
 		expect(wrapper.html()).toContain('<strong>great</strong>');
 		expect(wrapper.text()).toContain('now');
 	});
