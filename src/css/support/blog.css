@@ -148,11 +148,11 @@
 }
 
 .post-markdown blockquote > :first-child {
-    @apply mt-0;
+    @apply mt-1;
 }
 
 .post-markdown blockquote > :last-child {
-    @apply mb-0;
+    @apply mb-1;
 }
 
 .post-markdown hr {
