@@ -2,11 +2,9 @@ import { marked } from 'marked';
 
 const FRONT_MATTER_REGEX = /^(?:\uFEFF)?---\s*[\r\n]+([\s\S]*?)\r?\n---\s*[\r\n]*/m;
 
-marked.use({
-        options: {
-                breaks: true,
-                gfm: true,
-        },
+marked.setOptions({
+        breaks: true,
+        gfm: true,
 });
 
 function stripFrontMatter(markdown: string): string {
