@@ -34,8 +34,9 @@ const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost }) }));
 vi.mock('vue-router', () => ({ useRoute: () => ({ params: { slug: post.slug } }) }));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
+const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
 
-vi.mock('@/support/markdown.ts', () => ({ renderMarkdown }));
+vi.mock('@/support/markdown.ts', () => ({ renderMarkdown, initializeHighlighter }));
 vi.mock('dompurify', () => ({ default: { sanitize: vi.fn((html: string) => html) } }));
 vi.mock('highlight.js/lib/core', () => ({
 	default: {
@@ -47,17 +48,16 @@ vi.mock('highlight.js/lib/core', () => ({
 vi.mock('@/dark-mode.ts', () => ({ useDarkMode: () => ({ isDark: ref(false) }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 vi.mock('@/public.ts', () => ({
-	initializeHighlighter: vi.fn(),
-	date: () => ({ format: () => '' }),
-	getReadingTime: () => '',
+        date: () => ({ format: () => '' }),
+        getReadingTime: () => '',
 }));
 
 describe('PostPage', () => {
-	it('fetches post on mount', async () => {
-		const wrapper = mount(PostPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
+        it('fetches post on mount', async () => {
+                const wrapper = mount(PostPage, {
+                        global: {
+                                stubs: {
+                                        SideNavPartial: true,
 					HeaderPartial: true,
 					FooterPartial: true,
 					WidgetSponsorPartial: true,
@@ -67,15 +67,35 @@ describe('PostPage', () => {
 			},
 		});
 		await flushPromises();
-		expect(getPost).toHaveBeenCalledWith(post.slug);
-		expect(wrapper.text()).toContain(post.title);
-	});
+                expect(getPost).toHaveBeenCalledWith(post.slug);
+                expect(wrapper.text()).toContain(post.title);
+        });
 
-	it('processes markdown content', async () => {
-		const DOMPurify = await import('dompurify');
-		const wrapper = mount(PostPage, {
-			global: {
-				stubs: {
+        it('initializes highlight.js on mount', async () => {
+                const wrapper = mount(PostPage, {
+                        global: {
+                                stubs: {
+                                        SideNavPartial: true,
+                                        HeaderPartial: true,
+                                        FooterPartial: true,
+                                        WidgetSponsorPartial: true,
+                                        WidgetSkillsPartial: true,
+                                        RouterLink: { template: '<a><slot /></a>' },
+                                },
+                        },
+                });
+                await flushPromises();
+                const highlightCore = await import('highlight.js/lib/core');
+                expect(initializeHighlighter).toHaveBeenCalledWith(highlightCore.default);
+                expect(initializeHighlighter).toHaveBeenCalledTimes(1);
+                expect(wrapper.exists()).toBe(true);
+        });
+
+        it('processes markdown content', async () => {
+                const DOMPurify = await import('dompurify');
+                const wrapper = mount(PostPage, {
+                        global: {
+                                stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
 					FooterPartial: true,

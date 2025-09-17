@@ -124,8 +124,8 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import { date, getReadingTime, initializeHighlighter } from '@/public.ts';
-import { renderMarkdown } from '@/support/markdown.ts';
+import { date, getReadingTime } from '@/public.ts';
+import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 
 // --- Component
