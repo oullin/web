@@ -8,7 +8,6 @@ type LanguageModule = { default: LanguageFn };
 const LANGUAGE_LOADERS: ReadonlyArray<readonly [string, () => Promise<LanguageModule>]> = [
         ['bash', () => import('highlight.js/lib/languages/bash')],
         ['css', () => import('highlight.js/lib/languages/css')],
-        ['curl', () => import('highlight.js/lib/languages/curl')],
         ['dockerfile', () => import('highlight.js/lib/languages/dockerfile')],
         ['go', () => import('highlight.js/lib/languages/go')],
         ['javascript', () => import('highlight.js/lib/languages/javascript')],
@@ -43,10 +42,11 @@ const LANGUAGE_ALIASES: ReadonlyArray<[string[], string]> = [
 ];
 
 const LANGUAGE_FALLBACK_REGISTRATIONS: ReadonlyArray<readonly [string, string]> = [
-	['shell', 'bash'],
-	['sh', 'bash'],
-	['zsh', 'bash'],
-	['yml', 'yaml'],
+        ['curl', 'bash'],
+        ['shell', 'bash'],
+        ['sh', 'bash'],
+        ['zsh', 'bash'],
+        ['yml', 'yaml'],
 ];
 
 const initializedCores = new WeakSet<object>();
