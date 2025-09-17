@@ -11,7 +11,11 @@ const LANGUAGE_LOADERS: ReadonlyArray<readonly [string, () => Promise<LanguageMo
 	['dockerfile', () => import('highlight.js/lib/languages/dockerfile')],
 	['go', () => import('highlight.js/lib/languages/go')],
 	['javascript', () => import('highlight.js/lib/languages/javascript')],
+	['json', () => import('highlight.js/lib/languages/json')],
+	['makefile', () => import('highlight.js/lib/languages/makefile')],
+	['nginx', () => import('highlight.js/lib/languages/nginx')],
 	['php', () => import('highlight.js/lib/languages/php')],
+	['plaintext', () => import('highlight.js/lib/languages/plaintext')],
 	['python', () => import('highlight.js/lib/languages/python')],
 	['sql', () => import('highlight.js/lib/languages/sql')],
 	['typescript', () => import('highlight.js/lib/languages/typescript')],
@@ -23,11 +27,15 @@ const LANGUAGE_ALIASES: ReadonlyArray<[string[], string]> = [
 	[['js', 'jsx', 'nodejs'], 'javascript'],
 	[['html', 'vue', 'angular'], 'xml'],
 	[['docker'], 'dockerfile'],
+	[['curl', 'Curl', 'CURL'], 'bash'],
 	[['sh', 'shell', 'zsh'], 'bash'],
 	[['yml'], 'yaml'],
+	[['Text', 'TXT'], 'plaintext'],
+	[['TS'], 'typescript'],
 ];
 
 const LANGUAGE_FALLBACK_REGISTRATIONS: ReadonlyArray<readonly [string, string]> = [
+	['curl', 'bash'],
 	['shell', 'bash'],
 	['sh', 'bash'],
 	['zsh', 'bash'],
