@@ -21,7 +21,6 @@ build-remove:
 	docker compose --profile prod down --volumes --rmi all --remove-orphans
 
 # ----- LOCAL -----
-
 local-fresh:
 	docker compose --profile local down --volumes --rmi all --remove-orphans
 	docker ps

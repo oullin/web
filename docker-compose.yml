@@ -67,6 +67,7 @@ services:
         volumes:
             - .:/app
             - /app/node_modules # Exclude node_modules from the mount
+            - ./caddy/Caddyfile.local:/etc/caddy/Caddyfile
         env_file:
             - ./.env
         environment:
@@ -77,22 +78,22 @@ services:
     # --- CADDY LOCAL ---
     #     Caddy reverse proxy for local development
     caddy-local:
-        image: caddy:2.10.0-alpine
+        image: caddy:2.8-alpine
         profiles:
             - local
-        container_name: web_caddy_local
-        restart: unless-stopped
-        build:
-            context: .
-            dockerfile: docker/Dockerfile.local
-            args:
-                BUILDER_IMAGE: app-builder-image:${TAG:-latest}
-                VITE_API_ENV: ${VITE_API_ENV}
-                VITE_API_URL: ${VITE_API_URL}
-                VITE_HOST_URL: ${VITE_HOST_URL}
-                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
-                VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
-                ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
+        container_name: oullin-caddy-local
+#        restart: unless-stopped
+#        build:
+#            context: .
+#            dockerfile: docker/Dockerfile.local
+#            args:
+#                BUILDER_IMAGE: app-builder-image:${TAG:-latest}
+#                VITE_API_ENV: ${VITE_API_ENV}
+#                VITE_API_URL: ${VITE_API_URL}
+#                VITE_HOST_URL: ${VITE_HOST_URL}
+#                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
+#                VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+#                ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
         ports:
             - "8080:80"
         volumes:

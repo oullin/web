@@ -1,5 +1,6 @@
 import { ref, watchEffect } from 'vue';
 
+const isBrowser = typeof window !== 'undefined';
 const isDark = ref<boolean>(localStorage.getItem('dark-mode') === 'true');
 
 export function useDarkMode() {

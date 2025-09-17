@@ -35,7 +35,7 @@
 		</script>
 
 		<script defer>
-			if (localStorage.getItem('dark-mode') === 'true') {
+			if (typeof window !== 'undefined' && localStorage.getItem('dark-mode') === 'true') {
 				document.documentElement.classList.add('dark');
 			}
 
