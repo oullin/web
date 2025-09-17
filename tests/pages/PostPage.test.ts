@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ref } from 'vue';
 import PostPage from '@pages/PostPage.vue';
 import type { PostResponse } from '@api/response/index.ts';
@@ -53,6 +53,10 @@ vi.mock('@/public.ts', () => ({
 }));
 
 describe('PostPage', () => {
+        beforeEach(() => {
+                vi.clearAllMocks();
+        });
+
         it('fetches post on mount', async () => {
                 const wrapper = mount(PostPage, {
                         global: {

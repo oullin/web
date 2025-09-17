@@ -1,7 +1,8 @@
 import type { HLJSApi, LanguageFn } from 'highlight.js';
 import { marked } from 'marked';
 
-const FRONT_MATTER_REGEX = /^\uFEFF?---\s*[\r\n]+([\s\S]*?)\r?\n---\s*[\r\n]*/m;
+// Match YAML front matter only at the very start (optional BOM supported)
+const FRONT_MATTER_REGEX = /^\uFEFF?---\s*[\r\n]+([\s\S]*?)\r?\n---\s*[\r\n]*/;
 type LanguageModule = { default: LanguageFn };
 
 const LANGUAGE_LOADERS: ReadonlyArray<readonly [string, () => Promise<LanguageModule>]> = [
@@ -35,12 +36,11 @@ marked.setOptions({
 });
 
 function stripFrontMatter(markdown: string): string {
-        if (!markdown.trimStart().startsWith('---')) {
+        if (!FRONT_MATTER_REGEX.test(markdown)) {
                 return markdown;
         }
-
         const withoutFrontMatter = markdown.replace(FRONT_MATTER_REGEX, '');
-
+        // Remove any leading blank space left by front‑matter removal
         return withoutFrontMatter.replace(/^\s+/, '');
 }
 
