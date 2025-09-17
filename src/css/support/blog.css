@@ -182,7 +182,7 @@
 
 .post-markdown pre {
     @apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 rounded-2xl p-6 overflow-x-auto text-sm;
-    scrollbar-width: thin;
+    scrollbar-width: thin; /* Firefox */
     scrollbar-color: theme(colors.fuchsia.500) theme(colors.gray.100);
 }
 
@@ -229,7 +229,6 @@
 }
 
 .post-markdown img {
-    @apply shadow-sm dark:shadow-none;
+    @apply shadow-sm dark:shadow-none rounded-md;
     max-width: 100%;
-    border-radius: 5px;
 }
