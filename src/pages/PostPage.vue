@@ -90,7 +90,7 @@
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
 										<img class="w-full" :src="post.cover_image_url" width="692" height="390" :alt="post.title" fetchpriority="high" aria-hidden="true" />
-										<div ref="postContainer" class="space-y-4" v-html="htmlContent"></div>
+                                                                                <div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>
 							</div>

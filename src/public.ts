@@ -72,35 +72,39 @@ export async function initializeHighlighter(hljs: HLJSApi) {
 	}
 
 	// Dynamically import all the language modules you need
-	const [bash, css, dockerfile, go, javascript, php, python, sql, typescript, xml] = await Promise.all([
-		import('highlight.js/lib/languages/bash'),
-		import('highlight.js/lib/languages/css'),
-		import('highlight.js/lib/languages/dockerfile'),
-		import('highlight.js/lib/languages/go'),
-		import('highlight.js/lib/languages/javascript'),
-		import('highlight.js/lib/languages/php'),
-		import('highlight.js/lib/languages/python'),
-		import('highlight.js/lib/languages/sql'),
-		import('highlight.js/lib/languages/typescript'),
-		import('highlight.js/lib/languages/xml'),
-	]);
+        const [bash, css, dockerfile, go, javascript, php, python, sql, typescript, xml, yaml] = await Promise.all([
+                import('highlight.js/lib/languages/bash'),
+                import('highlight.js/lib/languages/css'),
+                import('highlight.js/lib/languages/dockerfile'),
+                import('highlight.js/lib/languages/go'),
+                import('highlight.js/lib/languages/javascript'),
+                import('highlight.js/lib/languages/php'),
+                import('highlight.js/lib/languages/python'),
+                import('highlight.js/lib/languages/sql'),
+                import('highlight.js/lib/languages/typescript'),
+                import('highlight.js/lib/languages/xml'),
+                import('highlight.js/lib/languages/yaml'),
+        ]);
 
 	// Register each language with its default export
 	hljs.registerLanguage('bash', bash.default);
 	hljs.registerLanguage('css', css.default);
 	hljs.registerLanguage('dockerfile', dockerfile.default);
 	hljs.registerLanguage('go', go.default);
-	hljs.registerLanguage('javascript', javascript.default);
-	hljs.registerLanguage('php', php.default);
-	hljs.registerLanguage('python', python.default);
-	hljs.registerLanguage('sql', sql.default);
-	hljs.registerLanguage('typescript', typescript.default);
-	hljs.registerLanguage('xml', xml.default);
+        hljs.registerLanguage('javascript', javascript.default);
+        hljs.registerLanguage('php', php.default);
+        hljs.registerLanguage('python', python.default);
+        hljs.registerLanguage('sql', sql.default);
+        hljs.registerLanguage('typescript', typescript.default);
+        hljs.registerLanguage('xml', xml.default);
+        hljs.registerLanguage('yaml', yaml.default);
 
-	// Register convenient aliases
-	hljs.registerAliases(['js', 'jsx', 'nodejs'], { languageName: 'javascript' });
-	hljs.registerAliases(['html', 'vue', 'angular'], { languageName: 'xml' });
-	hljs.registerAliases(['docker'], { languageName: 'dockerfile' });
+        // Register convenient aliases
+        hljs.registerAliases(['js', 'jsx', 'nodejs'], { languageName: 'javascript' });
+        hljs.registerAliases(['html', 'vue', 'angular'], { languageName: 'xml' });
+        hljs.registerAliases(['docker'], { languageName: 'dockerfile' });
+        hljs.registerAliases(['sh', 'shell', 'zsh'], { languageName: 'bash' });
+        hljs.registerAliases(['yml'], { languageName: 'yaml' });
 
 	isInitialized = true;
 }
