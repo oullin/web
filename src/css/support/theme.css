@@ -48,23 +48,23 @@
 		width 0.1s ease-out;
 }
 
+
 :root {
-    --custom-scrollbar-track: theme(colors.gray.100);
-    --custom-scrollbar-thumb: theme(colors.fuchsia.500);
-    --custom-scrollbar-thumb-hover: theme(colors.fuchsia.400);
+        --custom-scrollbar-track: var(--color-gray-100);
+        --custom-scrollbar-thumb: var(--color-fuchsia-500);
+        --custom-scrollbar-thumb-hover: var(--color-fuchsia-400);
 }
 
 .dark {
-    --custom-scrollbar-track: theme(colors.slate.800);
-    --custom-scrollbar-thumb: theme(colors.teal.500);
-    --custom-scrollbar-thumb-hover: theme(colors.teal.400);
+        --custom-scrollbar-track: var(--color-slate-800);
+        --custom-scrollbar-thumb: var(--color-teal-500);
+        --custom-scrollbar-thumb-hover: var(--color-teal-400);
 }
 
-.custom-scrollbar,
-.post-markdown pre {
-    --scrollbar-track: var(--custom-scrollbar-track);
-    --scrollbar-thumb: var(--custom-scrollbar-thumb);
-    --scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
+.custom-scrollbar {
+        --scrollbar-track: var(--custom-scrollbar-track);
+        --scrollbar-thumb: var(--custom-scrollbar-thumb);
+        --scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
 }
 
 .custom-scrollbar,
