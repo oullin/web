@@ -183,7 +183,7 @@
 .post-markdown pre {
     @apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 rounded-2xl p-6 overflow-x-auto text-sm;
     scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--post-scrollbar-thumb) var(--post-scrollbar-track);
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .post-markdown code {
