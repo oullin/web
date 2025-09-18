@@ -181,43 +181,12 @@
 }
 
 .post-markdown pre {
+    --scrollbar-track: var(--custom-scrollbar-track);
+    --scrollbar-thumb: var(--custom-scrollbar-thumb);
+    --scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
     @apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 rounded-2xl p-6 overflow-x-auto text-sm;
     scrollbar-width: thin; /* Firefox */
-    scrollbar-color: theme(colors.fuchsia.500) theme(colors.gray.100);
-}
-
-.post-markdown pre::-webkit-scrollbar {
-    width: 8px;
-}
-
-.post-markdown pre::-webkit-scrollbar-track {
-    background-color: theme(colors.gray.100);
-    border-radius: 10px;
-}
-
-.post-markdown pre::-webkit-scrollbar-thumb {
-    background-color: theme(colors.fuchsia.500);
-    border-radius: 10px;
-}
-
-.post-markdown pre::-webkit-scrollbar-thumb:hover {
-    background-color: theme(colors.fuchsia.400);
-}
-
-.dark .post-markdown pre {
-    scrollbar-color: theme(colors.teal.500) theme(colors.slate.800);
-}
-
-.dark .post-markdown pre::-webkit-scrollbar-track {
-    background-color: theme(colors.slate.800);
-}
-
-.dark .post-markdown pre::-webkit-scrollbar-thumb {
-    background-color: theme(colors.teal.500);
-}
-
-.dark .post-markdown pre::-webkit-scrollbar-thumb:hover {
-    background-color: theme(colors.teal.400);
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .post-markdown code {

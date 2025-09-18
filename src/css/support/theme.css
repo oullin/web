@@ -48,41 +48,49 @@
 		width 0.1s ease-out;
 }
 
-/* --- Default (Light Theme) Styles --- */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
+
+:root {
+        --custom-scrollbar-track: var(--color-gray-100);
+        --custom-scrollbar-thumb: var(--color-fuchsia-500);
+        --custom-scrollbar-thumb-hover: var(--color-fuchsia-400);
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-    background-color: theme(colors.gray.100);
-    border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: theme(colors.fuchsia.500); /* Changed for light theme */
-    border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: theme(colors.fuchsia.400); /* Changed for light theme */
+.dark {
+        --custom-scrollbar-track: var(--color-slate-800);
+        --custom-scrollbar-thumb: var(--color-teal-500);
+        --custom-scrollbar-thumb-hover: var(--color-teal-400);
 }
 
 .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: theme(colors.fuchsia.500) theme(colors.gray.100); /* Changed for light theme */
+        --scrollbar-track: var(--custom-scrollbar-track);
+        --scrollbar-thumb: var(--custom-scrollbar-thumb);
+        --scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
 }
 
-
-/* --- Dark Theme Overrides --- */
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: theme(colors.teal.500); /* Changed for dark theme */
+.custom-scrollbar,
+.post-markdown pre {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: theme(colors.teal.400); /* Changed for dark theme */
+.custom-scrollbar::-webkit-scrollbar,
+.post-markdown pre::-webkit-scrollbar {
+    width: 8px;
 }
 
-.dark .custom-scrollbar {
-    scrollbar-color: theme(colors.teal.500) theme(colors.slate.800); /* Changed for dark theme */
+.custom-scrollbar::-webkit-scrollbar-track,
+.post-markdown pre::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb,
+.post-markdown pre::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+.post-markdown pre::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
 }
