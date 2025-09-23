@@ -14,3 +14,7 @@ node_modules/
 # --- [Caddy]: mtls
 caddy/mtls/*.*
 !caddy/mtls/.gitkeep
+
+# -- [SEO]: static files
+public/seo/*.*
+!public/seo/.gitkeep
