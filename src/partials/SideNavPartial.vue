@@ -20,14 +20,14 @@
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
-							<router-link v-slot="{ href, navigate, isExactActive }" to="/" custom>
-								<a
-									v-lazy-link
-									:class="applyClassIf(['/about', '/subscribe', '/projects', '/resume']) ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting'"
-									class="h6 blog-side-nav-router-link-a"
-									:href="href"
-									@click="navigate"
-								>
+                                                        <router-link v-slot="{ href, navigate, isExactActive }" to="/" custom>
+                                                                <a
+                                                                        v-lazy-link
+                                                                        class="h6 blog-side-nav-router-link-a"
+                                                                        :class="bindIconClassFor(isExactActive)"
+                                                                        :href="href"
+                                                                        @click="navigate"
+                                                                >
 									<span class="sr-only">Home</span>
 									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="19">
 										<path fill-opacity=".16" d="M4 7v11h13V7l-6.5-5z" />
@@ -100,17 +100,7 @@ const isHome = computed<boolean>(() => {
 	return currentRoute.value.fullPath === '/';
 });
 
-function applyClassIf(constraint: string[]): boolean {
-	if (isHome.value) {
-		return true;
-	}
-
-	const fullPath = currentRoute.value.fullPath;
-
-	return Array.of(constraint).includes(fullPath);
-}
-
 function bindIconClassFor(isActive: boolean): string {
-	return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
+        return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
 }
 </script>
