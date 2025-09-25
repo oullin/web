@@ -122,6 +122,20 @@ describe('lazyLinkDirective', () => {
                 });
         });
 
+        it('ignores external absolute URLs', async () => {
+                installMockIntersectionObserver();
+                installIdleCallback({ immediate: true });
+
+                await withDirective(async (directive) => {
+                        const element = document.createElement('a');
+                        element.setAttribute('href', 'https://example.com/about');
+
+                        directive.mounted?.(element as HTMLAnchorElement, undefined as never);
+
+                        expect(element.dataset.lazyLink).toBe('ignored');
+                });
+        });
+
         it('prefetches when the link becomes visible', async () => {
                 const observers = installMockIntersectionObserver();
                 const idle = installIdleCallback({ immediate: true });
