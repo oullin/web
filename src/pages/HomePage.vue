@@ -59,22 +59,22 @@ const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 
 useSeo({
-        title: 'Home',
-        image: ABOUT_IMAGE,
-        imageAlt: `${SITE_NAME} profile portrait`,
-        url: siteUrlFor('/'),
-        description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
-        keywords: buildKeywords('software engineering leadership', 'technology articles', 'engineering management insights'),
-        jsonLd: [
-                {
-                        '@context': 'https://schema.org',
-                        '@type': 'WebPage',
-                        name: 'Home',
-                        url: siteUrlFor('/'),
-                        description: `${SITE_NAME} shares articles about software engineering, leadership, AI, and architecture.`,
-                },
-                PERSON_JSON_LD,
-        ],
+	title: 'Home',
+	image: ABOUT_IMAGE,
+	imageAlt: `${SITE_NAME} profile portrait`,
+	url: siteUrlFor('/'),
+	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
+	keywords: buildKeywords('software engineering leadership', 'technology articles', 'engineering management insights'),
+	jsonLd: [
+		{
+			'@context': 'https://schema.org',
+			'@type': 'WebPage',
+			name: 'Home',
+			url: siteUrlFor('/'),
+			description: `${SITE_NAME} shares articles about software engineering, leadership, AI, and architecture.`,
+		},
+		PERSON_JSON_LD,
+	],
 });
 
 onMounted(async () => {

@@ -5,126 +5,126 @@ on:
         branches: [main]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  build-and-push:
-    strategy:
-      matrix:
-        os: [ubuntu-24.04]
+    build-and-push:
+        strategy:
+            matrix:
+                os: [ubuntu-24.04]
 
-    runs-on: ${{ matrix.os }}
-    permissions:
-      contents: read
-      packages: write
+        runs-on: ${{ matrix.os }}
+        permissions:
+            contents: read
+            packages: write
 
-    outputs:
-      IMAGE_TAG: ${{ steps.set-tag.outputs.IMAGE_TAG }}
+        outputs:
+            IMAGE_TAG: ${{ steps.set-tag.outputs.IMAGE_TAG }}
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-      - name: Set Image Tag
-        id: set-tag
-        run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+            - name: Set Image Tag
+              id: set-tag
+              run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
-      - name: Set up Docker with Buildx
-        uses: docker/setup-buildx-action@v3
+            - name: Set up Docker with Buildx
+              uses: docker/setup-buildx-action@v3
 
-      - name: Create .env File
-        run: |
-            # Check if the secret is empty or not.
-            if [ -z "${{ secrets.ENV_FILE_CONTENT }}" ]; then
-                echo "Warning: The ENV_FILE_CONTENT secret is empty or not set."
-            else
-                # Check if the .env file already exists in the checkout.
-                if [ -f .env ]; then
-                    echo "Found existing .env file. Overwriting with content from secrets..."
-                else
-                    echo "No .env file found. Creating a new one from secrets..."
-                fi
+            - name: Create .env File
+              run: |
+                  # Check if the secret is empty or not.
+                  if [ -z "${{ secrets.ENV_FILE_CONTENT }}" ]; then
+                      echo "Warning: The ENV_FILE_CONTENT secret is empty or not set."
+                  else
+                      # Check if the .env file already exists in the checkout.
+                      if [ -f .env ]; then
+                          echo "Found existing .env file. Overwriting with content from secrets..."
+                      else
+                          echo "No .env file found. Creating a new one from secrets..."
+                      fi
 
-                # This command creates the file or overwrites it if it exists.
-                echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
-            fi
-        shell: bash
+                      # This command creates the file or overwrites it if it exists.
+                      echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+                  fi
+              shell: bash
 
-      - name: Build Release Images
-        run: make build-ci
+            - name: Build Release Images
+              run: make build-ci
 
-      - name: Log in to GitHub Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Log in to GitHub Registry
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Release Artifacts
-        run: make build-release BUILD_PACKAGE_OWNER=${{ github.repository_owner }} BUILD_VERSION=${{ steps.set-tag.outputs.IMAGE_TAG }}
+            - name: Release Artifacts
+              run: make build-release BUILD_PACKAGE_OWNER=${{ github.repository_owner }} BUILD_VERSION=${{ steps.set-tag.outputs.IMAGE_TAG }}
 
-  deploy-to-vps:
-    name: Deploy to VPS
-    needs: build-and-push
-    runs-on: ubuntu-24.04
+    deploy-to-vps:
+        name: Deploy to VPS
+        needs: build-and-push
+        runs-on: ubuntu-24.04
 
-    steps:
-      - name: SSH and Pull Images on VPS
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            set -Eeuo pipefail
-            IMAGE_TAG=${{ needs.build-and-push.outputs.IMAGE_TAG }}
+        steps:
+            - name: SSH and Pull Images on VPS
+              uses: appleboy/ssh-action@v1.2.2
+              with:
+                  host: ${{ secrets.VPS_HOST }}
+                  username: ${{ secrets.VPS_USERNAME }}
+                  key: ${{ secrets.VPS_SSH_KEY }}
+                  script: |
+                      set -Eeuo pipefail
+                      IMAGE_TAG=${{ needs.build-and-push.outputs.IMAGE_TAG }}
 
-            echo "🔑 Logging into GitHub Container Registry ..."
-            echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+                      echo "🔑 Logging into GitHub Container Registry ..."
+                      echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            echo "🚚 Pulling latest images with tag: $IMAGE_TAG"
-            docker pull ghcr.io/${{ github.repository_owner }}/oullin_web:$IMAGE_TAG
+                      echo "🚚 Pulling latest images with tag: $IMAGE_TAG"
+                      docker pull ghcr.io/${{ github.repository_owner }}/oullin_web:$IMAGE_TAG
 
-            echo "🏷️ Retagging for Compose…"
-            docker tag ghcr.io/${{ github.repository_owner }}/oullin_web:$IMAGE_TAG web-prod-builder:latest
+                      echo "🏷️ Retagging for Compose…"
+                      docker tag ghcr.io/${{ github.repository_owner }}/oullin_web:$IMAGE_TAG web-prod-builder:latest
 
-            echo "🧹 Pruning old, unused Docker images ..."
-            docker image prune -f
+                      echo "🧹 Pruning old, unused Docker images ..."
+                      docker image prune -f
 
-            TARGET_DIR="${{ secrets.VPS_TARGET_DIR }}"
+                      TARGET_DIR="${{ secrets.VPS_TARGET_DIR }}"
 
-            if [ -d "$TARGET_DIR/.git" ]; then
-                echo "✅ Git repository found. Updating..."
+                      if [ -d "$TARGET_DIR/.git" ]; then
+                          echo "✅ Git repository found. Updating..."
 
-                cd "$TARGET_DIR"
+                          cd "$TARGET_DIR"
 
-                git fetch --prune origin main
-                git reset --hard origin/main
-            else
-                echo "⚠️ Not a Git repository. Performing a clean clone while preserving .env..."
+                          git fetch --prune origin main
+                          git reset --hard origin/main
+                      else
+                          echo "⚠️ Not a Git repository. Performing a clean clone while preserving .env..."
 
-                # Temporarily move the .env file if it exists.
-                # The '|| true' prevents an error if the file doesn't exist yet.
-                mv "$TARGET_DIR/.env" /tmp/.env.bak 2>/dev/null || true
+                          # Temporarily move the .env file if it exists.
+                          # The '|| true' prevents an error if the file doesn't exist yet.
+                          mv "$TARGET_DIR/.env" /tmp/.env.bak 2>/dev/null || true
 
-                # Wipe the directory and perform a clean clone
-                rm -rf "$TARGET_DIR"
-                git clone https://github.com/${{ github.repository }}.git "$TARGET_DIR"
+                          # Wipe the directory and perform a clean clone
+                          rm -rf "$TARGET_DIR"
+                          git clone https://github.com/${{ github.repository }}.git "$TARGET_DIR"
 
-                # Move the .env file back if it was backed up
-                mv /tmp/.env.bak "$TARGET_DIR/.env" 2>/dev/null || true
+                          # Move the .env file back if it was backed up
+                          mv /tmp/.env.bak "$TARGET_DIR/.env" 2>/dev/null || true
 
-                cd "$TARGET_DIR"
-            fi
+                          cd "$TARGET_DIR"
+                      fi
 
-            echo "🚀 Restarting containers ..."
+                      echo "🚀 Restarting containers ..."
 
-            if [ ! -f .env ]; then
-                echo "⚠️ .env file not found. Creating a new one from secrets..."
-                echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
-            fi
+                      if [ ! -f .env ]; then
+                          echo "⚠️ .env file not found. Creating a new one from secrets..."
+                          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+                      fi
 
-            docker compose --env-file ./.env --profile prod up -d --no-build
+                      docker compose --env-file ./.env --profile prod up -d --no-build
 
-            echo "✅ Deployment completed!"
+                      echo "✅ Deployment completed!"

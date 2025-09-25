@@ -28,7 +28,7 @@ services:
             - local
         container_name: web_caddy_local
         ports:
-            - "5173:80"
+            - '5173:80'
         volumes:
             - ./dist:/usr/share/caddy
             - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile

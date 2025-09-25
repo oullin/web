@@ -1,73 +1,73 @@
 .blog-link {
-    @apply text-fuchsia-500 font-medium;
-    @apply hover:cursor-pointer hover:underline;
-    @apply dark:text-teal-500 dark:hover:text-teal-600;
+	@apply text-fuchsia-500 font-medium;
+	@apply hover:cursor-pointer hover:underline;
+	@apply dark:text-teal-500 dark:hover:text-teal-600;
 }
 
 .blog-h1 {
-    @apply font-aspekta mb-5;
-    @apply text-slate-700 dark:text-slate-300;
+	@apply font-aspekta mb-5;
+	@apply text-slate-700 dark:text-slate-300;
 }
 
 .blog-fun-title-word-highlight {
-    @apply inline-flex relative text-fuchsia-500 dark:text-teal-600 before:absolute before:inset-0;
-    @apply before:bg-slate-300 dark:before:bg-slate-600 before:opacity-30 before:-z-10 before:-rotate-2;
-    @apply before:translate-y-1/4;
+	@apply inline-flex relative text-fuchsia-500 dark:text-teal-600 before:absolute before:inset-0;
+	@apply before:bg-slate-300 dark:before:bg-slate-600 before:opacity-30 before:-z-10 before:-rotate-2;
+	@apply before:translate-y-1/4;
 }
 
 /* --- side nav --- */
 .blog-side-nav-router-link-a {
-    @apply w-full flex items-center justify-center relative after:absolute after:w-0.5;
-    @apply after:right-0 after:top-0 after:bottom-0;
+	@apply w-full flex items-center justify-center relative after:absolute after:w-0.5;
+	@apply after:right-0 after:top-0 after:bottom-0;
 }
 
 .blog-side-nav-router-link-a-resting {
-    @apply text-slate-200 hover:text-fuchsia-500 hover:after:bg-fuchsia-600;
-    @apply dark:text-slate-700 dark:hover:text-teal-600 dark:hover:after:bg-teal-600;
+	@apply text-slate-200 hover:text-fuchsia-500 hover:after:bg-fuchsia-600;
+	@apply dark:text-slate-700 dark:hover:text-teal-600 dark:hover:after:bg-teal-600;
 }
 
 .blog-side-nav-router-link-a-active {
-    @apply text-fuchsia-500 after:bg-fuchsia-500 hover:after:bg-fuchsia-600 hover:text-fuchsia-600;
-    @apply dark:text-teal-600 dark:after:bg-teal-600 dark:hover:after:bg-slate-500;
+	@apply text-fuchsia-500 after:bg-fuchsia-500 hover:after:bg-fuchsia-600 hover:text-fuchsia-600;
+	@apply dark:text-teal-600 dark:after:bg-teal-600 dark:hover:after:bg-slate-500;
 }
 
 /* --- footer --- */
 .blog-footer-social-li {
-    @apply flex justify-center items-center h-10 w-10 bg-gray-400 border border-gray-400 rounded-md;
-    @apply transition duration-150 ease-in-out hover:bg-fuchsia-400 hover:border-fuchsia-400 cursor-pointer;
-    @apply dark:bg-linear-to-t dark:bg-slate-900 dark:border-slate-800 dark:from-slate-800 dark:to-slate-800/30;
-    @apply dark:hover:bg-linear-to-b;
+	@apply flex justify-center items-center h-10 w-10 bg-gray-400 border border-gray-400 rounded-md;
+	@apply transition duration-150 ease-in-out hover:bg-fuchsia-400 hover:border-fuchsia-400 cursor-pointer;
+	@apply dark:bg-linear-to-t dark:bg-slate-900 dark:border-slate-800 dark:from-slate-800 dark:to-slate-800/30;
+	@apply dark:hover:bg-linear-to-b;
 }
 
 .blog-widgets-btn-sm {
-    @apply w-full text-slate-100 bg-slate-700 hover:bg-slate-800 cursor-pointer;
-    @apply dark:bg-teal-600 dark:hover:bg-teal-700;
+	@apply w-full text-slate-100 bg-slate-700 hover:bg-slate-800 cursor-pointer;
+	@apply dark:bg-teal-600 dark:hover:bg-teal-700;
 }
 
 .blog-widgets-subscriber-avatar {
-    @apply rounded-full border-2 border-white dark:border-slate-800 box-content;
+	@apply rounded-full border-2 border-white dark:border-slate-800 box-content;
 }
 
 /* --- header --- */
 .blog-header-search-icon {
-    @apply fill-fuchsia-500;
-    @apply dark:fill-teal-500;
+	@apply fill-fuchsia-500;
+	@apply dark:fill-teal-500;
 }
 
 /* --- social --- */
 .blog-widgets-social-links {
-    @apply flex text-sm font-medium text-zinc-800 transition hover:text-fuchsia-500;
-    @apply dark:text-zinc-200 dark:hover:text-teal-500;
+	@apply flex text-sm font-medium text-zinc-800 transition hover:text-fuchsia-500;
+	@apply dark:text-zinc-200 dark:hover:text-teal-500;
 }
 
 .blog-widgets-social-svg {
-    @apply h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-fuchsia-500;
-    @apply dark:group-hover:fill-teal-500;
+	@apply h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-fuchsia-500;
+	@apply dark:group-hover:fill-teal-500;
 }
 
 /* --- markdown content --- */
 .post-markdown {
-    @apply text-base leading-relaxed text-slate-500 dark:text-slate-300;
+	@apply text-base leading-relaxed text-slate-500 dark:text-slate-300;
 }
 
 .post-markdown h1,
@@ -76,31 +76,31 @@
 .post-markdown h4,
 .post-markdown h5,
 .post-markdown h6 {
-    @apply font-aspekta font-semibold text-slate-700 dark:text-slate-100;
+	@apply font-aspekta font-semibold text-slate-700 dark:text-slate-100;
 }
 
 .post-markdown h1 {
-    @apply text-4xl mt-10 mb-4;
+	@apply text-4xl mt-10 mb-4;
 }
 
 .post-markdown h2 {
-    @apply text-3xl mt-10 mb-4;
+	@apply text-3xl mt-10 mb-4;
 }
 
 .post-markdown h3 {
-    @apply text-2xl mt-8 mb-3;
+	@apply text-2xl mt-8 mb-3;
 }
 
 .post-markdown h4 {
-    @apply text-xl mt-6 mb-2;
+	@apply text-xl mt-6 mb-2;
 }
 
 .post-markdown h5 {
-    @apply text-lg mt-6 mb-2;
+	@apply text-lg mt-6 mb-2;
 }
 
 .post-markdown h6 {
-    @apply text-base uppercase tracking-wide text-slate-400 dark:text-slate-500 mt-6 mb-2;
+	@apply text-base uppercase tracking-wide text-slate-400 dark:text-slate-500 mt-6 mb-2;
 }
 
 .post-markdown p,
@@ -110,94 +110,94 @@
 .post-markdown pre,
 .post-markdown table,
 .post-markdown hr {
-    @apply mt-6;
+	@apply mt-6;
 }
 
 .post-markdown > *:first-child {
-    @apply mt-0;
+	@apply mt-0;
 }
 
 .post-markdown a {
-    @apply text-fuchsia-500 font-medium underline underline-offset-4 decoration-1 hover:text-fuchsia-600 transition;
-    @apply dark:text-teal-500 dark:hover:text-teal-400;
+	@apply text-fuchsia-500 font-medium underline underline-offset-4 decoration-1 hover:text-fuchsia-600 transition;
+	@apply dark:text-teal-500 dark:hover:text-teal-400;
 }
 
 .post-markdown strong {
-    @apply text-slate-700 dark:text-slate-100;
+	@apply text-slate-700 dark:text-slate-100;
 }
 
 .post-markdown em {
-    @apply italic;
+	@apply italic;
 }
 
 .post-markdown ul {
-    @apply list-disc pl-6 space-y-2;
+	@apply list-disc pl-6 space-y-2;
 }
 
 .post-markdown ol {
-    @apply list-decimal pl-6 space-y-2;
+	@apply list-decimal pl-6 space-y-2;
 }
 
 .post-markdown li > ul,
 .post-markdown li > ol {
-    @apply mt-2;
+	@apply mt-2;
 }
 
 .post-markdown blockquote {
-    @apply border-l-4 border-fuchsia-500 dark:border-teal-600 pl-6 py-3 text-slate-600 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 rounded-r-xl;
+	@apply border-l-4 border-fuchsia-500 dark:border-teal-600 pl-6 py-3 text-slate-600 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 rounded-r-xl;
 }
 
 .post-markdown blockquote > :first-child {
-    @apply mt-1;
+	@apply mt-1;
 }
 
 .post-markdown blockquote > :last-child {
-    @apply mb-1;
+	@apply mb-1;
 }
 
 .post-markdown hr {
-    @apply border-slate-200 dark:border-slate-700;
+	@apply border-slate-200 dark:border-slate-700;
 }
 
 .post-markdown table {
-    @apply w-full text-sm border border-slate-200 dark:border-slate-700;
-    border-collapse: collapse;
+	@apply w-full text-sm border border-slate-200 dark:border-slate-700;
+	border-collapse: collapse;
 }
 
 @media (max-width: 768px) {
-    .post-markdown table {
-        display: block;
-        overflow-x: auto;
-    }
+	.post-markdown table {
+		display: block;
+		overflow-x: auto;
+	}
 }
 
 .post-markdown thead {
-    @apply bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-200;
+	@apply bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-200;
 }
 
 .post-markdown th,
 .post-markdown td {
-    @apply border border-slate-200 dark:border-slate-700 px-4 py-3 align-top text-left;
+	@apply border border-slate-200 dark:border-slate-700 px-4 py-3 align-top text-left;
 }
 
 .post-markdown pre {
-    --scrollbar-track: var(--custom-scrollbar-track);
-    --scrollbar-thumb: var(--custom-scrollbar-thumb);
-    --scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
-    @apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 rounded-2xl p-6 overflow-x-auto text-sm;
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+	--scrollbar-track: var(--custom-scrollbar-track);
+	--scrollbar-thumb: var(--custom-scrollbar-thumb);
+	--scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
+	@apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 rounded-2xl p-6 overflow-x-auto text-sm;
+	scrollbar-width: thin; /* Firefox */
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .post-markdown code {
-    @apply font-pt-mono text-sm bg-slate-900/10 text-slate-700 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
+	@apply font-pt-mono text-sm bg-slate-900/10 text-slate-700 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
 }
 
 .post-markdown pre code {
-    @apply bg-transparent px-0 py-0 text-inherit;
+	@apply bg-transparent px-0 py-0 text-inherit;
 }
 
 .post-markdown img {
-    @apply shadow-sm dark:shadow-none rounded-md;
-    max-width: 100%;
+	@apply shadow-sm dark:shadow-none rounded-md;
+	max-width: 100%;
 }

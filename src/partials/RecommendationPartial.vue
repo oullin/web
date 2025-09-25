@@ -8,16 +8,7 @@
 					<div
 						class="absolute left-0 h-14 w-14 flex items-center justify-center dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
 					>
-                                                <img
-                                                        class="rounded-full"
-                                                        :src="image(item.person.avatar)"
-                                                        width="56"
-                                                        height="56"
-                                                        :alt="item.person.full_name"
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                        fetchpriority="low"
-                                                />
+						<img class="rounded-full" :src="image(item.person.avatar)" width="56" height="56" :alt="item.person.full_name" loading="lazy" decoding="async" fetchpriority="low" />
 					</div>
 					<div class="pl-20 space-y-1">
 						<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.person.full_name }}</div>

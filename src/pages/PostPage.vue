@@ -15,11 +15,11 @@
 							<div class="max-w-[700px]">
 								<!-- Back -->
 								<div class="mb-3">
-                                                                        <router-link
-                                                                                v-lazy-link
-                                                                                class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
-                                                                                to="/"
-                                                                        >
+									<router-link
+										v-lazy-link
+										class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
+										to="/"
+									>
 										<span class="sr-only">Back</span>
 										<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
 											<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
@@ -40,11 +40,11 @@
 											<!-- Share buttons -->
 											<ul class="inline-flex">
 												<li>
-                                                                                                        <a
-                                                                                                                v-lazy-link
-                                                                                                                class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
-                                                                                                                :href="xURLFor(post)"
-                                                                                                                aria-label="Twitter"
+													<a
+														v-lazy-link
+														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
+														:href="xURLFor(post)"
+														aria-label="Twitter"
 														target="_blank"
 														rel="noopener noreferrer"
 													>
@@ -56,11 +56,11 @@
 													</a>
 												</li>
 												<li>
-                                                                                                        <a
-                                                                                                                v-lazy-link
-                                                                                                                class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
-                                                                                                                :href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
-                                                                                                                aria-label="LinkedIn"
+													<a
+														v-lazy-link
+														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
+														:href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
+														aria-label="LinkedIn"
 														target="_blank"
 														rel="noopener noreferrer"
 													>
@@ -72,11 +72,11 @@
 													</a>
 												</li>
 												<li>
-                                                                                                        <a
-                                                                                                                v-lazy-link
-                                                                                                                class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
-                                                                                                                href="#"
-                                                                                                                aria-label="Share"
+													<a
+														v-lazy-link
+														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
+														href="#"
+														aria-label="Share"
 														@click.prevent="sharePost(post)"
 													>
 														<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -93,16 +93,7 @@
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
-                                                                                <img
-                                                                                        class="w-full"
-                                                                                        :src="post.cover_image_url"
-                                                                                        width="692"
-                                                                                        height="390"
-                                                                                        :alt="post.title"
-                                                                                        loading="lazy"
-                                                                                        decoding="async"
-                                                                                        fetchpriority="low"
-                                                                                />
+										<img class="w-full" :src="post.cover_image_url" width="692" height="390" :alt="post.title" loading="lazy" decoding="async" fetchpriority="low" />
 										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>

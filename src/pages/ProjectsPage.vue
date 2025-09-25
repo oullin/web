@@ -73,22 +73,22 @@ const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
 
 useSeo({
-        title: 'Projects',
-        image: ABOUT_IMAGE,
-        imageAlt: `${SITE_NAME} presenting a project`,
-        url: siteUrlFor('/projects'),
-        description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
-        keywords: buildKeywords('open source projects', 'software engineering portfolio', 'client project case studies'),
-        jsonLd: [
-                {
-                        '@context': 'https://schema.org',
-                        '@type': 'CollectionPage',
-                        name: 'Projects',
-                        url: siteUrlFor('/projects'),
-                        description: `A curated list of ${SITE_NAME} projects that highlight engineering leadership and architecture skills.`,
-                },
-                PERSON_JSON_LD,
-        ],
+	title: 'Projects',
+	image: ABOUT_IMAGE,
+	imageAlt: `${SITE_NAME} presenting a project`,
+	url: siteUrlFor('/projects'),
+	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
+	keywords: buildKeywords('open source projects', 'software engineering portfolio', 'client project case studies'),
+	jsonLd: [
+		{
+			'@context': 'https://schema.org',
+			'@type': 'CollectionPage',
+			name: 'Projects',
+			url: siteUrlFor('/projects'),
+			description: `A curated list of ${SITE_NAME} projects that highlight engineering leadership and architecture skills.`,
+		},
+		PERSON_JSON_LD,
+	],
 });
 
 onMounted(async () => {
