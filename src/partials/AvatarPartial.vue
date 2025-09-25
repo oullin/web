@@ -1,5 +1,12 @@
 <template>
-	<img :class="className" :src="props.avatar" :alt="props.alt" fetchpriority="high" aria-hidden="true" />
+        <img
+                :class="className"
+                :src="props.avatar"
+                :alt="props.alt"
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+        />
 </template>
 
 <script setup lang="ts">

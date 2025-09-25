@@ -4,15 +4,23 @@
 
 		<!-- Cards -->
 		<div v-if="talks.length" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-			<a
-				v-for="talk in talks"
-				:key="talk.uuid"
-				class="relative aspect-video rounded-lg overflow-hidden bg-linear-to-tr from-slate-800 to-slate-700 odd:rotate-1 even:-rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out shadow-xl"
-				:href="talk.url"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<img class="absolute inset-0 w-full h-full object-cover opacity-40 max-w-[336] max-h-[189]" :src="image(talk.photo)" :alt="talk.title" />
+                        <a
+                                v-lazy-link
+                                v-for="talk in talks"
+                                :key="talk.uuid"
+                                class="relative aspect-video rounded-lg overflow-hidden bg-linear-to-tr from-slate-800 to-slate-700 odd:rotate-1 even:-rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out shadow-xl"
+                                :href="talk.url"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                        >
+                                <img
+                                        class="absolute inset-0 w-full h-full object-cover opacity-40 max-w-[336] max-h-[189]"
+                                        :src="image(talk.photo)"
+                                        :alt="talk.title"
+                                        loading="lazy"
+                                        decoding="async"
+                                        fetchpriority="low"
+                                />
 				<div class="h-full relative flex flex-col items-start justify-between before:mt-auto before:flex-1 p-5">
 					<div class="flex-1 flex items-center text-lg font-aspekta text-white font-[650]">{{ talk.title }}</div>
 

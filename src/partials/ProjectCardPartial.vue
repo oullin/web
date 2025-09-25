@@ -1,15 +1,24 @@
 <template>
-	<a
-		class="rounded-lg border border-slate-200 hover:border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 transition-color ease-in-out p-5 group"
-		:href="item.url"
-		target="_blank"
-		rel="noopener noreferrer"
-	>
+        <a
+                v-lazy-link
+                class="rounded-lg border border-slate-200 hover:border-slate-300 dark:border-slate-800 dark:hover:border-slate-700 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 transition-color ease-in-out p-5 group"
+                :href="item.url"
+                target="_blank"
+                rel="noopener noreferrer"
+        >
 		<div class="flex flex-col h-full">
 			<div class="grow">
 				<div class="flex items-center justify-between space-x-2">
 					<div class="h-10 w-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full mb-2">
-						<img :src="getIconSrc()" width="18" height="18" :alt="item.title" />
+                                                <img
+                                                        :src="getIconSrc()"
+                                                        width="18"
+                                                        height="18"
+                                                        :alt="item.title"
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        fetchpriority="low"
+                                                />
 					</div>
 					<div v-if="item.is_open_source" class="text-xs inline-flex items-center font-medium bg-green-100 text-green-600 rounded-full text-center px-2 h-5">Open-Source</div>
 				</div>
