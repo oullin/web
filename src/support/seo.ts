@@ -93,8 +93,14 @@ export class Seo {
 		this.setMetaByProperty('og:description', description);
 		this.setMetaByProperty('og:type', options.type ?? 'website');
 		this.setMetaByProperty('og:url', url);
-		this.setMetaByProperty('og:image', image);
-		this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
+                if (image) {
+                        this.setMetaByProperty('og:image', image);
+                        this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
+                } else {
+                        // ensure previous values don't leak
+                        this.setMetaByProperty('og:image', undefined);
+                        this.setMetaByProperty('og:image:alt', undefined);
+                }
 		this.setMetaByProperty('og:site_name', options.siteName ?? SITE_NAME);
 		this.setMetaByProperty('og:locale', locale);
 
@@ -105,40 +111,66 @@ export class Seo {
 		this.setMetaByName('twitter:creator', twitter.creator);
 		this.setMetaByName('twitter:title', title);
 		this.setMetaByName('twitter:description', description);
-		this.setMetaByName('twitter:image', image);
-		this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
+                if (image) {
+                        this.setMetaByName('twitter:image', image);
+                        this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
+                } else {
+                        this.setMetaByName('twitter:image', undefined);
+                        this.setMetaByName('twitter:image:alt', undefined);
+                }
 
 		// Structured data for AI and crawlers
 		this.setJsonLd(options.jsonLd);
 	}
 
-	private setMetaByName(name: string, content?: string): void {
-		if (!hasDocument) return;
-		if (!content) return;
+        private setMetaByName(name: string, content?: string): void {
+                if (!hasDocument) return;
 
-		let element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+                const selector = `meta[name="${name}"]`;
+                let element =
+                        document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ??
+                        document.head.querySelector<HTMLMetaElement>(selector);
 
-		if (!element) {
-			element = document.createElement('meta');
-			element.setAttribute('name', name);
+                if (!content) {
+                        if (element?.dataset.seo === '1') element.remove();
+                        return;
+                }
 
-			document.head.appendChild(element);
-		}
+                if (!element) {
+                        element = document.createElement('meta');
+                        element.setAttribute('name', name);
+                        element.dataset.seo = '1';
+                        document.head.appendChild(element);
+                } else {
+                        element.dataset.seo = '1';
+                }
 
-		element.setAttribute('content', content);
-	}
+                element.setAttribute('content', content);
+        }
 
-	private setMetaByProperty(property: string, content?: string): void {
-		if (!hasDocument) return;
-		if (!content) return;
-		let element = document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
-		if (!element) {
-			element = document.createElement('meta');
-			element.setAttribute('property', property);
-			document.head.appendChild(element);
-		}
-		element.setAttribute('content', content);
-	}
+        private setMetaByProperty(property: string, content?: string): void {
+                if (!hasDocument) return;
+                const selector = `meta[property="${property}"]`;
+                let element =
+                        document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ??
+                        document.head.querySelector<HTMLMetaElement>(selector);
+
+                if (!content) {
+                        if (element?.dataset.seo === '1') element.remove();
+                        return;
+                }
+
+                if (!element) {
+                        element = document.createElement('meta');
+                        element.setAttribute('property', property);
+                        element.dataset.seo = '1';
+                        document.head.appendChild(element);
+                } else {
+                        element.dataset.seo = '1';
+                }
+
+                element.setAttribute('content', content);
+        }
 
 	private setLink(rel: string, href?: string): void {
 		if (!hasDocument) return;
