@@ -34,6 +34,7 @@ services:
             - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
             - ./caddy/mtls:/etc/caddy/mtls:ro
             - ./public/seo:/usr/share/caddy/seo:ro
+            - ./public/images:/usr/share/caddy/images:ro
         networks:
             - web_internal
 
@@ -62,6 +63,7 @@ services:
             - oullin_web_config:/config
             - ./caddy/mtls:/etc/caddy/mtls:ro
             - ./public/seo:/usr/share/caddy/seo:ro
+            - ./public/images:/usr/share/caddy/images:ro
         networks:
             caddy_net:
                 aliases:
