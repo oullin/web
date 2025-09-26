@@ -50,11 +50,19 @@
         file_server
 
         # Long cache for immutable assets
-        @assets path /assets/* *.css *.js *.png *.jpg *.svg *.webp *.woff2 *.woff *.ttf *.ico
+        @assets path /assets/* /images/*
         header @assets Cache-Control "public, max-age=31536000, immutable"
+
+        # Explicit caching for common top-level files
+        @favicon path /favicon.ico
+        header @favicon Cache-Control "public, max-age=31536000, immutable"
+
+        @robots path /robots.txt
+        header @robots Cache-Control "public, max-age=300"
 
         # Short cache for HTML and pretty routes
         @html {
+            not path /assets/*
             not path /images/*
             not path /relay/*
             not path /seo/*
