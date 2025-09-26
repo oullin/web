@@ -13,16 +13,49 @@
 						<!-- Middle area -->
 						<div class="grow">
 							<div class="max-w-[700px]">
-								<section>
-									<!-- Page title -->
-									<h1 class="h1 font-aspekta mb-12">My resume</h1>
-									<!-- Page content -->
-									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<EducationPartial v-if="education" :education="education" />
-										<ExperiencePartial v-if="experience" :experience="experience" />
-										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
-									</div>
-								</section>
+                                                                <section>
+                                                                        <!-- Page title -->
+                                                                        <h1 class="h1 font-aspekta mb-6 md:mb-8">My resume</h1>
+
+                                                                        <nav
+                                                                                class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-800 rounded-full px-4 py-2 mb-10"
+                                                                                aria-label="Resume sections"
+                                                                        >
+                                                                                <a
+                                                                                        class="transition-colors hover:text-slate-700 dark:hover:text-slate-200"
+                                                                                        href="#education"
+                                                                                >
+                                                                                        Education
+                                                                                </a>
+                                                                                <span class="text-slate-300 dark:text-slate-700">·</span>
+                                                                                <a
+                                                                                        class="transition-colors hover:text-slate-700 dark:hover:text-slate-200"
+                                                                                        href="#work-experience"
+                                                                                >
+                                                                                        Work experience
+                                                                                </a>
+                                                                                <span class="text-slate-300 dark:text-slate-700">·</span>
+                                                                                <a
+                                                                                        class="transition-colors hover:text-slate-700 dark:hover:text-slate-200"
+                                                                                        href="#recommendations"
+                                                                                >
+                                                                                        Recommendations
+                                                                                </a>
+                                                                        </nav>
+
+                                                                        <!-- Page content -->
+                                                                        <div class="text-slate-500 dark:text-slate-400 space-y-12">
+                                                                                <section id="education" class="scroll-mt-24">
+                                                                                        <EducationPartial v-if="education" :education="education" />
+                                                                                </section>
+                                                                                <section id="work-experience" class="scroll-mt-24">
+                                                                                        <ExperiencePartial v-if="experience" :experience="experience" />
+                                                                                </section>
+                                                                                <section id="recommendations" class="scroll-mt-24">
+                                                                                        <RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
+                                                                                </section>
+                                                                        </div>
+                                                                </section>
 							</div>
 						</div>
 
