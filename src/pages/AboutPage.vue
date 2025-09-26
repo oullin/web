@@ -17,7 +17,7 @@
 									<!-- Page title -->
 									<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
 
-									<img class="rounded-lg w-full mb-5" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" loading="lazy" decoding="async" fetchpriority="low" />
+									<img class="rounded-lg w-full mb-5" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" decoding="async" fetchpriority="high" />
 
 									<!-- Page content -->
 									<div class="space-y-8 text-slate-500">
