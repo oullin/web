@@ -1,11 +1,28 @@
 <template>
-	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
-		<div class="flex items-start">
-			<img class="rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] object-cover mr-6" :src="item.cover_image_url" width="88" height="88" :alt="item.title" decoding="async" fetchpriority="high" />
-			<div>
-				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
-					{{ date().format(new Date(item.published_at)) }}
-				</div>
+        <article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-start">
+                        <div class="relative mr-6 w-16 h-16 sm:w-[88px] sm:h-[88px] shrink-0">
+                                <div
+                                        v-if="!isImageLoaded"
+                                        class="absolute inset-0 rounded-sm bg-slate-200 dark:bg-slate-800 animate-pulse"
+                                ></div>
+                                <img
+                                        class="rounded-sm w-full h-full object-cover transition-opacity duration-300"
+                                        :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
+                                        :src="item.cover_image_url"
+                                        width="88"
+                                        height="88"
+                                        :alt="item.title"
+                                        decoding="async"
+                                        loading="lazy"
+                                        @load="onImageLoad"
+                                        @error="onImageError"
+                                />
+                        </div>
+                        <div>
+                                <div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
+                                        {{ date().format(new Date(item.published_at)) }}
+                                </div>
 				<h3 class="text-slate-700 font-aspekta text-lg font-[650] mb-1 dark:text-slate-300">
 					<router-link
 						v-lazy-link
@@ -36,10 +53,22 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import { date } from '@/public.ts';
 import type { PostResponse } from '@api/response/index.ts';
 
 defineProps<{
-	item: PostResponse;
+        item: PostResponse;
 }>();
+
+const isImageLoaded = ref(false);
+
+const onImageLoad = () => {
+        isImageLoaded.value = true;
+};
+
+const onImageError = () => {
+        isImageLoaded.value = true;
+};
 </script>
