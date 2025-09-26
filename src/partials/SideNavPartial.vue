@@ -2,17 +2,11 @@
 	<div class="sticky top-0 w-16 md:w-24 shrink-0 h-screen overflow-y-auto no-scrollbar border-r border-slate-200 dark:border-slate-800">
 		<div class="h-full flex flex-col justify-between after:flex-1 after:mt-auto">
 			<!-- Sidebar avatar -->
-                        <div v-if="!isHome" class="flex justify-center my-4">
-                                <router-link v-lazy-link to="/">
-                                        <AvatarPartial
-                                                width="w-16"
-                                                height="h-16"
-                                                loading="lazy"
-                                                decoding="async"
-                                                fetchpriority="low"
-                                        />
-                                </router-link>
-                        </div>
+			<div v-if="!isHome" class="flex justify-center my-4">
+				<router-link v-lazy-link to="/">
+					<AvatarPartial width="w-16" height="h-16" loading="lazy" decoding="async" fetchpriority="low" />
+				</router-link>
+			</div>
 
 			<!-- Sidebar menu-->
 			<div class="flex-1 grow flex items-center">
@@ -20,14 +14,8 @@
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
-                                                        <router-link v-slot="{ href, navigate, isExactActive }" to="/" custom>
-                                                                <a
-                                                                        v-lazy-link
-                                                                        class="h6 blog-side-nav-router-link-a"
-                                                                        :class="bindIconClassFor(isExactActive)"
-                                                                        :href="href"
-                                                                        @click="navigate"
-                                                                >
+							<router-link v-slot="{ href, navigate, isExactActive }" to="/" custom>
+								<a v-lazy-link class="h6 blog-side-nav-router-link-a" :class="bindIconClassFor(isExactActive)" :href="href" @click="navigate">
 									<span class="sr-only">Home</span>
 									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="19">
 										<path fill-opacity=".16" d="M4 7v11h13V7l-6.5-5z" />
@@ -101,6 +89,6 @@ const isHome = computed<boolean>(() => {
 });
 
 function bindIconClassFor(isActive: boolean): string {
-        return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
+	return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
 }
 </script>

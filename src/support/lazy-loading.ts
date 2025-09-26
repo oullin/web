@@ -38,38 +38,38 @@ function normaliseHref(element: HTMLAnchorElement): string | null {
 		return null;
 	}
 
-        if (isBrowser) {
-                try {
-                        const parsed = new URL(trimmed, window.location.origin);
+	if (isBrowser) {
+		try {
+			const parsed = new URL(trimmed, window.location.origin);
 
-                        if (parsed.origin !== window.location.origin) {
-                                return null;
-                        }
+			if (parsed.origin !== window.location.origin) {
+				return null;
+			}
 
-                        return `${parsed.pathname}${parsed.search}${parsed.hash}`;
-                } catch (error) {
-                        console.warn('Failed to parse link href for lazy loading', error);
-                        return null;
-                }
-        }
+			return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+		} catch (error) {
+			console.warn('Failed to parse link href for lazy loading', error);
+			return null;
+		}
+	}
 
-        // Outside of a browser context we cannot reliably determine the current origin, so
-        // avoid prefetching absolute URLs altogether. This mirrors the browser guard above
-        // that only permits same-origin routes.
-        if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(trimmed)) {
-                try {
-                        const parsed = new URL(trimmed);
+	// Outside of a browser context we cannot reliably determine the current origin, so
+	// avoid prefetching absolute URLs altogether. This mirrors the browser guard above
+	// that only permits same-origin routes.
+	if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(trimmed)) {
+		try {
+			const parsed = new URL(trimmed);
 
-                        if (parsed.origin && parsed.origin !== 'null') {
-                                return null;
-                        }
-                } catch (error) {
-                        console.warn('Failed to parse absolute link href for lazy loading', error);
-                        return null;
-                }
-        }
+			if (parsed.origin && parsed.origin !== 'null') {
+				return null;
+			}
+		} catch (error) {
+			console.warn('Failed to parse absolute link href for lazy loading', error);
+			return null;
+		}
+	}
 
-        return trimmed;
+	return trimmed;
 }
 
 function prefetchRoute(href: string): void {

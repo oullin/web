@@ -65,7 +65,7 @@ export class Seo {
 		const description = options.description ?? DEFAULT_DESCRIPTION;
 		const language = options.siteLanguage ?? 'en';
 		const locale = options.locale ?? 'en_US';
-                const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
+		const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
 
 		document.title = title;
 
@@ -93,14 +93,14 @@ export class Seo {
 		this.setMetaByProperty('og:description', description);
 		this.setMetaByProperty('og:type', options.type ?? 'website');
 		this.setMetaByProperty('og:url', url);
-                if (image) {
-                        this.setMetaByProperty('og:image', image);
-                        this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
-                } else {
-                        // ensure previous values don't leak
-                        this.setMetaByProperty('og:image', undefined);
-                        this.setMetaByProperty('og:image:alt', undefined);
-                }
+		if (image) {
+			this.setMetaByProperty('og:image', image);
+			this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
+		} else {
+			// ensure previous values don't leak
+			this.setMetaByProperty('og:image', undefined);
+			this.setMetaByProperty('og:image:alt', undefined);
+		}
 		this.setMetaByProperty('og:site_name', options.siteName ?? SITE_NAME);
 		this.setMetaByProperty('og:locale', locale);
 
@@ -111,58 +111,58 @@ export class Seo {
 		this.setMetaByName('twitter:creator', twitter.creator);
 		this.setMetaByName('twitter:title', title);
 		this.setMetaByName('twitter:description', description);
-                if (image) {
-                        this.setMetaByName('twitter:image', image);
-                        this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
-                } else {
-                        this.setMetaByName('twitter:image', undefined);
-                        this.setMetaByName('twitter:image:alt', undefined);
-                }
+		if (image) {
+			this.setMetaByName('twitter:image', image);
+			this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
+		} else {
+			this.setMetaByName('twitter:image', undefined);
+			this.setMetaByName('twitter:image:alt', undefined);
+		}
 
 		// Structured data for AI and crawlers
 		this.setJsonLd(options.jsonLd);
 	}
 
-        private setMetaByName(name: string, content?: string): void {
-                if (!hasDocument) return;
+	private setMetaByName(name: string, content?: string): void {
+		if (!hasDocument) return;
 
-                const selector = `meta[name="${name}"]`;
-                let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+		const selector = `meta[name="${name}"]`;
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
 
-                if (!content) {
-                        if (element) element.remove();
-                        return;
-                }
+		if (!content) {
+			if (element) element.remove();
+			return;
+		}
 
-                if (!element) {
-                        element = document.createElement('meta');
-                        element.setAttribute('name', name);
-                        element.dataset.seo = '1';
-                        document.head.appendChild(element);
-                }
+		if (!element) {
+			element = document.createElement('meta');
+			element.setAttribute('name', name);
+			element.dataset.seo = '1';
+			document.head.appendChild(element);
+		}
 
-                element.setAttribute('content', content);
-        }
+		element.setAttribute('content', content);
+	}
 
-        private setMetaByProperty(property: string, content?: string): void {
-                if (!hasDocument) return;
-                const selector = `meta[property="${property}"]`;
-                let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+	private setMetaByProperty(property: string, content?: string): void {
+		if (!hasDocument) return;
+		const selector = `meta[property="${property}"]`;
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
 
-                if (!content) {
-                        if (element) element.remove();
-                        return;
-                }
+		if (!content) {
+			if (element) element.remove();
+			return;
+		}
 
-                if (!element) {
-                        element = document.createElement('meta');
-                        element.setAttribute('property', property);
-                        element.dataset.seo = '1';
-                        document.head.appendChild(element);
-                }
+		if (!element) {
+			element = document.createElement('meta');
+			element.setAttribute('property', property);
+			element.dataset.seo = '1';
+			document.head.appendChild(element);
+		}
 
-                element.setAttribute('content', content);
-        }
+		element.setAttribute('content', content);
+	}
 
 	private setLink(rel: string, href?: string): void {
 		if (!hasDocument) return;
@@ -225,8 +225,8 @@ export class Seo {
 		if (nocache) tokens.push('nocache');
 		if (noai) tokens.push('noai', 'noimageai');
 
-                return tokens.join(',');
-}
+		return tokens.join(',');
+	}
 }
 
 export const seo = new Seo();
@@ -249,7 +249,7 @@ function normalizeKeywords(keywords?: string | string[]): string | undefined {
 		return undefined;
 	}
 
-        return unique.join(',');
+	return unique.join(',');
 }
 
 function resolveValue<T>(value: MaybeRefOrGetter<T>): T {
@@ -278,26 +278,26 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 
 		if (!value) return undefined;
 
-                return {
-                        title: value.title,
-                        description: value.excerpt,
-                        image: value.cover_image_url,
-                        type: 'article',
-                        url: siteUrlFor(`/post/${value.slug}`),
-                        jsonLd: {
-                                '@context': 'https://schema.org',
-                                '@type': 'Article',
-                                headline: value.title,
-                                description: value.excerpt,
-                                image: value.cover_image_url,
-                                datePublished: value.published_at,
-                                author: {
-                                        '@type': 'Person',
-                                        name: SITE_NAME,
-                                },
-                        },
-                } satisfies SeoOptions;
-        });
+		return {
+			title: value.title,
+			description: value.excerpt,
+			image: value.cover_image_url,
+			type: 'article',
+			url: siteUrlFor(`/post/${value.slug}`),
+			jsonLd: {
+				'@context': 'https://schema.org',
+				'@type': 'Article',
+				headline: value.title,
+				description: value.excerpt,
+				image: value.cover_image_url,
+				datePublished: value.published_at,
+				author: {
+					'@type': 'Person',
+					name: SITE_NAME,
+				},
+			},
+		} satisfies SeoOptions;
+	});
 
 	useSeo(seoOptions);
 }
@@ -331,5 +331,5 @@ export function buildKeywords(...entries: Array<string | string[] | null | undef
 		});
 	});
 
-        return Array.from(uniqueKeywords).join(',');
+	return Array.from(uniqueKeywords).join(',');
 }
