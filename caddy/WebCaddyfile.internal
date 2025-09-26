@@ -25,11 +25,49 @@
         }
     }
 
+    # Normalise trailing slashes ("/about/" -> "/about")
+    @has_trailing path_regexp trailing ^/(.+)/$
+    redir @has_trailing /{re.trailing.1}{query} 308
+
+    # Block direct access to the SEO folder (serve only via internal rewrites)
+    handle_path /seo/* {
+        respond 404
+    }
+
     # Static SPA
     handle {
         root * /usr/share/caddy
-        try_files {path} {path}/index.html /index.html
+
+        # Try SEO flat files first, then SPA files
+        try_files \
+            /seo{path}.seo.html \
+            /seo/index.seo.html \
+            {path} \
+            {path}/index.html \
+            /index.html
+
+        encode zstd gzip
         file_server
+
+        # Long cache for immutable assets
+        @assets path /assets/* *.css *.js *.png *.jpg *.svg *.webp *.woff2 *.woff *.ttf *.ico
+        header @assets Cache-Control "public, max-age=31536000, immutable"
+
+        # Short cache for HTML and pretty routes
+        @html {
+            not path /images/*
+            not path /relay/*
+            not path /seo/*
+        }
+
+        header @html Cache-Control "public, max-age=300, stale-while-revalidate=60"
+
+        # Security headers
+        header {
+            Referrer-Policy "strict-origin-when-cross-origin"
+            X-Content-Type-Options "nosniff"
+            X-Frame-Options "SAMEORIGIN"
+        }
     }
 
     log {
