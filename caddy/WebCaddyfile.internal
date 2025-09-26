@@ -49,17 +49,8 @@
         respond 404
     }
 
-    @missing_static_ext {
-        path_regexp staticext \.(?:css|js|mjs|map|png|jpe?g|webp|avif|svg|gif|ico|woff2?|ttf|otf|json|txt|pdf|xml|webm|mp4|wasm|webmanifest)$
-        not file
-    }
-
     # Static SPA
     # Bot/social previews → serve static share pages under /seo/*.seo.html
-    header @missing_static_ext Cache-Control "no-store"
-    header @missing_static_ext Content-Type "text/plain; charset=utf-8"
-    respond @missing_static_ext 404
-
     @sharebots header_regexp ua User-Agent "(?i)(googlebot|bingbot|duckduckbot|yandex(bot|images)|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|whatsapp|skypeuripreview|bitlybot|vkshare|quora link preview|embedly|outbrain|nuzzel|ios link preview|snapchat|applebot)"
     handle @sharebots {
         root * /usr/share/caddy
