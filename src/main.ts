@@ -1,9 +1,9 @@
 import { createApp, App as VueApp } from 'vue';
 import { createPinia, Pinia } from 'pinia';
 
-import router from '@/router';
-import App from '@/App.vue';
 import '@css/style.css';
+import App from '@/App.vue';
+import router from '@/router';
 import { lazyLinkDirective } from '@/support/lazy-loading.ts';
 
 const app: VueApp = createApp(App);

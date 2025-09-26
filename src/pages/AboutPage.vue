@@ -111,16 +111,16 @@ const formattedNickname = computed((): string => {
 useSeo({
 	title: 'About',
 	image: ABOUT_IMAGE,
-	imageAlt: `${SITE_NAME} portrait`,
 	url: siteUrlFor('/about'),
-	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
+	imageAlt: `${SITE_NAME} portrait`,
 	keywords: buildKeywords('engineering leadership', 'software architecture expertise', 'tech mentoring'),
+	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
 	jsonLd: [
 		{
-			'@context': 'https://schema.org',
-			'@type': 'AboutPage',
 			name: 'About',
+			'@type': 'AboutPage',
 			url: siteUrlFor('/about'),
+			'@context': 'https://schema.org',
 			description: `${SITE_NAME} is an engineering leader focused on building reliable, people-first software.`,
 		},
 		PERSON_JSON_LD,

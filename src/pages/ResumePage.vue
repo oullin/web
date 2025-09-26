@@ -67,16 +67,16 @@ const recommendations = ref<RecommendationsResponse[] | null>(null);
 useSeo({
 	title: 'Resume',
 	image: ABOUT_IMAGE,
-	imageAlt: `${SITE_NAME} professional portrait`,
 	url: siteUrlFor('/resume'),
+	imageAlt: `${SITE_NAME} professional portrait`,
 	description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
 	keywords: buildKeywords('software engineering resume', 'technology leadership experience', 'engineering manager CV'),
 	jsonLd: [
 		{
-			'@context': 'https://schema.org',
-			'@type': 'ProfilePage',
 			name: 'Resume',
+			'@type': 'ProfilePage',
 			url: siteUrlFor('/resume'),
+			'@context': 'https://schema.org',
 			description: `${SITE_NAME} resume showcasing education, experience, and recommendations.`,
 		},
 		PERSON_JSON_LD,

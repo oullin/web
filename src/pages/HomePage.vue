@@ -61,16 +61,16 @@ const profile = ref<ProfileResponse | null>(null);
 useSeo({
 	title: 'Home',
 	image: ABOUT_IMAGE,
-	imageAlt: `${SITE_NAME} profile portrait`,
 	url: siteUrlFor('/'),
-	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
+	imageAlt: `${SITE_NAME} profile portrait`,
 	keywords: buildKeywords('software engineering leadership', 'technology articles', 'engineering management insights'),
+	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
 	jsonLd: [
 		{
-			'@context': 'https://schema.org',
-			'@type': 'WebPage',
 			name: 'Home',
+			'@type': 'WebPage',
 			url: siteUrlFor('/'),
+			'@context': 'https://schema.org',
 			description: `${SITE_NAME} shares articles about software engineering, leadership, AI, and architecture.`,
 		},
 		PERSON_JSON_LD,

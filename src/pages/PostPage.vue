@@ -117,28 +117,28 @@
 
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 import highlight from 'highlight.js/lib/core';
 import { debugError } from '@api/http-error.ts';
+import { date, getReadingTime } from '@/public.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
+import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import { date, getReadingTime } from '@/public.ts';
-import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
+import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 
 // --- Component
 const route = useRoute();
 const apiStore = useApiStore();
 const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
-const slug = ref<string>(route.params.slug as string);
 const postContainer = ref<HTMLElement | null>(null);
+const slug = ref<string>(route.params.slug as string);
 
 useSeoFromPost(post);
 

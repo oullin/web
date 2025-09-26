@@ -203,16 +203,16 @@ import { useSeo, SITE_NAME, siteUrlFor, ABOUT_IMAGE, buildKeywords, PERSON_JSON_
 useSeo({
 	title: 'Subscribe',
 	image: ABOUT_IMAGE,
-	imageAlt: `${SITE_NAME} smiling portrait`,
 	url: siteUrlFor('/subscribe'),
-	description: `Subscribe to ${SITE_NAME}'s newsletter to get updates on new articles, talks, and technology experiments.`,
+	imageAlt: `${SITE_NAME} smiling portrait`,
 	keywords: buildKeywords('engineering newsletter', 'software leadership updates', 'tech career insights'),
+	description: `Subscribe to ${SITE_NAME}'s newsletter to get updates on new articles, talks, and technology experiments.`,
 	jsonLd: [
 		{
-			'@context': 'https://schema.org',
-			'@type': 'WebPage',
 			name: 'Subscribe',
+			'@type': 'WebPage',
 			url: siteUrlFor('/subscribe'),
+			'@context': 'https://schema.org',
 			description: `Newsletter subscription page for ${SITE_NAME} covering leadership, engineering, and AI.`,
 		},
 		PERSON_JSON_LD,

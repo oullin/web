@@ -1,9 +1,9 @@
-import type { Directive } from 'vue';
 import router from '@/router';
+import type { Directive } from 'vue';
 
+const prefetchedRoutes = new Set<string>();
 const isBrowser = typeof window !== 'undefined';
 const hasIntersectionObserver = isBrowser && 'IntersectionObserver' in window;
-const prefetchedRoutes = new Set<string>();
 
 const idleCallback =
 	isBrowser && 'requestIdleCallback' in window
@@ -53,7 +53,7 @@ function normaliseHref(element: HTMLAnchorElement): string | null {
 		}
 	}
 
-	// Outside of a browser context we cannot reliably determine the current origin, so
+	// Outside a browser context we cannot reliably determine the current origin, so
 	// avoid prefetching absolute URLs altogether. This mirrors the browser guard above
 	// that only permits same-origin routes.
 	if (/^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(trimmed)) {
@@ -85,7 +85,7 @@ function prefetchRoute(href: string): void {
 		const resolved = router.resolve(href);
 
 		resolved.matched.forEach((record) => {
-			const components = record.components ?? (record.component ? { default: record.component } : undefined);
+			const components = record.components;
 
 			if (!components) {
 				return;
@@ -94,7 +94,7 @@ function prefetchRoute(href: string): void {
 			Object.values(components).forEach((component) => {
 				if (typeof component === 'function') {
 					// Trigger the dynamic import for the route component
-					void component();
+					void (component as Function)();
 				}
 			});
 		});
