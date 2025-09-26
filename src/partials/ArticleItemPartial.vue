@@ -7,7 +7,6 @@
                                 width="88"
                                 height="88"
                                 :alt="item.title"
-                                loading="lazy"
                                 decoding="async"
                                 fetchpriority="high"
                         />
