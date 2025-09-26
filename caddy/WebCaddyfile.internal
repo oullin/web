@@ -58,7 +58,6 @@
             /index.html
 
         encode zstd gzip
-        file_server
 
         # Long cache for immutable assets
         @assets path /assets/* /images/*
@@ -87,6 +86,8 @@
             X-Content-Type-Options "nosniff"
             X-Frame-Options "SAMEORIGIN"
         }
+
+        file_server
     }
 
     log {
