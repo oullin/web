@@ -50,7 +50,9 @@
     }
 
     # Static SPA
-    handle {
+    # Bot/social previews → serve static share pages under /seo/*.oullin.html
+    @sharebots header_regexp ua User-Agent "(?i)(googlebot|bingbot|duckduckbot|yandex(bot|images)|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|whatsapp|skypeuripreview|bitlybot|vkshare|quora link preview|embedly|outbrain|nuzzel|ios link preview|snapchat|applebot)"
+    handle @sharebots {
         root * /usr/share/caddy
 
         # Try SEO flat files first, then SPA files
@@ -78,15 +80,50 @@
         @html {
             not path /assets/*
             not path /images/*
-            not path /relay/*
             not path /seo/*
+            not path /relay/*
             not path /favicon.ico
             not path /robots.txt
         }
 
         header @html Cache-Control "public, max-age=300, stale-while-revalidate=60"
+        header @html Vary "User-Agent"
 
-        # Security headers
+        # Security headers for bot responses too
+        header {
+            Referrer-Policy "strict-origin-when-cross-origin"
+            X-Content-Type-Options "nosniff"
+            X-Frame-Options "SAMEORIGIN"
+        }
+
+        file_server
+    }
+
+    # --- Everyone else → SPA (humans) ---
+    handle {
+        root * /usr/share/caddy
+        try_files {path} {path}/index.html /index.html
+        encode zstd gzip
+
+        # Headers BEFORE file_server
+        @assets path /assets/* /images/*
+        header @assets Cache-Control "public, max-age=31536000, immutable"
+
+        @favicon path /favicon.ico
+        header @favicon Cache-Control "public, max-age=31536000, immutable"
+
+        @robots path /robots.txt
+        header @robots Cache-Control "public, max-age=300"
+
+        @html {
+            not path /assets/*
+            not path /images/*
+            not path /relay/*
+            not path /seo/*
+        }
+
+        header @html Cache-Control "public, max-age=300, stale-while-revalidate=60"
+
         header {
             Referrer-Policy "strict-origin-when-cross-origin"
             X-Content-Type-Options "nosniff"
