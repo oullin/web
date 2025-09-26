@@ -55,7 +55,7 @@ import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor } from '@/support/seo';
+import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
@@ -68,11 +68,19 @@ useSeo({
 	title: 'Resume',
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/resume'),
+	imageAlt: `${SITE_NAME} professional portrait`,
 	description: `Explore the experience, education, and recommendations of ${SITE_NAME}.`,
-	jsonLd: {
-		'@type': 'ProfilePage',
-		name: 'Resume',
-	},
+	keywords: buildKeywords('software engineering resume', 'technology leadership experience', 'engineering manager CV'),
+	jsonLd: [
+		{
+			name: 'Resume',
+			'@type': 'ProfilePage',
+			url: siteUrlFor('/resume'),
+			'@context': 'https://schema.org',
+			description: `${SITE_NAME} resume showcasing education, experience, and recommendations.`,
+		},
+		PERSON_JSON_LD,
+	],
 });
 
 onMounted(async () => {

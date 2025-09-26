@@ -66,6 +66,9 @@
 															width="24"
 															height="24"
 															alt="Avatar 01"
+															loading="lazy"
+															decoding="async"
+															fetchpriority="low"
 														/>
 														<img
 															class="rounded-full border-2 border-white dark:border-slate-800 box-content"
@@ -73,6 +76,9 @@
 															width="24"
 															height="24"
 															alt="Avatar 02"
+															loading="lazy"
+															decoding="async"
+															fetchpriority="low"
 														/>
 														<img
 															class="rounded-full border-2 border-white dark:border-slate-800 box-content"
@@ -80,6 +86,9 @@
 															width="24"
 															height="24"
 															alt="Avatar 03"
+															loading="lazy"
+															decoding="async"
+															fetchpriority="low"
 														/>
 														<img
 															class="rounded-full border-2 border-white dark:border-slate-800 box-content"
@@ -87,6 +96,9 @@
 															width="24"
 															height="24"
 															alt="Avatar 04"
+															loading="lazy"
+															decoding="async"
+															fetchpriority="low"
 														/>
 														<img
 															class="rounded-full border-2 border-white dark:border-slate-800 box-content"
@@ -94,6 +106,9 @@
 															width="24"
 															height="24"
 															alt="Avatar 05"
+															loading="lazy"
+															decoding="async"
+															fetchpriority="low"
 														/>
 													</div>
 													<div class="text-sm text-slate-500 ml-3">Join 100K+ developers.</div>
@@ -106,12 +121,22 @@
 										<!-- Cards -->
 										<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
 											<a
+												v-lazy-link
 												class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 odd:-rotate-1 even:rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out p-5"
 												href="#0"
 											>
 												<div class="flex flex-col h-full">
 													<div class="grow">
-														<img class="rounded-full mb-2" src="../images/testimonial-01.jpg" width="40" height="40" alt="Testimonial 01" />
+														<img
+															class="rounded-full mb-2"
+															src="../images/testimonial-01.jpg"
+															width="40"
+															height="40"
+															alt="Testimonial 01"
+															loading="lazy"
+															decoding="async"
+															fetchpriority="low"
+														/>
 														<div class="text-lg font-aspekta font-[650] mb-1">“ Incredible Value “</div>
 														<p class="text-sm text-slate-500 dark:text-slate-400 mb-2">
 															I was able to quickly master the skills necessary to advance my career. I'm grateful for the resources Mark provided and would recommend him
@@ -122,12 +147,22 @@
 												</div>
 											</a>
 											<a
+												v-lazy-link
 												class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 odd:-rotate-1 even:rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out p-5"
 												href="#0"
 											>
 												<div class="flex flex-col h-full">
 													<div class="grow">
-														<img class="rounded-full mb-2" src="../images/testimonial-02.jpg" width="40" height="40" alt="Testimonial 02" />
+														<img
+															class="rounded-full mb-2"
+															src="../images/testimonial-02.jpg"
+															width="40"
+															height="40"
+															alt="Testimonial 02"
+															loading="lazy"
+															decoding="async"
+															fetchpriority="low"
+														/>
 														<div class="text-lg font-aspekta font-[650] mb-1">“ The Best Newsletter “</div>
 														<p class="text-sm text-slate-500 dark:text-slate-400 mb-2">
 															I was able to quickly master the skills necessary to advance my career. I'm grateful for the resources Mark provided and would recommend him
@@ -163,16 +198,24 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import { useSeo, SITE_NAME, siteUrlFor, ABOUT_IMAGE } from '@/support/seo';
+import { useSeo, SITE_NAME, siteUrlFor, ABOUT_IMAGE, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 useSeo({
 	title: 'Subscribe',
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/subscribe'),
-	description: `Subscribe to ${SITE_NAME}'s newsletter to updates of articles and cool things he is working on.`,
-	jsonLd: {
-		'@type': 'WebPage',
-		name: 'Subscribe',
-	},
+	imageAlt: `${SITE_NAME} smiling portrait`,
+	keywords: buildKeywords('engineering newsletter', 'software leadership updates', 'tech career insights'),
+	description: `Subscribe to ${SITE_NAME}'s newsletter to get updates on new articles, talks, and technology experiments.`,
+	jsonLd: [
+		{
+			name: 'Subscribe',
+			'@type': 'WebPage',
+			url: siteUrlFor('/subscribe'),
+			'@context': 'https://schema.org',
+			description: `Newsletter subscription page for ${SITE_NAME} covering leadership, engineering, and AI.`,
+		},
+		PERSON_JSON_LD,
+	],
 });
 </script>

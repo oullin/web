@@ -5,9 +5,13 @@
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer." />
+		<meta name="keywords" content="Gustavo Ocanto, Software Engineer, Engineering Leader, AI Architect, Technical Blog, Vue.js, TypeScript" />
 		<meta name="robots" content="index,follow" />
 		<meta name="theme-color" content="#ffffff" />
+		<meta name="author" content="Gustavo Ocanto" />
 		<link rel="canonical" href="%VITE_SITE_URL%/" />
+		<link rel="alternate" href="%VITE_SITE_URL%/" hreflang="en" />
+		<link rel="alternate" href="%VITE_SITE_URL%/" hreflang="x-default" />
 		<title>Home - Gustavo Ocanto</title>
 
 		<!-- Open Graph -->
@@ -16,22 +20,36 @@
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="%VITE_SITE_URL%/" />
 		<meta property="og:image" content="/favicon.ico" />
+		<meta property="og:locale" content="en_US" />
 
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content="Home - Gustavo Ocanto" />
 		<meta name="twitter:description" content="Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer." />
 		<meta name="twitter:image" content="/favicon.ico" />
+		<meta name="twitter:creator" content="@gocanto" />
+		<meta name="twitter:site" content="@gocanto" />
 
 		<!-- Structured Data for AI and crawlers -->
 		<script id="seo-jsonld" type="application/ld+json">
-			{
-				"@context": "https://schema.org",
-				"@type": "WebSite",
-				"url": "%VITE_SITE_URL%/",
-				"name": "Gustavo Ocanto",
-				"description": "Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer."
-			}
+			[
+				{
+					"@context": "https://schema.org",
+					"@type": "WebSite",
+					"url": "%VITE_SITE_URL%/",
+					"name": "Gustavo Ocanto",
+					"description": "Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer."
+				},
+				{
+					"@context": "https://schema.org",
+					"@type": "Person",
+					"name": "Gustavo Ocanto",
+					"url": "%VITE_SITE_URL%/",
+					"jobTitle": "Engineering Leader, AI Architect, Software Engineer",
+					"description": "Engineering leader and AI architect sharing expertise in software, leadership, and product building.",
+					"sameAs": ["https://x.com/gocanto", "https://www.linkedin.com/in/gocanto/", "https://github.com/gocanto"]
+				}
+			]
 		</script>
 
 		<script defer>

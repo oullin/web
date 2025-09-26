@@ -53,7 +53,7 @@ import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor } from '@/support/seo';
+import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
@@ -62,11 +62,19 @@ useSeo({
 	title: 'Home',
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/'),
+	imageAlt: `${SITE_NAME} profile portrait`,
+	keywords: buildKeywords('software engineering leadership', 'technology articles', 'engineering management insights'),
 	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
-	jsonLd: {
-		'@type': 'WebPage',
-		name: 'Home',
-	},
+	jsonLd: [
+		{
+			name: 'Home',
+			'@type': 'WebPage',
+			url: siteUrlFor('/'),
+			'@context': 'https://schema.org',
+			description: `${SITE_NAME} shares articles about software engineering, leadership, AI, and architecture.`,
+		},
+		PERSON_JSON_LD,
+	],
 });
 
 onMounted(async () => {

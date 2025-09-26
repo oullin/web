@@ -13,7 +13,7 @@
 
 		<ul role="list" class="mt-5 space-y-2">
 			<li v-for="item in social" :key="item.uuid">
-				<a v-if="socialPlatforms[item.name]" target="_blank" rel="noopener noreferrer" :href="item.url" :title="item.description" class="group blog-widgets-social-links">
+				<a v-if="socialPlatforms[item.name]" v-lazy-link target="_blank" rel="noopener noreferrer" :href="item.url" :title="item.description" class="group blog-widgets-social-links">
 					<svg viewBox="0 0 24 24" aria-hidden="true" class="blog-widgets-social-svg">
 						<path :d="socialPlatforms[item.name].icon" />
 					</svg>

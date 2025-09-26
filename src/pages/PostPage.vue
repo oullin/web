@@ -16,6 +16,7 @@
 								<!-- Back -->
 								<div class="mb-3">
 									<router-link
+										v-lazy-link
 										class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
 										to="/"
 									>
@@ -40,6 +41,7 @@
 											<ul class="inline-flex">
 												<li>
 													<a
+														v-lazy-link
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
 														:href="xURLFor(post)"
 														aria-label="Twitter"
@@ -55,6 +57,7 @@
 												</li>
 												<li>
 													<a
+														v-lazy-link
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
 														:href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
 														aria-label="LinkedIn"
@@ -70,6 +73,7 @@
 												</li>
 												<li>
 													<a
+														v-lazy-link
 														class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
 														href="#"
 														aria-label="Share"
@@ -89,7 +93,7 @@
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
-										<img class="w-full" :src="post.cover_image_url" width="692" height="390" :alt="post.title" fetchpriority="high" aria-hidden="true" />
+										<img class="w-full" :src="post.cover_image_url" width="692" height="390" :alt="post.title" decoding="async" fetchpriority="high" />
 										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>
@@ -113,28 +117,28 @@
 
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 import highlight from 'highlight.js/lib/core';
 import { debugError } from '@api/http-error.ts';
+import { date, getReadingTime } from '@/public.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
+import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import { date, getReadingTime } from '@/public.ts';
-import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
+import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 
 // --- Component
 const route = useRoute();
 const apiStore = useApiStore();
 const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
-const slug = ref<string>(route.params.slug as string);
 const postContainer = ref<HTMLElement | null>(null);
+const slug = ref<string>(route.params.slug as string);
 
 useSeoFromPost(post);
 

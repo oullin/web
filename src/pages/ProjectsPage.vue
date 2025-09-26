@@ -65,8 +65,8 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor } from '@/support/seo';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
+import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 const apiStore = useApiStore();
 const projects = ref<ProjectsResponse[]>([]);
@@ -76,11 +76,19 @@ useSeo({
 	title: 'Projects',
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/projects'),
+	imageAlt: `${SITE_NAME} presenting a project`,
+	keywords: buildKeywords('open source projects', 'software engineering portfolio', 'client project case studies'),
 	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
-	jsonLd: {
-		'@type': 'CollectionPage',
-		name: 'Projects',
-	},
+	jsonLd: [
+		{
+			name: 'Projects',
+			'@type': 'CollectionPage',
+			url: siteUrlFor('/projects'),
+			'@context': 'https://schema.org',
+			description: `A curated list of ${SITE_NAME} projects that highlight engineering leadership and architecture skills.`,
+		},
+		PERSON_JSON_LD,
+	],
 });
 
 onMounted(async () => {

@@ -6,6 +6,7 @@
 		<ul class="flex flex-wrap text-sm border-b border-slate-100 dark:border-slate-800">
 			<li v-for="category in categories" :key="category.uuid" class="px-3 -mb-px">
 				<a
+					v-lazy-link
 					href="#"
 					:class="
 						filters.category === category.slug

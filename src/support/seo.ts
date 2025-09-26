@@ -4,19 +4,35 @@ import type { PostResponse } from '@api/response/posts-response.ts';
 export const SITE_NAME = 'Gustavo Ocanto';
 export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const ABOUT_IMAGE = '/images/profile/about.jpg';
+export const DEFAULT_DESCRIPTION = 'Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer.';
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
+export const DEFAULT_KEYWORDS = [SITE_NAME, 'Software Engineer', 'Engineering Leader', 'AI Architect', 'Tech Speaker', 'Technical Blog', 'Leadership in Technology', 'Vue.js', 'TypeScript'].join(',');
+export const PERSON_JSON_LD = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: SITE_NAME,
+	url: SITE_URL,
+	image: ABOUT_IMAGE,
+	jobTitle: 'Engineering Leader, AI Architect, Software Engineer',
+	description: DEFAULT_DESCRIPTION,
+	sameAs: ['https://x.com/gocanto', 'https://www.linkedin.com/in/gocanto/', 'https://github.com/gocanto'],
+};
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
+type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
 
 interface SeoOptions {
 	title?: string;
 	description?: string;
-	keywords?: string;
+	keywords?: string | string[];
 	image?: string;
+	imageAlt?: string;
 	url?: string;
 	siteName?: string;
 	type?: string;
 	themeColor?: string;
+	locale?: string;
+	siteLanguage?: string;
 	robots?:
 		| string
 		| {
@@ -32,7 +48,7 @@ interface SeoOptions {
 		site?: string; // e.g. @gocanto
 		creator?: string; // e.g. @gocanto
 	};
-	jsonLd?: Record<string, unknown>;
+	jsonLd?: JsonLd;
 }
 
 const hasDocument = typeof document !== 'undefined';
@@ -46,28 +62,47 @@ export class Seo {
 		const url = options.url ?? siteUrlFor(currentPath || '/');
 		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
-		const description = options.description;
+		const description = options.description ?? DEFAULT_DESCRIPTION;
+		const language = options.siteLanguage ?? 'en';
+		const locale = options.locale ?? 'en_US';
+		const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
 
 		document.title = title;
 
+		if (language) {
+			document.documentElement.setAttribute('lang', language);
+		}
+
 		// Generic meta
 		this.setMetaByName('description', description);
-		this.setMetaByName('keywords', options.keywords);
+		this.setMetaByName('keywords', keywords);
 		this.setMetaByName('robots', this.buildRobots(options.robots));
 		this.setMetaByName('theme-color', options.themeColor ?? '#ffffff');
 		this.setMetaByName('msapplication-TileColor', options.themeColor ?? '#ffffff');
 		this.setMetaByName('application-name', title);
 		this.setMetaByName('apple-mobile-web-app-title', title);
+		this.setMetaByName('author', SITE_NAME);
+		this.setMetaByName('language', language);
 
 		this.setLink('canonical', url);
+		this.setAlternateHrefLang(url, language);
+		this.setAlternateHrefLang(url, 'x-default');
 
 		// Open Graph
 		this.setMetaByProperty('og:title', title);
 		this.setMetaByProperty('og:description', description);
 		this.setMetaByProperty('og:type', options.type ?? 'website');
 		this.setMetaByProperty('og:url', url);
-		this.setMetaByProperty('og:image', image);
+		if (image) {
+			this.setMetaByProperty('og:image', image);
+			this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
+		} else {
+			// ensure previous values don't leak
+			this.setMetaByProperty('og:image', undefined);
+			this.setMetaByProperty('og:image:alt', undefined);
+		}
 		this.setMetaByProperty('og:site_name', options.siteName ?? SITE_NAME);
+		this.setMetaByProperty('og:locale', locale);
 
 		// Twitter
 		const twitter = options.twitter ?? {};
@@ -76,7 +111,13 @@ export class Seo {
 		this.setMetaByName('twitter:creator', twitter.creator);
 		this.setMetaByName('twitter:title', title);
 		this.setMetaByName('twitter:description', description);
-		this.setMetaByName('twitter:image', image);
+		if (image) {
+			this.setMetaByName('twitter:image', image);
+			this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
+		} else {
+			this.setMetaByName('twitter:image', undefined);
+			this.setMetaByName('twitter:image:alt', undefined);
+		}
 
 		// Structured data for AI and crawlers
 		this.setJsonLd(options.jsonLd);
@@ -84,14 +125,19 @@ export class Seo {
 
 	private setMetaByName(name: string, content?: string): void {
 		if (!hasDocument) return;
-		if (!content) return;
 
-		let element = document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+		const selector = `meta[name="${name}"]`;
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+
+		if (!content) {
+			if (element) element.remove();
+			return;
+		}
 
 		if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('name', name);
-
+			element.dataset.seo = '1';
 			document.head.appendChild(element);
 		}
 
@@ -100,13 +146,21 @@ export class Seo {
 
 	private setMetaByProperty(property: string, content?: string): void {
 		if (!hasDocument) return;
-		if (!content) return;
-		let element = document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
+		const selector = `meta[property="${property}"]`;
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+
+		if (!content) {
+			if (element) element.remove();
+			return;
+		}
+
 		if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('property', property);
+			element.dataset.seo = '1';
 			document.head.appendChild(element);
 		}
+
 		element.setAttribute('content', content);
 	}
 
@@ -122,7 +176,7 @@ export class Seo {
 		element.setAttribute('href', href);
 	}
 
-	private setJsonLd(data?: Record<string, unknown>): void {
+	private setJsonLd(data?: JsonLd): void {
 		if (!hasDocument) return;
 		const id = 'seo-jsonld';
 		let script = document.getElementById(id) as HTMLScriptElement | null;
@@ -138,6 +192,22 @@ export class Seo {
 			document.head.appendChild(script);
 		}
 		script.textContent = json;
+	}
+
+	private setAlternateHrefLang(href: string, hreflang?: string): void {
+		if (!hasDocument) return;
+		if (!href || !hreflang) return;
+
+		let element = document.head.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${hreflang}"]`);
+
+		if (!element) {
+			element = document.createElement('link');
+			element.setAttribute('rel', 'alternate');
+			element.setAttribute('hreflang', hreflang);
+			document.head.appendChild(element);
+		}
+
+		element.setAttribute('href', href);
 	}
 
 	private buildRobots(robots?: SeoOptions['robots']): string | undefined {
@@ -160,6 +230,27 @@ export class Seo {
 }
 
 export const seo = new Seo();
+
+function normalizeKeywords(keywords?: string | string[]): string | undefined {
+	if (!keywords) {
+		return undefined;
+	}
+
+	const list = Array.isArray(keywords)
+		? keywords
+		: keywords
+				.split(',')
+				.map((item) => item.trim())
+				.filter((item) => item.length > 0);
+
+	const unique = Array.from(new Set(list.map((item) => item.trim()).filter((item) => item.length > 0)));
+
+	if (!unique.length) {
+		return undefined;
+	}
+
+	return unique.join(',');
+}
 
 function resolveValue<T>(value: MaybeRefOrGetter<T>): T {
 	return typeof value === 'function' ? (value as () => T)() : unref(value);
@@ -213,4 +304,32 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 
 export function siteUrlFor(path: string): string {
 	return new URL(path, SITE_URL).toString();
+}
+
+export function buildKeywords(...entries: Array<string | string[] | null | undefined>): string {
+	const baseKeywords = DEFAULT_KEYWORDS.split(',')
+		.map((keyword) => keyword.trim())
+		.filter(Boolean);
+	const uniqueKeywords = new Set(baseKeywords);
+
+	entries.forEach((entry) => {
+		if (!entry) {
+			return;
+		}
+
+		const tokens = Array.isArray(entry)
+			? entry
+			: entry
+					.split(',')
+					.map((token) => token.trim())
+					.filter((token) => token.length > 0);
+
+		tokens.forEach((token) => {
+			if (token.length > 0) {
+				uniqueKeywords.add(token);
+			}
+		});
+	});
+
+	return Array.from(uniqueKeywords).join(',');
 }

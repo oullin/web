@@ -17,6 +17,7 @@
 				</div>
 				<h3 class="text-slate-700 font-aspekta text-lg font-[650] mb-1 dark:text-slate-300">
 					<router-link
+						v-lazy-link
 						class="inline-flex relative hover:text-fuchsia-500 dark:hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 hover:before:scale-100 before:duration-150 before:ease-in-out"
 						:to="{ name: 'PostDetail', params: { slug: item.slug } }"
 					>
@@ -28,6 +29,7 @@
 						{{ item.excerpt }}
 					</div>
 					<router-link
+						v-lazy-link
 						class="hidden lg:flex shrink-0 text-fuchsia-500 dark:text-teal-500 items-center justify-center w-12 group"
 						:to="{ name: 'PostDetail', params: { slug: item.slug } }"
 						tabindex="-1"

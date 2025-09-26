@@ -17,7 +17,7 @@
 									<!-- Page title -->
 									<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
 
-									<img class="rounded-lg w-full mb-5" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" />
+									<img class="rounded-lg w-full mb-5" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" loading="lazy" decoding="async" fetchpriority="low" />
 
 									<!-- Page content -->
 									<div class="space-y-8 text-slate-500">
@@ -25,14 +25,14 @@
 											<p class="block mb-3">
 												I am an engineering leader who’s passionate about building reliable and smooth software that strive to make a difference. With over twenty years in
 												software development and architecture, I’ve worked extensively with
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">GO</a>,
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I’m also comfortable with frameworks/libraries such
-												as <a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
-												<a class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
+												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">GO</a>,
+												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
+												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
+												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I’m also comfortable with
+												frameworks/libraries such as <a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
+												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
+												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
+												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
 											</p>
 											<p class="block mb-3">
 												I’ve led teams in designing and delivering scalable, high-performance systems that run efficiently even in complex environments. Beyond writing code, I
@@ -53,8 +53,9 @@
 										<div class="mt-5 space-y-5">
 											<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
 											<p v-if="profile">
-												I’m happy to connect by <a class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`">email</a> to
-												discuss projects and ideas. While I’m not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
+												I’m happy to connect by
+												<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
+												to discuss projects and ideas. While I’m not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
 											</p>
 										</div>
 									</div>
@@ -87,7 +88,7 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor } from '@/support/seo';
+import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
@@ -111,11 +112,19 @@ useSeo({
 	title: 'About',
 	image: ABOUT_IMAGE,
 	url: siteUrlFor('/about'),
+	imageAlt: `${SITE_NAME} portrait`,
+	keywords: buildKeywords('engineering leadership', 'software architecture expertise', 'tech mentoring'),
 	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
-	jsonLd: {
-		'@type': 'AboutPage',
-		name: 'About',
-	},
+	jsonLd: [
+		{
+			name: 'About',
+			'@type': 'AboutPage',
+			url: siteUrlFor('/about'),
+			'@context': 'https://schema.org',
+			description: `${SITE_NAME} is an engineering leader focused on building reliable, people-first software.`,
+		},
+		PERSON_JSON_LD,
+	],
 });
 
 onMounted(async () => {
