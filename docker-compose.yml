@@ -60,7 +60,7 @@ services:
             - oullin_web_data:/data
             - oullin_web_config:/config
             - ./caddy/mtls:/etc/caddy/mtls:ro
-        # Connects to the existing shared network from API's.
+            - ./public/seo:/usr/share/caddy/seo:ro
         networks:
             caddy_net:
                 aliases:
