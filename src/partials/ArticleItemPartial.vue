@@ -1,16 +1,16 @@
 <template>
 	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
 		<div class="flex items-start">
-			<img
-				class="rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] object-cover mr-6"
-				:src="item.cover_image_url"
-				width="88"
-				height="88"
-				:alt="item.title"
-				loading="lazy"
-				decoding="async"
-				fetchpriority="low"
-			/>
+                        <img
+                                class="rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] object-cover mr-6"
+                                :src="item.cover_image_url"
+                                width="88"
+                                height="88"
+                                :alt="item.title"
+                                loading="lazy"
+                                decoding="async"
+                                fetchpriority="high"
+                        />
 			<div>
 				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
 					{{ date().format(new Date(item.published_at)) }}
