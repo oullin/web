@@ -48,48 +48,49 @@
 		width 0.1s ease-out;
 }
 
+
 :root {
-	--custom-scrollbar-track: var(--color-gray-100);
-	--custom-scrollbar-thumb: var(--color-fuchsia-500);
-	--custom-scrollbar-thumb-hover: var(--color-fuchsia-400);
+        --custom-scrollbar-track: var(--color-gray-100);
+        --custom-scrollbar-thumb: var(--color-fuchsia-500);
+        --custom-scrollbar-thumb-hover: var(--color-fuchsia-400);
 }
 
 .dark {
-	--custom-scrollbar-track: var(--color-slate-800);
-	--custom-scrollbar-thumb: var(--color-teal-500);
-	--custom-scrollbar-thumb-hover: var(--color-teal-400);
+        --custom-scrollbar-track: var(--color-slate-800);
+        --custom-scrollbar-thumb: var(--color-teal-500);
+        --custom-scrollbar-thumb-hover: var(--color-teal-400);
 }
 
 .custom-scrollbar {
-	--scrollbar-track: var(--custom-scrollbar-track);
-	--scrollbar-thumb: var(--custom-scrollbar-thumb);
-	--scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
+        --scrollbar-track: var(--custom-scrollbar-track);
+        --scrollbar-thumb: var(--custom-scrollbar-thumb);
+        --scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
 }
 
 .custom-scrollbar,
 .post-markdown pre {
-	scrollbar-width: thin; /* Firefox */
-	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .custom-scrollbar::-webkit-scrollbar,
 .post-markdown pre::-webkit-scrollbar {
-	width: 8px;
+    width: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track,
 .post-markdown pre::-webkit-scrollbar-track {
-	background-color: var(--scrollbar-track);
-	border-radius: 10px;
+    background-color: var(--scrollbar-track);
+    border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb,
 .post-markdown pre::-webkit-scrollbar-thumb {
-	background-color: var(--scrollbar-thumb);
-	border-radius: 10px;
+    background-color: var(--scrollbar-thumb);
+    border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover,
 .post-markdown pre::-webkit-scrollbar-thumb:hover {
-	background-color: var(--scrollbar-thumb-hover);
+    background-color: var(--scrollbar-thumb-hover);
 }
