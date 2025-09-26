@@ -50,7 +50,7 @@
     }
 
     # Static SPA
-    # Bot/social previews → serve static share pages under /seo/*.oullin.html
+    # Bot/social previews → serve static share pages under /seo/*.seo.html
     @sharebots header_regexp ua User-Agent "(?i)(googlebot|bingbot|duckduckbot|yandex(bot|images)|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|whatsapp|skypeuripreview|bitlybot|vkshare|quora link preview|embedly|outbrain|nuzzel|ios link preview|snapchat|applebot)"
     handle @sharebots {
         root * /usr/share/caddy
