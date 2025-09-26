@@ -25,9 +25,20 @@
         }
     }
 
-    # Normalise trailing slashes ("/about/" -> "/about")
+    # --- Normalise trailing slashes ("/about/" -> "/about")
+    # --- begin
+
     @has_trailing path_regexp trailing ^/(.+)/$
-    redir @has_trailing /{re.trailing.1}{query} 308
+
+    @has_trailing_with_query {
+      path_regexp trailing ^/(.+)/$
+      expression {query} != ""
+    }
+
+    redir @has_trailing_with_query /{re.trailing.1}?{query} 308
+    redir @has_trailing /{re.trailing.1} 308
+
+    # --- end
 
     # Block direct access to the SEO folder (serve only via internal rewrites)
     handle_path /seo/* {
