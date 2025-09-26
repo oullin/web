@@ -33,6 +33,7 @@ services:
             - ./dist:/usr/share/caddy
             - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
             - ./caddy/mtls:/etc/caddy/mtls:ro
+            - ./public/seo:/usr/share/caddy/seo:ro
         networks:
             - web_internal
 
@@ -60,7 +61,7 @@ services:
             - oullin_web_data:/data
             - oullin_web_config:/config
             - ./caddy/mtls:/etc/caddy/mtls:ro
-        # Connects to the existing shared network from API's.
+            - ./public/seo:/usr/share/caddy/seo:ro
         networks:
             caddy_net:
                 aliases:
