@@ -6,7 +6,7 @@ export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const ABOUT_IMAGE = '/images/profile/about.jpg';
 export const DEFAULT_DESCRIPTION = 'Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer.';
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
-export const DEFAULT_KEYWORDS = [SITE_NAME, 'Software Engineer', 'Engineering Leader', 'AI Architect', 'Tech Speaker', 'Technical Blog', 'Leadership in Technology', 'Vue.js', 'TypeScript'].join(', ');
+export const DEFAULT_KEYWORDS = [SITE_NAME, 'Software Engineer', 'Engineering Leader', 'AI Architect', 'Tech Speaker', 'Technical Blog', 'Leadership in Technology', 'Vue.js', 'TypeScript'].join(',');
 export const PERSON_JSON_LD = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
@@ -65,7 +65,7 @@ export class Seo {
 		const description = options.description ?? DEFAULT_DESCRIPTION;
 		const language = options.siteLanguage ?? 'en';
 		const locale = options.locale ?? 'en_US';
-		const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
+                const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
 
 		document.title = title;
 
@@ -225,8 +225,8 @@ export class Seo {
 		if (nocache) tokens.push('nocache');
 		if (noai) tokens.push('noai', 'noimageai');
 
-		return tokens.join(',');
-	}
+                return tokens.join(',');
+}
 }
 
 export const seo = new Seo();
@@ -249,7 +249,7 @@ function normalizeKeywords(keywords?: string | string[]): string | undefined {
 		return undefined;
 	}
 
-	return unique.join(', ');
+        return unique.join(',');
 }
 
 function resolveValue<T>(value: MaybeRefOrGetter<T>): T {
@@ -278,36 +278,26 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 
 		if (!value) return undefined;
 
-		const tagKeywords = value.tags?.map((tag) => tag.name).filter(Boolean) ?? [];
-
-		return {
-			title: value.title,
-			description: value.excerpt,
-			image: value.cover_image_url,
-			type: 'article',
-			url: siteUrlFor(`/post/${value.slug}`),
-			keywords: buildKeywords(tagKeywords),
-			jsonLd: [
-				{
-					'@context': 'https://schema.org',
-					'@type': 'Article',
-					headline: value.title,
-					description: value.excerpt,
-					image: value.cover_image_url,
-					datePublished: value.published_at,
-					dateModified: value.updated_at,
-					keywords: tagKeywords,
-					mainEntityOfPage: siteUrlFor(`/post/${value.slug}`),
-					author: {
-						'@type': 'Person',
-						name: SITE_NAME,
-						url: SITE_URL,
-					},
-				},
-				PERSON_JSON_LD,
-			],
-		} satisfies SeoOptions;
-	});
+                return {
+                        title: value.title,
+                        description: value.excerpt,
+                        image: value.cover_image_url,
+                        type: 'article',
+                        url: siteUrlFor(`/post/${value.slug}`),
+                        jsonLd: {
+                                '@context': 'https://schema.org',
+                                '@type': 'Article',
+                                headline: value.title,
+                                description: value.excerpt,
+                                image: value.cover_image_url,
+                                datePublished: value.published_at,
+                                author: {
+                                        '@type': 'Person',
+                                        name: SITE_NAME,
+                                },
+                        },
+                } satisfies SeoOptions;
+        });
 
 	useSeo(seoOptions);
 }
@@ -341,5 +331,5 @@ export function buildKeywords(...entries: Array<string | string[] | null | undef
 		});
 	});
 
-	return Array.from(uniqueKeywords).join(', ');
+        return Array.from(uniqueKeywords).join(',');
 }
