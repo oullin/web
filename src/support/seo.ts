@@ -127,12 +127,10 @@ export class Seo {
                 if (!hasDocument) return;
 
                 const selector = `meta[name="${name}"]`;
-                let element =
-                        document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ??
-                        document.head.querySelector<HTMLMetaElement>(selector);
+                let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
 
                 if (!content) {
-                        if (element?.dataset.seo === '1') element.remove();
+                        if (element) element.remove();
                         return;
                 }
 
@@ -141,8 +139,6 @@ export class Seo {
                         element.setAttribute('name', name);
                         element.dataset.seo = '1';
                         document.head.appendChild(element);
-                } else {
-                        element.dataset.seo = '1';
                 }
 
                 element.setAttribute('content', content);
@@ -151,12 +147,10 @@ export class Seo {
         private setMetaByProperty(property: string, content?: string): void {
                 if (!hasDocument) return;
                 const selector = `meta[property="${property}"]`;
-                let element =
-                        document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ??
-                        document.head.querySelector<HTMLMetaElement>(selector);
+                let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
 
                 if (!content) {
-                        if (element?.dataset.seo === '1') element.remove();
+                        if (element) element.remove();
                         return;
                 }
 
@@ -165,8 +159,6 @@ export class Seo {
                         element.setAttribute('property', property);
                         element.dataset.seo = '1';
                         document.head.appendChild(element);
-                } else {
-                        element.dataset.seo = '1';
                 }
 
                 element.setAttribute('content', content);
