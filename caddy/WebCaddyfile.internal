@@ -53,11 +53,6 @@
     # Bot/social previews → serve static share pages under /seo/*.seo.html
     @sharebots header_regexp ua User-Agent "(?i)(googlebot|bingbot|duckduckbot|yandex(bot|images)|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|whatsapp|skypeuripreview|bitlybot|vkshare|quora link preview|embedly|outbrain|nuzzel|ios link preview|snapchat|applebot)"
     handle @sharebots {
-        header {
-            X-Served-By "seo-bot"
-            X-Debug-UA "{>User-Agent}"
-        }
-
         root * /usr/share/caddy
 
         # Try SEO flat files first, then SPA files
