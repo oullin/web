@@ -33,6 +33,7 @@ services:
             - ./dist:/usr/share/caddy
             - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
             - ./caddy/mtls:/etc/caddy/mtls:ro
+            - ./public/seo:/usr/share/caddy/seo:ro
         networks:
             - web_internal
 
