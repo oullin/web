@@ -41,6 +41,10 @@
     # --- end
 
     # Block direct access to the SEO folder (serve only via internal rewrites)
+    handle /seo {
+        respond 404
+    }
+
     handle_path /seo/* {
         respond 404
     }
@@ -76,6 +80,8 @@
             not path /images/*
             not path /relay/*
             not path /seo/*
+            not path /favicon.ico
+            not path /robots.txt
         }
 
         header @html Cache-Control "public, max-age=300, stale-while-revalidate=60"
