@@ -1,11 +1,12 @@
-.PHONY: build-ci build-deploy build-release local-fresh local-up build-remove
+.PHONY: build-ci build-deploy build-release build-remove
+.PHONy: local-fresh local-watch
 
-WEB_TAG ?= web-prod-builder
 BUILD_VERSION ?= latest
+WEB_TAG ?= web-prod-builder
 BUILD_PACKAGE_OWNER ?= oullin_web
 
-UID ?= $(shell id -u)
-GID ?= $(shell id -g)
+BUILD_UID ?= $(shell id -u)
+BUILD_GID ?= $(shell id -g)
 
 build-ci:
 	@printf "\n$(CYAN)Building production images for CI$(NC)\n"
@@ -30,7 +31,7 @@ local-fresh:
 	docker compose --profile local up -d --force-recreate --no-deps
 
 local-watch:
-	@echo "Using UID=$(UID) GID=$(GID)"
-	UID=$(UID) GID=$(GID) docker compose --profile local down --volumes --rmi all --remove-orphans
-	UID=$(UID) GID=$(GID) docker compose --profile local build --no-cache
-	UID=$(UID) GID=$(GID) docker compose --profile local up caddy-watch caddy-local
+	@printf "\n$(YELLOW)Using UID=$(BUILD_UID) GID=$(BUILD_GID).$(NC)\n"
+	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local down --volumes --rmi all --remove-orphans
+	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local build --no-cache
+	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local up caddy-watch caddy-local
