@@ -67,6 +67,8 @@ services:
             - ./caddy/WebCaddyfile.local:/etc/caddy/Caddyfile
         networks:
             - web_internal
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
 
     caddy-watcher:
         working_dir: /app

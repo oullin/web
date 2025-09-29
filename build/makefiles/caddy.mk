@@ -19,7 +19,7 @@ caddy-validate:
 
 caddy-sync-certs:
 	@set -euo pipefail; \
-	printf "Origin: $(ENV_API_LOCAL_DIR)\n" \
+	printf "Origin: $(ENV_API_LOCAL_DIR)\n"; \
 	cp "$(ENV_API_LOCAL_DIR)/ca.pem" "$(CADDY_MTLS_DIR)/ca.pem"; \
 	openssl genrsa -out "$(CADDY_MTLS_DIR)/client.key" 2048; \
 	openssl req -new -key "$(CADDY_MTLS_DIR)/client.key" \
