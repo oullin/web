@@ -1,5 +1,5 @@
 .PHONY: build-ci build-deploy build-release build-remove
-.PHONy: local-fresh local-watch
+.PHONy: local-build local-watch
 
 BUILD_VERSION ?= latest
 WEB_TAG ?= web-prod-builder
@@ -25,7 +25,7 @@ build-remove:
 	docker compose --profile prod down --volumes --rmi all --remove-orphans
 
 # ----- LOCAL -----
-local-fresh:
+local-build:
 	docker compose --profile local down --volumes --rmi all --remove-orphans
 	docker compose --profile local build --no-cache
 	docker compose --profile local up -d --force-recreate --no-deps
@@ -34,4 +34,4 @@ local-watch:
 	@printf "\n$(YELLOW)Using UID=$(BUILD_UID) GID=$(BUILD_GID).$(NC)\n"
 	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local down --volumes --rmi all --remove-orphans
 	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local build --no-cache
-	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local up caddy-watch caddy-local
+	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local up caddy-watcher caddy-local

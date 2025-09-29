@@ -11,8 +11,6 @@ caddy-fresh:
 caddy-restart:
 	docker compose up -d --force-recreate caddy-prod
 
-# -v "/Users/gocanto/Sites/oullin/web/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
-
 caddy-validate:
 	docker run --rm \
       -v "$(ROOT_PATH)/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
