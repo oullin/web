@@ -11,6 +11,8 @@ caddy-fresh:
 caddy-restart:
 	docker compose up -d --force-recreate caddy-prod
 
+# -v "/Users/gocanto/Sites/oullin/web/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
+
 caddy-validate:
 	docker run --rm \
       -v "$(ROOT_PATH)/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
@@ -19,6 +21,7 @@ caddy-validate:
 
 caddy-sync-certs:
 	@set -euo pipefail; \
+	printf "Origin: $(ENV_API_LOCAL_DIR)\n" \
 	cp "$(ENV_API_LOCAL_DIR)/ca.pem" "$(CADDY_MTLS_DIR)/ca.pem"; \
 	openssl genrsa -out "$(CADDY_MTLS_DIR)/client.key" 2048; \
 	openssl req -new -key "$(CADDY_MTLS_DIR)/client.key" \
