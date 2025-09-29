@@ -1,0 +1,55 @@
+:80 {
+	# --- CORS (dev-friendly) ---
+	@preflight method OPTIONS
+	handle @preflight {
+		header Access-Control-Max-Age "600"
+		header Access-Control-Allow-Credentials "true"
+		header Access-Control-Allow-Origin "{http.request.header.Origin}"
+		header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+		header Access-Control-Allow-Headers "X-API-Key, X-API-Username, X-API-Signature, X-API-Timestamp, X-API-Nonce, X-Request-ID, Content-Type, User-Agent, If-None-Match, X-API-Intended-Origin"
+
+		respond 204
+	}
+
+	# CORS on normal requests
+	@localOrigin header Origin http://localhost:5173
+
+    header @localOrigin Access-Control-Allow-Origin "http://localhost:5173"
+
+	header {
+		Vary "Origin"
+		X-Frame-Options "SAMEORIGIN"
+		X-Content-Type-Options "nosniff"
+		Access-Control-Allow-Credentials "true"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Access-Control-Expose-Headers "ETag, X-Request-ID"
+		Access-Control-Allow-Origin "{http.request.header.Origin}"
+	}
+
+	# --- Local relay: strip /relay and call host API (no TLS) ---
+	handle_path /relay/* {
+		uri replace ^/relay /api
+
+		reverse_proxy {$RELAY_UPSTREAM:http://host.docker.internal:8080} {
+            header_up Host {upstream_hostport}
+        }
+	}
+
+	# --- Serve SPA (simple) ---
+	@spa {
+        not path /relay/*
+    }
+
+    handle @spa {
+        root * /usr/share/caddy
+        try_files {path} {path}/index.html /index.html
+        encode zstd gzip
+
+        file_server
+    }
+
+	log {
+		output stdout
+		format json
+	}
+}

@@ -1,5 +1,4 @@
 services:
-    # Vue App.
     app-builder:
         env_file:
             - ./.env
@@ -12,8 +11,8 @@ services:
                 VITE_API_ENV: ${VITE_API_ENV}
                 VITE_API_URL: ${VITE_API_URL}
                 VITE_HOST_URL: ${VITE_HOST_URL}
-                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
                 VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
                 ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
             context: .
             dockerfile: docker/Dockerfile
@@ -21,24 +20,6 @@ services:
         networks:
             - web_internal
 
-    # LOCAL Service
-    caddy-local:
-        image: caddy:2.10.0-alpine
-        profiles:
-            - local
-        container_name: web_caddy_local
-        ports:
-            - "5173:80"
-        volumes:
-            - ./dist:/usr/share/caddy
-            - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
-            - ./caddy/mtls:/etc/caddy/mtls:ro
-            - ./public/seo:/usr/share/caddy/seo:ro
-            - ./public/images:/usr/share/caddy/images:ro
-        networks:
-            - web_internal
-
-    # PRODUCTION Service
     caddy-prod:
         env_file:
             - ./.env
@@ -51,13 +32,13 @@ services:
             context: .
             dockerfile: docker/Dockerfile
             args:
-                BUILDER_IMAGE: app-builder-image:${TAG:-latest}
                 VITE_API_ENV: ${VITE_API_ENV}
                 VITE_API_URL: ${VITE_API_URL}
                 VITE_HOST_URL: ${VITE_HOST_URL}
-                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
                 VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
                 ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
+                BUILDER_IMAGE: app-builder-image:${TAG:-latest}
         volumes:
             - oullin_web_data:/data
             - oullin_web_config:/config
@@ -68,6 +49,43 @@ services:
             caddy_net:
                 aliases:
                     - web
+
+    caddy-local:
+        image: caddy:2.10.0-alpine
+        profiles:
+            - local
+        container_name: web_caddy_local
+        ports:
+            - "5173:80"
+        environment:
+            - RELAY_UPSTREAM=http://host.docker.internal:8080
+        volumes:
+            - ./dist:/usr/share/caddy:ro
+            - ./caddy/mtls:/etc/caddy/mtls:ro
+            - ./public/seo:/usr/share/caddy/seo:ro
+            - ./public/images:/usr/share/caddy/images:ro
+            - ./caddy/WebCaddyfile.local:/etc/caddy/Caddyfile
+        networks:
+            - web_internal
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+
+    caddy-watcher:
+        working_dir: /app
+        image: node:22-alpine
+        user: "${UID:-1000}:${GID:-1000}"
+        volumes:
+            - .:/app
+        profiles:
+            - local
+        depends_on:
+            - caddy-local
+        command: >
+            sh -lc "
+              npm ci &&
+              mkdir -p dist &&
+              npm run build -- --watch --emptyOutDir=false
+            "
 
 networks:
     web_internal:

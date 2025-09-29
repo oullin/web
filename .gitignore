@@ -2,7 +2,6 @@
 .env.production
 stats.html
 
-*.local
 .DS_Store
 
 dist/
