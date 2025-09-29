@@ -6,9 +6,10 @@
 		"node": "^22.12.0"
 	},
 	"scripts": {
-		"dev": "make local-watch",
+		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
+		"watch": "make local-watch",
 		"test": "vitest run --coverage",
 		"build:stats": "VITE_VISUALIZER=true vite build"
 	},
