@@ -4,6 +4,9 @@ WEB_TAG ?= web-prod-builder
 BUILD_VERSION ?= latest
 BUILD_PACKAGE_OWNER ?= oullin_web
 
+UID ?= $(shell id -u)
+GID ?= $(shell id -g)
+
 build-ci:
 	@printf "\n$(CYAN)Building production images for CI$(NC)\n"
 	@docker compose --profile prod build
@@ -21,12 +24,13 @@ build-remove:
 	docker compose --profile prod down --volumes --rmi all --remove-orphans
 
 # ----- LOCAL -----
-
 local-fresh:
 	docker compose --profile local down --volumes --rmi all --remove-orphans
-	docker ps
-	make local-up
-
-local-up:
 	docker compose --profile local build --no-cache
-	docker compose --profile local up -d
+	docker compose --profile local up -d --force-recreate --no-deps
+
+local-watch:
+	@echo "Using UID=$(UID) GID=$(GID)"
+	UID=$(UID) GID=$(GID) docker compose --profile local down --volumes --rmi all --remove-orphans
+	UID=$(UID) GID=$(GID) docker compose --profile local build --no-cache
+	UID=$(UID) GID=$(GID) docker compose --profile local up caddy-watch caddy-local

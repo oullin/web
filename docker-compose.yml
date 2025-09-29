@@ -21,27 +21,6 @@ services:
         networks:
             - web_internal
 
-    # LOCAL Service
-    caddy-local:
-        image: caddy:2.10.0-alpine
-        profiles:
-            - local
-        container_name: web_caddy_local
-        ports:
-            - "5173:80"
-        environment:
-            - RELAY_LOCAL=1
-            - RELAY_UPSTREAM=http://oullin_api:8080
-        volumes:
-            - ./dist:/usr/share/caddy
-            - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
-            - ./caddy/mtls:/etc/caddy/mtls:ro
-            - ./public/seo:/usr/share/caddy/seo:ro
-            - ./public/images:/usr/share/caddy/images:ro
-        networks:
-            - web_internal
-
-    # PRODUCTION Service
     caddy-prod:
         env_file:
             - ./.env
@@ -71,6 +50,54 @@ services:
             caddy_net:
                 aliases:
                     - web
+
+    caddy-local:
+        image: caddy:2.10.0-alpine
+        profiles:
+            - local
+        container_name: web_caddy_local
+        ports:
+            - "5173:80"
+        environment:
+            - RELAY_LOCAL=1
+            - RELAY_UPSTREAM=http://oullin_api:8080
+        volumes:
+            - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile
+            - ./caddy/mtls:/etc/caddy/mtls:ro
+            - ./public/seo:/usr/share/caddy/seo:ro
+            - ./public/images:/usr/share/caddy/images:ro
+        networks:
+            - web_internal
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+            args:
+                BUILDER_IMAGE: app-builder-image:${TAG:-latest}
+                VITE_API_ENV: ${VITE_API_ENV}
+                VITE_API_URL: ${VITE_API_URL}
+                VITE_HOST_URL: ${VITE_HOST_URL}
+                VITE_ACCOUNT_NAME: ${VITE_ACCOUNT_NAME}
+                VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+                ENV_API_LOCAL_DIR: ${ENV_API_LOCAL_DIR}
+
+    caddy-watch:
+        image: node:22-alpine
+        working_dir: /app
+        user: "${UID:-1000}:${GID:-1000}"
+        volumes:
+            - .:/app
+            - ./caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro
+            - ./caddy/mtls:/etc/caddy/mtls:ro
+            - ./public/seo:/usr/share/caddy/seo:ro
+            - ./public/images:/usr/share/caddy/images:ro
+        profiles:
+            - local
+        command: >
+            sh -lc "
+              npm ci &&
+              mkdir -p dist &&
+              npm run build -- --watch --emptyOutDir=false
+            "
 
 networks:
     web_internal:
