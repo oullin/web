@@ -28,7 +28,22 @@
                                                 stroke-width="1.5"
                                                 stroke="currentColor"
                                         >
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                                <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-15Z"
+                                                />
+                                                <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="m3 14.25 3.955-3.955a2.25 2.25 0 0 1 3.182 0L15 15.75"
+                                                />
+                                                <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        d="m13.5 12 1.955-1.955a2.25 2.25 0 0 1 3.182 0L21 13.5"
+                                                />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
                                         </svg>
                                 </div>
                         </div>
