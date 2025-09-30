@@ -13,18 +13,36 @@
 						<!-- Middle area -->
 						<div class="grow">
 							<div class="max-w-[700px]">
-								<section>
-									<!-- Page title -->
-									<h1 class="h1 font-aspekta mb-12">My resume</h1>
-									<!-- Page content -->
-									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<EducationPartial v-if="education" :education="education" />
-										<ExperiencePartial v-if="experience" :experience="experience" />
-										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
-									</div>
-								</section>
-							</div>
-						</div>
+                                                                <section>
+                                                                        <!-- Page title -->
+                                                                        <h1 class="h1 font-aspekta mb-6">My resume</h1>
+
+                                                                        <nav
+                                                                                aria-label="Resume sections"
+                                                                                class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12"
+                                                                        >
+                                                                                <a
+                                                                                        v-for="item in navigationItems"
+                                                                                        :key="item.href"
+                                                                                        class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
+                                                                                        :href="item.href"
+                                                                                >
+                                                                                        <span class="size-2 rounded-full bg-fuchsia-400/70"></span>
+                                                                                        {{ item.text }}
+                                                                                </a>
+                                                                        </nav>
+                                                                        <!-- Page content -->
+                                                                        <div class="text-slate-500 dark:text-slate-400 space-y-12">
+                                                                                <span id="education" class="block h-0" aria-hidden="true"></span>
+                                                                                <EducationPartial v-if="education" :education="education" />
+                                                                                <span id="experience" class="block h-0" aria-hidden="true"></span>
+                                                                                <ExperiencePartial v-if="experience" :experience="experience" />
+                                                                                <span id="recommendations" class="block h-0" aria-hidden="true"></span>
+                                                                                <RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
+                                                                        </div>
+                                                                </section>
+                                                        </div>
+                                                </div>
 
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
@@ -57,6 +75,12 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
+
+const navigationItems = [
+        { href: '#education', text: 'Education' },
+        { href: '#experience', text: 'Work Experience' },
+        { href: '#recommendations', text: 'Recommendations' },
+] as const;
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);

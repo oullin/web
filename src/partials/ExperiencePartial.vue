@@ -1,5 +1,5 @@
 <template>
-	<div class="space-y-8">
+        <section class="space-y-8">
 		<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Work Experience</h2>
 		<ul class="space-y-8">
 			<!-- Item -->
@@ -37,7 +37,7 @@
 				</div>
 			</li>
 		</ul>
-	</div>
+	</section>
 </template>
 <script setup lang="ts">
 import type { ExperienceResponse } from '@api/response/index.ts';
