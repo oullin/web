@@ -116,31 +116,33 @@ export class ApiClient {
 		return await response.json();
 	}
 
-	private async appendSignature(nonce: string, headers: Headers, origin: string) {
-		const retries = 3;
-		let lastError: Error | undefined;
+        private async getSignatureWithRetry(nonce: string, origin: string, retries = 3, baseDelayMs = 1000): Promise<SignatureResponse> {
+                let lastError: Error | undefined;
 
-		for (let i = 0; i < retries; i++) {
-			try {
-				const sigResp = await this.getSignature(nonce, origin);
+                for (let attempt = 0; attempt < retries; attempt++) {
+                        try {
+                                return await this.getSignature(nonce, origin);
+                        } catch (error) {
+                                lastError = error as Error;
 
-				headers.append('X-API-Nonce', nonce);
-				headers.append('X-API-Intended-Origin', origin);
-				headers.append('X-API-Signature', sigResp.signature);
+                                if (attempt < retries - 1) {
+                                        const delay = Math.pow(2, attempt) * baseDelayMs;
 
-				return;
-			} catch (error) {
-				lastError = error as Error;
+                                        await new Promise((resolve) => setTimeout(resolve, delay));
+                                }
+                        }
+                }
 
-				if (i < retries - 1) {
-					// Exponential backoff: waits 1 s, then 2 s.
-					await new Promise((resolve) => setTimeout(resolve, Math.pow(2, i) * 1000));
-				}
-			}
-		}
+                throw lastError || new Error('Failed to get signature after multiple retries.');
+        }
 
-		throw lastError || new Error('Failed to get signature after multiple retries.');
-	}
+        private async appendSignature(nonce: string, headers: Headers, origin: string) {
+                const sigResp = await this.getSignatureWithRetry(nonce, origin);
+
+                headers.append('X-API-Nonce', nonce);
+                headers.append('X-API-Intended-Origin', origin);
+                headers.append('X-API-Signature', sigResp.signature);
+        }
 
 	public async post<T>(url: string, data: object): Promise<T> {
 		const nonce = this.createNonce();
