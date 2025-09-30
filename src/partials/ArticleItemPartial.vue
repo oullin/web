@@ -1,9 +1,11 @@
 <template>
 	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
 		<div class="flex items-start">
-			<div
-				class="relative rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800"
+			<router-link
+				v-lazy-link
+				class="relative block rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0 cursor-pointer"
 				:class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
+				:to="{ name: 'PostDetail', params: { slug: item.slug } }"
 			>
 				<img
 					v-if="!isImageError"
@@ -34,7 +36,7 @@
 						<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
 					</svg>
 				</div>
-			</div>
+			</router-link>
 			<div>
 				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
 					{{ date().format(new Date(item.published_at)) }}
