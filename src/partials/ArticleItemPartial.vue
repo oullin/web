@@ -3,12 +3,12 @@
                 <div class="flex items-start">
                         <div
                                 class="relative rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800"
-                                :class="imageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
+                                :class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
                         >
                                 <img
-                                        v-if="!imageError"
+                                        v-if="!isImageError"
                                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-                                        :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
+                                        :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
                                         :src="item.cover_image_url"
                                         width="88"
                                         height="88"
@@ -20,7 +20,7 @@
                                 />
                                 <div v-if="showSkeleton" class="absolute inset-0 flex items-center justify-center">
                                         <svg
-                                                v-if="imageError"
+                                                v-if="isImageError"
                                                 class="w-6 h-6 text-slate-400 dark:text-slate-600"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"
@@ -74,31 +74,31 @@ const props = defineProps<{
         item: PostResponse;
 }>();
 
-const imageLoaded = ref(false);
-const imageError = ref(false);
+type ImageStatus = 'loading' | 'loaded' | 'error';
+
+const imageStatus = ref<ImageStatus>('loading');
 
 const handleImageLoad = () => {
-        imageLoaded.value = true;
+        imageStatus.value = 'loaded';
 };
 
 const handleImageError = () => {
-        imageError.value = true;
-        imageLoaded.value = true;
+        imageStatus.value = 'error';
 };
 
-const showSkeleton = computed(() => !imageLoaded.value || imageError.value);
+const isImageError = computed(() => imageStatus.value === 'error');
+const isImageLoaded = computed(() => imageStatus.value === 'loaded');
+const showSkeleton = computed(() => imageStatus.value !== 'loaded');
 
 watch(
         () => props.item?.cover_image_url,
         (newSrc) => {
                 if (!newSrc) {
-                        imageLoaded.value = true;
-                        imageError.value = true;
+                        imageStatus.value = 'error';
                         return;
                 }
 
-                imageLoaded.value = false;
-                imageError.value = false;
+                imageStatus.value = 'loading';
         },
         { immediate: true },
 );
