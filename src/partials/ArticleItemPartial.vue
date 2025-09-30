@@ -1,53 +1,41 @@
 <template>
-        <article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
-                <div class="flex items-start">
-                        <div
-                                class="relative rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800"
-                                :class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
-                        >
-                                <img
-                                        v-if="!isImageError"
-                                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-                                        :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
-                                        :src="item.cover_image_url"
-                                        width="88"
-                                        height="88"
-                                        :alt="item.title"
-                                        decoding="async"
-                                        loading="lazy"
-                                        @load="handleImageLoad"
-                                        @error="handleImageError"
-                                />
-                                <div v-if="showSkeleton" class="absolute inset-0 flex items-center justify-center">
-                                        <svg
-                                                v-if="isImageError"
-                                                class="w-6 h-6 text-slate-400 dark:text-slate-600"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                        >
-                                                <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-15Z"
-                                                />
-                                                <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="m3 14.25 3.955-3.955a2.25 2.25 0 0 1 3.182 0L15 15.75"
-                                                />
-                                                <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="m13.5 12 1.955-1.955a2.25 2.25 0 0 1 3.182 0L21 13.5"
-                                                />
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
-                                        </svg>
-                                </div>
-                        </div>
-                        <div>
+	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
+		<div class="flex items-start">
+			<div
+				class="relative rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800"
+				:class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
+			>
+				<img
+					v-if="!isImageError"
+					class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+					:class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
+					:src="item.cover_image_url"
+					width="88"
+					height="88"
+					:alt="item.title"
+					decoding="async"
+					loading="lazy"
+					@load="handleImageLoad"
+					@error="handleImageError"
+				/>
+				<div v-if="showSkeleton" class="absolute inset-0 flex items-center justify-center">
+					<svg
+						v-if="isImageError"
+						class="w-6 h-6 text-slate-400 dark:text-slate-600"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-15Z" />
+						<path stroke-linecap="round" stroke-linejoin="round" d="m3 14.25 3.955-3.955a2.25 2.25 0 0 1 3.182 0L15 15.75" />
+						<path stroke-linecap="round" stroke-linejoin="round" d="m13.5 12 1.955-1.955a2.25 2.25 0 0 1 3.182 0L21 13.5" />
+						<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
+					</svg>
+				</div>
+			</div>
+			<div>
 				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
 					{{ date().format(new Date(item.published_at)) }}
 				</div>
@@ -81,12 +69,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
 import { date } from '@/public.ts';
+import { computed, ref, watch } from 'vue';
 import type { PostResponse } from '@api/response/index.ts';
 
 const props = defineProps<{
-        item: PostResponse;
+	item: PostResponse;
 }>();
 
 type ImageStatus = 'loading' | 'loaded' | 'error';
@@ -94,11 +82,11 @@ type ImageStatus = 'loading' | 'loaded' | 'error';
 const imageStatus = ref<ImageStatus>('loading');
 
 const handleImageLoad = () => {
-        imageStatus.value = 'loaded';
+	imageStatus.value = 'loaded';
 };
 
 const handleImageError = () => {
-        imageStatus.value = 'error';
+	imageStatus.value = 'error';
 };
 
 const isImageError = computed(() => imageStatus.value === 'error');
@@ -106,15 +94,15 @@ const isImageLoaded = computed(() => imageStatus.value === 'loaded');
 const showSkeleton = computed(() => imageStatus.value !== 'loaded');
 
 watch(
-        () => props.item?.cover_image_url,
-        (newSrc) => {
-                if (!newSrc) {
-                        imageStatus.value = 'error';
-                        return;
-                }
+	() => props.item?.cover_image_url,
+	(newSrc) => {
+		if (!newSrc) {
+			imageStatus.value = 'error';
+			return;
+		}
 
-                imageStatus.value = 'loading';
-        },
-        { immediate: true },
+		imageStatus.value = 'loading';
+	},
+	{ immediate: true },
 );
 </script>
