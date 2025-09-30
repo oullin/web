@@ -13,11 +13,38 @@
 						<!-- Middle area -->
 						<div class="grow">
 							<div class="max-w-[700px]">
-								<section>
-									<!-- Page title -->
-									<h1 class="h1 font-aspekta mb-12">My resume</h1>
-									<!-- Page content -->
-									<div class="text-slate-500 dark:text-slate-400 space-y-12">
+                                                                <section>
+                                                                        <!-- Page title -->
+                                                                        <h1 class="h1 font-aspekta mb-6">My resume</h1>
+
+                                                                        <nav
+                                                                                aria-label="Resume sections"
+                                                                                class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12"
+                                                                        >
+                                                                                <a
+                                                                                        class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
+                                                                                        href="#education"
+                                                                                >
+                                                                                        <span class="size-2 rounded-full bg-fuchsia-400/70"></span>
+                                                                                        Education
+                                                                                </a>
+                                                                                <a
+                                                                                        class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
+                                                                                        href="#experience"
+                                                                                >
+                                                                                        <span class="size-2 rounded-full bg-fuchsia-400/70"></span>
+                                                                                        Work Experience
+                                                                                </a>
+                                                                                <a
+                                                                                        class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
+                                                                                        href="#recommendations"
+                                                                                >
+                                                                                        <span class="size-2 rounded-full bg-fuchsia-400/70"></span>
+                                                                                        Recommendations
+                                                                                </a>
+                                                                        </nav>
+                                                                        <!-- Page content -->
+                                                                        <div class="text-slate-500 dark:text-slate-400 space-y-12">
 										<EducationPartial v-if="education" :education="education" />
 										<ExperiencePartial v-if="experience" :experience="experience" />
 										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />

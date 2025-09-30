@@ -1,5 +1,5 @@
 <template>
-	<div class="space-y-8">
+	<section id="recommendations" class="space-y-8">
 		<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
 		<ul class="space-y-8">
 			<!-- Item -->
@@ -23,7 +23,7 @@
 				</div>
 			</li>
 		</ul>
-	</div>
+	</section>
 </template>
 
 <script setup lang="ts">
