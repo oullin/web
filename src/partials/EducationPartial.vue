@@ -1,5 +1,5 @@
 <template>
-	<section id="education" class="space-y-8">
+        <section class="space-y-8">
 		<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Education</h2>
 		<ul class="space-y-8">
 			<!-- Item -->

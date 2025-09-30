@@ -45,13 +45,16 @@
                                                                         </nav>
                                                                         <!-- Page content -->
                                                                         <div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<EducationPartial v-if="education" :education="education" />
-										<ExperiencePartial v-if="experience" :experience="experience" />
-										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
-									</div>
-								</section>
-							</div>
-						</div>
+                                                                                <span id="education" class="block h-0" aria-hidden="true"></span>
+                                                                                <EducationPartial v-if="education" :education="education" />
+                                                                                <span id="experience" class="block h-0" aria-hidden="true"></span>
+                                                                                <ExperiencePartial v-if="experience" :experience="experience" />
+                                                                                <span id="recommendations" class="block h-0" aria-hidden="true"></span>
+                                                                                <RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
+                                                                        </div>
+                                                                </section>
+                                                        </div>
+                                                </div>
 
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
