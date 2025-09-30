@@ -1,8 +1,38 @@
 <template>
-	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
-		<div class="flex items-start">
-			<img class="rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] object-cover mr-6" :src="item.cover_image_url" width="88" height="88" :alt="item.title" decoding="async" fetchpriority="high" />
-			<div>
+        <article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-start">
+                        <div
+                                class="relative rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800"
+                                :class="imageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
+                        >
+                                <img
+                                        v-if="!imageError"
+                                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                                        :class="imageLoaded ? 'opacity-100' : 'opacity-0'"
+                                        :src="item.cover_image_url"
+                                        width="88"
+                                        height="88"
+                                        :alt="item.title"
+                                        decoding="async"
+                                        loading="lazy"
+                                        @load="handleImageLoad"
+                                        @error="handleImageError"
+                                />
+                                <div v-if="showSkeleton" class="absolute inset-0 flex items-center justify-center">
+                                        <svg
+                                                v-if="imageError"
+                                                class="w-6 h-6 text-slate-400 dark:text-slate-600"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="1.5"
+                                                stroke="currentColor"
+                                        >
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        </svg>
+                                </div>
+                        </div>
+                        <div>
 				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
 					{{ date().format(new Date(item.published_at)) }}
 				</div>
@@ -36,10 +66,40 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import { date } from '@/public.ts';
 import type { PostResponse } from '@api/response/index.ts';
 
-defineProps<{
-	item: PostResponse;
+const props = defineProps<{
+        item: PostResponse;
 }>();
+
+const imageLoaded = ref(false);
+const imageError = ref(false);
+
+const handleImageLoad = () => {
+        imageLoaded.value = true;
+};
+
+const handleImageError = () => {
+        imageError.value = true;
+        imageLoaded.value = true;
+};
+
+const showSkeleton = computed(() => !imageLoaded.value || imageError.value);
+
+watch(
+        () => props.item?.cover_image_url,
+        (newSrc) => {
+                if (!newSrc) {
+                        imageLoaded.value = true;
+                        imageError.value = true;
+                        return;
+                }
+
+                imageLoaded.value = false;
+                imageError.value = false;
+        },
+        { immediate: true },
+);
 </script>
