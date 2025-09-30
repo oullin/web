@@ -1,15 +1,17 @@
 <template>
 	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
 		<div class="flex items-start">
-			<div
-				class="relative rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800"
-				:class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
-			>
-				<img
-					v-if="!isImageError"
-					class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-					:class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
-					:src="item.cover_image_url"
+                        <router-link
+                                v-lazy-link
+                                class="relative block rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0 cursor-pointer"
+                                :class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
+                                :to="{ name: 'PostDetail', params: { slug: item.slug } }"
+                        >
+                                <img
+                                        v-if="!isImageError"
+                                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                                        :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
+                                        :src="item.cover_image_url"
 					width="88"
 					height="88"
 					:alt="item.title"
@@ -18,12 +20,12 @@
 					@load="handleImageLoad"
 					@error="handleImageError"
 				/>
-				<div v-if="showSkeleton" class="absolute inset-0 flex items-center justify-center">
-					<svg
-						v-if="isImageError"
-						class="w-6 h-6 text-slate-400 dark:text-slate-600"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
+                                <div v-if="showSkeleton" class="absolute inset-0 flex items-center justify-center">
+                                        <svg
+                                                v-if="isImageError"
+                                                class="w-6 h-6 text-slate-400 dark:text-slate-600"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
@@ -31,10 +33,10 @@
 						<path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-15Z" />
 						<path stroke-linecap="round" stroke-linejoin="round" d="m3 14.25 3.955-3.955a2.25 2.25 0 0 1 3.182 0L15 15.75" />
 						<path stroke-linecap="round" stroke-linejoin="round" d="m13.5 12 1.955-1.955a2.25 2.25 0 0 1 3.182 0L21 13.5" />
-						<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
-					</svg>
-				</div>
-			</div>
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
+                                        </svg>
+                                </div>
+                        </router-link>
 			<div>
 				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
 					{{ date().format(new Date(item.published_at)) }}
