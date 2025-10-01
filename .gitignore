@@ -16,4 +16,6 @@ caddy/mtls/*.*
 
 # -- [SEO]: static files
 public/seo/*.*
+public/seo/posts/*.*
 !public/seo/.gitkeep
+!public/seo/posts/.gitkeep
