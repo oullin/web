@@ -13,7 +13,6 @@
         rewrite * /api{path}
 
         reverse_proxy https://oullin_proxy_prod:8443 {
-
             header_up Host oullin_proxy_prod
 
             transport http {
@@ -51,7 +50,7 @@
 
     # Static SPA
     # Bot/social previews → serve static share pages under /seo/*.seo.html
-    @sharebots header_regexp ua User-Agent "(?i)(googlebot|bingbot|duckduckbot|yandex(bot|images)|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|whatsapp|skypeuripreview|bitlybot|vkshare|quora link preview|embedly|outbrain|nuzzel|ios link preview|snapchat|applebot)"
+    @sharebots header_regexp ua User-Agent "(?i)(googlebot|bingbot|duckduckbot|yandex(bot|images)|baiduspider|facebookexternalhit|meta-externalagent|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|whatsapp|skypeuripreview|bitlybot|vkshare|quora link preview|embedly|outbrain|nuzzel|ios link preview|snapchat|applebot|google-inspectiontool|googleother)"
     handle @sharebots {
         root * /usr/share/caddy
 
@@ -65,7 +64,23 @@
 
         encode zstd gzip
 
-        # Long cache for immutable assets
+        # Positive debug signals (easier to verify handler used)
+        header X-Share-Handler "bots"
+        header X-Share-Path "{path}"
+
+        # Make bot responses uncacheable at shared caches
+        @share_html {
+            not path /assets/*
+            not path /images/*
+            not path /relay/*
+            not path /seo/*
+            not path /favicon.ico
+            not path /robots.txt
+        }
+        header @share_html Cache-Control "no-store, private"
+        header @share_html Vary "User-Agent"
+
+        # Long cache for immutable assets (safe for bots too)
         @assets path /assets/* /images/*
         header @assets Cache-Control "public, max-age=31536000, immutable"
 
@@ -75,19 +90,6 @@
 
         @robots path /robots.txt
         header @robots Cache-Control "public, max-age=300"
-
-        # Short cache for HTML and pretty routes
-        @html {
-            not path /assets/*
-            not path /images/*
-            not path /seo/*
-            not path /relay/*
-            not path /favicon.ico
-            not path /robots.txt
-        }
-
-        header @html Cache-Control "public, max-age=300, stale-while-revalidate=60"
-        header @html Vary "User-Agent"
 
         # Security headers for bot responses too
         header {
@@ -105,6 +107,9 @@
         try_files {path} {path}/index.html /index.html
         encode zstd gzip
 
+        # Positive debug signal for human handler
+        header X-Share-Handler "humans"
+
         # Headers BEFORE file_server
         @assets path /assets/* /images/*
         header @assets Cache-Control "public, max-age=31536000, immutable"
@@ -121,7 +126,6 @@
             not path /relay/*
             not path /seo/*
         }
-
         header @html Cache-Control "public, max-age=300, stale-while-revalidate=60"
         header @html Vary "User-Agent"
 
