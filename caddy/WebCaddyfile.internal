@@ -77,6 +77,7 @@
             not path /favicon.ico
             not path /robots.txt
         }
+
         header @share_html Cache-Control "no-store, private"
         header @share_html Vary "User-Agent"
 
