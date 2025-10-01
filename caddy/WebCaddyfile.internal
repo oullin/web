@@ -77,6 +77,19 @@
     handle @sharebots {
         root * /usr/share/caddy
 
+        # Bots: serve singular /post/<slug> from /seo/posts/<slug>.seo.html
+        @share_post path_regexp post ^/post/(.+)$
+        handle @share_post {
+            root * /usr/share/caddy
+            rewrite * /seo/posts/{re.post.1}.seo.html
+            encode zstd gzip
+            header X-Share-Handler "bots"
+            header X-Share-Path "{path}"
+            header Cache-Control "no-store, private"
+            header Vary "User-Agent"
+            file_server
+        }
+
         # Try SEO flat files first, then SPA files
         try_files /seo{path}.seo.html /seo/index.seo.html {path} {path}/index.html /index.html
 
