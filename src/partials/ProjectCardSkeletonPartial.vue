@@ -1,6 +1,7 @@
 <template>
         <div
                 class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-gradient-to-t dark:from-slate-800 dark:to-slate-800/30 p-5 animate-pulse"
+                :class="wrapperClass"
         >
                 <div class="flex flex-col h-full">
                         <div class="grow">
@@ -21,3 +22,9 @@
                 </div>
         </div>
 </template>
+
+<script setup lang="ts">
+const { wrapperClass } = defineProps<{
+        wrapperClass?: string;
+}>();
+</script>
