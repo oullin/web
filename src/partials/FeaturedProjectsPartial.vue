@@ -47,12 +47,12 @@
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import type { ProjectsResponse } from '@api/response/index.ts';
+import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 
+const isLoading = ref(true);
 const apiStore = useApiStore();
 const projects = ref<ProjectsResponse[]>([]);
-const isLoading = ref(true);
 
 onMounted(async () => {
 	try {
