@@ -37,7 +37,7 @@
                                                                                                 <template v-else-if="projects.length > 0">
                                                                                                         <ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
                                                                                                 </template>
-                                                                                                <p v-else class="text-sm text-slate-500 dark:text-slate-400">No projects are available at the moment. Please check back soon.</p>
+                                                                                                <p v-else class="col-span-full text-sm text-slate-500 dark:text-slate-400">No projects are available at the moment. Please check back soon.</p>
                                                                                         </div>
                                                                                 </section>
                                                                         </div>
