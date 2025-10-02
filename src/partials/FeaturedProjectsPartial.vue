@@ -38,7 +38,7 @@
                                         </div>
                                 </a>
                         </template>
-                        <p v-else class="text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
+                        <p v-else class="col-span-full text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
                 </div>
         </section>
 </template>
