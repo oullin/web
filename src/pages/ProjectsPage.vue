@@ -28,22 +28,22 @@
 												Feel free to dive into my open-source repos and client case studies to see how I turn complex requirements into reliable, maintainable systems.
 											</p>
 										</div>
-                                                                                <section>
-                                                                                        <h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
-                                                                                        <div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-                                                                                                <template v-if="isLoadingProjects">
-                                                                                                        <ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" />
-                                                                                                </template>
-                                                                                                <template v-else-if="projects.length > 0">
-                                                                                                        <ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-                                                                                                </template>
-                                                                                                <p v-else class="col-span-full text-sm text-slate-500 dark:text-slate-400">No projects are available at the moment. Please check back soon.</p>
-                                                                                        </div>
-                                                                                </section>
-                                                                        </div>
-                                                                </section>
-                                                        </div>
-                                                </div>
+										<section>
+											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
+											<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+												<template v-if="isLoadingProjects">
+													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" />
+												</template>
+												<template v-else-if="projects.length > 0">
+													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+												</template>
+												<p v-else class="col-span-full text-sm text-slate-500 dark:text-slate-400">No projects are available at the moment. Please check back soon.</p>
+											</div>
+										</section>
+									</div>
+								</section>
+							</div>
+						</div>
 
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
@@ -100,20 +100,20 @@ useSeo({
 });
 
 onMounted(async () => {
-        try {
-                const [userProfileResponse, projectsResponse] = await Promise.all([apiStore.getProfile(), apiStore.getProjects()]);
+	try {
+		const [userProfileResponse, projectsResponse] = await Promise.all([apiStore.getProfile(), apiStore.getProjects()]);
 
-                if (userProfileResponse.data) {
+		if (userProfileResponse.data) {
 			profile.value = userProfileResponse.data;
 		}
 
-                if (projectsResponse.data) {
-                        projects.value = projectsResponse.data;
-                }
-        } catch (error) {
-                debugError(error);
-        } finally {
-                isLoadingProjects.value = false;
-        }
+		if (projectsResponse.data) {
+			projects.value = projectsResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	} finally {
+		isLoadingProjects.value = false;
+	}
 });
 </script>
