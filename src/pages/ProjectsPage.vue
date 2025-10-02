@@ -31,14 +31,13 @@
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-												<template v-if="isLoadingProjects">
-													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" />
-												</template>
-												<template v-else-if="projects.length > 0">
-													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-												</template>
-												<p v-else class="col-span-full text-sm text-slate-500 dark:text-slate-400">No projects are available at the moment. Please check back soon.</p>
-											</div>
+                                                                                                <template v-if="isLoadingProjects || projects.length === 0">
+                                                                                                        <ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" />
+                                                                                                </template>
+                                                                                                <template v-else-if="projects.length > 0">
+                                                                                                        <ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+                                                                                                </template>
+                                                                                        </div>
 										</section>
 									</div>
 								</section>
