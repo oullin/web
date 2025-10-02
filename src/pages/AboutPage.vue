@@ -67,8 +67,9 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSocialPartial />
-								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
+                                                                <WidgetSocialPartial />
+                                                                <WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+                                                                <WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -88,6 +89,7 @@ import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
+import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
@@ -97,6 +99,7 @@ import type { ProfileResponse } from '@api/response/index.ts';
 const apiStore = useApiStore();
 const nickname = ref<string>('Gus');
 const profile = ref<ProfileResponse | null>(null);
+const isLoadingProfile = ref(true);
 
 const aboutPicture = computed<string>(() => {
 	return AboutPicture;
@@ -135,8 +138,10 @@ onMounted(async () => {
 			profile.value = userProfileResponse.data;
 			nickname.value = profile.value.nickname;
 		}
-	} catch (error) {
-		debugError(error);
-	}
+        } catch (error) {
+                debugError(error);
+        } finally {
+                isLoadingProfile.value = false;
+        }
 });
 </script>

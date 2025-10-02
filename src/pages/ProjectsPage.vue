@@ -47,8 +47,9 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSponsorPartial />
-								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
+                                                                <WidgetSponsorPartial />
+                                                                <WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+                                                                <WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -70,6 +71,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
+import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
@@ -78,6 +80,7 @@ const apiStore = useApiStore();
 const isLoadingProjects = ref(true);
 const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
+const isLoadingProfile = ref(true);
 
 useSeo({
 	title: 'Projects',
@@ -111,8 +114,9 @@ onMounted(async () => {
 		}
 	} catch (error) {
 		debugError(error);
-	} finally {
-		isLoadingProjects.value = false;
-	}
+        } finally {
+                isLoadingProjects.value = false;
+                isLoadingProfile.value = false;
+        }
 });
 </script>
