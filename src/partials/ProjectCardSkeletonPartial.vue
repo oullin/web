@@ -1,6 +1,6 @@
 <template>
         <div
-                class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 p-5 animate-pulse"
+                class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-gradient-to-t dark:from-slate-800 dark:to-slate-800/30 p-5 animate-pulse"
         >
                 <div class="flex flex-col h-full">
                         <div class="grow">
