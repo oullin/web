@@ -28,10 +28,16 @@
 												Feel free to dive into my open-source repos and client case studies to see how I turn complex requirements into reliable, maintainable systems.
 											</p>
 										</div>
-										<section v-if="projects.length > 0">
+										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-												<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+												<template v-if="isLoadingProjects">
+													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" />
+												</template>
+												<template v-else-if="projects.length > 0">
+													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+												</template>
+												<p v-else class="col-span-full text-sm text-slate-500 dark:text-slate-400">No projects are available at the moment. Please check back soon.</p>
 											</div>
 										</section>
 									</div>
@@ -66,9 +72,11 @@ import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
+import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 const apiStore = useApiStore();
+const isLoadingProjects = ref(true);
 const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
 
@@ -104,6 +112,8 @@ onMounted(async () => {
 		}
 	} catch (error) {
 		debugError(error);
+	} finally {
+		isLoadingProjects.value = false;
 	}
 });
 </script>
