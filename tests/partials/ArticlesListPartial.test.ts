@@ -1,6 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { nextTick, ref } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
 
@@ -28,22 +29,20 @@ const postTag: PostsTagResponse = {
 	description: faker.lorem.sentence(),
 };
 
-const posts: PostResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		slug: faker.lorem.slug(),
-		title: faker.lorem.words(2),
-		excerpt: faker.lorem.sentence(),
-		content: faker.lorem.paragraph(),
-		cover_image_url: faker.image.url(),
-		published_at: faker.date.past().toISOString(),
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
-		author,
-		categories: [postCategory],
-		tags: [postTag],
-	},
-];
+const posts: PostResponse[] = Array.from({ length: 3 }, () => ({
+	uuid: faker.string.uuid(),
+	slug: faker.lorem.slug(),
+	title: faker.lorem.words(2),
+	excerpt: faker.lorem.sentence(),
+	content: faker.lorem.paragraph(),
+	cover_image_url: faker.image.url(),
+	published_at: faker.date.past().toISOString(),
+	created_at: faker.date.past().toISOString(),
+	updated_at: faker.date.recent().toISOString(),
+	author,
+	categories: [postCategory],
+	tags: [postTag],
+}));
 const categories: CategoryResponse[] = [
 	{
 		uuid: faker.string.uuid(),
@@ -69,19 +68,57 @@ const categoriesCollection: CategoriesCollectionResponse = {
 	data: categories,
 };
 
-const getPosts = vi.fn<[], Promise<PostsCollectionResponse>>(() => Promise.resolve(postsCollection));
-const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>(() => Promise.resolve(categoriesCollection));
+const getPosts = vi.fn<[], Promise<PostsCollectionResponse>>();
+const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>();
+const searchTerm = ref('');
 
 vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({
 		getPosts,
 		getCategories,
-		searchTerm: '',
+		searchTerm,
 	}),
 }));
 
 describe('ArticlesListPartial', () => {
+	beforeEach(() => {
+		getPosts.mockReset();
+		getCategories.mockReset();
+		searchTerm.value = '';
+		getCategories.mockResolvedValue(categoriesCollection);
+	});
+
+	it('renders skeletons while loading posts', async () => {
+		let resolvePosts: (value: PostsCollectionResponse) => void = () => {};
+		getPosts.mockImplementationOnce(
+			() =>
+				new Promise<PostsCollectionResponse>((resolve) => {
+					resolvePosts = resolve;
+				}),
+		);
+
+		const wrapper = mount(ArticlesListPartial, {
+			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
+		});
+
+		await nextTick();
+
+		expect(getCategories).toHaveBeenCalled();
+		expect(getPosts).toHaveBeenCalled();
+
+		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
+		expect(skeletons).toHaveLength(3);
+
+		resolvePosts(postsCollection);
+		await flushPromises();
+
+		const itemsAfterLoad = wrapper.findAllComponents({ name: 'ArticleItemPartial' });
+		expect(itemsAfterLoad).toHaveLength(posts.length);
+	});
+
 	it('loads posts on mount', async () => {
+		getPosts.mockResolvedValue(postsCollection);
+
 		const wrapper = mount(ArticlesListPartial, {
 			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
 		});
@@ -89,7 +126,30 @@ describe('ArticlesListPartial', () => {
 		expect(getCategories).toHaveBeenCalled();
 		expect(getPosts).toHaveBeenCalled();
 		const items = wrapper.findAllComponents({ name: 'ArticleItemPartial' });
-		expect(items).toHaveLength(1);
+		expect(items).toHaveLength(posts.length);
 		expect(wrapper.text()).toContain(posts[0].title);
+		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
+		expect(skeletons).toHaveLength(0);
+	});
+
+	it('uses the previous result count while refreshing the list', async () => {
+		getPosts.mockResolvedValueOnce(postsCollection).mockImplementationOnce(
+			() =>
+				new Promise<PostsCollectionResponse>((resolve) => {
+					setTimeout(() => resolve(postsCollection), 0);
+				}),
+		);
+
+		const wrapper = mount(ArticlesListPartial, {
+			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
+		});
+
+		await flushPromises();
+
+		searchTerm.value = faker.lorem.word();
+		await nextTick();
+
+		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
+		expect(skeletons).toHaveLength(posts.length);
 	});
 });

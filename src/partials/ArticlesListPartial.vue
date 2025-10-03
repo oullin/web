@@ -21,7 +21,10 @@
 		</ul>
 
 		<!-- Articles list -->
-		<div v-if="items.length > 0">
+		<div v-if="isLoading" aria-busy="true">
+			<ArticleItemSkeletonPartial v-for="skeleton in skeletonItems" :key="`article-skeleton-${skeleton}`" />
+		</div>
+		<div v-else-if="items.length > 0">
 			<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
 		</div>
 	</section>
@@ -31,13 +34,17 @@
 import debounce from 'lodash/debounce';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
+import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
 import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/index.ts';
 import type { CategoriesCollectionResponse, CategoryResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
 const items = ref<PostResponse[]>([]);
+const isLoading = ref(false);
+const DEFAULT_SKELETON_COUNT = 3;
+const skeletonCount = ref(DEFAULT_SKELETON_COUNT);
 
 const categoriesCollection = ref<CategoriesCollectionResponse>();
 const categories = ref<CategoryResponse[]>([]);
@@ -51,13 +58,37 @@ const filters = reactive<PostsFilters>({
 	text: '',
 });
 
+let lastRequestId = 0;
+
+const skeletonItems = computed(() => Array.from({ length: skeletonCount.value }, (_, index) => index));
+
 const fetchPosts = async () => {
+	const requestId = ++lastRequestId;
+
+	const previousItems = items.value;
+	skeletonCount.value = previousItems.length > 0 ? previousItems.length : DEFAULT_SKELETON_COUNT;
+	items.value = [];
+	isLoading.value = true;
+
 	try {
 		const collection: PostsCollectionResponse = await apiStore.getPosts(filters);
 
+		if (requestId !== lastRequestId) {
+			return;
+		}
+
 		items.value = collection.data as PostResponse[];
+		skeletonCount.value = items.value.length > 0 ? items.value.length : DEFAULT_SKELETON_COUNT;
 	} catch (error) {
 		debugError(error);
+		if (requestId === lastRequestId) {
+			items.value = previousItems;
+			skeletonCount.value = items.value.length > 0 ? items.value.length : DEFAULT_SKELETON_COUNT;
+		}
+	} finally {
+		if (requestId === lastRequestId) {
+			isLoading.value = false;
+		}
 	}
 };
 
