@@ -89,6 +89,10 @@ describe('ResumePage', () => {
 		expect(getRecommendations).toHaveBeenCalled();
 		expect(getEducation).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('My resume');
+
+		const dot = wrapper.find('nav span');
+		expect(dot.classes()).toContain('bg-fuchsia-400/70');
+		expect(dot.classes()).toContain('dark:bg-teal-500/80');
 	});
 
 	it('renders skeleton while the resume data is loading', () => {
@@ -109,7 +113,9 @@ describe('ResumePage', () => {
 			},
 		});
 
-		expect(wrapper.find('[data-testid="resume-page-skeleton"]').exists()).toBe(true);
+		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
+		expect(skeleton.exists()).toBe(true);
+		expect(skeleton.classes()).toContain('min-h-[400rem]');
 	});
 
 	it('handles fetch failures', async () => {

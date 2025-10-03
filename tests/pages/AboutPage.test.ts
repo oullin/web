@@ -65,7 +65,9 @@ describe('AboutPage', () => {
 			},
 		});
 
-		expect(wrapper.find('[data-testid="about-connect-skeleton"]').exists()).toBe(true);
+		const skeleton = wrapper.find('[data-testid="about-connect-skeleton"]');
+		expect(skeleton.exists()).toBe(true);
+		expect(skeleton.classes()).toContain('min-h-[400rem]');
 	});
 
 	it('handles profile errors gracefully', async () => {

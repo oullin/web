@@ -24,13 +24,13 @@
 											class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
 											:href="item.href"
 										>
-											<span class="size-2 rounded-full bg-fuchsia-400/70"></span>
+											<span class="size-2 rounded-full bg-fuchsia-400/70 dark:bg-teal-500/80"></span>
 											{{ item.text }}
 										</a>
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<ResumePageSkeletonPartial v-if="isLoadingProfile" />
+										<ResumePageSkeletonPartial v-if="isLoadingProfile" class="min-h-[400rem]" />
 										<template v-else>
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial v-if="education" :education="education" />
