@@ -62,11 +62,13 @@ let lastRequestId = 0;
 
 const skeletonItems = computed(() => Array.from({ length: skeletonCount.value }, (_, index) => index));
 
+const skeletonCountFor = (list: PostResponse[]) => (list.length > 0 ? list.length : DEFAULT_SKELETON_COUNT);
+
 const fetchPosts = async () => {
 	const requestId = ++lastRequestId;
 
 	const previousItems = items.value;
-	skeletonCount.value = previousItems.length > 0 ? previousItems.length : DEFAULT_SKELETON_COUNT;
+	skeletonCount.value = skeletonCountFor(previousItems);
 	items.value = [];
 	isLoading.value = true;
 
@@ -85,7 +87,7 @@ const fetchPosts = async () => {
 		}
 	} finally {
 		if (requestId === lastRequestId) {
-			skeletonCount.value = items.value.length > 0 ? items.value.length : DEFAULT_SKELETON_COUNT;
+			skeletonCount.value = skeletonCountFor(items.value);
 			isLoading.value = false;
 		}
 	}
