@@ -98,6 +98,9 @@ describe('ProjectsPage', () => {
 		skeletons.forEach((skeleton) => {
 			expect(skeleton.classes()).not.toContain('animate-pulse');
 		});
+
+		const skeletonGrid = wrapper.find('[data-testid="projects-skeleton-grid"]');
+		expect(skeletonGrid.classes()).toContain('min-h-[25rem]');
 	});
 
 	it('handles API errors', async () => {

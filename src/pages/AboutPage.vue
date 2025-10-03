@@ -57,7 +57,7 @@
 												<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
 												to discuss projects and ideas. While I’m not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
 											</p>
-											<AboutConnectSkeletonPartial v-else />
+											<AboutConnectSkeletonPartial v-else class="min-h-[25rem]" />
 										</div>
 									</div>
 								</section>

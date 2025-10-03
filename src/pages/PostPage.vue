@@ -27,7 +27,7 @@
 									</router-link>
 								</div>
 
-								<PostPageSkeletonPartial v-if="isLoading" />
+								<PostPageSkeletonPartial v-if="isLoading" class="min-h-[25rem]" />
 
 								<article v-else-if="post">
 									<!-- Post header -->
