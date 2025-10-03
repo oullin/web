@@ -27,6 +27,7 @@
 		<div v-else-if="items.length > 0">
 			<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
 		</div>
+		<p v-else class="text-slate-500 dark:text-slate-400 py-8">No articles found.</p>
 	</section>
 </template>
 
