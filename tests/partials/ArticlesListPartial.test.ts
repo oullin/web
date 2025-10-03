@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { reactive, ref, nextTick } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
-import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
+import type { VueWrapper } from '@vue/test-utils';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
 
 const author: PostsAuthorResponse = {
@@ -126,6 +126,8 @@ describe('ArticlesListPartial', () => {
 		},
 	};
 
+	const findSkeletons = (wrapper: VueWrapper) => wrapper.findAll('[data-testid="article-skeleton"]');
+
 	it('renders skeletons while loading posts', async () => {
 		let resolvePosts: (value: PostsCollectionResponse) => void = () => {};
 		getPosts.mockImplementationOnce(
@@ -142,7 +144,7 @@ describe('ArticlesListPartial', () => {
 		expect(getCategories).toHaveBeenCalled();
 		expect(getPosts).toHaveBeenCalled();
 
-		const skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+		const skeletons = findSkeletons(wrapper);
 		expect(skeletons).toHaveLength(3);
 
 		resolvePosts(postsCollection);
@@ -162,7 +164,7 @@ describe('ArticlesListPartial', () => {
 		const items = wrapper.findAllComponents({ name: 'ArticleItemPartial' });
 		expect(items).toHaveLength(posts.length);
 		expect(wrapper.text()).toContain(posts[0].title);
-		const skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+		const skeletons = findSkeletons(wrapper);
 		expect(skeletons).toHaveLength(0);
 	});
 
@@ -191,12 +193,13 @@ describe('ArticlesListPartial', () => {
 		// Coalesced or duplicated triggers are OK; we only require that a refresh was scheduled.
 		expect(getPosts.mock.calls.length).toBeGreaterThan(initialGetPostsCalls);
 
-		let skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+		let skeletons = findSkeletons(wrapper);
 		let attempts = 0;
 
 		while (skeletons.length !== posts.length && attempts < 10) {
 			await nextTick();
-			skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+			await flushPromises();
+			skeletons = findSkeletons(wrapper);
 			attempts += 1;
 		}
 
