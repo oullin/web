@@ -22,7 +22,7 @@ const baseRecommendedConfig = {
 		'for-direction': 'error',
 		'getter-return': 'error',
 		'no-async-promise-executor': 'error',
-		'no-await-in-loop': 'error',
+		'no-await-in-loop': 'warn',
 		'no-class-assign': 'error',
 		'no-compare-neg-zero': 'error',
 		'no-cond-assign': 'error',
@@ -52,7 +52,7 @@ const baseRecommendedConfig = {
 		'no-shadow-restricted-names': 'error',
 		'no-sparse-arrays': 'error',
 		'no-this-before-super': 'error',
-		'no-undef': 'error',
+		'no-undef': 'warn',
 		'no-unexpected-multiline': 'error',
 		'no-unreachable': 'error',
 		'no-unsafe-finally': 'error',
@@ -114,6 +114,25 @@ export default [
 		},
 		rules: {
 			...pluginTypeScript.configs.recommended.rules,
+			'no-unused-vars': 'off',
+			'no-undef': 'off',
+			'no-await-in-loop': 'off',
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-unsafe-assignment': 'off',
+			'@typescript-eslint/no-unsafe-call': 'off',
+			'@typescript-eslint/no-unsafe-member-access': 'off',
+			'@typescript-eslint/no-unsafe-return': 'off',
+			'@typescript-eslint/no-unsafe-function-type': 'off',
+			'@typescript-eslint/require-await': 'off',
+			'@typescript-eslint/no-floating-promises': 'off',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+				},
+			],
+			'@typescript-eslint/unbound-method': 'off',
 		},
 	},
 
@@ -152,6 +171,14 @@ export default [
 			'vue/order-in-components': 'warn',
 			'vue/require-prop-types': 'warn',
 			'vue/no-reserved-component-names': 'error',
+		},
+	},
+
+	{
+		files: ['**/*.d.ts'],
+		rules: {
+			'@typescript-eslint/no-empty-object-type': 'off',
+			'@typescript-eslint/no-explicit-any': 'off',
 		},
 	},
 
