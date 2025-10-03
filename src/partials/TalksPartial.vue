@@ -18,7 +18,7 @@
 					rel="noopener noreferrer"
 				>
 					<img
-						class="absolute inset-0 w-full h-full object-cover opacity-40 max-w-[336] max-h-[189]"
+						class="absolute inset-0 w-full h-full object-cover opacity-40 max-w-[336px] max-h-[189px]"
 						:src="image(talk.photo)"
 						:alt="talk.title"
 						loading="lazy"
