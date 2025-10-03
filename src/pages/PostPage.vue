@@ -1,5 +1,5 @@
 <template>
-	<div v-if="post" class="max-w-7xl mx-auto">
+	<div class="max-w-7xl mx-auto">
 		<div class="min-h-screen flex">
 			<SideNavPartial />
 
@@ -27,7 +27,9 @@
 									</router-link>
 								</div>
 
-								<article>
+								<PostPageSkeletonPartial v-if="isLoading" />
+
+								<article v-else-if="post">
 									<!-- Post header -->
 									<header>
 										<div class="flex items-center justify-between mb-1">
@@ -97,6 +99,8 @@
 										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>
+
+								<p v-else class="text-slate-500 dark:text-slate-400">We couldn't load this post.</p>
 							</div>
 						</div>
 
@@ -125,6 +129,7 @@ import { debugError } from '@api/http-error.ts';
 import { date, getReadingTime } from '@/public.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
+import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
@@ -137,6 +142,7 @@ const route = useRoute();
 const apiStore = useApiStore();
 const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
+const isLoading = ref(true);
 const postContainer = ref<HTMLElement | null>(null);
 const slug = ref<string>(route.params.slug as string);
 
@@ -203,6 +209,8 @@ onMounted(async () => {
 		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 	} catch (error) {
 		debugError(error);
+	} finally {
+		isLoading.value = false;
 	}
 });
 </script>

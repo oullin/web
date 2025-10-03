@@ -70,8 +70,10 @@ describe('PostPage', () => {
 				},
 			},
 		});
+		expect(wrapper.find('[data-testid="post-page-skeleton"]').exists()).toBe(true);
 		await flushPromises();
 		expect(getPost).toHaveBeenCalledWith(post.slug);
+		expect(wrapper.find('[data-testid="post-page-skeleton"]').exists()).toBe(false);
 		expect(wrapper.text()).toContain(post.title);
 	});
 
@@ -133,5 +135,7 @@ describe('PostPage', () => {
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
+		expect(wrapper.find('[data-testid="post-page-skeleton"]').exists()).toBe(false);
+		expect(wrapper.text()).toContain("We couldn't load this post.");
 	});
 });
