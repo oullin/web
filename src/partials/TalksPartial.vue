@@ -5,11 +5,7 @@
 		<!-- Cards -->
 		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
 			<template v-if="isLoadingTalks || talks.length === 0">
-                                <TalkCardSkeletonPartial
-                                        v-for="index in 4"
-                                        :key="`talk-skeleton-${index}`"
-                                        :is-animated="isLoadingTalks && talks.length === 0"
-                                />
+				<TalkCardSkeletonPartial v-for="index in 4" :key="`talk-skeleton-${index}`" :is-animated="isLoadingTalks && talks.length === 0" />
 			</template>
 			<template v-else>
 				<a

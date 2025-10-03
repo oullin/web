@@ -44,9 +44,9 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-                                                                <WidgetLangPartial />
-                                                                <WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
-                                                                <WidgetSkillsPartial v-else :skills="profile.skills" />
+								<WidgetLangPartial />
+								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -131,10 +131,10 @@ onMounted(async () => {
 		if (educationResponse.data) {
 			education.value = educationResponse.data;
 		}
-        } catch (error) {
-                debugError(error);
-        } finally {
-                isLoadingProfile.value = false;
-        }
+	} catch (error) {
+		debugError(error);
+	} finally {
+		isLoadingProfile.value = false;
+	}
 });
 </script>

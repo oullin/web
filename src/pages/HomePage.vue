@@ -25,9 +25,9 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-                                                                <WidgetSponsorPartial />
-                                                                <WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
-                                                                <WidgetSkillsPartial v-else :skills="profile.skills" />
+								<WidgetSponsorPartial />
+								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -81,16 +81,16 @@ useSeo({
 });
 
 onMounted(async () => {
-        try {
-                const userProfileResponse = await apiStore.getProfile();
+	try {
+		const userProfileResponse = await apiStore.getProfile();
 
-                if (userProfileResponse.data) {
-                        profile.value = userProfileResponse.data;
-                }
-        } catch (error) {
-                debugError(error);
-        } finally {
-                isLoadingProfile.value = false;
-        }
+		if (userProfileResponse.data) {
+			profile.value = userProfileResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	} finally {
+		isLoadingProfile.value = false;
+	}
 });
 </script>
