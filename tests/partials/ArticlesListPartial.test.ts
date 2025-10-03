@@ -1,7 +1,9 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { reactive, ref, nextTick } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
+import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
 
 const author: PostsAuthorResponse = {
@@ -28,22 +30,20 @@ const postTag: PostsTagResponse = {
 	description: faker.lorem.sentence(),
 };
 
-const posts: PostResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		slug: faker.lorem.slug(),
-		title: faker.lorem.words(2),
-		excerpt: faker.lorem.sentence(),
-		content: faker.lorem.paragraph(),
-		cover_image_url: faker.image.url(),
-		published_at: faker.date.past().toISOString(),
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
-		author,
-		categories: [postCategory],
-		tags: [postTag],
-	},
-];
+const posts: PostResponse[] = Array.from({ length: 3 }, () => ({
+	uuid: faker.string.uuid(),
+	slug: faker.lorem.slug(),
+	title: faker.lorem.words(2),
+	excerpt: faker.lorem.sentence(),
+	content: faker.lorem.paragraph(),
+	cover_image_url: faker.image.url(),
+	published_at: faker.date.past().toISOString(),
+	created_at: faker.date.past().toISOString(),
+	updated_at: faker.date.recent().toISOString(),
+	author,
+	categories: [postCategory],
+	tags: [postTag],
+}));
 const categories: CategoryResponse[] = [
 	{
 		uuid: faker.string.uuid(),
@@ -69,27 +69,140 @@ const categoriesCollection: CategoriesCollectionResponse = {
 	data: categories,
 };
 
-const getPosts = vi.fn<[], Promise<PostsCollectionResponse>>(() => Promise.resolve(postsCollection));
-const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>(() => Promise.resolve(categoriesCollection));
+const getPosts = vi.fn<[], Promise<PostsCollectionResponse>>();
+const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>();
+const searchTerm = ref('');
+
+const apiStoreMock = reactive({
+	getPosts,
+	getCategories,
+	get searchTerm() {
+		return searchTerm.value;
+	},
+	set searchTerm(value: string) {
+		searchTerm.value = value;
+	},
+	setSearchTerm(term: string) {
+		searchTerm.value = term;
+	},
+});
 
 vi.mock('@api/store.ts', () => ({
-	useApiStore: () => ({
-		getPosts,
-		getCategories,
-		searchTerm: '',
-	}),
+	useApiStore: () => apiStoreMock,
+}));
+
+vi.mock('lodash/debounce', () => ({
+	default: (fn: (...args: unknown[]) => unknown) => {
+		const debounced = ((...args: unknown[]) => fn(...args)) as typeof fn & {
+			cancel: () => void;
+		};
+
+		debounced.cancel = () => {};
+
+		return debounced;
+	},
 }));
 
 describe('ArticlesListPartial', () => {
+	let resolveRefreshPosts: ((value: PostsCollectionResponse) => void) | undefined;
+
+	beforeEach(() => {
+		getPosts.mockReset();
+		getCategories.mockReset();
+		apiStoreMock.setSearchTerm('');
+		getCategories.mockResolvedValue(categoriesCollection);
+		resolveRefreshPosts = undefined;
+	});
+
+	const globalMountOptions = {
+		global: {
+			stubs: { RouterLink: { template: '<a><slot /></a>' } },
+			directives: {
+				'lazy-link': {
+					mounted() {},
+					updated() {},
+				},
+			},
+		},
+	};
+
+	it('renders skeletons while loading posts', async () => {
+		let resolvePosts: (value: PostsCollectionResponse) => void = () => {};
+		getPosts.mockImplementationOnce(
+			() =>
+				new Promise<PostsCollectionResponse>((resolve) => {
+					resolvePosts = resolve;
+				}),
+		);
+
+		const wrapper = mount(ArticlesListPartial, globalMountOptions);
+
+		await flushPromises();
+
+		expect(getCategories).toHaveBeenCalled();
+		expect(getPosts).toHaveBeenCalled();
+
+		const skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+		expect(skeletons).toHaveLength(3);
+
+		resolvePosts(postsCollection);
+		await flushPromises();
+
+		const itemsAfterLoad = wrapper.findAllComponents({ name: 'ArticleItemPartial' });
+		expect(itemsAfterLoad).toHaveLength(posts.length);
+	});
+
 	it('loads posts on mount', async () => {
-		const wrapper = mount(ArticlesListPartial, {
-			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
-		});
+		getPosts.mockResolvedValue(postsCollection);
+
+		const wrapper = mount(ArticlesListPartial, globalMountOptions);
 		await flushPromises();
 		expect(getCategories).toHaveBeenCalled();
 		expect(getPosts).toHaveBeenCalled();
 		const items = wrapper.findAllComponents({ name: 'ArticleItemPartial' });
-		expect(items).toHaveLength(1);
+		expect(items).toHaveLength(posts.length);
 		expect(wrapper.text()).toContain(posts[0].title);
+		const skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+		expect(skeletons).toHaveLength(0);
+	});
+
+	it('uses the previous result count while refreshing the list', async () => {
+		getPosts
+			.mockResolvedValueOnce(postsCollection)
+			.mockImplementationOnce(
+				() =>
+					new Promise<PostsCollectionResponse>((resolve) => {
+						resolveRefreshPosts = resolve;
+					}),
+			)
+			.mockResolvedValue(postsCollection);
+
+		const wrapper = mount(ArticlesListPartial, globalMountOptions);
+
+		await flushPromises();
+
+		const initialGetPostsCalls = getPosts.mock.calls.length;
+		expect(initialGetPostsCalls).toBeGreaterThanOrEqual(1);
+
+		apiStoreMock.setSearchTerm(faker.lorem.word());
+		await flushPromises();
+		await nextTick();
+
+		// Coalesced or duplicated triggers are OK; we only require that a refresh was scheduled.
+		expect(getPosts.mock.calls.length).toBeGreaterThan(initialGetPostsCalls);
+
+		let skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+		let attempts = 0;
+
+		while (skeletons.length !== posts.length && attempts < 10) {
+			await nextTick();
+			skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+			attempts += 1;
+		}
+
+		expect(skeletons).toHaveLength(posts.length);
+
+		resolveRefreshPosts?.(postsCollection);
+		await flushPromises();
 	});
 });
