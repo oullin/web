@@ -103,7 +103,6 @@ export default [
 			parserOptions: {
 				ecmaVersion: 'latest',
 				sourceType: 'module',
-				project: './tsconfig.json',
 			},
 			globals: {
 				...globals.browser,
@@ -114,7 +113,7 @@ export default [
 			'@typescript-eslint': pluginTypeScript,
 		},
 		rules: {
-			...pluginTypeScript.configs['recommended-type-checked'].rules,
+			...pluginTypeScript.configs.recommended.rules,
 		},
 	},
 
@@ -127,7 +126,6 @@ export default [
 				ecmaVersion: 'latest',
 				sourceType: 'module',
 				parser: parserTypeScript,
-				project: './tsconfig.json',
 				extraFileExtensions: ['.vue'],
 			},
 			globals: {
