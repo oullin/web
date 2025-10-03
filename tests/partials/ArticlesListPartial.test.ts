@@ -1,7 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { nextTick, ref } from 'vue';
+import { ref } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
 
@@ -111,7 +111,7 @@ describe('ArticlesListPartial', () => {
 
 		const wrapper = mount(ArticlesListPartial, globalMountOptions);
 
-		await nextTick();
+		await flushPromises();
 
 		expect(getCategories).toHaveBeenCalled();
 		expect(getPosts).toHaveBeenCalled();
@@ -153,7 +153,7 @@ describe('ArticlesListPartial', () => {
 		await flushPromises();
 
 		searchTerm.value = faker.lorem.word();
-		await nextTick();
+		await flushPromises();
 
 		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
 		expect(skeletons).toHaveLength(posts.length);
