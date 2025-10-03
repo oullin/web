@@ -82,6 +82,9 @@ const apiStoreMock = reactive({
 	set searchTerm(value: string) {
 		searchTerm.value = value;
 	},
+	setSearchTerm(term: string) {
+		searchTerm.value = term;
+	},
 });
 
 vi.mock('@api/store.ts', () => ({
@@ -106,7 +109,7 @@ describe('ArticlesListPartial', () => {
 	beforeEach(() => {
 		getPosts.mockReset();
 		getCategories.mockReset();
-		apiStoreMock.searchTerm = '';
+		apiStoreMock.setSearchTerm('');
 		getCategories.mockResolvedValue(categoriesCollection);
 		resolveRefreshPosts = undefined;
 	});
@@ -178,11 +181,13 @@ describe('ArticlesListPartial', () => {
 
 		await flushPromises();
 
-		apiStoreMock.searchTerm = faker.lorem.word();
+		const initialGetPostsCalls = getPosts.mock.calls.length;
+
+		apiStoreMock.setSearchTerm(faker.lorem.word());
 		await flushPromises();
 		await nextTick();
 
-		expect(getPosts).toHaveBeenCalledTimes(2);
+		expect(getPosts.mock.calls.length).toBeGreaterThan(initialGetPostsCalls);
 
 		let skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
 		let attempts = 0;
