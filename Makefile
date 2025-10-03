@@ -20,7 +20,7 @@ include $(ROOT_PATH)/build/makefiles/build.mk
 # ---------
 
 format:
-	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html}' --ignore-path .prettierignore
+	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html,css}' --ignore-path .prettierignore
 	make lint-fix
 
 env-fresh:
