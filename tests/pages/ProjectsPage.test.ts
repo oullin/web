@@ -100,7 +100,7 @@ describe('ProjectsPage', () => {
 		});
 
 		const skeletonGrid = wrapper.find('[data-testid="projects-skeleton-grid"]');
-		expect(skeletonGrid.classes()).toContain('min-h-[400rem]');
+		expect(skeletonGrid.classes()).toContain('min-h-[25rem]');
 	});
 
 	it('handles API errors', async () => {

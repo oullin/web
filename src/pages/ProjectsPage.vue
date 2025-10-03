@@ -33,7 +33,7 @@
 											<div
 												data-testid="projects-skeleton-grid"
 												class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5"
-												:class="{ 'min-h-[400rem]': isLoadingProjects || projects.length === 0 }"
+												:class="{ 'min-h-[25rem]': isLoadingProjects || projects.length === 0 }"
 											>
 												<template v-if="isLoadingProjects || projects.length === 0">
 													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />

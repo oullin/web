@@ -115,7 +115,7 @@ describe('ResumePage', () => {
 
 		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
-		expect(skeleton.classes()).toContain('min-h-[400rem]');
+		expect(skeleton.classes()).toContain('min-h-[25rem]');
 	});
 
 	it('handles fetch failures', async () => {

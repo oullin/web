@@ -30,7 +30,7 @@
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<ResumePageSkeletonPartial v-if="isLoadingProfile" class="min-h-[400rem]" />
+										<ResumePageSkeletonPartial v-if="isLoadingProfile" class="min-h-[25rem]" />
 										<template v-else>
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial v-if="education" :education="education" />
