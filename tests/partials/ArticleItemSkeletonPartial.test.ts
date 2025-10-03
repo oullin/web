@@ -6,7 +6,7 @@ describe('ArticleItemSkeletonPartial', () => {
 	it('is animated by default', () => {
 		const wrapper = mount(ArticleItemSkeletonPartial);
 
-		expect(wrapper.classes()).toContain('animate-pulse');
+		expect(wrapper.attributes('class')).toContain('animate-pulse');
 	});
 
 	it('can disable the animation', () => {
@@ -14,6 +14,6 @@ describe('ArticleItemSkeletonPartial', () => {
 			props: { isAnimated: false },
 		});
 
-		expect(wrapper.classes()).not.toContain('animate-pulse');
+		expect(wrapper.attributes('class')).not.toContain('animate-pulse');
 	});
 });

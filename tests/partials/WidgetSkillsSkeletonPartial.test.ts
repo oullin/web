@@ -17,6 +17,6 @@ describe('WidgetSkillsSkeletonPartial', () => {
 		const wrapper = mount(WidgetSkillsSkeletonPartial);
 
 		expect(wrapper.attributes('aria-hidden')).toBeUndefined();
-		expect(wrapper.classes()).toContain('animate-pulse');
+		expect(wrapper.attributes('class')).toContain('animate-pulse');
 	});
 });

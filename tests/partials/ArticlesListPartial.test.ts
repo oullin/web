@@ -191,12 +191,12 @@ describe('ArticlesListPartial', () => {
 		// Coalesced or duplicated triggers are OK; we only require that a refresh was scheduled.
 		expect(getPosts.mock.calls.length).toBeGreaterThan(initialGetPostsCalls);
 
-		let skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+		let skeletons = wrapper.findAll('[aria-busy="true"] article[aria-hidden="true"]');
 		let attempts = 0;
 
 		while (skeletons.length !== posts.length && attempts < 10) {
 			await nextTick();
-			skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
+			skeletons = wrapper.findAll('[aria-busy="true"] article[aria-hidden="true"]');
 			attempts += 1;
 		}
 

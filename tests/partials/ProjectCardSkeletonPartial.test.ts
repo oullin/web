@@ -6,7 +6,7 @@ describe('ProjectCardSkeletonPartial', () => {
 	it('renders animated wrapper by default', () => {
 		const wrapper = mount(ProjectCardSkeletonPartial);
 
-		expect(wrapper.classes()).toContain('animate-pulse');
+		expect(wrapper.attributes('class')).toContain('animate-pulse');
 	});
 
 	it('merges custom wrapper classes', () => {
@@ -22,6 +22,6 @@ describe('ProjectCardSkeletonPartial', () => {
 			props: { isAnimated: false },
 		});
 
-		expect(wrapper.classes()).not.toContain('animate-pulse');
+		expect(wrapper.attributes('class')).not.toContain('animate-pulse');
 	});
 });

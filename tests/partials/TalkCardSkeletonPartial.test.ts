@@ -6,7 +6,7 @@ describe('TalkCardSkeletonPartial', () => {
 	it('applies animation by default', () => {
 		const wrapper = mount(TalkCardSkeletonPartial);
 
-		expect(wrapper.classes()).toContain('animate-pulse');
+		expect(wrapper.attributes('class')).toContain('animate-pulse');
 		expect(wrapper.attributes('aria-hidden')).toBe('true');
 	});
 
@@ -15,6 +15,6 @@ describe('TalkCardSkeletonPartial', () => {
 			props: { isAnimated: false },
 		});
 
-		expect(wrapper.classes()).not.toContain('animate-pulse');
+		expect(wrapper.attributes('class')).not.toContain('animate-pulse');
 	});
 });

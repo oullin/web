@@ -14,6 +14,6 @@ describe('PostPageSkeletonPartial', () => {
 		const wrapper = mount(PostPageSkeletonPartial);
 
 		expect(wrapper.attributes('aria-hidden')).toBe('true');
-		expect(wrapper.classes()).toContain('animate-pulse');
+		expect(wrapper.attributes('class')).toContain('animate-pulse');
 	});
 });
