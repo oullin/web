@@ -24,9 +24,9 @@ src/
 ├── pages/                  # Web sections such as profile, resume, project, posts, and projects.
 ├── partials/               # Partials for reusable components.
 ├── stores/                 # Pinia stores.
-├── support/                # Share logic.
+├── support/                # Application support libraries.
 ├── App.vue                 # Main vue compenent.
 └── dark-mode.ts
-└── public.ts               # Shared logic.
+└── public.ts               # Shared utilities / logic.
 └── router.ts               # Application routes.
 └── main.ts                 # Application entry point.
