@@ -1,7 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
 
@@ -72,19 +72,26 @@ const getPosts = vi.fn<[], Promise<PostsCollectionResponse>>();
 const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>();
 const searchTerm = ref('');
 
+const apiStoreMock = reactive({
+	getPosts,
+	getCategories,
+	get searchTerm() {
+		return searchTerm.value;
+	},
+	set searchTerm(value: string) {
+		searchTerm.value = value;
+	},
+});
+
 vi.mock('@api/store.ts', () => ({
-	useApiStore: () => ({
-		getPosts,
-		getCategories,
-		searchTerm,
-	}),
+	useApiStore: () => apiStoreMock,
 }));
 
 describe('ArticlesListPartial', () => {
 	beforeEach(() => {
 		getPosts.mockReset();
 		getCategories.mockReset();
-		searchTerm.value = '';
+		apiStoreMock.searchTerm = '';
 		getCategories.mockResolvedValue(categoriesCollection);
 	});
 
@@ -152,7 +159,7 @@ describe('ArticlesListPartial', () => {
 
 		await flushPromises();
 
-		searchTerm.value = faker.lorem.word();
+		apiStoreMock.searchTerm = faker.lorem.word();
 		await flushPromises();
 
 		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
