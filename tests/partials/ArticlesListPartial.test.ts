@@ -181,13 +181,13 @@ describe('ArticlesListPartial', () => {
 
 		await flushPromises();
 
-		const initialGetPostsCalls = getPosts.mock.calls.length;
+		expect(getPosts).toHaveBeenCalledTimes(1);
 
 		apiStoreMock.setSearchTerm(faker.lorem.word());
 		await flushPromises();
 		await nextTick();
 
-		expect(getPosts.mock.calls.length).toBeGreaterThan(initialGetPostsCalls);
+		expect(getPosts).toHaveBeenCalledTimes(2);
 
 		let skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
 		let attempts = 0;
