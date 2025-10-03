@@ -95,6 +95,29 @@ export default [
 		},
 	},
 
+	// --- TypeScript Source Files (.ts, .tsx) ---
+	{
+		files: ['**/*.{ts,tsx}'],
+		languageOptions: {
+			parser: parserTypeScript,
+			parserOptions: {
+				ecmaVersion: 'latest',
+				sourceType: 'module',
+				project: './tsconfig.json',
+			},
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
+		},
+		plugins: {
+			'@typescript-eslint': pluginTypeScript,
+		},
+		rules: {
+			...pluginTypeScript.configs['recommended-type-checked'].rules,
+		},
+	},
+
 	// --- Vue Component Files (.vue) ---
 	{
 		files: ['**/*.vue'],
