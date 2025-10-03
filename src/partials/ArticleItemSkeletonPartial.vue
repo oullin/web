@@ -1,5 +1,5 @@
 <template>
-	<article class="py-5 border-b border-slate-100 dark:border-slate-800" :class="animationClass" aria-hidden="true">
+	<article class="py-5 border-b border-slate-100 dark:border-slate-800" :class="animationClass" aria-hidden="true" data-testid="article-skeleton">
 		<div class="flex items-start">
 			<div class="relative block rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0"></div>
 			<div class="flex-1 space-y-3">
