@@ -2,7 +2,7 @@
 	<div
 		:class="[
 			'relative aspect-video rounded-lg overflow-hidden bg-linear-to-tr from-slate-800 to-slate-700 odd:rotate-1 even:-rotate-1 hover:rotate-0 transition-transform duration-700 hover:duration-100 ease-in-out shadow-xl',
-			isAnimated ? 'animate-pulse' : null,
+			props.isAnimated ? 'animate-pulse' : null,
 		]"
 		aria-hidden="true"
 	>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-const { isAnimated } = withDefaults(defineProps<{ isAnimated?: boolean }>(), {
+const props = withDefaults(defineProps<{ isAnimated?: boolean }>(), {
 	isAnimated: true,
 });
 </script>
