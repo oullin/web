@@ -74,9 +74,12 @@ describe('public utilities', () => {
 			expect(getRandomInt(5, 10)).toBe(10);
 		});
 
-		it('never returns values below 1 even when min is negative', () => {
+		it('returns a value within the specified range even when min is negative', () => {
 			Math.random = vi.fn(() => 0.25);
-			expect(getRandomInt(-5, -2)).toBe(1);
+			const result = getRandomInt(-5, -2);
+
+			expect(result).toBeGreaterThanOrEqual(-5);
+			expect(result).toBeLessThanOrEqual(-2);
 		});
 	});
 });
