@@ -3,7 +3,7 @@
                 class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-gradient-to-t dark:from-slate-800 dark:to-slate-800/30 p-5"
                 :class="[{ 'animate-pulse': isAnimated }, wrapperClass]"
         >
-                <div class="flex flex-col h-full min-h-[220px]">
+                <div class="project-card-content">
 			<div class="grow">
 				<div class="flex items-center justify-between space-x-2">
 					<div class="h-10 w-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full mb-2">
