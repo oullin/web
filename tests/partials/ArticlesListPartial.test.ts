@@ -88,11 +88,14 @@ vi.mock('@api/store.ts', () => ({
 }));
 
 describe('ArticlesListPartial', () => {
+	let resolveRefreshPosts: ((value: PostsCollectionResponse) => void) | undefined;
+
 	beforeEach(() => {
 		getPosts.mockReset();
 		getCategories.mockReset();
 		apiStoreMock.searchTerm = '';
 		getCategories.mockResolvedValue(categoriesCollection);
+		resolveRefreshPosts = undefined;
 	});
 
 	const globalMountOptions = {
@@ -148,12 +151,15 @@ describe('ArticlesListPartial', () => {
 	});
 
 	it('uses the previous result count while refreshing the list', async () => {
-		getPosts.mockResolvedValueOnce(postsCollection).mockImplementationOnce(
-			() =>
-				new Promise<PostsCollectionResponse>((resolve) => {
-					setTimeout(() => resolve(postsCollection), 0);
-				}),
-		);
+		getPosts
+			.mockResolvedValueOnce(postsCollection)
+			.mockImplementationOnce(
+				() =>
+					new Promise<PostsCollectionResponse>((resolve) => {
+						resolveRefreshPosts = resolve;
+					}),
+			)
+			.mockResolvedValue(postsCollection);
 
 		const wrapper = mount(ArticlesListPartial, globalMountOptions);
 
@@ -165,5 +171,8 @@ describe('ArticlesListPartial', () => {
 
 		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
 		expect(skeletons).toHaveLength(posts.length);
+
+		resolveRefreshPosts?.(postsCollection);
+		await flushPromises();
 	});
 });
