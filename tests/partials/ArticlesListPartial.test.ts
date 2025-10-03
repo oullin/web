@@ -1,7 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { reactive, ref } from 'vue';
+import { reactive, ref, nextTick } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
 
@@ -161,6 +161,7 @@ describe('ArticlesListPartial', () => {
 
 		apiStoreMock.searchTerm = faker.lorem.word();
 		await flushPromises();
+		await nextTick();
 
 		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
 		expect(skeletons).toHaveLength(posts.length);
