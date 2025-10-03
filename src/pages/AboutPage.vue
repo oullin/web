@@ -57,6 +57,7 @@
 												<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
 												to discuss projects and ideas. While I’m not always available for freelance or long-term work, please don’t hesitate to reach out anytime.
 											</p>
+											<AboutConnectSkeletonPartial v-else />
 										</div>
 									</div>
 								</section>
@@ -90,6 +91,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
+import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
