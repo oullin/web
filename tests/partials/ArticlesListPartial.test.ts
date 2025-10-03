@@ -167,9 +167,16 @@ describe('ArticlesListPartial', () => {
 
 		apiStoreMock.searchTerm = faker.lorem.word();
 		await flushPromises();
-		await nextTick();
 
-		const skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
+		let skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
+		let attempts = 0;
+
+		while (skeletons.length !== posts.length && attempts < 5) {
+			await nextTick();
+			skeletons = wrapper.findAllComponents({ name: 'ArticleItemSkeletonPartial' });
+			attempts += 1;
+		}
+
 		expect(skeletons).toHaveLength(posts.length);
 
 		resolveRefreshPosts?.(postsCollection);
