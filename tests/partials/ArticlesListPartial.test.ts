@@ -88,6 +88,18 @@ describe('ArticlesListPartial', () => {
 		getCategories.mockResolvedValue(categoriesCollection);
 	});
 
+	const globalMountOptions = {
+		global: {
+			stubs: { RouterLink: { template: '<a><slot /></a>' } },
+			directives: {
+				'lazy-link': {
+					mounted() {},
+					updated() {},
+				},
+			},
+		},
+	};
+
 	it('renders skeletons while loading posts', async () => {
 		let resolvePosts: (value: PostsCollectionResponse) => void = () => {};
 		getPosts.mockImplementationOnce(
@@ -97,9 +109,7 @@ describe('ArticlesListPartial', () => {
 				}),
 		);
 
-		const wrapper = mount(ArticlesListPartial, {
-			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
-		});
+		const wrapper = mount(ArticlesListPartial, globalMountOptions);
 
 		await nextTick();
 
@@ -119,9 +129,7 @@ describe('ArticlesListPartial', () => {
 	it('loads posts on mount', async () => {
 		getPosts.mockResolvedValue(postsCollection);
 
-		const wrapper = mount(ArticlesListPartial, {
-			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
-		});
+		const wrapper = mount(ArticlesListPartial, globalMountOptions);
 		await flushPromises();
 		expect(getCategories).toHaveBeenCalled();
 		expect(getPosts).toHaveBeenCalled();
@@ -140,9 +148,7 @@ describe('ArticlesListPartial', () => {
 				}),
 		);
 
-		const wrapper = mount(ArticlesListPartial, {
-			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
-		});
+		const wrapper = mount(ArticlesListPartial, globalMountOptions);
 
 		await flushPromises();
 

@@ -34,7 +34,7 @@
 import debounce from 'lodash/debounce';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
 import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/index.ts';
@@ -92,12 +92,24 @@ const fetchPosts = async () => {
 };
 
 // --- Categories' Filter:
+const debouncedFetchPosts = debounce(
+	() => {
+		fetchPosts();
+	},
+	500,
+	{ leading: true, trailing: true },
+);
+
 watch(
 	() => filters.category,
-	debounce(() => {
-		fetchPosts();
-	}, 500),
+	() => {
+		debouncedFetchPosts();
+	},
 );
+
+onBeforeUnmount(() => {
+	debouncedFetchPosts.cancel();
+});
 
 // --- Search: filter post by the given search criteria.
 watch(
