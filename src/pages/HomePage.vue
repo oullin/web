@@ -26,7 +26,8 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSponsorPartial />
-								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
+								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -48,6 +49,7 @@ import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
+import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 
 import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
@@ -57,6 +59,7 @@ import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
+const isLoadingProfile = ref(true);
 
 useSeo({
 	title: 'Home',
@@ -86,6 +89,8 @@ onMounted(async () => {
 		}
 	} catch (error) {
 		debugError(error);
+	} finally {
+		isLoadingProfile.value = false;
 	}
 });
 </script>

@@ -45,7 +45,8 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetLangPartial />
-								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
+								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -65,6 +66,7 @@ import EducationPartial from '@partials/EducationPartial.vue';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
+import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 
 import { ref, onMounted } from 'vue';
@@ -81,6 +83,7 @@ const navigationItems = [
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
+const isLoadingProfile = ref(true);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
@@ -130,6 +133,8 @@ onMounted(async () => {
 		}
 	} catch (error) {
 		debugError(error);
+	} finally {
+		isLoadingProfile.value = false;
 	}
 });
 </script>

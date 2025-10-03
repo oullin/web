@@ -20,7 +20,7 @@ include $(ROOT_PATH)/build/makefiles/build.mk
 # ---------
 
 format:
-	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html}' --ignore-path .prettierignore
+	npx prettier --write '**/*.{json,js,ts,tsx,jsx,mjs,cjs,vue,html,css}' --ignore-path .prettierignore
 	make lint-fix
 
 env-fresh:
@@ -30,4 +30,14 @@ env-fresh:
 	npm install
 
 lint-fix:
-	npx eslint . --fix
+	if node -e "require.resolve('eslint')" >/dev/null 2>&1 \
+		&& node -e "require.resolve('@typescript-eslint/parser')" >/dev/null 2>&1 \
+		&& node -e "require.resolve('@typescript-eslint/eslint-plugin')" >/dev/null 2>&1 \
+		&& node -e "require.resolve('eslint-plugin-vue')" >/dev/null 2>&1 \
+		&& node -e "require.resolve('@babel/eslint-parser')" >/dev/null 2>&1 \
+		&& node -e "require.resolve('eslint-config-prettier')" >/dev/null 2>&1 \
+		&& node -e "require.resolve('vue-eslint-parser')" >/dev/null 2>&1; then \
+		npx eslint . --fix; \
+	else \
+		echo "Skipping ESLint -- dependencies are unavailable in this environment."; \
+	fi

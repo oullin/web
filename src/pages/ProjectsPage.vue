@@ -31,13 +31,12 @@
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-												<template v-if="isLoadingProjects">
-													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" />
+												<template v-if="isLoadingProjects || projects.length === 0">
+													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
 												</template>
-												<template v-else-if="projects.length > 0">
+												<template v-else>
 													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
 												</template>
-												<p v-else class="col-span-full text-sm text-slate-500 dark:text-slate-400">No projects are available at the moment. Please check back soon.</p>
 											</div>
 										</section>
 									</div>
@@ -49,7 +48,8 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSponsorPartial />
-								<WidgetSkillsPartial v-if="profile" :skills="profile.skills" />
+								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -71,6 +71,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
+import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
@@ -79,6 +80,7 @@ const apiStore = useApiStore();
 const isLoadingProjects = ref(true);
 const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
+const isLoadingProfile = ref(true);
 
 useSeo({
 	title: 'Projects',
@@ -99,21 +101,35 @@ useSeo({
 	],
 });
 
-onMounted(async () => {
+const loadProfile = async () => {
 	try {
-		const [userProfileResponse, projectsResponse] = await Promise.all([apiStore.getProfile(), apiStore.getProjects()]);
+		const response = await apiStore.getProfile();
 
-		if (userProfileResponse.data) {
-			profile.value = userProfileResponse.data;
+		if (response.data) {
+			profile.value = response.data;
 		}
+	} catch (error) {
+		debugError(error);
+	} finally {
+		isLoadingProfile.value = false;
+	}
+};
 
-		if (projectsResponse.data) {
-			projects.value = projectsResponse.data;
+const loadProjects = async () => {
+	try {
+		const response = await apiStore.getProjects();
+
+		if (response.data) {
+			projects.value = response.data;
 		}
 	} catch (error) {
 		debugError(error);
 	} finally {
 		isLoadingProjects.value = false;
 	}
+};
+
+onMounted(async () => {
+	await Promise.all([loadProfile(), loadProjects()]);
 });
 </script>

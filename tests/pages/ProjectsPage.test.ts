@@ -1,8 +1,10 @@
 import { mount, flushPromises } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ProjectsPage from '@pages/ProjectsPage.vue';
 import type { ProfileResponse, ProfileSkillResponse, ProjectsResponse } from '@api/response/index.ts';
+import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 
 const skills: ProfileSkillResponse[] = [
 	{
@@ -36,8 +38,16 @@ const projects: ProjectsResponse[] = [
 	},
 ];
 
-const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
-const getProjects = vi.fn<[], Promise<{ version: string; data: ProjectsResponse[] }>>(() => Promise.resolve({ version: '1.0.0', data: projects }));
+const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>();
+const getProjects = vi.fn<[], Promise<{ version: string; data: ProjectsResponse[] }>>();
+
+beforeEach(() => {
+	getProfile.mockReset();
+	getProjects.mockReset();
+
+	getProfile.mockResolvedValue({ data: profile });
+	getProjects.mockResolvedValue({ version: '1.0.0', data: projects });
+});
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getProjects }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
@@ -64,6 +74,32 @@ describe('ProjectsPage', () => {
 		expect(wrapper.text()).toContain(projects[0].title);
 	});
 
+	it('renders static skeletons when no projects are returned', async () => {
+		getProjects.mockResolvedValueOnce({ version: '1.0.0', data: [] });
+
+		const wrapper = mount(ProjectsPage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					WidgetSponsorPartial: true,
+					WidgetSkillsPartial: true,
+					FooterPartial: true,
+					ProjectCardPartial: true,
+				},
+			},
+		});
+
+		await flushPromises();
+		await nextTick();
+
+		const skeletons = wrapper.findAllComponents(ProjectCardSkeletonPartial);
+		expect(skeletons).toHaveLength(4);
+		skeletons.forEach((skeleton) => {
+			expect(skeleton.classes()).not.toContain('animate-pulse');
+		});
+	});
+
 	it('handles API errors', async () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
@@ -80,6 +116,7 @@ describe('ProjectsPage', () => {
 			},
 		});
 		await flushPromises();
+		await nextTick();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
 	});

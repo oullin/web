@@ -6,7 +6,7 @@
 		target="_blank"
 		rel="noopener noreferrer"
 	>
-		<div class="flex flex-col h-full">
+		<div class="project-card-content">
 			<div class="grow">
 				<div class="flex items-center justify-between space-x-2">
 					<div class="h-10 w-10 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-full mb-2">
