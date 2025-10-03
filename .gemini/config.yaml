@@ -1,13 +1,11 @@
-title: Gus SPA
-properties:
-    have_fun: false
-    code_review:
-        disable: false
-        comment_severity_threshold: CRITICAL
-        max_review_comments: -1
-        pull_request_opened:
-            help: false
-            summary: true
-            code_review: false
-            include_drafts: true
-    ignore_patterns: []
+have_fun: false
+code_review:
+    disable: false
+    comment_severity_threshold: HIGH
+    max_review_comments: -1
+    pull_request_opened:
+        help: false
+        summary: true
+        code_review: true
+        include_drafts: true
+ignore_patterns: []
