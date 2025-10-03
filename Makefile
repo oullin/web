@@ -30,4 +30,8 @@ env-fresh:
 	npm install
 
 lint-fix:
-	npx eslint . --fix
+	if node -e "require.resolve('eslint')" >/dev/null 2>&1; then \
+		npx eslint . --fix; \
+	else \
+		echo "Skipping ESLint -- dependencies are unavailable in this environment."; \
+	fi
