@@ -30,19 +30,15 @@
 										</div>
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
-                                                                                        <div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-                                                                                                <template v-if="isLoadingProjects || projects.length === 0">
-                                                                                                        <ProjectCardSkeletonPartial
-                                                                                                                v-for="index in 4"
-                                                                                                                :key="`projects-page-skeleton-${index}`"
-                                                                                                                :is-animated="isLoadingProjects"
-                                                                                                        />
-                                                                                                </template>
-                                                                                                <template v-else>
-                                                                                                        <ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-                                                                                                </template>
-                                                                                        </div>
-                                                                                </section>
+											<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+												<template v-if="isLoadingProjects || projects.length === 0">
+													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects" />
+												</template>
+												<template v-else>
+													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+												</template>
+											</div>
+										</section>
 									</div>
 								</section>
 							</div>
@@ -51,9 +47,9 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-                                                                <WidgetSponsorPartial />
-                                                                <WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
-                                                                <WidgetSkillsPartial v-else :skills="profile.skills" />
+								<WidgetSponsorPartial />
+								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
+								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -105,22 +101,35 @@ useSeo({
 	],
 });
 
-onMounted(async () => {
+const loadProfile = async () => {
 	try {
-		const [userProfileResponse, projectsResponse] = await Promise.all([apiStore.getProfile(), apiStore.getProjects()]);
+		const response = await apiStore.getProfile();
 
-		if (userProfileResponse.data) {
-			profile.value = userProfileResponse.data;
-		}
-
-		if (projectsResponse.data) {
-			projects.value = projectsResponse.data;
+		if (response.data) {
+			profile.value = response.data;
 		}
 	} catch (error) {
 		debugError(error);
-        } finally {
-                isLoadingProjects.value = false;
-                isLoadingProfile.value = false;
-        }
+	} finally {
+		isLoadingProfile.value = false;
+	}
+};
+
+const loadProjects = async () => {
+	try {
+		const response = await apiStore.getProjects();
+
+		if (response.data) {
+			projects.value = response.data;
+		}
+	} catch (error) {
+		debugError(error);
+	} finally {
+		isLoadingProjects.value = false;
+	}
+};
+
+onMounted(async () => {
+	await Promise.all([loadProfile(), loadProjects()]);
 });
 </script>
