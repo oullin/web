@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { reactive, ref, nextTick } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
@@ -91,11 +91,17 @@ describe('ArticlesListPartial', () => {
 	let resolveRefreshPosts: ((value: PostsCollectionResponse) => void) | undefined;
 
 	beforeEach(() => {
+		vi.useFakeTimers();
 		getPosts.mockReset();
 		getCategories.mockReset();
 		apiStoreMock.searchTerm = '';
 		getCategories.mockResolvedValue(categoriesCollection);
 		resolveRefreshPosts = undefined;
+	});
+
+	afterEach(() => {
+		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	const globalMountOptions = {
