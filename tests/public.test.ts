@@ -74,12 +74,13 @@ describe('public utilities', () => {
 			expect(getRandomInt(5, 10)).toBe(10);
 		});
 
-		it('returns a value within the specified range even when min is negative', () => {
+		it('correctly handles negative ranges', () => {
 			Math.random = vi.fn(() => 0.25);
-			const result = getRandomInt(-5, -2);
+			expect(getRandomInt(-5, -2)).toBe(-4);
+		});
 
-			expect(result).toBeGreaterThanOrEqual(-5);
-			expect(result).toBeLessThanOrEqual(-2);
+		it('throws when min is greater than max', () => {
+			expect(() => getRandomInt(5, 4)).toThrowError('min must be less than or equal to max');
 		});
 	});
 });
