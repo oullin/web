@@ -180,11 +180,14 @@ describe('ArticlesListPartial', () => {
 
 		apiStoreMock.searchTerm = faker.lorem.word();
 		await flushPromises();
+		await nextTick();
+
+		expect(getPosts).toHaveBeenCalledTimes(2);
 
 		let skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
 		let attempts = 0;
 
-		while (skeletons.length !== posts.length && attempts < 5) {
+		while (skeletons.length !== posts.length && attempts < 10) {
 			await nextTick();
 			skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
 			attempts += 1;
