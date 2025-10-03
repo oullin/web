@@ -1,6 +1,9 @@
 <template>
 	<section class="space-y-8">
-		<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Work Experience</h2>
+		<div class="flex flex-wrap items-center justify-between gap-4">
+			<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Work Experience</h2>
+			<BackToTopLink />
+		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
 			<li v-for="item in props.experience" :key="item.uuid" class="relative group">
@@ -40,6 +43,7 @@
 	</section>
 </template>
 <script setup lang="ts">
+import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ExperienceResponse } from '@api/response/index.ts';
 
 const props = defineProps<{

@@ -1,6 +1,9 @@
 <template>
 	<section class="space-y-8">
-		<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
+		<div class="flex flex-wrap items-center justify-between gap-4">
+			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
+			<BackToTopLink />
+		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
 			<li v-for="item in processedRecommendations" :key="item.uuid" class="relative group">
@@ -29,6 +32,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import DOMPurify from 'dompurify';
+import BackToTopLink from '@partials/BackToTopLink.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
