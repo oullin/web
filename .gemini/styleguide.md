@@ -26,7 +26,7 @@ src/
 ├── stores/                 # Pinia stores.
 ├── support/                # Application support libraries.
 ├── App.vue                 # Main vue compenent.
-└── dark-mode.ts
+└── dark-mode.ts            # Dark / Light mode composable.
 └── public.ts               # Shared utilities / logic.
 └── router.ts               # Application routes.
 └── main.ts                 # Application entry point.
