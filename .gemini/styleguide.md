@@ -20,13 +20,13 @@ A feature-based structure is recommended for scalability.
 
 ```bash
 src/
-├── images/                 # Static assets
-├── pages/
-├── partials/               # Partials for reusable components
-├── stores/                 # Pinia stores
-├── support/                # Share logic
-├── App.vue
+├── images/                 # Static assets.
+├── pages/                  # Web sections such as profile, resume, project, posts, and projects.
+├── partials/               # Partials for reusable components.
+├── stores/                 # Pinia stores.
+├── support/                # Share logic.
+├── App.vue                 # Main vue compenent.
 └── dark-mode.ts
-└── public.ts
-└── router.ts
-└── main.ts
+└── public.ts               # Shared logic.
+└── router.ts               # Application routes.
+└── main.ts                 # Application entry point.
