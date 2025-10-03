@@ -2,13 +2,7 @@
 	<section class="space-y-8">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Work Experience</h2>
-			<a
-				class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:border-slate-700/80 dark:text-slate-300 dark:hover:text-slate-100"
-				href="#resume-top"
-			>
-				<span aria-hidden="true">↑</span>
-				Back to top
-			</a>
+			<BackToTopLink />
 		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
@@ -49,6 +43,7 @@
 	</section>
 </template>
 <script setup lang="ts">
+import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ExperienceResponse } from '@api/response/index.ts';
 
 const props = defineProps<{
