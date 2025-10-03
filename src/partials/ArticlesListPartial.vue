@@ -116,6 +116,7 @@ onBeforeUnmount(() => {
 watch(
 	() => apiStore.searchTerm,
 	(newSearchTerm: string): void => {
+		debouncedFetchPosts.cancel();
 		filters.text = newSearchTerm.trim();
 		fetchPosts();
 	},
