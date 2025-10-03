@@ -22,7 +22,7 @@
 
 		<!-- Articles list -->
 		<div v-if="isLoading" aria-busy="true">
-			<ArticleItemSkeletonPartial v-for="skeleton in skeletonItems" :key="`article-skeleton-${skeleton}`" />
+			<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
 		</div>
 		<div v-else-if="items.length > 0">
 			<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
@@ -34,7 +34,7 @@
 import debounce from 'lodash/debounce';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
 import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/index.ts';
@@ -59,8 +59,6 @@ const filters = reactive<PostsFilters>({
 });
 
 let lastRequestId = 0;
-
-const skeletonItems = computed(() => Array.from({ length: skeletonCount.value }, (_, index) => index));
 
 const skeletonCountFor = (list: PostResponse[]) => (list.length > 0 ? list.length : DEFAULT_SKELETON_COUNT);
 
