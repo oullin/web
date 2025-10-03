@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { reactive, ref, nextTick } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
+import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
 import type { VueWrapper } from '@vue/test-utils';
 import type { PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsCollectionResponse, CategoryResponse, CategoriesCollectionResponse } from '@api/response/index.ts';
 
@@ -126,7 +127,7 @@ describe('ArticlesListPartial', () => {
 		},
 	};
 
-	const findSkeletons = (wrapper: VueWrapper) => wrapper.findAll('[data-testid="article-skeleton"]');
+	const findSkeletons = (wrapper: VueWrapper) => wrapper.findAllComponents({ name: ArticleItemSkeletonPartial.name ?? 'ArticleItemSkeletonPartial' });
 
 	it('renders skeletons while loading posts', async () => {
 		let resolvePosts: (value: PostsCollectionResponse) => void = () => {};
