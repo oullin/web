@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import ResumePage from '@pages/ResumePage.vue';
 import type { ProfileResponse, ProfileSkillResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
@@ -64,6 +64,10 @@ vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getExperienc
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('ResumePage', () => {
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+
 	it('fetches data on mount', async () => {
 		const wrapper = mount(ResumePage, {
 			global: {
@@ -85,6 +89,27 @@ describe('ResumePage', () => {
 		expect(getRecommendations).toHaveBeenCalled();
 		expect(getEducation).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('My resume');
+	});
+
+	it('renders skeleton while the resume data is loading', () => {
+		getProfile.mockReturnValueOnce(new Promise(() => {}));
+		getExperience.mockReturnValueOnce(new Promise(() => {}));
+		getRecommendations.mockReturnValueOnce(new Promise(() => {}));
+		getEducation.mockReturnValueOnce(new Promise(() => {}));
+
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					WidgetLangPartial: true,
+					WidgetSkillsPartial: true,
+				},
+			},
+		});
+
+		expect(wrapper.find('[data-testid="resume-page-skeleton"]').exists()).toBe(true);
 	});
 
 	it('handles fetch failures', async () => {

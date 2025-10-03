@@ -30,12 +30,15 @@
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<span id="education" class="block h-0" aria-hidden="true"></span>
-										<EducationPartial v-if="education" :education="education" />
-										<span id="experience" class="block h-0" aria-hidden="true"></span>
-										<ExperiencePartial v-if="experience" :experience="experience" />
-										<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
+										<ResumePageSkeletonPartial v-if="isLoadingProfile" />
+										<template v-else>
+											<span id="education" class="block h-0" aria-hidden="true"></span>
+											<EducationPartial v-if="education" :education="education" />
+											<span id="experience" class="block h-0" aria-hidden="true"></span>
+											<ExperiencePartial v-if="experience" :experience="experience" />
+											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
+											<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
+										</template>
 									</div>
 								</section>
 							</div>
@@ -68,6 +71,7 @@ import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
+import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
 
 import { ref, onMounted } from 'vue';
 import { useApiStore } from '@api/store.ts';

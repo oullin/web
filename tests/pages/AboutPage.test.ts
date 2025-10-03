@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import AboutPage from '@pages/AboutPage.vue';
 import type { ProfileResponse, ProfileSkillResponse } from '@api/response/index.ts';
 
@@ -28,6 +28,10 @@ vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('AboutPage', () => {
+	afterEach(() => {
+		vi.clearAllMocks();
+	});
+
 	it('shows formatted nickname', async () => {
 		const wrapper = mount(AboutPage, {
 			global: {
@@ -44,6 +48,24 @@ describe('AboutPage', () => {
 		const formatted = profile.nickname.charAt(0).toUpperCase() + profile.nickname.slice(1);
 		expect(getProfile).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain(formatted);
+	});
+
+	it('renders skeleton while loading the profile', () => {
+		getProfile.mockReturnValueOnce(new Promise(() => {}));
+
+		const wrapper = mount(AboutPage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					WidgetSocialPartial: true,
+					WidgetSkillsPartial: true,
+					FooterPartial: true,
+				},
+			},
+		});
+
+		expect(wrapper.find('[data-testid="about-connect-skeleton"]').exists()).toBe(true);
 	});
 
 	it('handles profile errors gracefully', async () => {
