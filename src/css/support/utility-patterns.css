@@ -64,7 +64,7 @@ input[type='search']::-webkit-search-results-decoration {
 .form-textarea,
 .form-multiselect,
 .form-select {
-	@apply bg-slate-100 dark:bg-slate-700 text-sm px-3 py-2 rounded-full focus:border-fuchsia-500 dark:border-slate-700 dark:focus:border-fuchsia-700 focus:ring-2 focus:ring-fuchsia-200 dark:focus:ring-0;
+	@apply bg-slate-100 dark:bg-slate-700 text-sm px-3 py-2 rounded-full focus:border-fuchsia-500 dark:border-slate-700 dark:focus:border-fuchsia-700 focus:ring-2 focus:ring-fuchsia-200 dark:focus:ring-2 dark:focus:ring-fuchsia-900/40;
 }
 
 .form-input,
