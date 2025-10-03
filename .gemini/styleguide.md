@@ -20,6 +20,8 @@ A feature-based structure is recommended for scalability.
 
 ```bash
 src/
+├── css/                    # Look and feel.
+├── fonts/                  # Customed fonts.
 ├── images/                 # Static assets.
 ├── pages/                  # Web sections such as profile, resume, project, posts, and projects.
 ├── partials/               # Partials for reusable components.
