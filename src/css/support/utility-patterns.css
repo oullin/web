@@ -97,6 +97,3 @@ input[type='search']::-webkit-search-results-decoration {
         /* Firefox */
 }
 
-.project-card-content {
-        @apply flex flex-col h-full min-h-[220px];
-}

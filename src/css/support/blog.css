@@ -159,6 +159,10 @@
     @apply border-slate-200 dark:border-slate-700;
 }
 
+.project-card-content {
+    @apply flex flex-col h-full min-h-[220px];
+}
+
 .post-markdown table {
     @apply w-full text-sm border border-slate-200 dark:border-slate-700;
     border-collapse: collapse;
