@@ -188,7 +188,7 @@ describe('ArticlesListPartial', () => {
 		await flushPromises();
 		await nextTick();
 
-		// Coalesced or duplicate triggers are acceptable—ensure a refresh was scheduled.
+		// Coalesced or duplicated triggers are OK; we only require that a refresh was scheduled.
 		expect(getPosts.mock.calls.length).toBeGreaterThan(initialGetPostsCalls);
 
 		let skeletons = wrapper.findAllComponents(ArticleItemSkeletonPartial);
