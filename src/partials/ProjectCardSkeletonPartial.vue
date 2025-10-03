@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-gradient-to-t dark:from-slate-800 dark:to-slate-800/30 p-5"
-		:class="[{ 'animate-pulse': props.isAnimated }, props.wrapperClass]"
-	>
+	<div class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-gradient-to-t dark:from-slate-800 dark:to-slate-800/30 p-5" :class="[animationClass, props.wrapperClass]">
 		<div class="project-card-content">
 			<div class="grow">
 				<div class="flex items-center justify-between space-x-2">
@@ -24,13 +21,12 @@
 </template>
 
 <script setup lang="ts">
-const props = withDefaults(
-	defineProps<{
-		wrapperClass?: string;
-		isAnimated?: boolean;
-	}>(),
-	{
-		isAnimated: true,
-	},
-);
+import { computed } from 'vue';
+
+const props = defineProps<{
+	wrapperClass?: string;
+	isAnimated?: boolean;
+}>();
+
+const animationClass = computed(() => ((props.isAnimated ?? true) ? 'animate-pulse' : null));
 </script>
