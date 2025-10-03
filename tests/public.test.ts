@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi, type SpyInstance } from 'vitest';
 import { image, date, getReadingTime, getRandomInt } from '@/public.ts';
 
 describe('public utilities', () => {
@@ -53,29 +53,28 @@ describe('public utilities', () => {
 	});
 
 	describe('getRandomInt', () => {
-		const originalRandom = Math.random;
+		let randomSpy: SpyInstance<[], number>;
 
 		beforeEach(() => {
-			vi.restoreAllMocks();
-			Math.random = originalRandom;
+			randomSpy = vi.spyOn(Math, 'random');
 		});
 
 		afterEach(() => {
-			Math.random = originalRandom;
+			randomSpy.mockRestore();
 		});
 
 		it('returns the lower bound when Math.random yields 0', () => {
-			Math.random = vi.fn(() => 0);
+			randomSpy.mockReturnValue(0);
 			expect(getRandomInt(5, 10)).toBe(5);
 		});
 
 		it('returns the upper bound when Math.random yields nearly 1', () => {
-			Math.random = vi.fn(() => 0.999999);
+			randomSpy.mockReturnValue(0.999999);
 			expect(getRandomInt(5, 10)).toBe(10);
 		});
 
 		it('correctly handles negative ranges', () => {
-			Math.random = vi.fn(() => 0.25);
+			randomSpy.mockReturnValue(0.25);
 			expect(getRandomInt(-5, -2)).toBe(-4);
 		});
 
