@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { reactive, ref, nextTick } from 'vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
@@ -88,21 +88,27 @@ vi.mock('@api/store.ts', () => ({
 	useApiStore: () => apiStoreMock,
 }));
 
+vi.mock('lodash/debounce', () => ({
+	default: (fn: (...args: unknown[]) => unknown) => {
+		const debounced = ((...args: unknown[]) => fn(...args)) as typeof fn & {
+			cancel: () => void;
+		};
+
+		debounced.cancel = () => {};
+
+		return debounced;
+	},
+}));
+
 describe('ArticlesListPartial', () => {
 	let resolveRefreshPosts: ((value: PostsCollectionResponse) => void) | undefined;
 
 	beforeEach(() => {
-		vi.useFakeTimers();
 		getPosts.mockReset();
 		getCategories.mockReset();
 		apiStoreMock.searchTerm = '';
 		getCategories.mockResolvedValue(categoriesCollection);
 		resolveRefreshPosts = undefined;
-	});
-
-	afterEach(() => {
-		vi.clearAllTimers();
-		vi.useRealTimers();
 	});
 
 	const globalMountOptions = {
