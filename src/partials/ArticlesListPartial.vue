@@ -128,8 +128,6 @@ onMounted(async () => {
 
 		if (categories.value.length > 0) {
 			filters.category = categories.value[0].slug;
-
-			await fetchPosts();
 		}
 	} catch (error) {
 		debugError(error);
