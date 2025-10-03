@@ -1,6 +1,15 @@
 <template>
 	<section class="space-y-8">
-		<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
+		<div class="flex flex-wrap items-center justify-between gap-4">
+			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
+			<a
+				class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:border-slate-700/80 dark:text-slate-300 dark:hover:text-slate-100"
+				href="#resume-top"
+			>
+				<span aria-hidden="true">↑</span>
+				Back to top
+			</a>
+		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
 			<li v-for="item in processedRecommendations" :key="item.uuid" class="relative group">

@@ -15,7 +15,7 @@
 							<div class="max-w-[700px]">
 								<section>
 									<!-- Page title -->
-									<h1 class="h1 font-aspekta mb-6">My resume</h1>
+									<h1 id="resume-top" class="h1 font-aspekta mb-6">My resume</h1>
 
 									<nav aria-label="Resume sections" class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12">
 										<a
