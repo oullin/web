@@ -78,15 +78,14 @@ const fetchPosts = async () => {
 		}
 
 		items.value = collection.data as PostResponse[];
-		skeletonCount.value = items.value.length > 0 ? items.value.length : DEFAULT_SKELETON_COUNT;
 	} catch (error) {
 		debugError(error);
 		if (requestId === lastRequestId) {
 			items.value = previousItems;
-			skeletonCount.value = items.value.length > 0 ? items.value.length : DEFAULT_SKELETON_COUNT;
 		}
 	} finally {
 		if (requestId === lastRequestId) {
+			skeletonCount.value = items.value.length > 0 ? items.value.length : DEFAULT_SKELETON_COUNT;
 			isLoading.value = false;
 		}
 	}
