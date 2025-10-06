@@ -1,7 +1,9 @@
 <template>
 	<article class="py-5 border-b border-slate-100 dark:border-slate-800" :class="animationClass" aria-hidden="true">
 		<div class="flex items-start">
-			<div class="relative block rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0"></div>
+			<div
+				class="relative block aspect-square w-20 h-20 sm:w-28 sm:h-28 mr-4 sm:mr-6 overflow-hidden rounded-lg bg-slate-200/80 dark:bg-slate-800/80 flex-shrink-0 shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
+			></div>
 			<div class="flex-1 space-y-3">
 				<div class="h-3 w-28 bg-slate-200 dark:bg-slate-700 rounded"></div>
 				<div class="h-5 w-3/4 bg-slate-200 dark:bg-slate-700 rounded"></div>
