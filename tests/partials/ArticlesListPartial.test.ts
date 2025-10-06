@@ -52,17 +52,23 @@ const createDeferred = <T>(): DeferredPromise<T> => {
 	return { promise, resolve, reject };
 };
 
-const { cancelMock, debounceMock } = vi.hoisted(() => {
-	const cancel = vi.fn();
-	const debounce = vi.fn((fn: (...args: unknown[]) => unknown) => {
+const { cancelMock, debounceMock, getApiStore, setApiStore } = vi.hoisted(() => {
+	let apiStore: any;
+	const cancelMock = vi.fn();
+	const debounceMock = vi.fn((fn: (...args: unknown[]) => unknown) => {
 		const debounced = (...args: unknown[]) => fn(...args);
-		(debounced as typeof debounced & { cancel: typeof cancel }).cancel = cancel;
+		(debounced as typeof debounced & { cancel: typeof cancelMock }).cancel = cancelMock;
 		return debounced;
 	});
-	return { cancelMock: cancel, debounceMock: debounce };
+	return {
+		cancelMock,
+		debounceMock,
+		getApiStore: () => apiStore,
+		setApiStore: (store: any) => {
+			apiStore = store;
+		},
+	};
 });
-
-let apiStore: any;
 
 vi.mock('lodash/debounce', () => ({
 	default: debounceMock,
@@ -73,7 +79,7 @@ vi.mock('@api/http-error.ts', () => ({
 }));
 
 vi.mock('@api/store.ts', () => ({
-	useApiStore: () => apiStore,
+	useApiStore: () => getApiStore(),
 }));
 
 vi.mock('@partials/ArticleItemPartial.vue', () => ({
@@ -97,7 +103,6 @@ describe('ArticlesListPartial', () => {
 
 	afterEach(() => {
 		vi.clearAllMocks();
-		apiStore = undefined;
 	});
 
 	const buildCategoriesResponse = (categories: CategoryResponse[]): CategoriesCollectionResponse => ({
@@ -123,11 +128,7 @@ describe('ArticlesListPartial', () => {
 		const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>().mockResolvedValue(buildCategoriesResponse(categories));
 		const getPosts = vi.fn<[PostsFilters], Promise<PostsCollectionResponse>>().mockResolvedValue(buildPostsResponse(posts));
 
-		apiStore = reactive({
-			searchTerm: '',
-			getCategories,
-			getPosts,
-		});
+		setApiStore(reactive({ searchTerm: '', getCategories, getPosts }));
 
 		const wrapper = mount(ArticlesListPartial);
 		await flushPromises();
@@ -157,18 +158,15 @@ describe('ArticlesListPartial', () => {
 		const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>().mockResolvedValue(buildCategoriesResponse(categories));
 		const getPosts = vi.fn<[PostsFilters], Promise<PostsCollectionResponse>>().mockResolvedValueOnce(buildPostsResponse(firstPosts)).mockReturnValueOnce(nextPostsDeferred.promise);
 
-		apiStore = reactive({
-			searchTerm: '',
-			getCategories,
-			getPosts,
-		});
+		setApiStore(reactive({ searchTerm: '', getCategories, getPosts }));
 
 		const wrapper = mount(ArticlesListPartial);
 		await flushPromises();
 
 		expect(wrapper.findAll('[data-testid="article-item"]')).toHaveLength(firstPosts.length);
 
-		apiStore.searchTerm = 'vue';
+		const store = getApiStore()!;
+		store.searchTerm = 'vue';
 		await flushPromises();
 
 		expect(cancelMock).toHaveBeenCalled();
@@ -189,11 +187,7 @@ describe('ArticlesListPartial', () => {
 		const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>().mockResolvedValue(buildCategoriesResponse(categories));
 		const getPosts = vi.fn<[PostsFilters], Promise<PostsCollectionResponse>>().mockResolvedValue(buildPostsResponse([]));
 
-		apiStore = reactive({
-			searchTerm: '',
-			getCategories,
-			getPosts,
-		});
+		setApiStore(reactive({ searchTerm: '', getCategories, getPosts }));
 
 		const wrapper = mount(ArticlesListPartial);
 		await flushPromises();
