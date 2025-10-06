@@ -35,13 +35,13 @@
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial v-if="education" :education="education" />
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
-											<ExperiencePartial v-if="experience" :experience="experience" />
+											<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-											<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
+											<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
 										</template>
 									</div>
 									<div class="flex justify-end pt-10">
-										<BackToTopLink />
+										<BackToTopLink target="#resume-top" />
 									</div>
 								</section>
 							</div>

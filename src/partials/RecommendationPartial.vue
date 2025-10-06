@@ -2,7 +2,7 @@
 	<section class="space-y-8">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
-			<BackToTopLink />
+			<BackToTopLink :target="backToTopTarget" />
 		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
@@ -37,9 +37,12 @@ import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
 
-const { recommendations } = defineProps<{
+const props = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
+	backToTopTarget: string;
 }>();
+
+const { recommendations, backToTopTarget } = props;
 
 const processedRecommendations = computed(() => {
 	return recommendations.map((item) => {
