@@ -3,7 +3,7 @@
 		<div class="flex items-start">
 			<router-link
 				v-lazy-link
-				class="relative block aspect-square w-20 h-20 sm:w-28 sm:h-28 mr-4 sm:mr-6 overflow-hidden rounded-lg bg-slate-200/80 dark:bg-slate-800/80 flex-shrink-0 cursor-pointer shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
+				class="relative block aspect-square w-20 sm:w-28 mr-4 sm:mr-6 overflow-hidden rounded-lg bg-slate-200/80 dark:bg-slate-800/80 flex-shrink-0 cursor-pointer shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
 				:class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
 				:to="{ name: 'PostDetail', params: { slug: item.slug } }"
 			>
