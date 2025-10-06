@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi } from 'vitest';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
-import CoverImageLoader from '@components/CoverImageLoader.vue';
+import CoverImageLoader from '@partials/CoverImageLoader.vue';
 import type { PostResponse } from '@api/response/index.ts';
 
 vi.mock('@/public.ts', () => ({
