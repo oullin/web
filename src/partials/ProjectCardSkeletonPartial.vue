@@ -8,14 +8,15 @@
 					</div>
 					<div class="h-5 w-20 rounded-full bg-slate-200 dark:bg-slate-700"></div>
 				</div>
-				<div class="h-5 bg-slate-200 dark:bg-slate-700 rounded mb-3 w-3/4"></div>
+				<div class="h-5 bg-slate-200 dark:bg-slate-700 rounded mb-1 w-3/4"></div>
 				<div class="space-y-2">
-					<div class="h-3 bg-slate-200 dark:bg-slate-700 rounded"></div>
-					<div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-5/6"></div>
-					<div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-2/3"></div>
+					<div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-full"></div>
+					<div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-11/12"></div>
 				</div>
 			</div>
-			<div class="mt-4 h-3 w-10 bg-slate-200 dark:bg-slate-700 rounded self-end"></div>
+			<div class="text-sky-500 dark:text-teal-500 flex justify-end">
+				<div class="h-3 w-3 rounded bg-slate-200 dark:bg-slate-700"></div>
+			</div>
 		</div>
 	</div>
 </template>
