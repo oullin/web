@@ -1,5 +1,5 @@
 <template>
-	<article class="py-5 border-b border-slate-100 dark:border-slate-800" :class="animationClass" aria-hidden="true" data-testid="article-skeleton">
+	<article class="py-5 border-b border-slate-100 dark:border-slate-800" :class="{ 'animate-pulse': props.isAnimated }" aria-hidden="true" data-testid="article-skeleton">
 		<div class="flex items-start">
 			<div
 				class="relative block aspect-square w-20 sm:w-28 mr-4 sm:mr-6 overflow-hidden rounded-lg bg-slate-200/80 dark:bg-slate-800/80 flex-shrink-0 shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
@@ -23,15 +23,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { withDefaults } from 'vue';
 
 defineOptions({
 	name: 'ArticleItemSkeletonPartial',
 });
 
-const props = defineProps<{
-	isAnimated?: boolean;
-}>();
-
-const animationClass = computed(() => ((props.isAnimated ?? true) ? 'animate-pulse' : null));
+const props = withDefaults(
+	defineProps<{
+		isAnimated?: boolean;
+	}>(),
+	{
+		isAnimated: true,
+	},
+);
 </script>
