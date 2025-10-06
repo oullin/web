@@ -17,45 +17,7 @@
 									<!-- Page title -->
 									<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
 
-									<div
-										class="relative mb-5 overflow-hidden rounded-2xl bg-slate-200/80 dark:bg-slate-800/80 shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70 aspect-[16/9]"
-										:class="isAboutImageError ? 'animate-none' : showAboutImageSkeleton ? 'animate-pulse' : 'animate-none'"
-									>
-										<img
-											v-if="!isAboutImageError"
-											class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-											:class="isAboutImageLoaded ? 'opacity-100' : 'opacity-0'"
-											:src="aboutPicture"
-											width="4032"
-											height="2268"
-											:alt="`Portrait of: ${formattedNickname}`"
-											decoding="async"
-											fetchpriority="high"
-											@load="handleAboutImageLoad"
-											@error="handleAboutImageError"
-										/>
-
-										<div v-if="showAboutImageSkeleton" class="absolute inset-0 flex items-center justify-center">
-											<svg
-												v-if="isAboutImageError"
-												class="w-10 h-10 text-slate-400 dark:text-slate-600"
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke-width="1.5"
-												stroke="currentColor"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-15Z"
-												/>
-												<path stroke-linecap="round" stroke-linejoin="round" d="m3 14.25 3.955-3.955a2.25 2.25 0 0 1 3.182 0L15 15.75" />
-												<path stroke-linecap="round" stroke-linejoin="round" d="m13.5 12 1.955-1.955a2.25 2.25 0 0 1 3.182 0L21 13.5" />
-												<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
-											</svg>
-										</div>
-									</div>
+									<CoverImageLoader class="mb-5 aspect-[16/9]" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" :width="4032" :height="2268" />
 
 									<!-- Page content -->
 									<div class="space-y-8 text-slate-500">
@@ -130,6 +92,7 @@ import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
+import CoverImageLoader from '@/components/CoverImageLoader.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
@@ -144,22 +107,6 @@ const isLoadingProfile = ref(true);
 const aboutPicture = computed<string>(() => {
 	return AboutPicture;
 });
-
-type ImageStatus = 'loading' | 'loaded' | 'error';
-
-const aboutImageStatus = ref<ImageStatus>('loading');
-
-const handleAboutImageLoad = () => {
-	aboutImageStatus.value = 'loaded';
-};
-
-const handleAboutImageError = () => {
-	aboutImageStatus.value = 'error';
-};
-
-const isAboutImageLoaded = computed(() => aboutImageStatus.value === 'loaded');
-const isAboutImageError = computed(() => aboutImageStatus.value === 'error');
-const showAboutImageSkeleton = computed(() => aboutImageStatus.value !== 'loaded');
 
 const formattedNickname = computed((): string => {
 	const str = nickname.value;

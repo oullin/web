@@ -95,44 +95,7 @@
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
-										<div
-											class="relative w-full aspect-[16/9] overflow-hidden rounded-2xl bg-slate-200/80 dark:bg-slate-800/80 shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
-											:class="isCoverImageError ? 'animate-none' : showCoverSkeleton ? 'animate-pulse' : 'animate-none'"
-										>
-											<img
-												v-if="post.cover_image_url && !isCoverImageError"
-												class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-												:class="isCoverImageLoaded ? 'opacity-100' : 'opacity-0'"
-												:src="post.cover_image_url"
-												width="692"
-												height="390"
-												:alt="post.title"
-												decoding="async"
-												fetchpriority="high"
-												@load="handleCoverImageLoad"
-												@error="handleCoverImageError"
-											/>
-											<div v-if="showCoverSkeleton" class="absolute inset-0 flex items-center justify-center">
-												<svg
-													v-if="isCoverImageError"
-													class="w-10 h-10 text-slate-400 dark:text-slate-600"
-													xmlns="http://www.w3.org/2000/svg"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke-width="1.5"
-													stroke="currentColor"
-												>
-													<path
-														stroke-linecap="round"
-														stroke-linejoin="round"
-														d="M3 4.5A1.5 1.5 0 0 1 4.5 3h15A1.5 1.5 0 0 1 21 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-15Z"
-													/>
-													<path stroke-linecap="round" stroke-linejoin="round" d="m3 14.25 3.955-3.955a2.25 2.25 0 0 1 3.182 0L15 15.75" />
-													<path stroke-linecap="round" stroke-linejoin="round" d="m13.5 12 1.955-1.955a2.25 2.25 0 0 1 3.182 0L21 13.5" />
-													<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 8.25h.008v.008H8.25z" />
-												</svg>
-											</div>
-										</div>
+										<CoverImageLoader class="w-full aspect-[16/9]" :src="post.cover_image_url ?? ''" :alt="post.title" :width="692" :height="390" />
 										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>
@@ -173,6 +136,7 @@ import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
+import CoverImageLoader from '@/components/CoverImageLoader.vue';
 
 // --- Component
 const route = useRoute();
@@ -182,22 +146,6 @@ const post = ref<PostResponse>();
 const isLoading = ref(true);
 const postContainer = ref<HTMLElement | null>(null);
 const slug = ref<string>(route.params.slug as string);
-
-type ImageStatus = 'loading' | 'loaded' | 'error';
-
-const coverImageStatus = ref<ImageStatus>('loading');
-
-const handleCoverImageLoad = () => {
-	coverImageStatus.value = 'loaded';
-};
-
-const handleCoverImageError = () => {
-	coverImageStatus.value = 'error';
-};
-
-const isCoverImageLoaded = computed(() => coverImageStatus.value === 'loaded');
-const isCoverImageError = computed(() => coverImageStatus.value === 'error');
-const showCoverSkeleton = computed(() => coverImageStatus.value !== 'loaded');
 
 useSeoFromPost(post);
 
@@ -275,16 +223,4 @@ onMounted(async () => {
 		isLoading.value = false;
 	}
 });
-
-watch(
-	() => post.value?.cover_image_url,
-	(newSrc) => {
-		if (!newSrc) {
-			coverImageStatus.value = 'error';
-			return;
-		}
-
-		coverImageStatus.value = 'loading';
-	},
-);
 </script>
