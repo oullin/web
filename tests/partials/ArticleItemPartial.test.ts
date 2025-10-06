@@ -48,7 +48,7 @@ describe('ArticleItemPartial', () => {
 		expect(coverLoader.props('alt')).toBe(item.title);
 	});
 
-	it('uses the placeholder cover when no image url is provided', () => {
+	it('relies on the cover loader placeholder when no image url is provided', () => {
 		const wrapper = mount(ArticleItemPartial, {
 			props: {
 				item: {
@@ -61,6 +61,10 @@ describe('ArticleItemPartial', () => {
 
 		const coverLoader = wrapper.findComponent(CoverImageLoader);
 		expect(coverLoader.exists()).toBe(true);
-		expect(coverLoader.props('src')).toContain('data:image/svg+xml');
+		expect(coverLoader.props('src')).toBeUndefined();
+
+		const placeholderImage = coverLoader.find('img');
+		expect(placeholderImage.exists()).toBe(true);
+		expect(placeholderImage.attributes('src')).toContain('data:image/svg+xml');
 	});
 });

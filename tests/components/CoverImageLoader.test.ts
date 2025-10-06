@@ -44,4 +44,22 @@ describe('CoverImageLoader', () => {
 		expect(wrapper.find('svg').exists()).toBe(true);
 		expect(wrapper.find('.absolute.inset-0.flex').exists()).toBe(true);
 	});
+
+	it('renders the built-in placeholder when no source is provided', () => {
+		const wrapper = mount(CoverImageLoader, {
+			props: {
+				alt: 'Placeholder image',
+			},
+		});
+
+		const container = wrapper.find('div.relative');
+		expect(container.classes()).not.toContain('animate-pulse');
+
+		const image = wrapper.find('img');
+		expect(image.exists()).toBe(true);
+		expect(image.attributes('src')).toContain('data:image/svg+xml');
+		expect(image.classes()).toContain('opacity-100');
+
+		expect(wrapper.find('.absolute.inset-0.flex').exists()).toBe(false);
+	});
 });

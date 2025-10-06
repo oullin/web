@@ -4,7 +4,7 @@
 			<router-link v-lazy-link class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
 				<CoverImageLoader
 					class="block aspect-square w-20 sm:w-28 overflow-hidden rounded-lg bg-slate-200/80 dark:bg-slate-800/80 shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
-					:src="item.cover_image_url ?? placeholderCoverImage"
+					:src="item.cover_image_url"
 					:alt="item.title"
 					:width="112"
 					:height="112"
@@ -70,7 +70,4 @@ import type { PostResponse } from '@api/response/index.ts';
 const props = defineProps<{
 	item: PostResponse;
 }>();
-
-const placeholderCoverImage =
-	'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="none"%3E%3Crect width="120" height="120" rx="24" fill="%23e5e7eb" /%3E%3C/svg%3E';
 </script>
