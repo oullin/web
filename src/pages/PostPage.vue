@@ -95,7 +95,7 @@
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
-										<img class="w-full" :src="post.cover_image_url" width="692" height="390" :alt="post.title" decoding="async" fetchpriority="high" />
+										<CoverImageLoader class="w-full aspect-[16/9]" :src="post.cover_image_url ?? ''" :alt="post.title" :width="692" :height="390" />
 										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>
@@ -136,6 +136,7 @@ import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
+import CoverImageLoader from '@/components/CoverImageLoader.vue';
 
 // --- Component
 const route = useRoute();
@@ -199,6 +200,15 @@ watch(htmlContent, async (newContent) => {
 	const blocks = container.querySelectorAll('pre code');
 	blocks.forEach((block) => {
 		highlight.highlightElement(block as HTMLElement);
+	});
+
+	const images = container.querySelectorAll('img');
+	images.forEach((image) => {
+		image.setAttribute('loading', 'lazy');
+		image.setAttribute('decoding', 'async');
+		if (!image.getAttribute('fetchpriority')) {
+			image.setAttribute('fetchpriority', 'low');
+		}
 	});
 });
 
