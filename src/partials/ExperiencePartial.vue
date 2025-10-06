@@ -43,6 +43,7 @@
 	</section>
 </template>
 <script setup lang="ts">
+import { toRefs } from 'vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ExperienceResponse } from '@api/response/index.ts';
 
@@ -51,5 +52,5 @@ const props = defineProps<{
 	backToTopTarget: string;
 }>();
 
-const { backToTopTarget } = props;
+const { backToTopTarget } = toRefs(props);
 </script>

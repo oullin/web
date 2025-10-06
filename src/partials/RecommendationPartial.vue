@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, toRefs } from 'vue';
 import DOMPurify from 'dompurify';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { image, date } from '@/public.ts';
@@ -42,10 +42,10 @@ const props = defineProps<{
 	backToTopTarget: string;
 }>();
 
-const { recommendations, backToTopTarget } = props;
+const { recommendations, backToTopTarget } = toRefs(props);
 
 const processedRecommendations = computed(() => {
-	return recommendations.map((item) => {
+	return recommendations.value.map((item) => {
 		const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.text));
 
 		return {
