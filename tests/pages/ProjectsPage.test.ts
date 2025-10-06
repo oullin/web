@@ -59,6 +59,7 @@ describe('ProjectsPage', () => {
 				stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
+					BackToTopLink: true,
 					WidgetSponsorPartial: true,
 					WidgetSkillsPartial: true,
 					FooterPartial: true,
@@ -82,6 +83,7 @@ describe('ProjectsPage', () => {
 				stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
+					BackToTopLink: true,
 					WidgetSponsorPartial: true,
 					WidgetSkillsPartial: true,
 					FooterPartial: true,
@@ -111,6 +113,7 @@ describe('ProjectsPage', () => {
 				stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
+					BackToTopLink: true,
 					WidgetSponsorPartial: true,
 					WidgetSkillsPartial: true,
 					FooterPartial: true,

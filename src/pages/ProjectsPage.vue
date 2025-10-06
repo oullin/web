@@ -15,7 +15,7 @@
 							<div class="max-w-[700px]">
 								<section>
 									<!-- Page title -->
-									<h1 class="h1 font-aspekta mb-12">Nice stuff I've built</h1>
+									<h1 id="projects-top" class="h1 font-aspekta mb-12">Nice stuff I've built</h1>
 
 									<!-- Page content -->
 									<div class="space-y-10">
@@ -58,6 +58,10 @@
 						</aside>
 					</div>
 
+					<div class="flex justify-end pt-10">
+						<BackToTopLink target="#projects-top" />
+					</div>
+
 					<FooterPartial />
 				</div>
 			</main>
@@ -76,6 +80,7 @@ import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
+import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
