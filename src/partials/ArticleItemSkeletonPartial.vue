@@ -33,5 +33,7 @@ const props = defineProps<{
 	isAnimated?: boolean;
 }>();
 
-const animationClass = computed(() => ((props.isAnimated ?? true) ? 'animate-pulse' : null));
+const animationClass = computed(() => ({
+	'animate-pulse': props.isAnimated ?? true,
+}));
 </script>
