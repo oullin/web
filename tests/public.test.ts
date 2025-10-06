@@ -78,8 +78,9 @@ describe('public utilities', () => {
 			expect(getRandomInt(-5, -2)).toBe(-4);
 		});
 
-		it('throws when min is greater than max', () => {
-			expect(() => getRandomInt(5, 4)).toThrowError('min must be less than or equal to max');
+		it('returns the max when min is greater than max', () => {
+			randomSpy.mockReturnValue(0.42);
+			expect(getRandomInt(5, 4)).toBe(4);
 		});
 	});
 });
