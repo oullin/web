@@ -40,6 +40,9 @@
 											<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
 										</template>
 									</div>
+									<div class="flex justify-end pt-10">
+										<BackToTopLink />
+									</div>
 								</section>
 							</div>
 						</div>
@@ -67,6 +70,7 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import EducationPartial from '@partials/EducationPartial.vue';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
+import BackToTopLink from '@partials/BackToTopLink.vue';
 import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
