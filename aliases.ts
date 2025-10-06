@@ -14,6 +14,7 @@ export const aliases: AliasOptions = [
 	{ find: '@fonts', replacement: path.resolve(__dirname, './src/fonts') },
 	{ find: '@images', replacement: path.resolve(__dirname, './src/images') },
 	{ find: '@public', replacement: path.resolve(__dirname, './src/public') },
+	{ find: '@components', replacement: path.resolve(__dirname, './src/components') },
 	{ find: '@partials', replacement: path.resolve(__dirname, './src/partials') },
 	{ find: '@stores', replacement: path.resolve(__dirname, './src/stores') },
 	{ find: '@api', replacement: path.resolve(__dirname, './src/stores/api') },
