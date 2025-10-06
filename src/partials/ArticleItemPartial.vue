@@ -3,7 +3,7 @@
 		<div class="flex items-start">
 			<router-link
 				v-lazy-link
-				class="relative block rounded-sm w-16 h-16 sm:w-[88px] sm:h-[88px] mr-6 overflow-hidden bg-slate-200 dark:bg-slate-800 flex-shrink-0 cursor-pointer"
+				class="relative block aspect-square w-20 h-20 sm:w-28 sm:h-28 mr-4 sm:mr-6 overflow-hidden rounded-lg bg-slate-200/80 dark:bg-slate-800/80 flex-shrink-0 cursor-pointer shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
 				:class="isImageError ? 'animate-none' : showSkeleton ? 'animate-pulse' : 'animate-none'"
 				:to="{ name: 'PostDetail', params: { slug: item.slug } }"
 			>
@@ -12,8 +12,8 @@
 					class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
 					:class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
 					:src="item.cover_image_url"
-					width="88"
-					height="88"
+					width="112"
+					height="112"
 					:alt="item.title"
 					decoding="async"
 					loading="lazy"
