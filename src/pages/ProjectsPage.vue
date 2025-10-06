@@ -58,7 +58,7 @@
 						</aside>
 					</div>
 
-					<div class="flex justify-end pt-10">
+					<div class="flex justify-end pt-10 mb-10">
 						<BackToTopLink target="#projects-top" />
 					</div>
 
