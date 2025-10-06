@@ -52,13 +52,17 @@ const createDeferred = <T>(): DeferredPromise<T> => {
 	return { promise, resolve, reject };
 };
 
-let apiStore: any;
-const cancelMock = vi.fn();
-const debounceMock = vi.fn((fn: (...args: unknown[]) => unknown) => {
-	const debounced = (...args: unknown[]) => fn(...args);
-	(debounced as typeof debounced & { cancel: typeof cancelMock }).cancel = cancelMock;
-	return debounced;
+const { cancelMock, debounceMock } = vi.hoisted(() => {
+	const cancel = vi.fn();
+	const debounce = vi.fn((fn: (...args: unknown[]) => unknown) => {
+		const debounced = (...args: unknown[]) => fn(...args);
+		(debounced as typeof debounced & { cancel: typeof cancel }).cancel = cancel;
+		return debounced;
+	});
+	return { cancelMock: cancel, debounceMock: debounce };
 });
+
+let apiStore: any;
 
 vi.mock('lodash/debounce', () => ({
 	default: debounceMock,
