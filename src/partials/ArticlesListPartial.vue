@@ -21,13 +21,15 @@
 		</ul>
 
 		<!-- Articles list -->
-		<div v-if="isLoading" aria-busy="true">
-			<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
+		<div class="min-h-[24rem]">
+			<div v-if="isLoading" aria-busy="true">
+				<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
+			</div>
+			<div v-else-if="items.length > 0">
+				<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
+			</div>
+			<p v-else class="text-slate-500 dark:text-slate-400 py-8">No articles found.</p>
 		</div>
-		<div v-else-if="items.length > 0">
-			<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
-		</div>
-		<p v-else class="text-slate-500 dark:text-slate-400 py-8">No articles found.</p>
 	</section>
 </template>
 

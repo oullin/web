@@ -1,10 +1,10 @@
 <template>
 	<div class="relative overflow-hidden rounded-2xl bg-slate-200/80 dark:bg-slate-800/80 shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70" :class="[animationClass]">
 		<img
-			v-if="!isError && hasSource"
+			v-if="!isError"
 			class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
 			:class="isLoaded ? 'opacity-100' : 'opacity-0'"
-			:src="src"
+			:src="resolvedSrc"
 			:alt="alt"
 			:width="width"
 			:height="height"
@@ -29,6 +29,9 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+
+const placeholderCoverImage =
+	'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="none"%3E%3Crect width="120" height="120" rx="24" fill="%23e5e7eb" /%3E%3C/svg%3E';
 
 const props = withDefaults(
 	defineProps<{
@@ -56,7 +59,13 @@ type ImageStatus = 'loading' | 'loaded' | 'error';
 
 const imageStatus = ref<ImageStatus>('loading');
 
-const hasSource = computed(() => Boolean(props.src));
+const resolvedSrc = computed(() => {
+	if (!props.src) {
+		return placeholderCoverImage;
+	}
+
+	return props.src;
+});
 
 const isLoaded = computed(() => imageStatus.value === 'loaded');
 const isError = computed(() => imageStatus.value === 'error');
@@ -84,7 +93,7 @@ watch(
 	() => props.src,
 	(newSrc, oldSrc) => {
 		if (!newSrc) {
-			imageStatus.value = 'error';
+			imageStatus.value = 'loaded';
 			return;
 		}
 
