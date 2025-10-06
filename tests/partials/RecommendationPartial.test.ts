@@ -29,7 +29,9 @@ describe('RecommendationPartial', () => {
 	];
 
 	it('sanitises and formats recommendation', () => {
-		const wrapper = mount(RecommendationPartial, { props: { recommendations: data } });
+		const wrapper = mount(RecommendationPartial, {
+			props: { recommendations: data, backToTopTarget: '#top' },
+		});
 		expect(renderMarkdown).toHaveBeenCalledWith('**great**');
 		expect(wrapper.html()).toContain('<strong>great</strong>');
 		expect(wrapper.text()).toContain('now');

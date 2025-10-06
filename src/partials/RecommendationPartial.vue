@@ -2,7 +2,7 @@
 	<section class="space-y-8">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
-			<BackToTopLink />
+			<BackToTopLink :target="backToTopTarget" />
 		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
@@ -30,19 +30,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, toRefs } from 'vue';
 import DOMPurify from 'dompurify';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
 
-const { recommendations } = defineProps<{
+const props = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
+	backToTopTarget: string;
 }>();
 
+const { recommendations, backToTopTarget } = toRefs(props);
+
 const processedRecommendations = computed(() => {
-	return recommendations.map((item) => {
+	return recommendations.value.map((item) => {
 		const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.text));
 
 		return {

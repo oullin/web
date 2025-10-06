@@ -22,7 +22,7 @@ const experience: ExperienceResponse[] = [
 
 describe('ExperiencePartial', () => {
 	it('renders each experience item', () => {
-		const wrapper = mount(ExperiencePartial, { props: { experience } });
+		const wrapper = mount(ExperiencePartial, { props: { experience, backToTopTarget: '#top' } });
 		const items = wrapper.findAll('li');
 		expect(items).toHaveLength(1);
 		expect(items[0].text()).toContain(experience[0].company);
