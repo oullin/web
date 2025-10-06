@@ -61,7 +61,7 @@ describe('ArticleItemPartial', () => {
 
 		const coverLoader = wrapper.findComponent(CoverImageLoader);
 		expect(coverLoader.exists()).toBe(true);
-		expect(coverLoader.props('src')).toBeUndefined();
+		expect(coverLoader.props('src')).toBe('');
 
 		const placeholderImage = coverLoader.find('img');
 		expect(placeholderImage.exists()).toBe(true);
