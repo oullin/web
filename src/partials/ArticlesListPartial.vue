@@ -101,6 +101,10 @@ const debouncedFetchPosts = debounce(
 	{ leading: true, trailing: true },
 );
 
+const debouncedSearch = debounce(() => {
+	fetchPosts();
+}, 300);
+
 watch(
 	() => filters.category,
 	() => {
@@ -110,15 +114,15 @@ watch(
 
 onBeforeUnmount(() => {
 	debouncedFetchPosts.cancel();
+	debouncedSearch.cancel();
 });
 
 // --- Search: filter post by the given search criteria.
 watch(
 	() => apiStore.searchTerm,
 	(newSearchTerm: string): void => {
-		debouncedFetchPosts.cancel();
 		filters.text = newSearchTerm.trim();
-		fetchPosts();
+		debouncedSearch();
 	},
 );
 

@@ -55,9 +55,56 @@ const createDeferred = <T>(): DeferredPromise<T> => {
 const { cancelMock, debounceMock, getApiStore, setApiStore } = vi.hoisted(() => {
 	let apiStore: any;
 	const cancelMock = vi.fn();
-	const debounceMock = vi.fn((fn: (...args: unknown[]) => unknown) => {
-		const debounced = (...args: unknown[]) => fn(...args);
-		(debounced as typeof debounced & { cancel: typeof cancelMock }).cancel = cancelMock;
+	const debounceMock = vi.fn((fn: (...args: unknown[]) => unknown, wait = 0, options: { leading?: boolean; trailing?: boolean } = {}) => {
+		let timeout: ReturnType<typeof setTimeout> | null = null;
+		let lastArgs: unknown[] = [];
+		let leadingInvoked = false;
+		let hasPendingTrailing = false;
+
+		const schedule = () => {
+			if (timeout) {
+				clearTimeout(timeout);
+			}
+
+			timeout = setTimeout(() => {
+				timeout = null;
+				if (options.leading) {
+					leadingInvoked = false;
+				}
+
+				if (options.trailing !== false && hasPendingTrailing) {
+					fn(...lastArgs);
+				}
+
+				hasPendingTrailing = false;
+			}, wait);
+		};
+
+		const debounced = (...args: unknown[]) => {
+			lastArgs = args;
+
+			const shouldCallLeading = options.leading && !leadingInvoked;
+			if (shouldCallLeading) {
+				fn(...args);
+				leadingInvoked = true;
+				hasPendingTrailing = false;
+			} else {
+				hasPendingTrailing = true;
+			}
+
+			schedule();
+		};
+
+		(debounced as typeof debounced & { cancel: () => void }).cancel = () => {
+			if (timeout) {
+				clearTimeout(timeout);
+				timeout = null;
+			}
+			leadingInvoked = false;
+			hasPendingTrailing = false;
+			cancelMock();
+		};
+
 		return debounced;
 	});
 	return {
@@ -103,6 +150,8 @@ describe('ArticlesListPartial', () => {
 
 	afterEach(() => {
 		vi.clearAllMocks();
+		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	const buildCategoriesResponse = (categories: CategoryResponse[]): CategoriesCollectionResponse => ({
@@ -150,6 +199,8 @@ describe('ArticlesListPartial', () => {
 	});
 
 	it('shows skeletons while loading new posts and updates results when the search term changes', async () => {
+		vi.useFakeTimers();
+
 		const categories = [createCategory(), createCategory()];
 		const firstPosts = [createPost(), createPost()];
 		const nextPostsDeferred = createDeferred<PostsCollectionResponse>();
@@ -169,7 +220,12 @@ describe('ArticlesListPartial', () => {
 		store.searchTerm = 'vue';
 		await flushPromises();
 
-		expect(cancelMock).toHaveBeenCalled();
+		expect(getPosts).toHaveBeenCalledTimes(1);
+		expect(wrapper.findAll('[data-testid="article-item"]')).toHaveLength(firstPosts.length);
+
+		vi.advanceTimersByTime(300);
+		await flushPromises();
+
 		expect(getPosts).toHaveBeenCalledTimes(2);
 		expect(wrapper.findAll('[data-testid="article-skeleton"]')).toHaveLength(firstPosts.length);
 		expect(wrapper.findAll('[data-testid="article-item"]')).toHaveLength(0);
