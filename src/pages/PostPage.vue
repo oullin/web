@@ -108,8 +108,7 @@
 												height="390"
 												:alt="post.title"
 												decoding="async"
-												loading="lazy"
-												fetchpriority="low"
+												fetchpriority="high"
 												@load="handleCoverImageLoad"
 												@error="handleCoverImageError"
 											/>
