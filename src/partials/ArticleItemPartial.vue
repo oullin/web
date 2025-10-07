@@ -3,7 +3,7 @@
 		<div class="flex items-start">
 			<router-link
 				v-lazy-link
-				class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer grayscale transition duration-300 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
+				class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer grayscale-[65%] transition duration-300 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
 				:to="{ name: 'PostDetail', params: { slug: item.slug } }"
 			>
 				<CoverImageLoader
