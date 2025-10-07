@@ -20,10 +20,12 @@
 				<div class="absolute inset-0 bg-slate-900/70" @click="closeDialog" />
 
 				<div
+					ref="dialogRef"
 					class="relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-xl bg-white p-6 shadow-xl dark:bg-slate-900"
 					role="dialog"
 					aria-modal="true"
 					aria-labelledby="oullin-dialog-title"
+					tabindex="-1"
 				>
 					<div class="flex items-start justify-between">
 						<h2 id="oullin-dialog-title" class="text-xl font-semibold text-slate-900 dark:text-white">What's Oullin?</h2>
@@ -69,17 +71,83 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
 
 const isDialogOpen = ref(false);
+const dialogRef = ref<HTMLDivElement | null>(null);
+let previousActiveElement: HTMLElement | null = null;
+let previousBodyOverflow = '';
+
+const focusableSelectors = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+
+const focusWithinDialog = async () => {
+	await nextTick();
+	const focusableElements = dialogRef.value?.querySelectorAll<HTMLElement>(focusableSelectors);
+
+	if (focusableElements && focusableElements.length > 0) {
+		focusableElements[0].focus();
+	} else {
+		dialogRef.value?.focus();
+	}
+};
 
 const openDialog = () => {
+	previousActiveElement = document.activeElement as HTMLElement;
 	isDialogOpen.value = true;
 };
 
 const closeDialog = () => {
 	isDialogOpen.value = false;
+	nextTick(() => {
+		previousActiveElement?.focus();
+		previousActiveElement = null;
+	});
 };
+
+const handleKeyDown = (event: KeyboardEvent) => {
+	if (!isDialogOpen.value) return;
+
+	if (event.key === 'Escape') {
+		event.preventDefault();
+		closeDialog();
+		return;
+	}
+
+	if (event.key === 'Tab') {
+		const focusableElements = dialogRef.value?.querySelectorAll<HTMLElement>(focusableSelectors);
+		if (!focusableElements || focusableElements.length === 0) return;
+
+		const firstElement = focusableElements[0];
+		const lastElement = focusableElements[focusableElements.length - 1];
+		const isShiftPressed = event.shiftKey;
+		const currentFocusedElement = document.activeElement as HTMLElement | null;
+
+		if (isShiftPressed && currentFocusedElement === firstElement) {
+			event.preventDefault();
+			lastElement.focus();
+		} else if (!isShiftPressed && currentFocusedElement === lastElement) {
+			event.preventDefault();
+			firstElement.focus();
+		}
+	}
+};
+
+watch(isDialogOpen, async (newValue) => {
+	if (newValue) {
+		document.addEventListener('keydown', handleKeyDown);
+		previousBodyOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		await focusWithinDialog();
+	} else {
+		document.removeEventListener('keydown', handleKeyDown);
+		document.body.style.overflow = previousBodyOverflow;
+	}
+});
+
+onBeforeUnmount(() => {
+	document.removeEventListener('keydown', handleKeyDown);
+	document.body.style.overflow = previousBodyOverflow;
+});
 </script>
 
 <style scoped>

@@ -5,6 +5,7 @@ import { nextTick } from 'vue';
 
 afterEach(() => {
 	document.body.innerHTML = '';
+	document.body.style.overflow = '';
 });
 
 describe('WidgetOullinPartial', () => {
@@ -29,6 +30,67 @@ describe('WidgetOullinPartial', () => {
 		await nextTick();
 
 		expect(document.body.textContent).not.toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
+		wrapper.unmount();
+	});
+
+	it('restores focus and body scroll when closing the dialog', async () => {
+		const wrapper = mount(WidgetOullinPartial, { attachTo: document.body });
+		const triggerButton = wrapper.get('button');
+
+		triggerButton.element.focus();
+		await triggerButton.trigger('click');
+		await nextTick();
+
+		expect(document.body.style.overflow).toBe('hidden');
+
+		const closeButton = document.querySelectorAll('button')[1];
+		if (!closeButton) throw new Error('Close button not found');
+
+		expect(document.activeElement).toBe(closeButton);
+
+		closeButton.click();
+		await nextTick();
+
+		expect(document.body.style.overflow).toBe('');
+		expect(document.activeElement).toBe(triggerButton.element);
+
+		wrapper.unmount();
+	});
+
+	it('closes when pressing the Escape key', async () => {
+		const wrapper = mount(WidgetOullinPartial, { attachTo: document.body });
+
+		await wrapper.get('button').trigger('click');
+		await nextTick();
+
+		expect(document.body.textContent).toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
+
+		const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+		document.dispatchEvent(escapeEvent);
+		await nextTick();
+
+		expect(document.body.textContent).not.toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
+
+		wrapper.unmount();
+	});
+
+	it('keeps focus within the dialog when tabbing', async () => {
+		const wrapper = mount(WidgetOullinPartial, { attachTo: document.body });
+
+		await wrapper.get('button').trigger('click');
+		await nextTick();
+
+		const closeButton = document.querySelectorAll('button')[1];
+		if (!closeButton) throw new Error('Close button not found');
+
+		closeButton.focus();
+
+		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+		expect(document.activeElement).toBe(closeButton);
+
+		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }));
+		expect(document.activeElement).toBe(closeButton);
+
 		wrapper.unmount();
 	});
 });
