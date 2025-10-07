@@ -90,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import Dialog from '@components/Dialog.vue';
+import Dialog from '@components/AccessibleDialog.vue';
 import { ref } from 'vue';
 
 const isDialogOpen = ref(false);
