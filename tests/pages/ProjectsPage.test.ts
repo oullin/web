@@ -108,7 +108,7 @@ describe('ProjectsPage', () => {
 	it('handles API errors', async () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
-		const wrapper = mount(ProjectsPage, {
+		const _wrapper = mount(ProjectsPage, {
 			global: {
 				stubs: {
 					SideNavPartial: true,

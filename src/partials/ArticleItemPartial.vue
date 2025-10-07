@@ -63,11 +63,11 @@
 </template>
 
 <script setup lang="ts">
-import CoverImageLoader from '@/partials/CoverImageLoader.vue';
+import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { date } from '@/public.ts';
 import type { PostResponse } from '@api/response/index.ts';
 
-const props = defineProps<{
+defineProps<{
 	item: PostResponse;
 }>();
 </script>

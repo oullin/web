@@ -52,7 +52,7 @@ describe('HomePage', () => {
 	it('handles profile load errors', async () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
-		const wrapper = mount(HomePage, {
+		const _wrapper = mount(HomePage, {
 			global: {
 				stubs: {
 					SideNavPartial: true,

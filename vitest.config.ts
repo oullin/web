@@ -18,7 +18,7 @@ export default defineConfig({
 			branches: 85,
 			statements: 90,
 			all: true,
-			include: ['src/stores/**/*.ts', 'src/partials/**/*.vue', 'src/pages/**/*.vue'],
+			include: ['src/stores/**/*.ts', 'src/partials/**/*.vue', 'src/pages/**/*.vue', 'src/components/**/*.vue'],
 		},
 	},
 });

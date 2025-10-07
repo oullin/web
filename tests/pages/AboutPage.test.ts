@@ -73,7 +73,7 @@ describe('AboutPage', () => {
 	it('handles profile errors gracefully', async () => {
 		const error = new Error('fail');
 		getProfile.mockRejectedValueOnce(error);
-		const wrapper = mount(AboutPage, {
+		const _wrapper = mount(AboutPage, {
 			global: {
 				stubs: {
 					SideNavPartial: true,

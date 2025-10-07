@@ -136,7 +136,7 @@ import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
-import CoverImageLoader from '@/partials/CoverImageLoader.vue';
+import CoverImageLoader from '@components/CoverImageLoader.vue';
 
 // --- Component
 const route = useRoute();

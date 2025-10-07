@@ -25,9 +25,14 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
+								<WidgetOullinPartial />
+								<template v-if="isLoadingProfile || !profile">
+									<WidgetSkillsSkeletonPartial />
+								</template>
+								<template v-else>
+									<WidgetSkillsPartial :skills="profile.skills" />
+								</template>
 								<WidgetSponsorPartial />
-								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
-								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
 						</aside>
 					</div>
@@ -50,6 +55,7 @@ import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
+import WidgetOullinPartial from '@partials/WidgetOullinPartial.vue';
 
 import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';

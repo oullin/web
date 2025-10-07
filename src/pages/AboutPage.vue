@@ -92,7 +92,7 @@ import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
-import CoverImageLoader from '@/partials/CoverImageLoader.vue';
+import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';

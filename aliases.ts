@@ -11,6 +11,7 @@ export const aliases: AliasOptions = [
 	{ find: '@', replacement: path.resolve(__dirname, './src') },
 	{ find: '@css', replacement: path.resolve(__dirname, './src/css') },
 	{ find: '@pages', replacement: path.resolve(__dirname, './src/pages') },
+	{ find: '@components', replacement: path.resolve(__dirname, './src/components') },
 	{ find: '@fonts', replacement: path.resolve(__dirname, './src/fonts') },
 	{ find: '@images', replacement: path.resolve(__dirname, './src/images') },
 	{ find: '@public', replacement: path.resolve(__dirname, './src/public') },
