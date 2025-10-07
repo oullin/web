@@ -68,7 +68,7 @@
 				living.
 			</p>
 			<p>
-				With this organisation’s name, whether it’s spelled oullin or ollin, or another fun variant. I am deliberately riffing on the Aztec Ollin to weave “movement,” transformation, and
+				With this brand’s name, whether it’s spelled oullin or ollin, or another fun variant. I am deliberately riffing on the Aztec Ollin to weave “movement,” transformation, and
 				mindful flow right into my identity. That little twist in spelling isn’t just for show; it’s a daily nudge to stay present, move with purpose, and welcome every change as part of my
 				shared journey.
 			</p>
