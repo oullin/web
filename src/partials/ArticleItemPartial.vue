@@ -68,7 +68,7 @@ import { date } from '@/public.ts';
 import type { PostResponse } from '@api/response/index.ts';
 
 const titleLinkClass =
-	'inline-flex relative hover:text-fuchsia-500 dark:hover:text-teal-500 group-hover:text-fuchsia-500 dark:group-hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 hover:before:scale-100 group-hover:before:scale-100 before:duration-150 before:ease-in-out';
+	'inline-flex relative group-hover:text-fuchsia-500 dark:group-hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 group-hover:before:scale-100 before:duration-150 before:ease-in-out';
 
 defineProps<{
 	item: PostResponse;
