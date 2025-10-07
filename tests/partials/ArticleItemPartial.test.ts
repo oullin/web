@@ -53,6 +53,18 @@ describe('ArticleItemPartial', () => {
 		const links = wrapper.findAll('a');
 		const imageLink = links[0];
 		expect(imageLink.classes()).toEqual(expect.arrayContaining(['grayscale', 'group-hover:grayscale-0', 'group-focus-within:grayscale-0']));
+
+		const titleLink = links[1];
+		expect(titleLink.classes()).toEqual(
+			expect.arrayContaining([
+				'hover:text-fuchsia-500',
+				'dark:hover:text-teal-500',
+				'group-hover:text-fuchsia-500',
+				'dark:group-hover:text-teal-500',
+				'hover:before:scale-100',
+				'group-hover:before:scale-100',
+			]),
+		);
 	});
 
 	it('relies on the cover loader placeholder when no image url is provided', () => {
