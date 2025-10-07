@@ -29,7 +29,7 @@
 		</button>
 	</div>
 
-	<DialogPartial
+	<Dialog
 		v-model="isDialogOpen"
 		aria-labelledby="oullin-dialog-title"
 		root-class="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -86,11 +86,11 @@
 				that powers this site and blog.
 			</p>
 		</div>
-	</DialogPartial>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
-import DialogPartial from '@/partials/DialogPartial.vue';
+import Dialog from '@components/Dialog.vue';
 import { ref } from 'vue';
 
 const isDialogOpen = ref(false);
