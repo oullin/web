@@ -24,6 +24,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 
+defineOptions({ name: 'AccessibleDialog' });
+
 const props = withDefaults(
 	defineProps<{
 		modelValue: boolean;

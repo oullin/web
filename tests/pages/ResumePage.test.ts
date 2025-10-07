@@ -121,7 +121,7 @@ describe('ResumePage', () => {
 	it('handles fetch failures', async () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
-		const wrapper = mount(ResumePage, {
+		const _wrapper = mount(ResumePage, {
 			global: {
 				stubs: {
 					SideNavPartial: true,
