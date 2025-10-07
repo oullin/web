@@ -79,6 +79,7 @@
 					class="font-medium text-fuchsia-600 underline transition hover:text-fuchsia-500 dark:text-teal-300 dark:hover:text-teal-200"
 					target="_blank"
 					rel="noopener noreferrer"
+					data-testid="oullin-dialog-oss-link"
 				>
 					Oullin open-source organisation
 				</a>

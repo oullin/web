@@ -78,12 +78,20 @@ describe('WidgetOullinPartial', () => {
 		await wrapper.get('[data-testid="oullin-dialog-trigger"]').trigger('click');
 		await nextTick();
 
-		const closeButton = new DOMWrapper(document.body).get('[data-testid="oullin-dialog-close-button"]');
+		const dialogWrapper = new DOMWrapper(document.body);
+		const closeButton = dialogWrapper.get('[data-testid="oullin-dialog-close-button"]');
+		const ossLink = dialogWrapper.get('[data-testid="oullin-dialog-oss-link"]');
 
 		closeButton.element.focus();
 
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+		expect(document.activeElement).toBe(ossLink.element);
+
+		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
 		expect(document.activeElement).toBe(closeButton.element);
+
+		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }));
+		expect(document.activeElement).toBe(ossLink.element);
 
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }));
 		expect(document.activeElement).toBe(closeButton.element);
