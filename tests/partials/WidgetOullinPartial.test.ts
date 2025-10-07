@@ -22,11 +22,10 @@ describe('WidgetOullinPartial', () => {
 
 		expect(document.body.textContent).toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
 
-		const closeButton = document.body.querySelector('button span.sr-only')?.closest('button') as HTMLButtonElement | null;
+		const closeButton = document.querySelectorAll('button')[1];
+		if (!closeButton) throw new Error('Close button not found');
 
-		expect(closeButton).not.toBeNull();
-
-		closeButton?.click();
+		closeButton.click();
 		await nextTick();
 
 		expect(document.body.textContent).not.toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
