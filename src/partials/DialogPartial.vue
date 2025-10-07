@@ -82,17 +82,26 @@ const handleKeyDown = (event: KeyboardEvent) => {
 		const focusableElements = dialogRef.value?.querySelectorAll<HTMLElement>(focusableSelectors);
 		if (!focusableElements || focusableElements.length === 0) return;
 
-		const firstElement = focusableElements[0];
-		const lastElement = focusableElements[focusableElements.length - 1];
+		const elements = Array.from(focusableElements);
 		const isShiftPressed = event.shiftKey;
 		const currentFocusedElement = document.activeElement as HTMLElement | null;
+		const currentIndex = elements.findIndex((element) => element === currentFocusedElement);
 
-		if (isShiftPressed && currentFocusedElement === firstElement) {
+		let nextIndex = currentIndex;
+
+		if (isShiftPressed) {
+			nextIndex = currentIndex <= 0 ? elements.length - 1 : currentIndex - 1;
+		} else {
+			nextIndex = currentIndex === -1 || currentIndex === elements.length - 1 ? 0 : currentIndex + 1;
+		}
+
+		const nextElement = elements[nextIndex];
+		if (nextElement && nextElement !== currentFocusedElement) {
 			event.preventDefault();
-			lastElement.focus();
-		} else if (!isShiftPressed && currentFocusedElement === lastElement) {
+			nextElement.focus();
+		} else if (nextElement) {
 			event.preventDefault();
-			firstElement.focus();
+			nextElement.focus();
 		}
 	}
 };
