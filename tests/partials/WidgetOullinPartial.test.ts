@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { DOMWrapper, mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 import WidgetOullinPartial from '@partials/WidgetOullinPartial.vue';
 import { nextTick } from 'vue';
@@ -23,10 +23,9 @@ describe('WidgetOullinPartial', () => {
 
 		expect(document.body.textContent).toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
 
-		const closeButton = document.querySelector('[data-testid="oullin-dialog-close-button"]') as HTMLButtonElement | null;
-		if (!closeButton) throw new Error('Close button not found');
+		const closeButton = new DOMWrapper(document.body).get('[data-testid="oullin-dialog-close-button"]');
 
-		closeButton.click();
+		await closeButton.trigger('click');
 		await nextTick();
 
 		expect(document.body.textContent).not.toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
@@ -43,12 +42,11 @@ describe('WidgetOullinPartial', () => {
 
 		expect(document.body.style.overflow).toBe('hidden');
 
-		const closeButton = document.querySelector('[data-testid="oullin-dialog-close-button"]') as HTMLButtonElement | null;
-		if (!closeButton) throw new Error('Close button not found');
+		const closeButton = new DOMWrapper(document.body).get('[data-testid="oullin-dialog-close-button"]');
 
-		expect(document.activeElement).toBe(closeButton);
+		expect(document.activeElement).toBe(closeButton.element);
 
-		closeButton.click();
+		await closeButton.trigger('click');
 		await nextTick();
 
 		expect(document.body.style.overflow).toBe('');
@@ -80,16 +78,15 @@ describe('WidgetOullinPartial', () => {
 		await wrapper.get('button').trigger('click');
 		await nextTick();
 
-		const closeButton = document.querySelector('[data-testid="oullin-dialog-close-button"]') as HTMLButtonElement | null;
-		if (!closeButton) throw new Error('Close button not found');
+		const closeButton = new DOMWrapper(document.body).get('[data-testid="oullin-dialog-close-button"]');
 
-		closeButton.focus();
+		closeButton.element.focus();
 
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
-		expect(document.activeElement).toBe(closeButton);
+		expect(document.activeElement).toBe(closeButton.element);
 
 		document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }));
-		expect(document.activeElement).toBe(closeButton);
+		expect(document.activeElement).toBe(closeButton.element);
 
 		wrapper.unmount();
 	});
