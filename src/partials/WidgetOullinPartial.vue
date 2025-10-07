@@ -1,7 +1,7 @@
 <template>
-	<div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 dark:shadow-none">
+	<div class="rounded-lg border border-slate-200 p-5 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30">
 		<div class="mb-4 flex gap-3">
-			<div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-fuchsia-500 shadow-sm dark:bg-slate-700/50 dark:text-teal-400">
+			<div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-fuchsia-500 dark:bg-slate-700/50 dark:text-teal-400">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7" aria-hidden="true">
 					<path
 						stroke-linecap="round"
@@ -55,7 +55,7 @@
 			</button>
 		</div>
 
-		<div class="mt-4 space-y-4 text-base leading-relaxed text-slate-700 dark:text-slate-200">
+		<div class="mt-4 space-y-4 text-sm leading-6 text-slate-700 dark:text-slate-200">
 			<p>
 				In Aztec tradition, Ollin means “movement” or “motion,” embodying transformation, heart, life, and the calendar’s purified spirit-day. But Ollin goes deeper—it speaks to the same
 				gentle momentum at the heart of Zen, where each breath, each step, is a flowing wave of presence.
