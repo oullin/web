@@ -19,7 +19,7 @@ describe('WidgetOullinPartial', () => {
 	it('opens and closes the dialog when interacting with the read more link', async () => {
 		const wrapper = mount(WidgetOullinPartial, { attachTo: document.body });
 
-		await wrapper.get('button').trigger('click');
+		await wrapper.get('[data-testid="oullin-dialog-trigger"]').trigger('click');
 
 		expect(document.body.textContent).toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
 
@@ -34,7 +34,7 @@ describe('WidgetOullinPartial', () => {
 
 	it('restores focus and body scroll when closing the dialog', async () => {
 		const wrapper = mount(WidgetOullinPartial, { attachTo: document.body });
-		const triggerButton = wrapper.get('button');
+		const triggerButton = wrapper.get('[data-testid="oullin-dialog-trigger"]');
 
 		triggerButton.element.focus();
 		await triggerButton.trigger('click');
@@ -58,7 +58,7 @@ describe('WidgetOullinPartial', () => {
 	it('closes when pressing the Escape key', async () => {
 		const wrapper = mount(WidgetOullinPartial, { attachTo: document.body });
 
-		await wrapper.get('button').trigger('click');
+		await wrapper.get('[data-testid="oullin-dialog-trigger"]').trigger('click');
 		await nextTick();
 
 		expect(document.body.textContent).toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
@@ -75,7 +75,7 @@ describe('WidgetOullinPartial', () => {
 	it('keeps focus within the dialog when tabbing', async () => {
 		const wrapper = mount(WidgetOullinPartial, { attachTo: document.body });
 
-		await wrapper.get('button').trigger('click');
+		await wrapper.get('[data-testid="oullin-dialog-trigger"]').trigger('click');
 		await nextTick();
 
 		const closeButton = new DOMWrapper(document.body).get('[data-testid="oullin-dialog-close-button"]');

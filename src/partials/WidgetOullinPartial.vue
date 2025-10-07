@@ -1,13 +1,32 @@
 <template>
 	<div class="rounded-lg border border-slate-200 p-5 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30">
-		<div class="font-aspekta text-sm font-[650] uppercase tracking-wide text-slate-500 dark:text-slate-400">What's Oullin?</div>
-		<p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+		<div class="mb-3 flex items-center space-x-3">
+			<svg class="size-6 text-sky-500 dark:text-sky-400 blog-side-nav-router-link-a-active" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+				<path
+					d="M6.46 8.29c3.22-3.54 8.94-4.12 12.98-1.26 3.02 2.11 3.8 5.5 1.7 8.38-1.67 2.29-4.83 3.08-7.35 1.86-1.49-.71-2.43-2.05-2.43-3.48 0-1.84 1.63-3.35 3.64-3.35 1.52 0 2.75.97 2.75 2.18 0 .88-.74 1.6-1.65 1.6-.6 0-1.12-.33-1.36-.82"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+				<path
+					d="M25.54 23.71c-3.22 3.54-8.94 4.12-12.98 1.26-3.02-2.11-3.8-5.5-1.7-8.38 1.67-2.29 4.83-3.08 7.35-1.86 1.49.71 2.43 2.05 2.43 3.48 0 1.84-1.63 3.35-3.64 3.35-1.52 0-2.75-.97-2.75-2.18 0-.88.74-1.6 1.65-1.6.6 0 1.12.33 1.36.82"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+			<span class="text-xs text-slate-400 dark:text-slate-500">What's Oullin?</span>
+		</div>
+		<p class="text-sm text-slate-600 dark:text-slate-300">
 			In Aztec tradition, Ollin means “movement” or “motion,” embodying transformation, heart, life, and the calendar’s purified spirit-day. But Ollin goes deeper—it speaks to the same gentle
 			momentum at the heart of Zen, where each breath, each step, is a flowing wave of presence.
 		</p>
 		<button
 			type="button"
-			class="mt-3 inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 dark:text-sky-400 dark:hover:text-sky-300"
+			class="mt-3 inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 dark:text-sky-400 dark:hover:text-sky-300 cursor-pointer"
+			data-testid="oullin-dialog-trigger"
 			@click="openDialog"
 		>
 			Read more
