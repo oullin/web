@@ -72,16 +72,16 @@
 				mindful flow right into my identity. That little twist in spelling isn’t just for show; it’s a daily nudge to stay present, move with purpose, and welcome every change as part of my
 				shared journey.
 			</p>
-			<p class="rounded-lg border border-fuchsia-200/70 bg-fuchsia-50/90 p-4 text-[0.95rem] font-semibold text-slate-700 dark:border-teal-500/40 dark:bg-teal-900/40 dark:text-teal-100">
+			<p class="rounded-lg border border-fuchsia-200/70 bg-fuchsia-50/90 p-4 text-[0.95rem] text-slate-700 dark:border-teal-500/40 dark:bg-teal-900/40 dark:text-teal-100">
 				Explore the
 				<a
 					href="https://github.com/oullin"
-					class="font-semibold text-fuchsia-600 underline decoration-2 decoration-fuchsia-400 transition hover:text-fuchsia-500 hover:decoration-fuchsia-500 dark:text-teal-300 dark:decoration-teal-400 dark:hover:text-teal-200 dark:hover:decoration-teal-200"
+					class="text-fuchsia-600 decoration-2 decoration-fuchsia-400 transition hover:text-fuchsia-500 hover:decoration-fuchsia-500 dark:text-teal-300 dark:decoration-teal-400 dark:hover:text-teal-200 dark:hover:decoration-teal-200"
 					target="_blank"
 					rel="noopener noreferrer"
 					data-testid="oullin-dialog-oss-link"
 				>
-					Oullin open-source organisation
+					<strong>Oullin</strong> open-source organisation
 				</a>
 				that powers this site and blog.
 			</p>
