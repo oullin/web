@@ -46,9 +46,9 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-	(event: 'update:modelValue', value: boolean): void;
-	(event: 'open'): void;
-	(event: 'close'): void;
+	(_event: 'update:modelValue', _value: boolean): void;
+	(_event: 'open'): void;
+	(_event: 'close'): void;
 }>();
 
 const dialogRef = ref<HTMLDivElement | null>(null);
