@@ -1,5 +1,5 @@
 <template>
-	<div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30">
+	<div class="rounded-lg border border-slate-200 p-5 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30">
 		<div class="font-aspekta text-sm font-[650] uppercase tracking-wide text-slate-500 dark:text-slate-400">What's Oullin?</div>
 		<p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
 			In Aztec tradition, Ollin means “movement” or “motion,” embodying transformation, heart, life, and the calendar’s purified spirit-day. But Ollin goes deeper—it speaks to the same gentle
