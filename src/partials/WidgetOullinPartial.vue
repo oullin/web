@@ -1,30 +1,27 @@
 <template>
-	<div class="rounded-lg border border-slate-200 p-5 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30">
-		<div class="mb-3 flex items-center space-x-3">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="size-7 text-sky-500 drop-shadow-sm dark:text-sky-400"
-				aria-hidden="true"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-				/>
-			</svg>
-			<span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-700 shadow-sm dark:bg-sky-500/20 dark:text-sky-300">What's Oullin?</span>
+	<div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 dark:shadow-none">
+		<div class="mb-4 flex gap-3">
+			<div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-fuchsia-500 shadow-sm dark:bg-slate-700/50 dark:text-teal-400">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7" aria-hidden="true">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+					/>
+				</svg>
+			</div>
+			<div>
+				<p class="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Movement &amp; Presence</p>
+				<h3 class="mt-1 font-aspekta text-lg font-[650] text-slate-800 dark:text-slate-100">What's <span class="blog-fun-title-word-highlight">Oullin?</span></h3>
+			</div>
 		</div>
-		<p class="text-sm text-slate-600 dark:text-slate-300">
+		<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
 			In Aztec tradition, Ollin means “movement” or “motion,” embodying transformation, heart, life, and the calendar’s purified spirit-day. But Ollin goes deeper—it speaks to the same gentle
 			momentum at the heart of Zen, where each breath, each step, is a flowing wave of presence.
 		</p>
 		<button
 			type="button"
-			class="mt-3 inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 dark:text-sky-400 dark:hover:text-sky-300 cursor-pointer"
+			class="mt-4 inline-flex items-center text-sm font-medium text-fuchsia-600 transition hover:text-fuchsia-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 dark:text-teal-400 dark:hover:text-teal-300 dark:focus-visible:ring-teal-500 cursor-pointer"
 			data-testid="oullin-dialog-trigger"
 			@click="openDialog"
 		>
@@ -36,14 +33,14 @@
 		v-model="isDialogOpen"
 		aria-labelledby="oullin-dialog-title"
 		root-class="fixed inset-0 z-50 flex items-center justify-center p-4"
-		overlay-class="absolute inset-0 bg-slate-900/70"
+		overlay-class="absolute inset-0 bg-slate-900/70 dark:bg-slate-950/80"
 		panel-class="relative max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-xl bg-white p-6 shadow-xl dark:bg-slate-900"
 	>
 		<div class="flex items-start justify-between">
 			<h2 id="oullin-dialog-title" class="text-xl font-semibold text-slate-900 dark:text-white">What's Oullin?</h2>
 			<button
 				type="button"
-				class="ml-4 text-slate-400 transition hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 dark:text-slate-500 dark:hover:text-slate-300"
+				class="ml-4 cursor-pointer text-slate-400 transition hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 dark:text-slate-500 dark:hover:text-slate-300 dark:focus-visible:ring-teal-500"
 				data-testid="oullin-dialog-close-button"
 				@click="closeDialog"
 			>
