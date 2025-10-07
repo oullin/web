@@ -139,6 +139,7 @@ watch(
 			emit('close');
 		}
 	},
+	{ immediate: true },
 );
 
 onBeforeUnmount(() => {
