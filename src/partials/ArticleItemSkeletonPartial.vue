@@ -23,8 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { withDefaults } from 'vue';
-
 defineOptions({
 	name: 'ArticleItemSkeletonPartial',
 });
