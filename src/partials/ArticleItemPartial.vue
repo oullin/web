@@ -1,7 +1,11 @@
 <template>
-	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800">
+	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800 group">
 		<div class="flex items-start">
-			<router-link v-lazy-link class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
+			<router-link
+				v-lazy-link
+				class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer grayscale transition duration-300 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0 hover:grayscale-0 focus-visible:grayscale-0"
+				:to="{ name: 'PostDetail', params: { slug: item.slug } }"
+			>
 				<CoverImageLoader
 					class="block aspect-square w-20 sm:w-28 overflow-hidden rounded-lg bg-slate-200/80 dark:bg-slate-800/80 shadow-sm ring-1 ring-inset ring-slate-200/70 dark:ring-slate-700/70"
 					:src="item.cover_image_url"
