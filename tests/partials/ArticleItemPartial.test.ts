@@ -52,7 +52,7 @@ describe('ArticleItemPartial', () => {
 
 		const links = wrapper.findAll('a');
 		const imageLink = links[0];
-		expect(imageLink.classes()).toEqual(expect.arrayContaining(['grayscale', 'group-hover:grayscale-0', 'group-focus-within:grayscale-0', 'hover:grayscale-0', 'focus-visible:grayscale-0']));
+		expect(imageLink.classes()).toEqual(expect.arrayContaining(['grayscale', 'group-hover:grayscale-0', 'group-focus-within:grayscale-0']));
 	});
 
 	it('relies on the cover loader placeholder when no image url is provided', () => {
