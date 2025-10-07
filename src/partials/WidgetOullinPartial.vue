@@ -68,9 +68,8 @@
 				living.
 			</p>
 			<p>
-				With this brand’s name, whether it’s spelled oullin or ollin, or another fun variant. I am deliberately riffing on the Aztec Ollin to weave “movement,” transformation, and
-				mindful flow right into my identity. That little twist in spelling isn’t just for show; it’s a daily nudge to stay present, move with purpose, and welcome every change as part of my
-				shared journey.
+				With this brand’s name, whether it’s spelled oullin or ollin, or another fun variant. I am deliberately riffing on the Aztec Ollin to weave “movement,” transformation, and mindful flow
+				right into my identity. That little twist in spelling isn’t just for show; it’s a daily nudge to stay present, move with purpose, and welcome every change as part of my shared journey.
 			</p>
 			<p class="rounded-lg border border-fuchsia-200/70 bg-fuchsia-50/90 p-4 text-[0.95rem] text-slate-700 dark:border-teal-500/40 dark:bg-teal-900/40 dark:text-teal-100">
 				Explore the
