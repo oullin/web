@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, describe, expect, it } from 'vitest';
 import WidgetOullinPartial from '@partials/WidgetOullinPartial.vue';
+import { nextTick } from 'vue';
 
 afterEach(() => {
 	document.body.innerHTML = '';
@@ -21,8 +22,12 @@ describe('WidgetOullinPartial', () => {
 
 		expect(document.body.textContent).toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
 
-		const closeButton = wrapper.findAll('button')[1];
-		await closeButton.trigger('click');
+		const closeButton = document.body.querySelector('button span.sr-only')?.closest('button') as HTMLButtonElement | null;
+
+		expect(closeButton).not.toBeNull();
+
+		closeButton?.click();
+		await nextTick();
 
 		expect(document.body.textContent).not.toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
 		wrapper.unmount();

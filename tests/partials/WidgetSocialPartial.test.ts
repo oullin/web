@@ -26,6 +26,6 @@ describe('WidgetSocialPartial', () => {
 		const anchors = wrapper.findAll('a');
 		expect(anchors).toHaveLength(1);
 		expect(anchors[0].attributes('href')).toBe(social[0].url);
-		expect(anchors[0].text()).toContain('Check out my code on GitHub');
+		expect(anchors[0].text()).toContain('Code & Projects');
 	});
 });
