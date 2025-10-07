@@ -32,6 +32,7 @@
 						<button
 							type="button"
 							class="ml-4 text-slate-400 transition hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 dark:text-slate-500 dark:hover:text-slate-300"
+							data-testid="oullin-dialog-close-button"
 							@click="closeDialog"
 						>
 							<span class="sr-only">Close</span>

@@ -23,7 +23,7 @@ describe('WidgetOullinPartial', () => {
 
 		expect(document.body.textContent).toContain('For anyone on the path of self-discovery, Ollin becomes a guide');
 
-		const closeButton = document.querySelectorAll('button')[1];
+		const closeButton = document.querySelector('[data-testid="oullin-dialog-close-button"]') as HTMLButtonElement | null;
 		if (!closeButton) throw new Error('Close button not found');
 
 		closeButton.click();
@@ -43,7 +43,7 @@ describe('WidgetOullinPartial', () => {
 
 		expect(document.body.style.overflow).toBe('hidden');
 
-		const closeButton = document.querySelectorAll('button')[1];
+		const closeButton = document.querySelector('[data-testid="oullin-dialog-close-button"]') as HTMLButtonElement | null;
 		if (!closeButton) throw new Error('Close button not found');
 
 		expect(document.activeElement).toBe(closeButton);
@@ -80,7 +80,7 @@ describe('WidgetOullinPartial', () => {
 		await wrapper.get('button').trigger('click');
 		await nextTick();
 
-		const closeButton = document.querySelectorAll('button')[1];
+		const closeButton = document.querySelector('[data-testid="oullin-dialog-close-button"]') as HTMLButtonElement | null;
 		if (!closeButton) throw new Error('Close button not found');
 
 		closeButton.focus();
