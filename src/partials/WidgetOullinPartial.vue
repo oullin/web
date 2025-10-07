@@ -72,6 +72,18 @@
 				mindful flow right into my identity. That little twist in spelling isn’t just for show; it’s a daily nudge to stay present, move with purpose, and welcome every change as part of my
 				shared journey.
 			</p>
+			<p>
+				Explore the
+				<a
+					href="https://github.com/oullin"
+					class="font-medium text-fuchsia-600 underline transition hover:text-fuchsia-500 dark:text-teal-300 dark:hover:text-teal-200"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Oullin open-source organisation
+				</a>
+				that powers this site and blog.
+			</p>
 		</div>
 	</DialogPartiak>
 </template>
