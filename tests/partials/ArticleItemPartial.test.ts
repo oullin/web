@@ -46,6 +46,13 @@ describe('ArticleItemPartial', () => {
 		expect(coverLoader.exists()).toBe(true);
 		expect(coverLoader.props('src')).toBe(item.cover_image_url);
 		expect(coverLoader.props('alt')).toBe(item.title);
+
+		const article = wrapper.find('article');
+		expect(article.classes()).toContain('group');
+
+		const links = wrapper.findAll('a');
+		const imageLink = links[0];
+		expect(imageLink.classes()).toEqual(expect.arrayContaining(['grayscale', 'group-hover:grayscale-0', 'group-focus-within:grayscale-0']));
 	});
 
 	it('relies on the cover loader placeholder when no image url is provided', () => {
