@@ -3,7 +3,7 @@
 		<div class="flex items-start">
 			<router-link
 				v-lazy-link
-				class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer grayscale transition duration-300 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
+				class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer grayscale-[65%] transition duration-300 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
 				:to="{ name: 'PostDetail', params: { slug: item.slug } }"
 			>
 				<CoverImageLoader
@@ -34,15 +34,11 @@
 				</CoverImageLoader>
 			</router-link>
 			<div>
-				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
+				<div class="text-xs text-fuchsia-500 uppercase mb-1 dark:text-teal-500">
 					{{ date().format(new Date(item.published_at)) }}
 				</div>
 				<h3 class="text-slate-700 font-aspekta text-lg font-[650] mb-1 dark:text-slate-300">
-					<router-link
-						v-lazy-link
-						class="inline-flex relative hover:text-fuchsia-500 dark:hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 hover:before:scale-100 before:duration-150 before:ease-in-out"
-						:to="{ name: 'PostDetail', params: { slug: item.slug } }"
-					>
+					<router-link v-lazy-link :class="titleLinkClass" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
 						{{ item.title }}
 					</router-link>
 				</h3>
@@ -70,6 +66,9 @@
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { date } from '@/public.ts';
 import type { PostResponse } from '@api/response/index.ts';
+
+const titleLinkClass =
+	'inline-flex relative group-hover:text-fuchsia-500 dark:group-hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 group-hover:before:scale-100 before:duration-150 before:ease-in-out';
 
 defineProps<{
 	item: PostResponse;

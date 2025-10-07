@@ -42,6 +42,9 @@ describe('ArticleItemPartial', () => {
 		expect(wrapper.text()).toContain('formatted');
 		expect(wrapper.text()).toContain(item.title);
 
+		const dateText = wrapper.find('.text-xs');
+		expect(dateText.classes()).toEqual(expect.arrayContaining(['text-fuchsia-500', 'dark:text-teal-500']));
+
 		const coverLoader = wrapper.findComponent(CoverImageLoader);
 		expect(coverLoader.exists()).toBe(true);
 		expect(coverLoader.props('src')).toBe(item.cover_image_url);
@@ -52,7 +55,10 @@ describe('ArticleItemPartial', () => {
 
 		const links = wrapper.findAll('a');
 		const imageLink = links[0];
-		expect(imageLink.classes()).toEqual(expect.arrayContaining(['grayscale', 'group-hover:grayscale-0', 'group-focus-within:grayscale-0']));
+		expect(imageLink.classes()).toEqual(expect.arrayContaining(['grayscale-[65%]', 'group-hover:grayscale-0', 'group-focus-within:grayscale-0']));
+
+		const titleLink = links[1];
+		expect(titleLink.classes()).toEqual(expect.arrayContaining(['group-hover:text-fuchsia-500', 'dark:group-hover:text-teal-500', 'group-hover:before:scale-100']));
 	});
 
 	it('relies on the cover loader placeholder when no image url is provided', () => {
