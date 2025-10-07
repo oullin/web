@@ -43,9 +43,9 @@
 					</router-link>
 				</h3>
 				<div class="flex">
-					<div class="grow text-sm text-slate-500 dark:text-slate-600">
+					<router-link v-lazy-link class="grow text-sm text-slate-500 dark:text-slate-600" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
 						{{ item.excerpt }}
-					</div>
+					</router-link>
 					<router-link
 						v-lazy-link
 						class="hidden lg:flex shrink-0 text-fuchsia-500 dark:text-teal-500 items-center justify-center w-12 group"
