@@ -29,7 +29,7 @@
 		</button>
 	</div>
 
-	<AccessibleDialog
+	<DialogPartiak
 		v-model="isDialogOpen"
 		aria-labelledby="oullin-dialog-title"
 		root-class="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -73,11 +73,11 @@
 				shared journey.
 			</p>
 		</div>
-	</AccessibleDialog>
+	</DialogPartiak>
 </template>
 
 <script setup lang="ts">
-import AccessibleDialog from '@/components/AccessibleDialog.vue';
+import DialogPartiak from '@/partials/DialogPartiak.vue';
 import { ref } from 'vue';
 
 const isDialogOpen = ref(false);

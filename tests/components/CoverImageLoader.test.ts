@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import CoverImageLoader from '@/partials/CoverImageLoader.vue';
+import CoverImageLoader from '@/partials/CoverImageLoaderPartial.vue';
 
 describe('CoverImageLoader', () => {
 	it('shows skeleton until the image loads', async () => {

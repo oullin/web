@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import CoverImageLoader from '@/partials/CoverImageLoader.vue';
+import CoverImageLoader from '@/partials/CoverImageLoaderPartial.vue';
 import { date } from '@/public.ts';
 import type { PostResponse } from '@api/response/index.ts';
 
