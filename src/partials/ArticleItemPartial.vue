@@ -34,7 +34,7 @@
 				</CoverImageLoader>
 			</router-link>
 			<div>
-				<div class="text-xs text-slate-700 uppercase mb-1 dark:text-slate-500">
+				<div class="text-xs text-fuchsia-500 uppercase mb-1 dark:text-teal-500">
 					{{ date().format(new Date(item.published_at)) }}
 				</div>
 				<h3 class="text-slate-700 font-aspekta text-lg font-[650] mb-1 dark:text-slate-300">

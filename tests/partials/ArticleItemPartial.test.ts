@@ -42,6 +42,9 @@ describe('ArticleItemPartial', () => {
 		expect(wrapper.text()).toContain('formatted');
 		expect(wrapper.text()).toContain(item.title);
 
+		const dateText = wrapper.find('.text-xs');
+		expect(dateText.classes()).toEqual(expect.arrayContaining(['text-fuchsia-500', 'dark:text-teal-500']));
+
 		const coverLoader = wrapper.findComponent(CoverImageLoader);
 		expect(coverLoader.exists()).toBe(true);
 		expect(coverLoader.props('src')).toBe(item.cover_image_url);
