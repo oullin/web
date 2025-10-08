@@ -1,11 +1,5 @@
 const IMAGES_DIR = 'images';
 
-const RESUME_SECTION_MIN_HEIGHTS = Object.freeze({
-	education: { base: 26, lg: 28 },
-	experience: { base: 34, lg: 36 },
-	recommendations: { base: 30, lg: 32 },
-} as const);
-
 export function image(filename: string): string {
 	return `/${IMAGES_DIR}/${filename}`;
 }
@@ -55,8 +49,4 @@ export function getRandomInt(min: number, max: number): number {
 	}
 
 	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-export function getResumeSectionMinHeights() {
-	return RESUME_SECTION_MIN_HEIGHTS;
 }

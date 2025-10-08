@@ -87,7 +87,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
-import { getResumeSectionMinHeights } from '@/public';
+import { getResumeSectionMinHeights } from '@/support/heights';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
