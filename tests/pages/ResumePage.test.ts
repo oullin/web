@@ -148,5 +148,13 @@ describe('ResumePage', () => {
 		expect(debugError).toHaveBeenCalledWith(error);
 		const skeleton = _wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
+		const skeletonWrapper = skeleton.element.parentElement as HTMLElement | null;
+		if (!skeletonWrapper) {
+			throw new Error('Skeleton wrapper not found');
+		}
+		const heightClasses = Heights.resumeSectionsTotalHeight().split(' ');
+		heightClasses.forEach((className) => {
+			expect(skeletonWrapper.classList.contains(className)).toBe(true);
+		});
 	});
 });
