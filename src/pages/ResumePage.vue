@@ -87,7 +87,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
-import { getResumeSectionMinHeights } from '@/support/heights';
+import { Heights } from '@/support/heights';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
@@ -95,18 +95,9 @@ const navigationItems = [
 	{ href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
-const resumeSectionMinHeights = getResumeSectionMinHeights();
-
-const resumeSectionHeights = {
-	education: `min-h-[${resumeSectionMinHeights.education.base}rem] lg:min-h-[${resumeSectionMinHeights.education.lg}rem]`,
-	experience: `min-h-[${resumeSectionMinHeights.experience.base}rem] lg:min-h-[${resumeSectionMinHeights.experience.lg}rem]`,
-	recommendations: `min-h-[${resumeSectionMinHeights.recommendations.base}rem] lg:min-h-[${resumeSectionMinHeights.recommendations.lg}rem]`,
-} as const;
-
-const RESUME_SECTION_STACK_GAP_REM = 3;
-const resumeSectionsTotalHeight = `min-h-[${
-	resumeSectionMinHeights.education.base + resumeSectionMinHeights.experience.base + resumeSectionMinHeights.recommendations.base + RESUME_SECTION_STACK_GAP_REM * 2
-}rem] lg:min-h-[${resumeSectionMinHeights.education.lg + resumeSectionMinHeights.experience.lg + resumeSectionMinHeights.recommendations.lg + RESUME_SECTION_STACK_GAP_REM * 2}rem]` as const;
+const resumeSectionMinHeights = Heights.resumeSectionMinHeights();
+const resumeSectionHeights = Heights.resumeSectionHeights();
+const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
