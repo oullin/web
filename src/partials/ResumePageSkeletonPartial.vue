@@ -1,5 +1,5 @@
 <template>
-	<div data-testid="resume-page-skeleton" class="space-y-12 animate-pulse" aria-hidden="true">
+	<div data-testid="resume-page-skeleton" class="space-y-12 animate-pulse" :aria-hidden="showRefreshButton ? 'false' : 'true'">
 		<section class="space-y-8">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Education</h2>
 			<ul class="space-y-8">
@@ -75,5 +75,20 @@
 				</li>
 			</ul>
 		</section>
+		<div v-if="showRefreshButton" class="flex justify-center pt-4">
+			<button type="button" class="btn bg-fuchsia-500 hover:bg-fuchsia-600 text-white shadow-sm" @click="emit('retry')">Refresh page</button>
+		</div>
 	</div>
 </template>
+
+<script setup lang="ts">
+import { toRef, withDefaults } from 'vue';
+
+const props = withDefaults(defineProps<{ showRefreshButton?: boolean }>(), {
+	showRefreshButton: false,
+});
+
+const emit = defineEmits<{ (event: 'retry'): void }>();
+
+const showRefreshButton = toRef(props, 'showRefreshButton');
+</script>

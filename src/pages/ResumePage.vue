@@ -29,21 +29,24 @@
 										</a>
 									</nav>
 									<!-- Page content -->
-									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<ResumePageSkeletonPartial v-if="isLoadingProfile" :class="resumeSectionsTotalHeight" />
-										<template v-else>
-											<span id="education" class="block h-0" aria-hidden="true"></span>
-											<EducationPartial v-if="education" :education="education" :class="resumeSectionHeights.education" />
-											<span id="experience" class="block h-0" aria-hidden="true"></span>
-											<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" :class="resumeSectionHeights.experience" />
-											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-											<RecommendationPartial
-												v-if="recommendations"
-												:recommendations="recommendations"
-												back-to-top-target="#resume-top"
-												:class="resumeSectionHeights.recommendations"
-											/>
-										</template>
+									<div class="text-slate-500 dark:text-slate-400">
+										<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
+											<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
+										</div>
+										<div v-else class="space-y-12">
+											<div :class="resumeSectionHeights.education">
+												<span id="education" class="block h-0" aria-hidden="true"></span>
+												<EducationPartial v-if="education" :education="education" />
+											</div>
+											<div :class="resumeSectionHeights.experience">
+												<span id="experience" class="block h-0" aria-hidden="true"></span>
+												<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
+											</div>
+											<div :class="resumeSectionHeights.recommendations">
+												<span id="recommendations" class="block h-0" aria-hidden="true"></span>
+												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+											</div>
+										</div>
 									</div>
 									<div class="flex justify-end pt-10">
 										<BackToTopLink target="#resume-top" />
@@ -82,7 +85,7 @@ import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.v
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
@@ -102,6 +105,8 @@ const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const isLoadingProfile = ref(true);
+const hasProfileError = ref(false);
+const shouldShowSkeleton = computed(() => isLoadingProfile.value || hasProfileError.value);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
@@ -151,8 +156,15 @@ onMounted(async () => {
 		}
 	} catch (error) {
 		debugError(error);
+		hasProfileError.value = true;
 	} finally {
 		isLoadingProfile.value = false;
 	}
 });
+
+const refreshResumePage = () => {
+	if (typeof window !== 'undefined') {
+		window.location.reload();
+	}
+};
 </script>

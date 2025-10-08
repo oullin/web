@@ -116,15 +116,24 @@ describe('ResumePage', () => {
 
 		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
+		expect(skeleton.attributes('aria-hidden')).toBe('true');
+		expect(skeleton.find('button').exists()).toBe(false);
+		const skeletonWrapper = skeleton.element.parentElement as HTMLElement | null;
+		if (!skeletonWrapper) {
+			throw new Error('Skeleton wrapper not found');
+		}
 		const heightClasses = Heights.resumeSectionsTotalHeight().split(' ');
 		heightClasses.forEach((className) => {
-			expect(skeleton.classes()).toContain(className);
+			expect(skeletonWrapper.classList.contains(className)).toBe(true);
 		});
 	});
 
 	it('handles fetch failures', async () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
+		const reloadSpy = vi.fn();
+		const locationGetSpy = vi.spyOn(window, 'location', 'get');
+		locationGetSpy.mockReturnValue({ reload: reloadSpy } as Location);
 		const _wrapper = mount(ResumePage, {
 			global: {
 				stubs: {
@@ -142,5 +151,21 @@ describe('ResumePage', () => {
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
+		const skeleton = _wrapper.find('[data-testid="resume-page-skeleton"]');
+		expect(skeleton.exists()).toBe(true);
+		expect(skeleton.attributes('aria-hidden')).toBe('false');
+		const refreshButton = skeleton.get('button');
+		expect(refreshButton.text()).toBe('Refresh page');
+		const skeletonWrapper = skeleton.element.parentElement as HTMLElement | null;
+		if (!skeletonWrapper) {
+			throw new Error('Skeleton wrapper not found');
+		}
+		const heightClasses = Heights.resumeSectionsTotalHeight().split(' ');
+		heightClasses.forEach((className) => {
+			expect(skeletonWrapper.classList.contains(className)).toBe(true);
+		});
+		await refreshButton.trigger('click');
+		expect(reloadSpy).toHaveBeenCalled();
+		locationGetSpy.mockRestore();
 	});
 });
