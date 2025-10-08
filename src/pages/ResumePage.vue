@@ -30,7 +30,7 @@
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<ResumePageSkeletonPartial v-if="isLoadingProfile" class="min-h-[25rem]" />
+										<ResumePageSkeletonPartial v-if="isLoadingProfile" :class="resumeSectionsTotalHeight" />
 										<template v-else>
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial v-if="education" :education="education" :class="resumeSectionHeights.education" />
@@ -94,11 +94,22 @@ const navigationItems = [
 	{ href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
-const resumeSectionHeights = {
-	education: 'min-h-[26rem] lg:min-h-[28rem]',
-	experience: 'min-h-[34rem] lg:min-h-[36rem]',
-	recommendations: 'min-h-[30rem] lg:min-h-[32rem]',
+const resumeSectionMinHeights = {
+	education: { base: 26, lg: 28 },
+	experience: { base: 34, lg: 36 },
+	recommendations: { base: 30, lg: 32 },
 } as const;
+
+const resumeSectionHeights = {
+	education: `min-h-[${resumeSectionMinHeights.education.base}rem] lg:min-h-[${resumeSectionMinHeights.education.lg}rem]`,
+	experience: `min-h-[${resumeSectionMinHeights.experience.base}rem] lg:min-h-[${resumeSectionMinHeights.experience.lg}rem]`,
+	recommendations: `min-h-[${resumeSectionMinHeights.recommendations.base}rem] lg:min-h-[${resumeSectionMinHeights.recommendations.lg}rem]`,
+} as const;
+
+const RESUME_SECTION_STACK_GAP_REM = 3;
+const resumeSectionsTotalHeight = `min-h-[${
+	resumeSectionMinHeights.education.base + resumeSectionMinHeights.experience.base + resumeSectionMinHeights.recommendations.base + RESUME_SECTION_STACK_GAP_REM * 2
+}rem] lg:min-h-[${resumeSectionMinHeights.education.lg + resumeSectionMinHeights.experience.lg + resumeSectionMinHeights.recommendations.lg + RESUME_SECTION_STACK_GAP_REM * 2}rem]` as const;
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
