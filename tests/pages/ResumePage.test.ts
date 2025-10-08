@@ -116,9 +116,13 @@ describe('ResumePage', () => {
 
 		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
+		const skeletonWrapper = skeleton.element.parentElement as HTMLElement | null;
+		if (!skeletonWrapper) {
+			throw new Error('Skeleton wrapper not found');
+		}
 		const heightClasses = Heights.resumeSectionsTotalHeight().split(' ');
 		heightClasses.forEach((className) => {
-			expect(skeleton.classes()).toContain(className);
+			expect(skeletonWrapper.classList.contains(className)).toBe(true);
 		});
 	});
 
@@ -142,5 +146,7 @@ describe('ResumePage', () => {
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
+		const skeleton = _wrapper.find('[data-testid="resume-page-skeleton"]');
+		expect(skeleton.exists()).toBe(true);
 	});
 });
