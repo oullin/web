@@ -26,6 +26,6 @@ describe('Heights', () => {
 	});
 
 	it('calculates the total resume sections min-height', () => {
-		expect(Heights.resumeSectionsTotalHeight()).toBe('min-h-[96rem] lg:min-h-[100rem]');
+		expect(Heights.resumeSectionsTotalHeight()).toBe('min-h-[96rem] lg:min-h-[102rem]');
 	});
 });
