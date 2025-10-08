@@ -132,10 +132,8 @@ describe('ResumePage', () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
 		const reloadSpy = vi.fn();
-		const mockLocation = Object.create(window.location);
-		mockLocation.reload = reloadSpy;
 		const locationGetSpy = vi.spyOn(window, 'location', 'get');
-		locationGetSpy.mockReturnValue(mockLocation);
+		locationGetSpy.mockReturnValue({ reload: reloadSpy } as Location);
 		const _wrapper = mount(ResumePage, {
 			global: {
 				stubs: {
