@@ -31,7 +31,7 @@
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400">
 										<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
-											<ResumePageSkeletonPartial />
+											<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
 										</div>
 										<div v-else class="space-y-12">
 											<div :class="resumeSectionHeights.education">
@@ -161,4 +161,10 @@ onMounted(async () => {
 		isLoadingProfile.value = false;
 	}
 });
+
+const refreshResumePage = () => {
+	if (typeof window !== 'undefined') {
+		window.location.reload();
+	}
+};
 </script>
