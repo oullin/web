@@ -35,5 +35,25 @@ describe('RecommendationPartial', () => {
 		expect(renderMarkdown).toHaveBeenCalledWith('**great**');
 		expect(wrapper.html()).toContain('<strong>great</strong>');
 		expect(wrapper.text()).toContain('now');
+		expect(wrapper.text()).toContain(data[0].person.designation);
+	});
+
+	it('does not render designation markup when missing', () => {
+		const wrapper = mount(RecommendationPartial, {
+			props: {
+				recommendations: [
+					{
+						...data[0],
+						person: {
+							...data[0].person,
+							designation: '',
+						},
+					},
+				],
+				backToTopTarget: '#top',
+			},
+		});
+
+		expect(wrapper.html()).not.toContain('text-sm text-slate-600 dark:text-slate-300');
 	});
 });
