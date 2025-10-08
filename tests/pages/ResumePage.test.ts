@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ResumePage from '@pages/ResumePage.vue';
 import type { ProfileResponse, ProfileSkillResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
+import { Heights } from '@/support/heights';
 
 const skills: ProfileSkillResponse[] = [{ uuid: faker.string.uuid(), percentage: 50, item: faker.lorem.word(), description: faker.lorem.sentence() }];
 const profile: ProfileResponse = {
@@ -115,7 +116,10 @@ describe('ResumePage', () => {
 
 		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
-		expect(skeleton.classes()).toContain('min-h-[25rem]');
+		const heightClasses = Heights.resumeSectionsTotalHeight().split(' ');
+		heightClasses.forEach((className) => {
+			expect(skeleton.classes()).toContain(className);
+		});
 	});
 
 	it('handles fetch failures', async () => {

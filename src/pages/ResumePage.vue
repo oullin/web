@@ -30,14 +30,19 @@
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-12">
-										<ResumePageSkeletonPartial v-if="isLoadingProfile" class="min-h-[25rem]" />
+										<ResumePageSkeletonPartial v-if="isLoadingProfile" :class="resumeSectionsTotalHeight" />
 										<template v-else>
 											<span id="education" class="block h-0" aria-hidden="true"></span>
-											<EducationPartial v-if="education" :education="education" />
+											<EducationPartial v-if="education" :education="education" :class="resumeSectionHeights.education" />
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
-											<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
+											<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" :class="resumeSectionHeights.experience" />
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-											<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+											<RecommendationPartial
+												v-if="recommendations"
+												:recommendations="recommendations"
+												back-to-top-target="#resume-top"
+												:class="resumeSectionHeights.recommendations"
+											/>
 										</template>
 									</div>
 									<div class="flex justify-end pt-10">
@@ -82,12 +87,17 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
+import { Heights } from '@/support/heights';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
 	{ href: '#experience', text: 'Work Experience' },
 	{ href: '#recommendations', text: 'Recommendations' },
 ] as const;
+
+const resumeSectionMinHeights = Heights.resumeSectionMinHeights();
+const resumeSectionHeights = Heights.resumeSectionHeights();
+const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
