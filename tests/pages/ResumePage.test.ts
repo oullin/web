@@ -131,7 +131,11 @@ describe('ResumePage', () => {
 	it('handles fetch failures', async () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
-		const reloadSpy = vi.spyOn(window.location, 'reload').mockImplementation(() => {});
+		const reloadSpy = vi.fn();
+		const mockLocation = Object.create(window.location);
+		mockLocation.reload = reloadSpy;
+		const locationGetSpy = vi.spyOn(window, 'location', 'get');
+		locationGetSpy.mockReturnValue(mockLocation);
 		const _wrapper = mount(ResumePage, {
 			global: {
 				stubs: {
@@ -164,6 +168,6 @@ describe('ResumePage', () => {
 		});
 		await refreshButton.trigger('click');
 		expect(reloadSpy).toHaveBeenCalled();
-		reloadSpy.mockRestore();
+		locationGetSpy.mockRestore();
 	});
 });
