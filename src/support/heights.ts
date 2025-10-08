@@ -1,30 +1,38 @@
+export type ResumeSection = 'education' | 'experience' | 'recommendations';
+
+type SectionMin = Readonly<{ base: number; lg: number }>;
+type SectionMinMap = Readonly<Record<ResumeSection, SectionMin>>;
+type SectionClassMap = Readonly<Record<ResumeSection, string>>;
+
 export class Heights {
-	private static readonly RESUME_SECTION_MIN_HEIGHTS = Object.freeze({
-		education: { base: 26, lg: 28 },
-		experience: { base: 34, lg: 36 },
-		recommendations: { base: 30, lg: 32 },
-	} as const);
+	private static readonly min = Object.freeze({
+		education: Object.freeze({ base: 26, lg: 28 }),
+		experience: Object.freeze({ base: 34, lg: 36 }),
+		recommendations: Object.freeze({ base: 30, lg: 32 }),
+	} satisfies SectionMinMap);
 
-	static readonly RESUME_SECTION_STACK_GAP_REM = 3;
+	private static readonly gap = 3;
 
-	static resumeSectionMinHeights() {
-		return this.RESUME_SECTION_MIN_HEIGHTS;
+	static resumeSectionMinHeights(): SectionMinMap {
+		return this.min;
 	}
 
-	static resumeSectionHeights() {
-		const { education, experience, recommendations } = this.RESUME_SECTION_MIN_HEIGHTS;
+	static resumeSectionHeights(): SectionClassMap {
+		const m = this.min;
 
 		return Object.freeze({
-			education: `min-h-[${education.base}rem] lg:min-h-[${education.lg}rem]`,
-			experience: `min-h-[${experience.base}rem] lg:min-h-[${experience.lg}rem]`,
-			recommendations: `min-h-[${recommendations.base}rem] lg:min-h-[${recommendations.lg}rem]`,
-		} as const);
+			education: `min-h-[${m.education.base}rem] lg:min-h-[${m.education.lg}rem]`,
+			experience: `min-h-[${m.experience.base}rem] lg:min-h-[${m.experience.lg}rem]`,
+			recommendations: `min-h-[${m.recommendations.base}rem] lg:min-h-[${m.recommendations.lg}rem]`,
+		} satisfies SectionClassMap);
 	}
 
-	static resumeSectionsTotalHeight() {
-		const { education, experience, recommendations } = this.RESUME_SECTION_MIN_HEIGHTS;
-		const gap = this.RESUME_SECTION_STACK_GAP_REM;
+	static resumeSectionsTotalHeight(): string {
+		const m = this.min;
+		const g = this.gap;
+		const base = m.education.base + m.experience.base + m.recommendations.base + g * 2;
+		const lg = m.education.lg + m.experience.lg + m.recommendations.lg + g * 2;
 
-		return `min-h-[${education.base + experience.base + recommendations.base + gap * 2}rem] lg:min-h-[${education.lg + experience.lg + recommendations.lg + gap * 2}rem]` as const;
+		return `min-h-[${base}rem] lg:min-h-[${lg}rem]`;
 	}
 }
