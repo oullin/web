@@ -33,11 +33,16 @@
 										<ResumePageSkeletonPartial v-if="isLoadingProfile" class="min-h-[25rem]" />
 										<template v-else>
 											<span id="education" class="block h-0" aria-hidden="true"></span>
-											<EducationPartial v-if="education" :education="education" />
+											<EducationPartial v-if="education" :education="education" :class="resumeSectionHeights.education" />
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
-											<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
+											<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" :class="resumeSectionHeights.experience" />
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-											<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+											<RecommendationPartial
+												v-if="recommendations"
+												:recommendations="recommendations"
+												back-to-top-target="#resume-top"
+												:class="resumeSectionHeights.recommendations"
+											/>
 										</template>
 									</div>
 									<div class="flex justify-end pt-10">
@@ -88,6 +93,12 @@ const navigationItems = [
 	{ href: '#experience', text: 'Work Experience' },
 	{ href: '#recommendations', text: 'Recommendations' },
 ] as const;
+
+const resumeSectionHeights = {
+	education: 'min-h-[26rem] lg:min-h-[28rem]',
+	experience: 'min-h-[34rem] lg:min-h-[36rem]',
+	recommendations: 'min-h-[30rem] lg:min-h-[32rem]',
+} as const;
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
