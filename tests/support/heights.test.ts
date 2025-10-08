@@ -28,4 +28,17 @@ describe('Heights', () => {
 	it('calculates the total resume sections min-height', () => {
 		expect(Heights.resumeSectionsTotalHeight()).toBe('min-h-[96rem] lg:min-h-[102rem]');
 	});
+
+	it('exposes safelisted resume section classes for tailwind', () => {
+		expect(Heights.resumeSectionHeightSafelist()).toEqual([
+			'min-h-[26rem]',
+			'lg:min-h-[28rem]',
+			'min-h-[34rem]',
+			'lg:min-h-[36rem]',
+			'min-h-[30rem]',
+			'lg:min-h-[32rem]',
+			'min-h-[96rem]',
+			'lg:min-h-[102rem]',
+		]);
+	});
 });
