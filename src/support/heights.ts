@@ -5,20 +5,18 @@ type SectionMinMap = Readonly<Record<ResumeSection, SectionMin>>;
 type SectionClassMap = Readonly<Record<ResumeSection, string>>;
 
 export class Heights {
-	private static readonly min = Object.freeze({
+	private static readonly minInResume = Object.freeze({
 		education: Object.freeze({ base: 26, lg: 28 }),
 		experience: Object.freeze({ base: 34, lg: 36 }),
 		recommendations: Object.freeze({ base: 30, lg: 32 }),
 	} satisfies SectionMinMap);
 
-	private static readonly gap = 3;
-
 	static resumeSectionMinHeights(): SectionMinMap {
-		return this.min;
+		return this.minInResume;
 	}
 
 	static resumeSectionHeights(): SectionClassMap {
-		const m = this.min;
+		const m = this.minInResume;
 
 		return Object.freeze({
 			education: `min-h-[${m.education.base}rem] lg:min-h-[${m.education.lg}rem]`,
@@ -28,8 +26,8 @@ export class Heights {
 	}
 
 	static resumeSectionsTotalHeight(): string {
-		const m = this.min;
-		const g = this.gap;
+		const m = this.minInResume;
+		const g = 3;
 		const base = m.education.base + m.experience.base + m.recommendations.base + g * 2;
 		const lg = m.education.lg + m.experience.lg + m.recommendations.lg + g * 2;
 
