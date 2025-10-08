@@ -87,6 +87,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
+import { getResumeSectionMinHeights } from '@/public';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
@@ -94,11 +95,7 @@ const navigationItems = [
 	{ href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
-const resumeSectionMinHeights = {
-	education: { base: 26, lg: 28 },
-	experience: { base: 34, lg: 36 },
-	recommendations: { base: 30, lg: 32 },
-} as const;
+const resumeSectionMinHeights = getResumeSectionMinHeights();
 
 const resumeSectionHeights = {
 	education: `min-h-[${resumeSectionMinHeights.education.base}rem] lg:min-h-[${resumeSectionMinHeights.education.lg}rem]`,
