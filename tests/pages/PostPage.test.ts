@@ -65,6 +65,7 @@ describe('PostPage', () => {
 					HeaderPartial: true,
 					FooterPartial: true,
 					WidgetSponsorPartial: true,
+					WidgetSocialPartial: true,
 					WidgetSkillsPartial: true,
 					RouterLink: { template: '<a><slot /></a>' },
 				},
@@ -87,6 +88,7 @@ describe('PostPage', () => {
 					HeaderPartial: true,
 					FooterPartial: true,
 					WidgetSponsorPartial: true,
+					WidgetSocialPartial: true,
 					WidgetSkillsPartial: true,
 					RouterLink: { template: '<a><slot /></a>' },
 				},
@@ -108,6 +110,7 @@ describe('PostPage', () => {
 					HeaderPartial: true,
 					FooterPartial: true,
 					WidgetSponsorPartial: true,
+					WidgetSocialPartial: true,
 					WidgetSkillsPartial: true,
 					RouterLink: { template: '<a><slot /></a>' },
 				},
@@ -129,6 +132,7 @@ describe('PostPage', () => {
 					HeaderPartial: true,
 					FooterPartial: true,
 					WidgetSponsorPartial: true,
+					WidgetSocialPartial: true,
 					WidgetSkillsPartial: true,
 					RouterLink: { template: '<a><slot /></a>' },
 				},
@@ -139,5 +143,34 @@ describe('PostPage', () => {
 		expect(debugError).toHaveBeenCalledWith(error);
 		expect(wrapper.find('[data-testid="post-page-skeleton"]').exists()).toBe(false);
 		expect(wrapper.text()).toContain("We couldn't load this post.");
+	});
+
+	it('renders the follow widget above the sponsor widget', async () => {
+		const wrapper = mount(PostPage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					WidgetSponsorPartial: true,
+					WidgetSocialPartial: true,
+					WidgetSkillsPartial: true,
+					RouterLink: { template: '<a><slot /></a>' },
+				},
+			},
+		});
+
+		await flushPromises();
+
+		const aside = wrapper.find('aside');
+		expect(aside.exists()).toBe(true);
+
+		const asideHtml = aside.html();
+		const socialIndex = asideHtml.indexOf('widget-social-partial-stub');
+		const sponsorIndex = asideHtml.indexOf('widget-sponsor-partial-stub');
+
+		expect(socialIndex).toBeGreaterThan(-1);
+		expect(sponsorIndex).toBeGreaterThan(-1);
+		expect(socialIndex).toBeLessThan(sponsorIndex);
 	});
 });

@@ -107,6 +107,7 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
+								<WidgetSocialPartial />
 								<WidgetSponsorPartial />
 							</div>
 						</aside>
@@ -134,6 +135,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
+import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
