@@ -16,10 +16,10 @@
 					<div class="pl-20 space-y-1">
 						<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.person.full_name }}</div>
 						<div class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ item.person.company }}</div>
-						<div v-if="item.person.designation" class="text-sm font-medium italic text-teal-600 dark:text-teal-300">
+						<div v-if="item.person.designation" class="text-sm font-medium italic text-fuchsia-600 dark:text-sky-500">
 							{{ item.person.designation }}
 						</div>
-						<div class="flex justify-between text-xs dark:text-teal-500 text-slate-400 pb-2">
+						<div class="flex justify-between text-xs dark:text-teal-600 text-slate-400 pb-2">
 							<div>{{ item.relation }}</div>
 							<div>{{ item.formattedDate }}</div>
 						</div>
