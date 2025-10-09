@@ -90,7 +90,7 @@
 												</li>
 											</ul>
 										</div>
-										<h1 class="h1 font-aspekta mb-4">{{ post.title }}</h1>
+										<h1 id="post-top" class="h1 font-aspekta mb-4">{{ post.title }}</h1>
 									</header>
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
@@ -111,6 +111,10 @@
 								<WidgetSponsorPartial />
 							</div>
 						</aside>
+					</div>
+
+					<div class="flex justify-end pt-10 mb-10">
+						<BackToTopLink target="#post-top" />
 					</div>
 
 					<FooterPartial />
@@ -136,6 +140,7 @@ import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
+import BackToTopLink from '@partials/BackToTopLink.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import CoverImageLoader from '@components/CoverImageLoader.vue';

@@ -173,4 +173,25 @@ describe('PostPage', () => {
 		expect(sponsorIndex).toBeGreaterThan(-1);
 		expect(socialIndex).toBeLessThan(sponsorIndex);
 	});
+
+	it('renders a back to top link targeting the post header', async () => {
+		const wrapper = mount(PostPage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					WidgetSponsorPartial: true,
+					WidgetSocialPartial: true,
+					WidgetSkillsPartial: true,
+					RouterLink: { template: '<a><slot /></a>' },
+				},
+			},
+		});
+
+		await flushPromises();
+
+		const backToTopLink = wrapper.find('a[href="#post-top"]');
+		expect(backToTopLink.exists()).toBe(true);
+	});
 });

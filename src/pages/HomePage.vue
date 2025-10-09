@@ -5,7 +5,7 @@
 
 			<!-- Main content -->
 			<main class="grow overflow-hidden px-6">
-				<div class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
+				<div id="home-top" class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
 					<HeaderPartial />
 					<HeroPartial />
 
@@ -37,6 +37,10 @@
 						</aside>
 					</div>
 
+					<div class="flex justify-end pt-10 mb-10">
+						<BackToTopLink target="#home-top" />
+					</div>
+
 					<FooterPartial />
 				</div>
 			</main>
@@ -56,6 +60,7 @@ import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import WidgetOullinPartial from '@partials/WidgetOullinPartial.vue';
+import BackToTopLink from '@partials/BackToTopLink.vue';
 
 import { onMounted, ref } from 'vue';
 import { useApiStore } from '@api/store.ts';
