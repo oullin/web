@@ -71,4 +71,27 @@ describe('HomePage', () => {
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
 	});
+
+	it('renders a back to top link targeting the home container', async () => {
+		const wrapper = mount(HomePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					HeroPartial: true,
+					FooterPartial: true,
+					ArticlesListPartial: true,
+					FeaturedProjectsPartial: true,
+					TalksPartial: true,
+					WidgetSponsorPartial: true,
+					WidgetSkillsPartial: true,
+				},
+			},
+		});
+
+		await flushPromises();
+
+		const backToTopLink = wrapper.find('a[href="#home-top"]');
+		expect(backToTopLink.exists()).toBe(true);
+	});
 });

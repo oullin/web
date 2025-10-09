@@ -52,24 +52,28 @@ vi.mock('@/public.ts', () => ({
 	getReadingTime: () => '',
 }));
 
+const mountComponent = () =>
+	mount(PostPage, {
+		global: {
+			stubs: {
+				SideNavPartial: true,
+				HeaderPartial: true,
+				FooterPartial: true,
+				WidgetSponsorPartial: true,
+				WidgetSocialPartial: true,
+				WidgetSkillsPartial: true,
+				RouterLink: { template: '<a><slot /></a>' },
+			},
+		},
+	});
+
 describe('PostPage', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it('fetches post on mount', async () => {
-		const wrapper = mount(PostPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					FooterPartial: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-					RouterLink: { template: '<a><slot /></a>' },
-				},
-			},
-		});
+		const wrapper = mountComponent();
 		const skeleton = wrapper.find('[data-testid="post-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
 		expect(skeleton.classes()).toContain('min-h-[25rem]');
@@ -80,18 +84,7 @@ describe('PostPage', () => {
 	});
 
 	it('initializes highlight.js on mount', async () => {
-		const wrapper = mount(PostPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					FooterPartial: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-					RouterLink: { template: '<a><slot /></a>' },
-				},
-			},
-		});
+		const wrapper = mountComponent();
 		await flushPromises();
 		const highlightCore = await import('highlight.js/lib/core');
 		expect(initializeHighlighter).toHaveBeenCalledWith(highlightCore.default);
@@ -101,18 +94,7 @@ describe('PostPage', () => {
 
 	it('processes markdown content', async () => {
 		const DOMPurify = await import('dompurify');
-		const wrapper = mount(PostPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					FooterPartial: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-					RouterLink: { template: '<a><slot /></a>' },
-				},
-			},
-		});
+		const wrapper = mountComponent();
 		await flushPromises();
 		expect(renderMarkdown).toHaveBeenCalledWith(post.content);
 		expect(DOMPurify.default.sanitize).toHaveBeenCalled();
@@ -122,22 +104,37 @@ describe('PostPage', () => {
 	it('handles post errors gracefully', async () => {
 		const error = new Error('fail');
 		getPost.mockRejectedValueOnce(error);
-		const wrapper = mount(PostPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					FooterPartial: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-					RouterLink: { template: '<a><slot /></a>' },
-				},
-			},
-		});
+		const wrapper = mountComponent();
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
 		expect(wrapper.find('[data-testid="post-page-skeleton"]').exists()).toBe(false);
 		expect(wrapper.text()).toContain("We couldn't load this post.");
+	});
+
+	it('renders the follow widget above the sponsor widget', async () => {
+		const wrapper = mountComponent();
+
+		await flushPromises();
+
+		const aside = wrapper.find('aside');
+		expect(aside.exists()).toBe(true);
+
+		const container = aside.find('div');
+		expect(container.exists()).toBe(true);
+
+		const children = container.element.children;
+		expect(children.length).toBeGreaterThanOrEqual(2);
+		expect(children[0].tagName).toBe('WIDGET-SOCIAL-PARTIAL-STUB');
+		expect(children[1].tagName).toBe('WIDGET-SPONSOR-PARTIAL-STUB');
+	});
+
+	it('renders a back to top link targeting the post header', async () => {
+		const wrapper = mountComponent();
+
+		await flushPromises();
+
+		const backToTopLink = wrapper.find('a[href="#post-top"]');
+		expect(backToTopLink.exists()).toBe(true);
 	});
 });
