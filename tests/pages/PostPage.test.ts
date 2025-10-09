@@ -120,13 +120,13 @@ describe('PostPage', () => {
 		const aside = wrapper.find('aside');
 		expect(aside.exists()).toBe(true);
 
-		const asideHtml = aside.html();
-		const socialIndex = asideHtml.indexOf('widget-social-partial-stub');
-		const sponsorIndex = asideHtml.indexOf('widget-sponsor-partial-stub');
+		const container = aside.find('div');
+		expect(container.exists()).toBe(true);
 
-		expect(socialIndex).toBeGreaterThan(-1);
-		expect(sponsorIndex).toBeGreaterThan(-1);
-		expect(socialIndex).toBeLessThan(sponsorIndex);
+		const children = container.element.children;
+		expect(children.length).toBeGreaterThanOrEqual(2);
+		expect(children[0].tagName).toBe('WIDGET-SOCIAL-PARTIAL-STUB');
+		expect(children[1].tagName).toBe('WIDGET-SPONSOR-PARTIAL-STUB');
 	});
 
 	it('renders a back to top link targeting the post header', async () => {
