@@ -1,6 +1,7 @@
-import { flushPromises, mount } from '@vue/test-utils';
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
-import { createRouter, createMemoryHistory, Router } from 'vue-router';
+import { createRouter, createMemoryHistory } from 'vue-router';
+import type { Router } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 
@@ -12,28 +13,39 @@ const routes = [
 ];
 
 function createTestRouter(initialPath: string): Router {
+	const history = createMemoryHistory();
+	history.replace(initialPath);
+
 	return createRouter({
-		history: createMemoryHistory({ initialEntries: [initialPath] }),
+		history,
 		routes,
 	});
 }
 
+async function mountSideNavAt(initialPath: string): Promise<VueWrapper> {
+	const router = createTestRouter(initialPath);
+	const wrapper = mount(SideNavPartial, { global: { plugins: [router] } });
+
+	await router.isReady();
+	await flushPromises();
+
+	return wrapper;
+}
+
 describe('SideNavPartial', () => {
 	it('hides the avatar on the home route', async () => {
-		const router = createTestRouter('/');
-		const wrapper = mount(SideNavPartial, { global: { plugins: [router] } });
-		await router.isReady();
-		await flushPromises();
+		const wrapper = await mountSideNavAt('/');
 
 		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(false);
+
+		wrapper.unmount();
 	});
 
 	it('shows the avatar on non-home routes', async () => {
-		const router = createTestRouter('/about');
-		const wrapper = mount(SideNavPartial, { global: { plugins: [router] } });
-		await router.isReady();
-		await flushPromises();
+		const wrapper = await mountSideNavAt('/about');
 
 		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
+
+		wrapper.unmount();
 	});
 });
