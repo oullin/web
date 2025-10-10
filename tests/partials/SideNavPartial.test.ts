@@ -12,14 +12,10 @@ const routes = [
 ];
 
 function createTestRouter(initialPath: string): Router {
-	const router = createRouter({
-		history: createMemoryHistory(),
+	return createRouter({
+		history: createMemoryHistory({ initialEntries: [initialPath] }),
 		routes,
 	});
-
-	router.push(initialPath);
-
-	return router;
 }
 
 describe('SideNavPartial', () => {
