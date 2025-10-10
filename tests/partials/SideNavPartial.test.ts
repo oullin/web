@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import { createRouter, createMemoryHistory, Router } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
@@ -21,16 +21,18 @@ function createTestRouter(initialPath: string): Router {
 describe('SideNavPartial', () => {
 	it('hides the avatar on the home route', async () => {
 		const router = createTestRouter('/');
-		await router.isReady();
 		const wrapper = mount(SideNavPartial, { global: { plugins: [router] } });
+		await router.isReady();
+		await flushPromises();
 
 		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(false);
 	});
 
 	it('shows the avatar on non-home routes', async () => {
 		const router = createTestRouter('/about');
-		await router.isReady();
 		const wrapper = mount(SideNavPartial, { global: { plugins: [router] } });
+		await router.isReady();
+		await flushPromises();
 
 		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
 	});
