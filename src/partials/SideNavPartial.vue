@@ -73,19 +73,16 @@
 </template>
 
 <script setup lang="ts">
-import { RouteLocationNormalizedLoaded, Router, useRouter } from 'vue-router';
+import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
-import { computed, Ref } from 'vue';
+import { computed } from 'vue';
 
-const router: Router = useRouter();
-const currentRoute: Ref<RouteLocationNormalizedLoaded> = router.currentRoute;
+const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 
 const isHome = computed<boolean>(() => {
-	// TypeScript knows the currentRoute.value is of type RouteLocationNormalizedLoaded
-	// The 'fullPath' property on RouteLocationNormalizedLoaded is typed as string.
-	// The comparison 'string === string' results in a boolean.
-	// The <boolean> generic on computed explicitly states the return type of the computed ref.
-	return currentRoute.value.fullPath === '/';
+	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
+	// even when query parameters are present (e.g. `/?foo=bar`).
+	return currentRoute.path === '/';
 });
 
 function bindIconClassFor(isActive: boolean): string {
