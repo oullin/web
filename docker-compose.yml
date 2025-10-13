@@ -45,6 +45,7 @@ services:
             - ./caddy/mtls:/etc/caddy/mtls:ro
             - ./public/seo:/usr/share/caddy/seo:ro
             - ./public/images:/usr/share/caddy/images:ro
+            - ./public/images/seo:/usr/share/caddy/images/seo:ro
         networks:
             caddy_net:
                 aliases:
