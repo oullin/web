@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
+import { ensureCodeBlockClasses, initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 
 const SAMPLE_WITH_FRONT_MATTER = `---\ntitle: Example Title\nexcerpt: Example excerpt\nslug: example-slug\n---\n\n![hero](https://example.com/hero.jpg)\n\n## Heading\n\n- Item one\n- Item two\n\n| Col A | Col B |\n| ----- | ----- |\n| A     | B     |\n`;
 
@@ -62,6 +62,12 @@ describe('renderMarkdown', () => {
 		const html = renderMarkdown('```yml\nfoo: bar\n```');
 
 		expect(html).toContain('<pre class=\'code-block code-block--light\'><code class="language-yml">');
+	});
+
+	it('merges code block classes with existing pre tag classes', () => {
+		const html = ensureCodeBlockClasses('<pre class="existing" data-demo="true"><code>example</code></pre>');
+
+		expect(html).toBe('<pre class="existing code-block code-block--light" data-demo="true"><code>example</code></pre>');
 	});
 });
 

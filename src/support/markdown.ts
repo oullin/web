@@ -4,14 +4,36 @@ import { marked } from 'marked';
 const renderer = new marked.Renderer();
 const originalCodeRenderer = renderer.code.bind(renderer);
 
-renderer.code = (code, infostring, escaped) => {
-	const rendered = originalCodeRenderer(code, infostring, escaped);
-
+export function ensureCodeBlockClasses(rendered: string): string {
 	if (!rendered.includes('<pre')) {
 		return rendered;
 	}
 
-	return rendered.replace(/^<pre/, "<pre class='code-block code-block--light'");
+	const preTagMatch = rendered.match(/^<pre[^>]*>/);
+	if (!preTagMatch) {
+		return rendered;
+	}
+
+	const classAttributeMatch = preTagMatch[0].match(/\bclass=(['"])(.*?)\1/);
+	if (classAttributeMatch) {
+		const [classAttribute, quote, classValue] = classAttributeMatch;
+		const existingClasses = classValue.split(/\s+/).filter(Boolean);
+		const classes = new Set(existingClasses);
+		classes.add('code-block');
+		classes.add('code-block--light');
+		const mergedClassAttribute = `class=${quote}${Array.from(classes).join(' ')}${quote}`;
+		const updatedPreTag = preTagMatch[0].replace(classAttribute, mergedClassAttribute);
+		return rendered.replace(preTagMatch[0], updatedPreTag);
+	}
+
+	const updatedPreTag = preTagMatch[0].replace(/^<pre/, "<pre class='code-block code-block--light'");
+	return rendered.replace(preTagMatch[0], updatedPreTag);
+}
+
+renderer.code = (code, infostring, escaped) => {
+	const rendered = originalCodeRenderer(code, infostring, escaped);
+
+	return ensureCodeBlockClasses(rendered);
 };
 
 marked.use({
