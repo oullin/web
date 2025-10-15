@@ -1,6 +1,23 @@
 import type { HLJSApi, LanguageFn } from 'highlight.js';
 import { marked } from 'marked';
 
+const renderer = new marked.Renderer();
+const originalCodeRenderer = renderer.code.bind(renderer);
+
+renderer.code = (code, infostring, escaped) => {
+	const rendered = originalCodeRenderer(code, infostring, escaped);
+
+	if (!rendered.includes('<pre')) {
+		return rendered;
+	}
+
+	return rendered.replace('<pre>', "<pre class='code-block code-block--light'>");
+};
+
+marked.use({
+	renderer,
+});
+
 // Match YAML front matter only at the very start (optional BOM supported)
 const FRONT_MATTER_REGEX = /^\uFEFF?---\s*[\r\n]+([\s\S]*?)\r?\n---\s*[\r\n]*/;
 type LanguageModule = { default: LanguageFn };

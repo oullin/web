@@ -57,6 +57,12 @@ describe('renderMarkdown', () => {
 
 		expect(html).toContain('<h2>Just Heading</h2>');
 	});
+
+	it('adds a light-background class to fenced code blocks', () => {
+		const html = renderMarkdown('```yml\nfoo: bar\n```');
+
+		expect(html).toContain('<pre class=\'code-block code-block--light\'><code class="language-yml">');
+	});
 });
 
 describe('initializeHighlighter', () => {
