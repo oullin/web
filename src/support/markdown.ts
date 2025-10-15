@@ -11,7 +11,7 @@ renderer.code = (code, infostring, escaped) => {
 		return rendered;
 	}
 
-	return rendered.replace('<pre>', "<pre class='code-block code-block--light'>");
+	return rendered.replace(/^<pre/, "<pre class='code-block code-block--light'");
 };
 
 marked.use({
