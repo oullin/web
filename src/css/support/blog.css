@@ -198,7 +198,7 @@
 }
 
 .post-markdown pre.code-block--light {
-	@apply bg-white/70 dark:bg-white/5;
+	@apply bg-white/70 text-slate-800 dark:bg-white/5 dark:text-slate-200;
 }
 
 .post-markdown code {
