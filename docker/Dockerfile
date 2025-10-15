@@ -30,7 +30,7 @@ RUN npm run build
 
 # --- Artifact Stage ---
 # This is the final, lightweight production image using Caddy.
-FROM caddy:2.8.4-alpine
+FROM caddy:2.10.2-alpine
 
 # Copy only the built static assets from the 'builder' stage's output directory
 COPY --from=builder /app/dist /usr/share/caddy

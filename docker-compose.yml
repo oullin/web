@@ -52,7 +52,7 @@ services:
                     - web
 
     caddy-local:
-        image: caddy:2.8.4-alpine
+        image: caddy:2.10.2-alpine
         profiles:
             - local
         container_name: web_caddy_local
