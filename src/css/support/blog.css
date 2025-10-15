@@ -176,7 +176,7 @@
 }
 
 .post-markdown thead {
-	@apply bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-200;
+	@apply bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200;
 }
 
 .post-markdown th,
@@ -194,15 +194,15 @@
 }
 
 .post-markdown pre:not(.code-block--light) {
-	@apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100;
+	@apply bg-slate-900/90 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 border border-slate-200 dark:border-slate-700;
 }
 
 .post-markdown pre.code-block--light {
-	@apply bg-white/70 text-slate-800 dark:bg-white/5 dark:text-slate-200;
+	@apply bg-slate-100 text-slate-800 dark:bg-white/5 dark:text-slate-200 border border-slate-200 dark:border-slate-700;
 }
 
 .post-markdown code {
-	@apply font-pt-mono text-sm bg-slate-900/10 text-slate-700 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
+	@apply font-pt-mono text-sm bg-slate-200 text-slate-800 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
 }
 
 .post-markdown pre code {
