@@ -13,9 +13,9 @@ caddy-restart:
 
 caddy-validate:
 	docker run --rm \
-      -v "$(ROOT_PATH)/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
-      -v "$(ROOT_PATH)/caddy/mtls:/etc/caddy/mtls:ro" \
-      caddy:2.10.0 caddy validate --config /etc/caddy/Caddyfile
+	-v "$(ROOT_PATH)/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
+	-v "$(ROOT_PATH)/caddy/mtls:/etc/caddy/mtls:ro" \
+        caddy:2.10.2 caddy validate --config /etc/caddy/Caddyfile
 
 caddy-sync-certs:
 	@set -euo pipefail; \
