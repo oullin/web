@@ -189,12 +189,9 @@
 	--scrollbar-thumb: var(--custom-scrollbar-thumb);
 	--scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
 	@apply rounded-2xl p-6 overflow-x-auto text-sm;
+	@apply bg-slate-900/90 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 border border-slate-200 dark:border-slate-700;
 	scrollbar-width: thin; /* Firefox */
 	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-}
-
-.post-markdown pre:not(.code-block--light) {
-	@apply bg-slate-900/90 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 border border-slate-200 dark:border-slate-700;
 }
 
 .post-markdown pre.code-block--light {
