@@ -193,6 +193,10 @@
 	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
+.post-markdown pre:not(.code-block--light) {
+	@apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100;
+}
+
 .post-markdown pre.code-block--light {
 	@apply bg-white/70 dark:bg-white/5;
 }
