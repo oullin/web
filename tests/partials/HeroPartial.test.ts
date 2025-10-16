@@ -6,25 +6,30 @@ import AvatarPartial from '@partials/AvatarPartial.vue';
 import { useHeaderSocialLinks } from '@/support/social.ts';
 import { ref } from 'vue';
 
-const socialLinks = [
-	{
-		uuid: faker.string.uuid(),
-		handle: faker.internet.userName(),
-		url: faker.internet.url(),
-		description: 'Custom LinkedIn description',
-		name: 'linkedin',
-	},
-	{
-		uuid: faker.string.uuid(),
-		handle: faker.internet.userName(),
-		url: faker.internet.url(),
-		description: 'Custom GitHub description',
-		name: 'github',
-	},
-];
+const { socialLinks, getSocial, debugError } = vi.hoisted(() => {
+	const links = [
+		{
+			uuid: faker.string.uuid(),
+			handle: faker.internet.userName(),
+			url: faker.internet.url(),
+			description: 'Custom LinkedIn description',
+			name: 'linkedin',
+		},
+		{
+			uuid: faker.string.uuid(),
+			handle: faker.internet.userName(),
+			url: faker.internet.url(),
+			description: 'Custom GitHub description',
+			name: 'github',
+		},
+	];
 
-const getSocial = vi.fn(() => Promise.resolve({ version: '1.0.0', data: socialLinks }));
-const debugError = vi.fn();
+	return {
+		socialLinks: links,
+		getSocial: vi.fn(() => Promise.resolve({ version: '1.0.0', data: links })),
+		debugError: vi.fn(),
+	};
+});
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getSocial }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError }));
