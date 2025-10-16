@@ -15,10 +15,49 @@
 					cross-payment solutions, cyber security, and customer success.
 				</p>
 			</div>
+
+			<div v-if="heroSocialLinks.length" class="flex items-center gap-3">
+				<a
+					v-for="link in heroSocialLinks"
+					:key="link.name"
+					class="relative inline-flex h-9 w-9 items-center justify-center rounded-md p-2 transition-colors"
+					:href="link.url"
+					target="_blank"
+					rel="noopener noreferrer"
+					:title="link.title"
+				>
+					<svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+						<path :class="link.iconClass" :d="link.icon" />
+					</svg>
+					<span class="sr-only">{{ link.label }}</span>
+				</a>
+			</div>
 		</div>
 	</section>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import type { SocialResponse } from '@api/response/index.ts';
+import { useHeaderSocialLinks } from '@/support/social.ts';
+
+const apiStore = useApiStore();
+
+const social = ref<SocialResponse[]>([]);
+const heroSocialLinks = useHeaderSocialLinks(social);
+
+onMounted(async () => {
+	try {
+		const socialResponse = await apiStore.getSocial();
+
+		if (socialResponse.data) {
+			social.value = socialResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	}
+});
 </script>
