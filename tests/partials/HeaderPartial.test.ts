@@ -7,7 +7,28 @@ const toggleDarkMode = vi.fn();
 vi.mock('@/dark-mode.ts', () => ({ useDarkMode: () => ({ toggleDarkMode }) }));
 
 const setSearchTerm = vi.fn();
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ setSearchTerm }) }));
+const socialLinks = [
+	{
+		uuid: faker.string.uuid(),
+		handle: faker.internet.userName(),
+		url: faker.internet.url(),
+		description: 'Custom LinkedIn description',
+		name: 'linkedin',
+	},
+	{
+		uuid: faker.string.uuid(),
+		handle: faker.internet.userName(),
+		url: faker.internet.url(),
+		description: 'Custom GitHub description',
+		name: 'github',
+	},
+];
+
+const getSocial = vi.fn(() => Promise.resolve({ version: '1.0.0', data: socialLinks }));
+
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ setSearchTerm, getSocial }) }));
+
+vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('HeaderPartial', () => {
 	it('validates search length', async () => {
@@ -32,5 +53,20 @@ describe('HeaderPartial', () => {
 		const wrapper = mount(HeaderPartial);
 		wrapper.find('label[for="light-switch"]').trigger('click');
 		expect(toggleDarkMode).toHaveBeenCalled();
+	});
+
+	it('renders social links provided by the api store', async () => {
+		const wrapper = mount(HeaderPartial);
+
+		await wrapper.vm.$nextTick();
+		await Promise.resolve();
+
+		const links = wrapper.findAll('a[rel="noopener noreferrer"]');
+
+		expect(links).toHaveLength(2);
+		expect(links[0].attributes('href')).toBe(socialLinks.find((item) => item.name === 'github')?.url);
+		expect(links[1].attributes('href')).toBe(socialLinks.find((item) => item.name === 'linkedin')?.url);
+		expect(links[0].attributes('title')).toBe(socialLinks.find((item) => item.name === 'github')?.description);
+		expect(links[0].find('span.sr-only').text()).toBe('Visit GitHub profile');
 	});
 });
