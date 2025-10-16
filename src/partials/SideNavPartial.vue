@@ -85,17 +85,16 @@
 
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import type { SocialResponse } from '@api/response/index.ts';
 import { useHeaderSocialLinks } from '@/support/social.ts';
 
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 const apiStore = useApiStore();
 
-const social = ref<SocialResponse[]>([]);
+const social = computed(() => apiStore.social);
 const navSocialLinks = useHeaderSocialLinks(social);
 
 const isHome = computed<boolean>(() => {
@@ -110,11 +109,7 @@ function bindIconClassFor(isActive: boolean): string {
 
 onMounted(async () => {
 	try {
-		const socialResponse = await apiStore.getSocial();
-
-		if (socialResponse.data) {
-			social.value = socialResponse.data;
-		}
+		await apiStore.fetchSocial();
 	} catch (error) {
 		debugError(error);
 	}
