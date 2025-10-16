@@ -26,9 +26,17 @@
 				</form>
 
 				<!-- Social links -->
-				<div v-if="headerSocialLinks.length" class="flex items-center space-x-1">
-					<a v-for="link in headerSocialLinks" :key="link.name" class="relative cursor-pointer p-2" :href="link.url" target="_blank" rel="noopener noreferrer" :title="link.title">
-						<svg class="w-4 h-4" viewBox="0 0 16 16" aria-hidden="true">
+				<div v-if="headerSocialLinks.length" class="flex items-center gap-2">
+					<a
+						v-for="link in headerSocialLinks"
+						:key="link.name"
+						class="relative inline-flex h-8 w-8 items-center justify-center rounded-md p-2 transition-colors"
+						:href="link.url"
+						target="_blank"
+						rel="noopener noreferrer"
+						:title="link.title"
+					>
+						<svg class="h-4 w-4" viewBox="0 0 16 16" aria-hidden="true">
 							<path :class="link.iconClass" :d="link.icon" />
 						</svg>
 						<span class="sr-only">{{ link.label }}</span>
@@ -36,9 +44,9 @@
 				</div>
 
 				<!-- Light switch -->
-				<div class="flex flex-col justify-center">
+				<div class="flex items-center">
 					<input id="light-switch" type="checkbox" name="light-switch" class="light-switch sr-only" @click="toggleDarkMode" />
-					<label class="relative cursor-pointer p-2" for="light-switch">
+					<label class="relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md p-2 transition-colors" for="light-switch">
 						<svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 							<path
 								class="fill-fuchsia-300 hover:fill-fuchsia-600"
