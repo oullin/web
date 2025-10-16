@@ -47,21 +47,21 @@
 				<div class="flex items-center">
 					<input id="light-switch" type="checkbox" name="light-switch" class="light-switch sr-only" @click="toggleDarkMode" />
 					<label class="relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md p-2 transition-colors" for="light-switch">
-						<svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+						<svg class="dark:hidden h-4 w-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							<path
 								class="fill-fuchsia-300 hover:fill-fuchsia-600"
-								d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z"
+								d="M10.5 0h3v3h-3zM19.32 2.455l2.121 2.122-2.122 2.119-2.119-2.121zM21 10.5h3v3h-3zM19.425 21.649l-2.121-2.119 2.119-2.123 2.123 2.121zM10.5 21h3v3h-3zM4.47 21.546l-2.119-2.123 2.121-2.121 2.121 2.123zM0 10.5h3v3H0zM4.575 2.559 6.695 4.68 4.575 6.803 2.454 4.68z"
 							/>
-							<path class="fill-fuchsia-400 hover:fill-fuchsia-600" d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4Z" />
+							<path class="fill-fuchsia-400 hover:fill-fuchsia-600" d="M12 6c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6Z" />
 						</svg>
-						<svg class="hidden dark:block" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+						<svg class="hidden h-4 w-4 dark:block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							<path
 								class="fill-fuchsia-400 hover:fill-fuchsia-200 dark:fill-teal-500 dark:hover:fill-teal-300"
-								d="M6.2 1C3.2 1.8 1 4.6 1 7.9 1 11.8 4.2 15 8.1 15c3.3 0 6-2.2 6.9-5.2C9.7 11.2 4.8 6.3 6.2 1Z"
+								d="M9.3 1.5C4.8 2.7 1.5 6.9 1.5 11.85 1.5 17.7 6.3 22.5 12.15 22.5c4.95 0 9-3.3 10.35-7.8C14.55 16.8 7.2 9.45 9.3 1.5Z"
 							/>
 							<path
 								class="fill-fuchsia-500 hover:fill-fuchsia-200 dark:fill-teal-500 dark:hover:fill-teal-300"
-								d="M12.5 5a.625.625 0 0 1-.625-.625 1.252 1.252 0 0 0-1.25-1.25.625.625 0 1 1 0-1.25 1.252 1.252 0 0 0 1.25-1.25.625.625 0 1 1 1.25 0c.001.69.56 1.249 1.25 1.25a.625.625 0 1 1 0 1.25c-.69.001-1.249.56-1.25 1.25A.625.625 0 0 1 12.5 5Z"
+								d="M18.75 7.5a.9375.9375 0 0 1-.9375-.9375 1.878 1.878 0 0 0-1.875-1.875.9375.9375 0 1 1 0-1.875 1.878 1.878 0 0 0 1.875-1.875.9375.9375 0 1 1 1.875 0c.001 1.035.84 1.873 1.875 1.875a.9375.9375 0 1 1 0 1.875c-1.035.001-1.873.84-1.875 1.875a.9375.9375 0 0 1-.9375.9375Z"
 							/>
 						</svg>
 						<span class="sr-only">Switch to light / dark version</span>
