@@ -38,7 +38,7 @@ describe('useHeaderSocialLinks', () => {
 			label: 'Showcase',
 			title: 'Showcase',
 			icon: socialPlatforms.github.icon,
-			iconClass: expect.stringContaining('text-slate-600'),
+			iconClass: 'fill-current',
 		});
 		expect(links[1]).toMatchObject({
 			name: 'linkedin',
@@ -72,7 +72,7 @@ describe('useHeaderSocialLinks', () => {
 				label: 'linkedin',
 				title: 'linkedin',
 				icon: socialPlatforms.linkedin.icon,
-				iconClass: expect.stringContaining('text-slate-600'),
+				iconClass: 'fill-current',
 			},
 		]);
 
@@ -93,7 +93,7 @@ describe('useHeaderSocialLinks', () => {
 				label: 'github',
 				title: 'github',
 				icon: socialPlatforms.github.icon,
-				iconClass: expect.stringContaining('text-slate-600'),
+				iconClass: 'fill-current',
 			},
 		]);
 	});

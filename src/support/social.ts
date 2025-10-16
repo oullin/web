@@ -47,11 +47,11 @@ export interface HeaderSocialLink {
 const headerSocialPlatforms: Record<string, HeaderPlatformConfig> = {
 	github: {
 		icon: socialPlatforms.github.icon,
-		iconClass: 'fill-current text-slate-600 transition-colors hover:text-fuchsia-600 dark:text-teal-200 dark:hover:text-teal-300',
+		iconClass: 'fill-current',
 	},
 	linkedin: {
 		icon: socialPlatforms.linkedin.icon,
-		iconClass: 'fill-current text-slate-600 transition-colors hover:text-fuchsia-600 dark:text-teal-200 dark:hover:text-teal-300',
+		iconClass: 'fill-current',
 	},
 };
 
