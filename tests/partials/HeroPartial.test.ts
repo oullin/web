@@ -1,5 +1,4 @@
 import { mount } from '@vue/test-utils';
-import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import HeroPartial from '@partials/HeroPartial.vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
@@ -9,16 +8,16 @@ import { ref } from 'vue';
 const { socialLinks, getSocial, debugError } = vi.hoisted(() => {
 	const links = [
 		{
-			uuid: faker.string.uuid(),
-			handle: faker.internet.userName(),
-			url: faker.internet.url(),
+			uuid: 'linkedin-uuid',
+			handle: 'linkedin-handle',
+			url: 'https://www.linkedin.com/in/example',
 			description: 'Custom LinkedIn description',
 			name: 'linkedin',
 		},
 		{
-			uuid: faker.string.uuid(),
-			handle: faker.internet.userName(),
-			url: faker.internet.url(),
+			uuid: 'github-uuid',
+			handle: 'github-handle',
+			url: 'https://github.com/example',
 			description: 'Custom GitHub description',
 			name: 'github',
 		},
