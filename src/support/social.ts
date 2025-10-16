@@ -45,15 +45,18 @@ export const useHeaderSocialLinks = (social: Ref<SocialResponse[]>) =>
 			const handle = socialEntry.handle?.trim();
 
 			const accessibleText = description || handle || socialEntry.name;
+			const { icon, iconClass } = platform;
 
-			links.push({
-				name,
+			const link: HeaderSocialLink = {
+				name: socialEntry.name,
 				url: socialEntry.url,
 				label: accessibleText,
 				title: accessibleText,
-				icon: platform.icon,
-				iconClass: platform.iconClass,
-			});
+				icon,
+				iconClass,
+			};
+
+			links.push(link);
 		}
 
 		return links;

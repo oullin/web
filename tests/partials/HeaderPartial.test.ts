@@ -1,7 +1,9 @@
 import { mount } from '@vue/test-utils';
+import { ref } from 'vue';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi } from 'vitest';
 import HeaderPartial from '@partials/HeaderPartial.vue';
+import { useHeaderSocialLinks } from '@/support/social.ts';
 
 const toggleDarkMode = vi.fn();
 vi.mock('@/dark-mode.ts', () => ({ useDarkMode: () => ({ toggleDarkMode }) }));
@@ -65,6 +67,7 @@ describe('HeaderPartial', () => {
 
 		const githubLink = socialLinks.find((item) => item.name === 'github');
 		const linkedinLink = socialLinks.find((item) => item.name === 'linkedin');
+		const helperLinks = useHeaderSocialLinks(ref(socialLinks)).value;
 
 		expect(links).toHaveLength(2);
 		expect(links[0].attributes('href')).toBe(githubLink?.url);
@@ -73,5 +76,7 @@ describe('HeaderPartial', () => {
 		expect(links[0].find('span.sr-only').text()).toBe(githubLink?.description);
 		expect(links[1].attributes('title')).toBe(linkedinLink?.description);
 		expect(links[1].find('span.sr-only').text()).toBe(linkedinLink?.description);
+		expect(links[0].find('path').attributes('d')).toBe(helperLinks[0]?.icon);
+		expect(links[1].find('path').attributes('d')).toBe(helperLinks[1]?.icon);
 	});
 });
