@@ -20,7 +20,7 @@
 				<a
 					v-for="link in heroSocialLinks"
 					:key="link.name"
-					class="group relative inline-flex h-9 w-9 items-center justify-center rounded-md p-2 transition-colors"
+					class="group relative inline-flex items-center justify-center rounded-md p-2 transition-colors"
 					:href="link.url"
 					target="_blank"
 					rel="noopener noreferrer"
