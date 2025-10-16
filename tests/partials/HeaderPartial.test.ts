@@ -63,10 +63,15 @@ describe('HeaderPartial', () => {
 
 		const links = wrapper.findAll('a[rel="noopener noreferrer"]');
 
+		const githubLink = socialLinks.find((item) => item.name === 'github');
+		const linkedinLink = socialLinks.find((item) => item.name === 'linkedin');
+
 		expect(links).toHaveLength(2);
-		expect(links[0].attributes('href')).toBe(socialLinks.find((item) => item.name === 'github')?.url);
-		expect(links[1].attributes('href')).toBe(socialLinks.find((item) => item.name === 'linkedin')?.url);
-		expect(links[0].attributes('title')).toBe(socialLinks.find((item) => item.name === 'github')?.description);
-		expect(links[0].find('span.sr-only').text()).toBe('Visit GitHub profile');
+		expect(links[0].attributes('href')).toBe(githubLink?.url);
+		expect(links[1].attributes('href')).toBe(linkedinLink?.url);
+		expect(links[0].attributes('title')).toBe(githubLink?.description);
+		expect(links[0].find('span.sr-only').text()).toBe(githubLink?.description);
+		expect(links[1].attributes('title')).toBe(linkedinLink?.description);
+		expect(links[1].find('span.sr-only').text()).toBe(linkedinLink?.description);
 	});
 });
