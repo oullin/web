@@ -59,6 +59,8 @@ describe('HeroPartial', () => {
 		expect(links[1].attributes('title')).toBe(helperLinks[1]?.title);
 		expect(links[0].find('span.sr-only').text()).toBe(helperLinks[0]?.label);
 		expect(links[1].find('span.sr-only').text()).toBe(helperLinks[1]?.label);
+		expect(links[0].find('svg').classes()).toContain('blog-widgets-social-svg');
+		expect(links[1].find('svg').classes()).toContain('blog-widgets-social-svg');
 	});
 
 	it('handles social loading failures', async () => {

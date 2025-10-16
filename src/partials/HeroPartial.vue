@@ -20,13 +20,13 @@
 				<a
 					v-for="link in heroSocialLinks"
 					:key="link.name"
-					class="relative inline-flex h-9 w-9 items-center justify-center rounded-md p-2 transition-colors"
+					class="group relative inline-flex h-9 w-9 items-center justify-center rounded-md p-2 transition-colors"
 					:href="link.url"
 					target="_blank"
 					rel="noopener noreferrer"
 					:title="link.title"
 				>
-					<svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+					<svg class="blog-widgets-social-svg" viewBox="0 0 24 24" aria-hidden="true">
 						<path :class="link.iconClass" :d="link.icon" />
 					</svg>
 					<span class="sr-only">{{ link.label }}</span>
