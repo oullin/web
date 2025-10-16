@@ -36,7 +36,7 @@
 						rel="noopener noreferrer"
 						:title="link.title"
 					>
-						<svg class="h-4 w-4" viewBox="0 0 16 16" aria-hidden="true">
+						<svg class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
 							<path :class="link.iconClass" :d="link.icon" />
 						</svg>
 						<span class="sr-only">{{ link.label }}</span>
