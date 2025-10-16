@@ -25,6 +25,16 @@
 					</div>
 				</form>
 
+				<!-- Social links -->
+				<div v-if="headerSocialLinks.length" class="flex items-center space-x-1">
+					<a v-for="link in headerSocialLinks" :key="link.name" class="relative cursor-pointer p-2" :href="link.url" target="_blank" rel="noopener noreferrer" :title="link.title">
+						<svg class="w-4 h-4" viewBox="0 0 16 16" aria-hidden="true">
+							<path :class="link.iconClass" :d="link.icon" />
+						</svg>
+						<span class="sr-only">{{ link.label }}</span>
+					</a>
+				</div>
+
 				<!-- Light switch -->
 				<div class="flex flex-col justify-center">
 					<input id="light-switch" type="checkbox" name="light-switch" class="light-switch sr-only" @click="toggleDarkMode" />
@@ -55,16 +65,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import debounce from 'lodash/debounce';
 import { useDarkMode } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import type { SocialResponse } from '@api/response/index.ts';
+import { useHeaderSocialLinks } from '@/support/social.ts';
 
 const { toggleDarkMode } = useDarkMode();
 const apiStore = useApiStore();
 
 const searchQuery = ref('');
 const validationError = ref<string>('');
+const social = ref<SocialResponse[]>([]);
+const headerSocialLinks = useHeaderSocialLinks(social);
 
 const clearSearchAndError = () => {
 	onSearchInput.cancel();
@@ -94,4 +109,16 @@ const performSearch = () => {
 
 	apiStore.setSearchTerm(query);
 };
+
+onMounted(async () => {
+	try {
+		const socialResponse = await apiStore.getSocial();
+
+		if (socialResponse.data) {
+			social.value = socialResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	}
+});
 </script>
