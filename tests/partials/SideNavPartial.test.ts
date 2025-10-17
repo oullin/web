@@ -101,6 +101,16 @@ describe('SideNavPartial', () => {
 		wrapper.unmount();
 	});
 
+	it('does not render social links on the about route', async () => {
+		const { wrapper } = await mountSideNavAt('/about');
+
+		const socialLinks = wrapper.findAll('a[rel="noopener noreferrer"]');
+
+		expect(socialLinks).toHaveLength(0);
+
+		wrapper.unmount();
+	});
+
 	it('shows the avatar on other non-home routes', async () => {
 		const { wrapper } = await mountSideNavAt('/projects');
 
