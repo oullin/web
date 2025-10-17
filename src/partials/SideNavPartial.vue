@@ -74,7 +74,6 @@
 								:href="link.url"
 								target="_blank"
 								rel="noopener noreferrer"
-								:title="link.title"
 								@mouseenter="showTooltip($event, link.title)"
 								@mouseleave="hideTooltip"
 							>
