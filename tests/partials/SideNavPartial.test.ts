@@ -85,18 +85,18 @@ describe('SideNavPartial', () => {
 		debugErrorMock.mockClear();
 	});
 
-	it('hides the avatar on the home route', async () => {
+	it('shows the avatar on the home route', async () => {
 		const { wrapper } = await mountSideNavAt('/');
 
-		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(false);
+		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
 
 		wrapper.unmount();
 	});
 
-	it('hides the avatar on the about route', async () => {
+	it('shows the avatar on the about route', async () => {
 		const { wrapper } = await mountSideNavAt('/about');
 
-		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(false);
+		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
 
 		wrapper.unmount();
 	});
