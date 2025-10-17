@@ -65,12 +65,13 @@
 								</a>
 							</router-link>
 						</li>
-						<template v-if="!isAbout">
+						<template v-if="shouldShowSocialLinks">
 							<li v-if="navSocialLinks.length" class="py-2" aria-hidden="true">
-								<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
+								<div data-testid="side-nav-social-divider" class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
 							</li>
 							<li v-for="link in navSocialLinks" :key="link.name" class="py-2">
 								<a
+									data-testid="side-nav-social-link"
 									class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
 									:href="link.url"
 									target="_blank"
@@ -104,6 +105,9 @@ import { debugError } from '@api/http-error.ts';
 import { useHeaderSocialLinks } from '@/support/social.ts';
 import { useTooltip } from '@/support/tooltips.ts';
 
+const POST_ROUTE_PREFIX = '/post/';
+const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
+
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 const apiStore = useApiStore();
 
@@ -112,11 +116,12 @@ const navSocialLinks = useHeaderSocialLinks(social);
 
 const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
-const isAbout = computed<boolean>(() => currentRoute.path === '/about');
-const showSidebarAvatar = computed<boolean>(() => currentRoute.name !== 'home');
+const shouldShowSocialLinks = computed<boolean>(() => {
+	const { path } = currentRoute;
 
-const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
-const POST_ROUTE_PREFIX = '/post/';
+	return path !== '/about' && !path.startsWith(POST_ROUTE_PREFIX);
+});
+const showSidebarAvatar = computed<boolean>(() => currentRoute.name !== 'home');
 
 const navLayoutClasses = computed<string>(() => {
 	const { name, path } = currentRoute;
