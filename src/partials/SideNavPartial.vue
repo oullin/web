@@ -69,7 +69,15 @@
 							<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
 						</li>
 						<li v-for="link in navSocialLinks" :key="link.name" class="py-2">
-							<a class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting" :href="link.url" target="_blank" rel="noopener noreferrer" :title="link.title">
+							<a
+								class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
+								:href="link.url"
+								target="_blank"
+								rel="noopener noreferrer"
+								:title="link.title"
+								@mouseenter="showTooltip($event, link.title)"
+								@mouseleave="hideTooltip"
+							>
 								<span class="sr-only">{{ link.label }}</span>
 								<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
 									<path :class="link.iconClass" :d="link.icon" />
@@ -81,11 +89,21 @@
 			</div>
 		</div>
 	</div>
+
+	<Teleport to="body">
+		<div
+			v-if="tooltip.show"
+			:style="{ top: tooltip.top, left: tooltip.left }"
+			class="absolute -translate-x-1/2 -translate-y-full mt-[-8px] whitespace-nowrap text-white text-xs rounded-md py-1 px-3 z-50 bg-slate-900 dark:bg-slate-700 side-nav-tooltip"
+		>
+			{{ tooltip.content }}
+		</div>
+	</Teleport>
 </template>
 
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
@@ -96,6 +114,20 @@ const apiStore = useApiStore();
 
 const social = computed(() => apiStore.social);
 const navSocialLinks = useHeaderSocialLinks(social);
+
+interface TooltipState {
+	show: boolean;
+	content: string;
+	top: string;
+	left: string;
+}
+
+const tooltip = ref<TooltipState>({
+	show: false,
+	content: '',
+	top: '0px',
+	left: '0px',
+});
 
 const isHome = computed<boolean>(() => {
 	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
@@ -114,4 +146,25 @@ onMounted(async () => {
 		debugError(error);
 	}
 });
+
+const showTooltip = (event: MouseEvent, tooltipContent: string): void => {
+	const target = event.currentTarget as HTMLElement | null;
+
+	if (!target) {
+		return;
+	}
+
+	const rect = target.getBoundingClientRect();
+
+	tooltip.value = {
+		show: true,
+		content: tooltipContent,
+		top: `${window.scrollY + rect.top}px`,
+		left: `${window.scrollX + rect.left + rect.width / 2}px`,
+	};
+};
+
+const hideTooltip = (): void => {
+	tooltip.value.show = false;
+};
 </script>
