@@ -26,41 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Ref } from 'vue';
 import type { ProfileSkillResponse } from '@api/response/profile-response.ts';
+import { useTooltip } from '@/support/tooltips.ts';
 
 const props = defineProps<{
 	skills: ProfileSkillResponse[];
 }>();
 
-interface TooltipState {
-	show: boolean;
-	content: string;
-	top: string;
-	left: string;
-}
-
-const tooltip: Ref<TooltipState> = ref({
-	show: false,
-	content: '',
-	top: '0px',
-	left: '0px',
-});
-
-const showTooltip = (event: MouseEvent, skillItem: string): void => {
-	const el = event.currentTarget as HTMLElement;
-	const rect = el.getBoundingClientRect();
-
-	tooltip.value = {
-		show: true,
-		content: skillItem,
-		top: `${window.scrollY + rect.top}px`,
-		left: `${window.scrollX + rect.left + rect.width / 2}px`,
-	};
-};
-
-const hideTooltip = (): void => {
-	tooltip.value.show = false;
-};
+const { tooltip, showTooltip, hideTooltip } = useTooltip();
 </script>

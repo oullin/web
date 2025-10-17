@@ -103,11 +103,12 @@
 
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useHeaderSocialLinks } from '@/support/social.ts';
+import { useTooltip } from '@/support/tooltips.ts';
 
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 const apiStore = useApiStore();
@@ -115,19 +116,7 @@ const apiStore = useApiStore();
 const social = computed(() => apiStore.social);
 const navSocialLinks = useHeaderSocialLinks(social);
 
-interface TooltipState {
-	show: boolean;
-	content: string;
-	top: string;
-	left: string;
-}
-
-const tooltip = ref<TooltipState>({
-	show: false,
-	content: '',
-	top: '0px',
-	left: '0px',
-});
+const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
 const isHome = computed<boolean>(() => {
 	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
@@ -146,25 +135,4 @@ onMounted(async () => {
 		debugError(error);
 	}
 });
-
-const showTooltip = (event: MouseEvent, tooltipContent: string): void => {
-	const target = event.currentTarget as HTMLElement | null;
-
-	if (!target) {
-		return;
-	}
-
-	const rect = target.getBoundingClientRect();
-
-	tooltip.value = {
-		show: true,
-		content: tooltipContent,
-		top: `${window.scrollY + rect.top}px`,
-		left: `${window.scrollX + rect.left + rect.width / 2}px`,
-	};
-};
-
-const hideTooltip = (): void => {
-	tooltip.value.show = false;
-};
 </script>
