@@ -89,21 +89,14 @@
 		</div>
 	</div>
 
-	<Teleport to="body">
-		<div
-			v-if="tooltip.show"
-			:style="{ top: tooltip.top, left: tooltip.left }"
-			class="absolute -translate-x-1/2 -translate-y-full mt-[-8px] whitespace-nowrap text-white text-xs rounded-md py-1 px-3 z-50 bg-slate-900 dark:bg-slate-700 side-nav-tooltip"
-		>
-			{{ tooltip.content }}
-		</div>
-	</Teleport>
+	<TooltipOverlay :tooltip="tooltip" overlay-class="side-nav-tooltip" />
 </template>
 
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 import { computed, onMounted } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
+import TooltipOverlay from '@components/TooltipOverlay.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useHeaderSocialLinks } from '@/support/social.ts';
