@@ -105,6 +105,9 @@ import { debugError } from '@api/http-error.ts';
 import { useHeaderSocialLinks } from '@/support/social.ts';
 import { useTooltip } from '@/support/tooltips.ts';
 
+const POST_ROUTE_PREFIX = '/post/';
+const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
+
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 const apiStore = useApiStore();
 
@@ -113,16 +116,12 @@ const navSocialLinks = useHeaderSocialLinks(social);
 
 const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
-const POST_ROUTE_PREFIX = '/post/';
-
 const shouldShowSocialLinks = computed<boolean>(() => {
 	const { name, path } = currentRoute;
 
 	return name !== 'about' && !path.startsWith(POST_ROUTE_PREFIX);
 });
 const showSidebarAvatar = computed<boolean>(() => currentRoute.name !== 'home');
-
-const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
 
 const navLayoutClasses = computed<string>(() => {
 	const { name, path } = currentRoute;
