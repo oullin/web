@@ -65,7 +65,7 @@
 								</a>
 							</router-link>
 						</li>
-						<template v-if="!isAbout">
+						<template v-if="shouldShowSocialLinks">
 							<li v-if="navSocialLinks.length" class="py-2" aria-hidden="true">
 								<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
 							</li>
@@ -112,7 +112,11 @@ const navSocialLinks = useHeaderSocialLinks(social);
 
 const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
-const isAbout = computed<boolean>(() => currentRoute.path === '/about');
+const shouldShowSocialLinks = computed<boolean>(() => {
+	const { path } = currentRoute;
+
+	return path !== '/about' && !path.startsWith(POST_ROUTE_PREFIX);
+});
 const showSidebarAvatar = computed<boolean>(() => currentRoute.name !== 'home');
 
 const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);

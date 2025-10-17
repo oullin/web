@@ -111,6 +111,15 @@ describe('SideNavPartial', () => {
 		wrapper.unmount();
 	});
 
+	it('does not render social links on post detail routes', async () => {
+		const { wrapper } = await mountSideNavAt('/post/example-post');
+
+		expect(wrapper.find('div.mx-auto.h-px.w-8').exists()).toBe(false);
+		expect(wrapper.findAll('a[rel="noopener noreferrer"]').length).toBe(0);
+
+		wrapper.unmount();
+	});
+
 	it('shows the avatar on other non-home routes', async () => {
 		const paths = ['/projects', '/resume', '/post/example-post'];
 
