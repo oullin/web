@@ -2,7 +2,7 @@
 	<div class="sticky top-0 w-16 md:w-24 shrink-0 h-screen overflow-y-auto no-scrollbar border-r border-slate-200 dark:border-slate-800">
 		<div class="h-full flex flex-col justify-between after:flex-1 after:mt-auto">
 			<!-- Sidebar avatar -->
-			<div class="flex justify-center my-4">
+			<div v-if="showSidebarAvatar" class="flex justify-center my-4">
 				<router-link v-lazy-link to="/">
 					<AvatarPartial width="w-16" height="h-16" decoding="async" />
 				</router-link>
@@ -10,7 +10,7 @@
 
 			<!-- Sidebar menu-->
 			<div class="flex-1 grow flex items-start">
-				<nav :class="['w-full pb-10 mt-2', navPaddingTopClass]">
+				<nav :class="['w-full pb-10', navPaddingTopClass, { 'mt-2': !showSidebarAvatar }]">
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
@@ -113,6 +113,7 @@ const navSocialLinks = useHeaderSocialLinks(social);
 const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
 const isAbout = computed<boolean>(() => currentRoute.path === '/about');
+const showSidebarAvatar = computed<boolean>(() => currentRoute.path !== '/');
 
 const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
 const POST_ROUTE_PREFIX = '/post/';

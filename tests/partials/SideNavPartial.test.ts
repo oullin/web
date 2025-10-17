@@ -85,10 +85,10 @@ describe('SideNavPartial', () => {
 		debugErrorMock.mockClear();
 	});
 
-	it('shows the avatar on the home route', async () => {
+	it('hides the avatar on the home route', async () => {
 		const { wrapper } = await mountSideNavAt('/');
 
-		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
+		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(false);
 
 		wrapper.unmount();
 	});
@@ -143,6 +143,17 @@ describe('SideNavPartial', () => {
 		expect(nav.classes()).toContain('pt-16');
 		expect(nav.classes()).not.toContain('pt-12');
 		expect(nav.classes()).not.toContain('md:pt-16');
+		expect(nav.classes()).toContain('mt-2');
+
+		wrapper.unmount();
+	});
+
+	it('does not apply additional top margin when the avatar is visible', async () => {
+		const { wrapper } = await mountSideNavAt('/about');
+
+		const nav = wrapper.find('nav');
+
+		expect(nav.classes()).not.toContain('mt-2');
 
 		wrapper.unmount();
 	});
