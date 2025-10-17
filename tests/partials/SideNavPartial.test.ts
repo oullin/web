@@ -33,10 +33,10 @@ const social: SocialResponse[] = [
 
 const routes = [
 	{ path: '/', name: 'home', component: { template: '<div />' } },
-	{ path: '/about', name: 'about', component: { template: '<div />' } },
-	{ path: '/projects', name: 'projects', component: { template: '<div />' } },
-	{ path: '/resume', name: 'resume', component: { template: '<div />' } },
-	{ path: '/post/:slug', name: 'post', component: { template: '<div />' } },
+	{ path: '/post/:slug', name: 'PostDetail', component: { template: '<div />' } },
+	{ path: '/about', component: { template: '<div />' } },
+	{ path: '/projects', component: { template: '<div />' } },
+	{ path: '/resume', component: { template: '<div />' } },
 ];
 
 function createTestRouter(initialPath: string): Router {
