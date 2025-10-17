@@ -65,6 +65,17 @@
 								</a>
 							</router-link>
 						</li>
+						<li v-if="navSocialLinks.length" class="py-2" aria-hidden="true">
+							<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
+						</li>
+						<li v-for="link in navSocialLinks" :key="link.name" class="py-2">
+							<a class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting" :href="link.url" target="_blank" rel="noopener noreferrer" :title="link.title">
+								<span class="sr-only">{{ link.label }}</span>
+								<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+									<path :class="link.iconClass" :d="link.icon" />
+								</svg>
+							</a>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -74,10 +85,17 @@
 
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
+import { computed, onMounted } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
-import { computed } from 'vue';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import { useHeaderSocialLinks } from '@/support/social.ts';
 
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
+const apiStore = useApiStore();
+
+const social = computed(() => apiStore.social);
+const navSocialLinks = useHeaderSocialLinks(social);
 
 const isHome = computed<boolean>(() => {
 	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
@@ -88,4 +106,12 @@ const isHome = computed<boolean>(() => {
 function bindIconClassFor(isActive: boolean): string {
 	return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
 }
+
+onMounted(async () => {
+	try {
+		await apiStore.fetchSocial();
+	} catch (error) {
+		debugError(error);
+	}
+});
 </script>

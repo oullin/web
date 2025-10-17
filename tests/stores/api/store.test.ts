@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { useApiStore } from '@api/store.ts';
 import type { ApiClient } from '@api/client.ts';
+import type { SocialResponse } from '@api/response/index.ts';
 
 vi.mock('@api/http-error.ts', async () => {
 	const mod = await vi.importActual<typeof import('@api/http-error.ts')>('@api/http-error.ts');
@@ -149,6 +150,71 @@ describe('useApiStore', () => {
 	it('handles social errors', async () => {
 		client.get.mockRejectedValue(new Error('fail'));
 		await expect(store.getSocial()).rejects.toThrow('parsed');
+	});
+
+	it('fetches and caches social links', async () => {
+		const socialData: SocialResponse[] = [
+			{
+				uuid: 'uuid-1',
+				name: 'github',
+				url: 'https://github.example.com',
+				handle: 'github-handle',
+				description: 'GitHub profile',
+			},
+		];
+
+		client.get.mockResolvedValue({ data: socialData, version: '1.0.0' });
+
+		const fetched = await store.fetchSocial();
+
+		expect(client.get).toHaveBeenCalledWith('social');
+		expect(fetched).toEqual(socialData);
+		expect(store.social).toEqual(socialData);
+
+		client.get.mockClear();
+
+		const cached = await store.fetchSocial();
+
+		expect(client.get).not.toHaveBeenCalled();
+		expect(cached).toEqual(socialData);
+	});
+
+	it('forces a refetch of social links when requested', async () => {
+		const firstResponse: SocialResponse[] = [
+			{
+				uuid: 'uuid-1',
+				name: 'github',
+				url: 'https://github.example.com',
+				handle: 'github-handle',
+				description: 'GitHub profile',
+			},
+		];
+
+		const secondResponse: SocialResponse[] = [
+			{
+				uuid: 'uuid-2',
+				name: 'linkedin',
+				url: 'https://linkedin.example.com',
+				handle: 'linkedin-handle',
+				description: 'LinkedIn profile',
+			},
+		];
+
+		client.get.mockResolvedValueOnce({ data: firstResponse, version: '1.0.0' }).mockResolvedValueOnce({ data: secondResponse, version: '1.0.0' });
+
+		await store.fetchSocial();
+
+		const forced = await store.fetchSocial(true);
+
+		expect(client.get).toHaveBeenCalledTimes(2);
+		expect(forced).toEqual(secondResponse);
+		expect(store.social).toEqual(secondResponse);
+	});
+
+	it('propagates errors when fetching social links', async () => {
+		client.get.mockRejectedValue(new Error('fail'));
+
+		await expect(store.fetchSocial()).rejects.toThrow('parsed');
 	});
 
 	it('gets education', async () => {

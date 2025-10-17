@@ -21,6 +21,7 @@ const STORE_KEY = 'api-client-store';
 export interface ApiStoreState {
 	client: ApiClient;
 	searchTerm: string;
+	social: SocialResponse[];
 }
 
 const client = new ApiClient(defaultCreds);
@@ -29,6 +30,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 	state: (): ApiStoreState => ({
 		client: client,
 		searchTerm: '',
+		social: [],
 	}),
 	actions: {
 		setSearchTerm(term: string): void {
@@ -92,6 +94,21 @@ export const useApiStore = defineStore(STORE_KEY, {
 			} catch (error) {
 				return parseError(error);
 			}
+		},
+		async fetchSocial(force = false): Promise<SocialResponse[]> {
+			if (!force && this.social.length > 0) {
+				return this.social;
+			}
+
+			const response = await this.getSocial();
+
+			if (Array.isArray(response.data)) {
+				this.social = response.data;
+			} else {
+				this.social = [];
+			}
+
+			return this.social;
 		},
 		async getEducation(): Promise<ApiResponse<EducationResponse[]>> {
 			const url = 'education';

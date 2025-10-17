@@ -25,22 +25,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { socialPlatforms } from '@/support/social.ts';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import type { SocialResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
-const social = ref<SocialResponse[]>([]);
+const social = computed(() => apiStore.social);
 
 onMounted(async () => {
 	try {
-		const socialResponse = await apiStore.getSocial();
-
-		if (socialResponse.data) {
-			social.value = socialResponse.data;
-		}
+		await apiStore.fetchSocial();
 	} catch (error) {
 		debugError(error);
 	}
