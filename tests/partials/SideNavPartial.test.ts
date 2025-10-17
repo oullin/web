@@ -36,6 +36,7 @@ const routes = [
 	{ path: '/about', name: 'about', component: { template: '<div />' } },
 	{ path: '/projects', name: 'projects', component: { template: '<div />' } },
 	{ path: '/resume', name: 'resume', component: { template: '<div />' } },
+	{ path: '/post/:slug', name: 'post', component: { template: '<div />' } },
 ];
 
 function createTestRouter(initialPath: string): Router {
@@ -92,12 +93,73 @@ describe('SideNavPartial', () => {
 		wrapper.unmount();
 	});
 
-	it('shows the avatar on non-home routes', async () => {
+	it('hides the avatar on the about route', async () => {
 		const { wrapper } = await mountSideNavAt('/about');
 
-		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
+		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(false);
 
 		wrapper.unmount();
+	});
+
+	it('does not render social links on the about route', async () => {
+		const { wrapper } = await mountSideNavAt('/about');
+
+		const socialLinks = wrapper.findAll('a[rel="noopener noreferrer"]');
+
+		expect(socialLinks).toHaveLength(0);
+
+		wrapper.unmount();
+	});
+
+	it('shows the avatar on other non-home routes', async () => {
+		const paths = ['/projects', '/resume', '/post/example-post'];
+
+		for (const path of paths) {
+			const { wrapper } = await mountSideNavAt(path);
+
+			expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
+
+			wrapper.unmount();
+		}
+	});
+
+	it('omits social links on the about route', async () => {
+		const { wrapper, fetchSocialMock } = await mountSideNavAt('/about');
+
+		await flushPromises();
+
+		expect(fetchSocialMock).toHaveBeenCalled();
+		expect(wrapper.find('div.mx-auto.h-px.w-8').exists()).toBe(false);
+		expect(wrapper.findAll('a[rel="noopener noreferrer"]').length).toBe(0);
+
+		wrapper.unmount();
+	});
+
+	it('uses default nav padding on the home route', async () => {
+		const { wrapper } = await mountSideNavAt('/');
+
+		const nav = wrapper.find('nav');
+
+		expect(nav.classes()).toContain('pt-16');
+		expect(nav.classes()).not.toContain('pt-12');
+		expect(nav.classes()).not.toContain('md:pt-16');
+
+		wrapper.unmount();
+	});
+
+	it('aligns nav padding with the main content on content-aligned routes', async () => {
+		const paths = ['/about', '/projects', '/resume', '/post/example-post'];
+
+		for (const path of paths) {
+			const { wrapper } = await mountSideNavAt(path);
+
+			const nav = wrapper.find('nav');
+
+			expect(nav.classes()).toContain('pt-12');
+			expect(nav.classes()).toContain('md:pt-16');
+
+			wrapper.unmount();
+		}
 	});
 
 	it('renders social links after the primary navigation', async () => {

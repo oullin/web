@@ -2,7 +2,7 @@
 	<div class="sticky top-0 w-16 md:w-24 shrink-0 h-screen overflow-y-auto no-scrollbar border-r border-slate-200 dark:border-slate-800">
 		<div class="h-full flex flex-col justify-between after:flex-1 after:mt-auto">
 			<!-- Sidebar avatar -->
-			<div v-if="!isHome" class="flex justify-center my-4">
+			<div v-if="!isHome && !isAbout" class="flex justify-center my-4">
 				<router-link v-lazy-link to="/">
 					<AvatarPartial width="w-16" height="h-16" loading="lazy" decoding="async" fetchpriority="low" />
 				</router-link>
@@ -10,7 +10,7 @@
 
 			<!-- Sidebar menu-->
 			<div class="flex-1 grow flex items-start">
-				<nav class="w-full pt-16 pb-10">
+				<nav :class="['w-full pb-10', navPaddingTopClass]">
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
@@ -65,24 +65,26 @@
 								</a>
 							</router-link>
 						</li>
-						<li v-if="navSocialLinks.length" class="py-2" aria-hidden="true">
-							<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
-						</li>
-						<li v-for="link in navSocialLinks" :key="link.name" class="py-2">
-							<a
-								class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
-								:href="link.url"
-								target="_blank"
-								rel="noopener noreferrer"
-								@mouseenter="showTooltip($event, link.title)"
-								@mouseleave="hideTooltip"
-							>
-								<span class="sr-only">{{ link.label }}</span>
-								<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-									<path :class="link.iconClass" :d="link.icon" />
-								</svg>
-							</a>
-						</li>
+						<template v-if="!isAbout">
+							<li v-if="navSocialLinks.length" class="py-2" aria-hidden="true">
+								<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
+							</li>
+							<li v-for="link in navSocialLinks" :key="link.name" class="py-2">
+								<a
+									class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
+									:href="link.url"
+									target="_blank"
+									rel="noopener noreferrer"
+									@mouseenter="showTooltip($event, link.title)"
+									@mouseleave="hideTooltip"
+								>
+									<span class="sr-only">{{ link.label }}</span>
+									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+										<path :class="link.iconClass" :d="link.icon" />
+									</svg>
+								</a>
+							</li>
+						</template>
 					</ul>
 				</nav>
 			</div>
@@ -114,6 +116,25 @@ const isHome = computed<boolean>(() => {
 	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
 	// even when query parameters are present (e.g. `/?foo=bar`).
 	return currentRoute.path === '/';
+});
+
+const isAbout = computed<boolean>(() => currentRoute.path === '/about');
+
+const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
+const POST_ROUTE_PREFIX = '/post/';
+
+const navPaddingTopClass = computed<string>(() => {
+	const { path } = currentRoute;
+
+	if (path === '/') {
+		return 'pt-16';
+	}
+
+	if (path.startsWith(POST_ROUTE_PREFIX) || CONTENT_ALIGNED_ROUTES.has(path)) {
+		return 'pt-12 md:pt-16';
+	}
+
+	return 'pt-16';
 });
 
 function bindIconClassFor(isActive: boolean): string {
