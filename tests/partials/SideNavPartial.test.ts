@@ -104,7 +104,7 @@ describe('SideNavPartial', () => {
 	it('does not render social links on the about route', async () => {
 		const { wrapper } = await mountSideNavAt('/about');
 
-		const socialLinks = wrapper.findAll('a[rel="noopener noreferrer"]');
+		const socialLinks = wrapper.findAll('[data-testid="side-nav-social-link"]');
 
 		expect(socialLinks).toHaveLength(0);
 
@@ -114,8 +114,8 @@ describe('SideNavPartial', () => {
 	it('does not render social links on post detail routes', async () => {
 		const { wrapper } = await mountSideNavAt('/post/example-post');
 
-		expect(wrapper.find('div.mx-auto.h-px.w-8').exists()).toBe(false);
-		expect(wrapper.findAll('a[rel="noopener noreferrer"]').length).toBe(0);
+		expect(wrapper.find('[data-testid="side-nav-social-divider"]').exists()).toBe(false);
+		expect(wrapper.findAll('[data-testid="side-nav-social-link"]').length).toBe(0);
 
 		wrapper.unmount();
 	});
@@ -138,8 +138,8 @@ describe('SideNavPartial', () => {
 		await flushPromises();
 
 		expect(fetchSocialMock).toHaveBeenCalled();
-		expect(wrapper.find('div.mx-auto.h-px.w-8').exists()).toBe(false);
-		expect(wrapper.findAll('a[rel="noopener noreferrer"]').length).toBe(0);
+		expect(wrapper.find('[data-testid="side-nav-social-divider"]').exists()).toBe(false);
+		expect(wrapper.findAll('[data-testid="side-nav-social-link"]').length).toBe(0);
 
 		wrapper.unmount();
 	});
@@ -185,7 +185,7 @@ describe('SideNavPartial', () => {
 	it('renders social links after the primary navigation', async () => {
 		const { wrapper, fetchSocialMock } = await mountSideNavAt('/projects');
 
-		const socialLinks = wrapper.findAll('a[rel="noopener noreferrer"]');
+		const socialLinks = wrapper.findAll('[data-testid="side-nav-social-link"]');
 
 		expect(fetchSocialMock).toHaveBeenCalled();
 		expect(socialLinks).toHaveLength(social.length);
@@ -194,7 +194,7 @@ describe('SideNavPartial', () => {
 		expect(socialLinks[0].find('svg').classes()).toContain('fill-current');
 		expect(socialLinks[1].find('svg').classes()).toContain('fill-current');
 
-		const separator = wrapper.find('div.mx-auto.h-px.w-8');
+		const separator = wrapper.find('[data-testid="side-nav-social-divider"]');
 		expect(separator.exists()).toBe(true);
 
 		wrapper.unmount();
@@ -203,7 +203,7 @@ describe('SideNavPartial', () => {
 	it('shows and hides a tooltip for social links on hover', async () => {
 		const { wrapper } = await mountSideNavAt('/projects');
 
-		const socialLink = wrapper.find('a[rel="noopener noreferrer"]');
+		const socialLink = wrapper.find('[data-testid="side-nav-social-link"]');
 		expect(socialLink.exists()).toBe(true);
 
 		await socialLink.trigger('mouseenter');

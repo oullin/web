@@ -67,10 +67,11 @@
 						</li>
 						<template v-if="shouldShowSocialLinks">
 							<li v-if="navSocialLinks.length" class="py-2" aria-hidden="true">
-								<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
+								<div data-testid="side-nav-social-divider" class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
 							</li>
 							<li v-for="link in navSocialLinks" :key="link.name" class="py-2">
 								<a
+									data-testid="side-nav-social-link"
 									class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
 									:href="link.url"
 									target="_blank"
