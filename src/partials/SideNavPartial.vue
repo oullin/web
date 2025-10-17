@@ -10,7 +10,7 @@
 
 			<!-- Sidebar menu-->
 			<div class="flex-1 grow flex items-start">
-				<nav :class="['w-full pb-10', navPaddingTopClass, { 'mt-2': !showSidebarAvatar }]">
+				<nav :class="['w-full pb-10', navLayoutClasses]">
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
@@ -118,18 +118,19 @@ const showSidebarAvatar = computed<boolean>(() => currentRoute.path !== '/');
 const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
 const POST_ROUTE_PREFIX = '/post/';
 
-const navPaddingTopClass = computed<string>(() => {
+const navLayoutClasses = computed<string>(() => {
 	const { path } = currentRoute;
+	const classes: string[] = [];
 
 	if (path === '/') {
-		return 'pt-16';
+		classes.push('pt-16', 'mt-2');
+	} else if (path.startsWith(POST_ROUTE_PREFIX) || CONTENT_ALIGNED_ROUTES.has(path)) {
+		classes.push('pt-12', 'md:pt-16');
+	} else {
+		classes.push('pt-16');
 	}
 
-	if (path.startsWith(POST_ROUTE_PREFIX) || CONTENT_ALIGNED_ROUTES.has(path)) {
-		return 'pt-12 md:pt-16';
-	}
-
-	return 'pt-16';
+	return classes.join(' ');
 });
 
 function bindIconClassFor(isActive: boolean): string {
