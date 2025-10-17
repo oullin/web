@@ -11,7 +11,8 @@ describe('TooltipOverlay', () => {
 			props: { tooltip },
 		});
 
-		expect(document.body.querySelector('.side-nav-tooltip')).toBeNull();
+		const tooltipElement = document.body.querySelector('.absolute.-translate-x-1\\/2');
+		expect(tooltipElement).toBeNull();
 
 		wrapper.unmount();
 	});
