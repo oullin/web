@@ -113,9 +113,9 @@ const navSocialLinks = useHeaderSocialLinks(social);
 const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
 const shouldShowSocialLinks = computed<boolean>(() => {
-	const { path } = currentRoute;
+	const { name, path } = currentRoute;
 
-	return path !== '/about' && !path.startsWith(POST_ROUTE_PREFIX);
+	return name !== 'about' && !path.startsWith(POST_ROUTE_PREFIX);
 });
 const showSidebarAvatar = computed<boolean>(() => currentRoute.name !== 'home');
 
