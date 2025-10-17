@@ -120,7 +120,22 @@ const isHome = computed<boolean>(() => {
 
 const isAbout = computed<boolean>(() => currentRoute.path === '/about');
 
-const navPaddingTopClass = computed<string>(() => (isAbout.value ? 'pt-28 md:pt-32' : 'pt-16'));
+const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
+const POST_ROUTE_PREFIX = '/post/';
+
+const navPaddingTopClass = computed<string>(() => {
+	const { path } = currentRoute;
+
+	if (path === '/') {
+		return 'pt-16';
+	}
+
+	if (path.startsWith(POST_ROUTE_PREFIX) || CONTENT_ALIGNED_ROUTES.has(path)) {
+		return 'pt-12 md:pt-16';
+	}
+
+	return 'pt-16';
+});
 
 function bindIconClassFor(isActive: boolean): string {
 	return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
