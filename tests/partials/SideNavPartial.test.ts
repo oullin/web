@@ -112,11 +112,15 @@ describe('SideNavPartial', () => {
 	});
 
 	it('shows the avatar on other non-home routes', async () => {
-		const { wrapper } = await mountSideNavAt('/projects');
+		const paths = ['/projects', '/resume', '/post/example-post'];
 
-		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
+		for (const path of paths) {
+			const { wrapper } = await mountSideNavAt(path);
 
-		wrapper.unmount();
+			expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
+
+			wrapper.unmount();
+		}
 	});
 
 	it('omits social links on the about route', async () => {
