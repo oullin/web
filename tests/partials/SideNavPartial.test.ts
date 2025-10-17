@@ -2,6 +2,7 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createRouter, createMemoryHistory } from 'vue-router';
 import type { Router } from 'vue-router';
+import { nextTick } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import { createPinia, setActivePinia } from 'pinia';
@@ -113,6 +114,31 @@ describe('SideNavPartial', () => {
 
 		const separator = wrapper.find('div.mx-auto.h-px.w-8');
 		expect(separator.exists()).toBe(true);
+
+		wrapper.unmount();
+	});
+
+	it('shows and hides a tooltip for social links on hover', async () => {
+		const { wrapper } = await mountSideNavAt('/projects');
+
+		const socialLink = wrapper.find('a[rel="noopener noreferrer"]');
+		expect(socialLink.exists()).toBe(true);
+
+		await socialLink.trigger('mouseenter');
+		await nextTick();
+
+		const tooltip = document.body.querySelector('.side-nav-tooltip') as HTMLElement | null;
+
+		expect(tooltip).not.toBeNull();
+		expect(tooltip?.textContent?.trim()).toBe('GitHub profile');
+		expect(tooltip?.style.top).not.toBe('');
+		expect(tooltip?.style.left).not.toBe('');
+
+		await socialLink.trigger('mouseleave');
+		await nextTick();
+
+		const hiddenTooltip = document.body.querySelector('.side-nav-tooltip');
+		expect(hiddenTooltip).toBeNull();
 
 		wrapper.unmount();
 	});

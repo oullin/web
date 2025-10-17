@@ -14,53 +14,17 @@
 		</ul>
 	</div>
 
-	<Teleport to="body">
-		<div
-			v-if="tooltip.show"
-			:style="{ top: tooltip.top, left: tooltip.left }"
-			class="absolute -translate-x-1/2 -translate-y-full mt-[-8px] whitespace-nowrap text-white text-xs rounded-md py-1 px-3 z-50 bg-slate-900 dark:bg-slate-700"
-		>
-			{{ tooltip.content }}
-		</div>
-	</Teleport>
+	<TooltipOverlay :tooltip="tooltip" />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Ref } from 'vue';
 import type { ProfileSkillResponse } from '@api/response/profile-response.ts';
+import { useTooltip } from '@/support/tooltips.ts';
+import TooltipOverlay from '@components/TooltipOverlay.vue';
 
 const props = defineProps<{
 	skills: ProfileSkillResponse[];
 }>();
 
-interface TooltipState {
-	show: boolean;
-	content: string;
-	top: string;
-	left: string;
-}
-
-const tooltip: Ref<TooltipState> = ref({
-	show: false,
-	content: '',
-	top: '0px',
-	left: '0px',
-});
-
-const showTooltip = (event: MouseEvent, skillItem: string): void => {
-	const el = event.currentTarget as HTMLElement;
-	const rect = el.getBoundingClientRect();
-
-	tooltip.value = {
-		show: true,
-		content: skillItem,
-		top: `${window.scrollY + rect.top}px`,
-		left: `${window.scrollX + rect.left + rect.width / 2}px`,
-	};
-};
-
-const hideTooltip = (): void => {
-	tooltip.value.show = false;
-};
+const { tooltip, showTooltip, hideTooltip } = useTooltip();
 </script>

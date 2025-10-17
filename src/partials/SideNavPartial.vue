@@ -9,8 +9,8 @@
 			</div>
 
 			<!-- Sidebar menu-->
-			<div class="flex-1 grow flex items-center">
-				<nav class="w-full">
+			<div class="flex-1 grow flex items-start">
+				<nav class="w-full pt-16 pb-10">
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
@@ -69,7 +69,14 @@
 							<div class="mx-auto h-px w-8 bg-slate-200 dark:bg-slate-700"></div>
 						</li>
 						<li v-for="link in navSocialLinks" :key="link.name" class="py-2">
-							<a class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting" :href="link.url" target="_blank" rel="noopener noreferrer" :title="link.title">
+							<a
+								class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
+								:href="link.url"
+								target="_blank"
+								rel="noopener noreferrer"
+								@mouseenter="showTooltip($event, link.title)"
+								@mouseleave="hideTooltip"
+							>
 								<span class="sr-only">{{ link.label }}</span>
 								<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
 									<path :class="link.iconClass" :d="link.icon" />
@@ -81,21 +88,27 @@
 			</div>
 		</div>
 	</div>
+
+	<TooltipOverlay :tooltip="tooltip" overlay-class="side-nav-tooltip" />
 </template>
 
 <script setup lang="ts">
 import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 import { computed, onMounted } from 'vue';
 import AvatarPartial from '@partials/AvatarPartial.vue';
+import TooltipOverlay from '@components/TooltipOverlay.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useHeaderSocialLinks } from '@/support/social.ts';
+import { useTooltip } from '@/support/tooltips.ts';
 
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 const apiStore = useApiStore();
 
 const social = computed(() => apiStore.social);
 const navSocialLinks = useHeaderSocialLinks(social);
+
+const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
 const isHome = computed<boolean>(() => {
 	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
