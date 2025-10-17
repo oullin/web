@@ -10,7 +10,7 @@
 
 			<!-- Sidebar menu-->
 			<div class="flex-1 grow flex items-start">
-				<nav :class="['w-full pb-10', navPaddingTopClass]">
+				<nav :class="['w-full pb-10 mt-2', navPaddingTopClass]">
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
