@@ -2,7 +2,7 @@
 	<div class="sticky top-0 w-16 md:w-24 shrink-0 h-screen overflow-y-auto no-scrollbar border-r border-slate-200 dark:border-slate-800">
 		<div class="h-full flex flex-col justify-between after:flex-1 after:mt-auto">
 			<!-- Sidebar avatar -->
-			<div v-if="!isHome && !isAbout" class="flex justify-center my-4">
+			<div class="flex justify-center my-4">
 				<router-link v-lazy-link to="/">
 					<AvatarPartial width="w-16" height="h-16" loading="lazy" decoding="async" fetchpriority="low" />
 				</router-link>
@@ -111,12 +111,6 @@ const social = computed(() => apiStore.social);
 const navSocialLinks = useHeaderSocialLinks(social);
 
 const { tooltip, showTooltip, hideTooltip } = useTooltip();
-
-const isHome = computed<boolean>(() => {
-	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
-	// even when query parameters are present (e.g. `/?foo=bar`).
-	return currentRoute.path === '/';
-});
 
 const isAbout = computed<boolean>(() => currentRoute.path === '/about');
 
