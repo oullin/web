@@ -92,10 +92,52 @@ describe('SideNavPartial', () => {
 		wrapper.unmount();
 	});
 
-	it('shows the avatar on non-home routes', async () => {
+	it('hides the avatar on the about route', async () => {
 		const { wrapper } = await mountSideNavAt('/about');
 
+		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(false);
+
+		wrapper.unmount();
+	});
+
+	it('shows the avatar on other non-home routes', async () => {
+		const { wrapper } = await mountSideNavAt('/projects');
+
 		expect(wrapper.findComponent(AvatarPartial).exists()).toBe(true);
+
+		wrapper.unmount();
+	});
+
+	it('omits social links on the about route', async () => {
+		const { wrapper, fetchSocialMock } = await mountSideNavAt('/about');
+
+		await flushPromises();
+
+		expect(fetchSocialMock).toHaveBeenCalled();
+		expect(wrapper.find('div.mx-auto.h-px.w-8').exists()).toBe(false);
+		expect(wrapper.findAll('a[rel="noopener noreferrer"]').length).toBe(0);
+
+		wrapper.unmount();
+	});
+
+	it('applies extended nav padding on the about route', async () => {
+		const { wrapper } = await mountSideNavAt('/about');
+
+		const nav = wrapper.find('nav');
+
+		expect(nav.classes()).toContain('pt-28');
+		expect(nav.classes()).toContain('md:pt-32');
+
+		wrapper.unmount();
+	});
+
+	it('uses default nav padding on the home route', async () => {
+		const { wrapper } = await mountSideNavAt('/');
+
+		const nav = wrapper.find('nav');
+
+		expect(nav.classes()).toContain('pt-16');
+		expect(nav.classes()).not.toContain('pt-28');
 
 		wrapper.unmount();
 	});

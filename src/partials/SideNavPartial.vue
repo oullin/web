@@ -10,7 +10,7 @@
 
 			<!-- Sidebar menu-->
 			<div class="flex-1 grow flex items-start">
-				<nav class="w-full pt-16 pb-10">
+				<nav :class="['w-full pb-10', navPaddingTopClass]">
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
@@ -119,6 +119,8 @@ const isHome = computed<boolean>(() => {
 });
 
 const isAbout = computed<boolean>(() => currentRoute.path === '/about');
+
+const navPaddingTopClass = computed<string>(() => (isAbout.value ? 'pt-28 md:pt-32' : 'pt-16'));
 
 function bindIconClassFor(isActive: boolean): string {
 	return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
