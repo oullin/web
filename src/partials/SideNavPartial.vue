@@ -113,16 +113,16 @@ const navSocialLinks = useHeaderSocialLinks(social);
 const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
 const isAbout = computed<boolean>(() => currentRoute.path === '/about');
-const showSidebarAvatar = computed<boolean>(() => currentRoute.path !== '/');
+const showSidebarAvatar = computed<boolean>(() => currentRoute.name !== 'home');
 
 const CONTENT_ALIGNED_ROUTES = new Set(['/about', '/projects', '/resume']);
 const POST_ROUTE_PREFIX = '/post/';
 
 const navLayoutClasses = computed<string>(() => {
-	const { path } = currentRoute;
+	const { name, path } = currentRoute;
 	const classes: string[] = [];
 
-	if (path === '/') {
+	if (name === 'home') {
 		classes.push('pt-16', 'mt-2');
 	} else if (path.startsWith(POST_ROUTE_PREFIX) || CONTENT_ALIGNED_ROUTES.has(path)) {
 		classes.push('pt-12', 'md:pt-16');
