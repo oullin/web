@@ -4,7 +4,7 @@
 			<!-- Sidebar avatar -->
 			<div class="flex justify-center my-4">
 				<router-link v-lazy-link to="/">
-					<AvatarPartial width="w-16" height="h-16" loading="lazy" decoding="async" fetchpriority="low" />
+					<AvatarPartial width="w-16" height="h-16" decoding="async" />
 				</router-link>
 			</div>
 
