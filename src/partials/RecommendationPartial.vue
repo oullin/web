@@ -1,5 +1,5 @@
 <template>
-	<section class="space-y-8" :style="{ '--recommendations-section-min': recommendationsSectionMinHeight }">
+	<section class="space-y-8" :style="recommendationsSectionStyle">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
 			<BackToTopLink :target="backToTopTarget" />
@@ -61,7 +61,11 @@ const { recommendations, backToTopTarget } = toRefs(props);
 
 const ITEMS_PER_PAGE = 3;
 
+const RECOMMENDATIONS_SECTION_MIN_VARIABLE = '--recommendations-section-min';
 const recommendationsSectionMinHeight = `${Heights.resumeSectionMinHeights().recommendations.base}rem`;
+const recommendationsSectionStyle = computed(() => ({
+	[RECOMMENDATIONS_SECTION_MIN_VARIABLE]: recommendationsSectionMinHeight,
+}));
 
 const processedRecommendations = computed(() => {
 	return recommendations.value.map((item) => {
