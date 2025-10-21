@@ -14,7 +14,8 @@
 }
 
 .recommendations-list {
-	@apply h-96 overflow-y-auto pr-2;
+	height: 33.6rem;
+	@apply overflow-y-auto pr-2;
 	@apply scroll-smooth;
 }
 

@@ -9,13 +9,13 @@ export class Heights {
 	private static readonly minInResume = Object.freeze({
 		education: Object.freeze({ base: 26, lg: 28 }),
 		experience: Object.freeze({ base: 34, lg: 36 }),
-		recommendations: Object.freeze({ base: 30, lg: 32 }),
+		recommendations: Object.freeze({ base: 42, lg: 44.8 }),
 	} satisfies SectionMinMap);
 
 	private static readonly classesInResume = Object.freeze({
 		education: 'min-h-[26rem] lg:min-h-[28rem]',
 		experience: 'min-h-[34rem] lg:min-h-[36rem]',
-		recommendations: 'min-h-[30rem] lg:min-h-[32rem]',
+		recommendations: 'min-h-[42rem] lg:min-h-[44.8rem]',
 	} satisfies SectionClassMap);
 
 	private static readonly safeInResume = Object.freeze([
@@ -23,10 +23,10 @@ export class Heights {
 		'lg:min-h-[28rem]',
 		'min-h-[34rem]',
 		'lg:min-h-[36rem]',
-		'min-h-[30rem]',
-		'lg:min-h-[32rem]',
-		'min-h-[96rem]',
-		'lg:min-h-[102rem]',
+		'min-h-[42rem]',
+		'lg:min-h-[44.8rem]',
+		'min-h-[108rem]',
+		'lg:min-h-[114.8rem]',
 	] satisfies SectionSafe);
 
 	static resumeSectionMinHeights(): SectionMinMap {
