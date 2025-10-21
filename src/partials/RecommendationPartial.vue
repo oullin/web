@@ -4,7 +4,7 @@
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
 			<BackToTopLink :target="backToTopTarget" />
 		</div>
-		<ul class="space-y-8">
+		<ul class="recommendations-list space-y-8">
 			<!-- Item -->
 			<li v-for="item in paginatedRecommendations" :key="item.uuid" class="relative group">
 				<div class="flex items-start">
