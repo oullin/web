@@ -14,7 +14,7 @@ export interface PaginationResponse<T> {
 }
 
 export function usePagination<T>(items: ComputedRef<readonly T[]> | Ref<readonly T[]>, { itemsPerPage, initialPage = 1 }: UsePaginationOptions): PaginationResponse<T> {
-	const currentPage = ref(initialPage);
+	const currentPage = ref(Math.max(1, initialPage));
 
 	const totalPages = computed(() => Math.max(1, Math.ceil(items.value.length / Math.max(1, itemsPerPage))));
 
@@ -24,8 +24,8 @@ export function usePagination<T>(items: ComputedRef<readonly T[]> | Ref<readonly
 		return items.value.slice(start, start + itemsPerPage);
 	});
 
-	const isFirstPage = computed(() => currentPage.value === 1);
-	const isLastPage = computed(() => currentPage.value === totalPages.value);
+	const isFirstPage = computed(() => currentPage.value <= 1);
+	const isLastPage = computed(() => currentPage.value >= totalPages.value);
 
 	watch(
 		[items, () => items.value.length],

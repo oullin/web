@@ -64,4 +64,11 @@ describe('usePagination', () => {
 
 		expect(pagination.totalPages.value).toBe(1);
 	});
+
+	it('normalises invalid initial pages to the first page', () => {
+		const items = ref([1, 2, 3]);
+		const pagination = usePagination(items, { itemsPerPage: 1, initialPage: 0 });
+
+		expect(pagination.currentPage.value).toBe(1);
+	});
 });
