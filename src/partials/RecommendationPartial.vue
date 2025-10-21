@@ -29,27 +29,15 @@
 				</div>
 			</li>
 		</ul>
-		<nav v-if="hasMultiplePages" aria-label="Recommendations pagination" class="flex flex-wrap items-center justify-end gap-3 text-sm text-slate-500 dark:text-slate-400">
-			<p class="font-medium">Page {{ currentPage }} of {{ totalPages }}</p>
-			<div class="flex items-center gap-2">
-				<button
-					type="button"
-					class="btn btn-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
-					:disabled="isFirstPage"
-					@click="goToPreviousPage"
-				>
-					Previous
-				</button>
-				<button
-					type="button"
-					class="btn btn-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
-					:disabled="isLastPage"
-					@click="goToNextPage"
-				>
-					Next
-				</button>
-			</div>
-		</nav>
+		<PaginationControls
+			:current-page="currentPage"
+			:total-pages="totalPages"
+			aria-label="Recommendations pagination"
+			previous-label="Previous"
+			next-label="Next"
+			@previous="goToPreviousPage"
+			@next="goToNextPage"
+		/>
 	</section>
 </template>
 
@@ -57,6 +45,7 @@
 import { computed, toRefs, ref, watch } from 'vue';
 import DOMPurify from 'dompurify';
 import BackToTopLink from '@partials/BackToTopLink.vue';
+import PaginationControls from '@components/PaginationControls.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
@@ -92,7 +81,6 @@ const paginatedRecommendations = computed(() => {
 	return processedRecommendations.value.slice(start, start + ITEMS_PER_PAGE);
 });
 
-const hasMultiplePages = computed(() => totalPages.value > 1);
 const isFirstPage = computed(() => currentPage.value === 1);
 const isLastPage = computed(() => currentPage.value === totalPages.value);
 
