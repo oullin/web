@@ -72,7 +72,5 @@ const processedRecommendations = computed(() => {
 	});
 });
 
-const { currentPage, totalPages, paginatedItems, goToPreviousPage, goToNextPage } = usePagination(processedRecommendations, { itemsPerPage: ITEMS_PER_PAGE });
-
-const paginatedRecommendations = paginatedItems;
+const { currentPage, totalPages, paginatedItems: paginatedRecommendations, goToPreviousPage, goToNextPage } = usePagination(processedRecommendations, { itemsPerPage: ITEMS_PER_PAGE });
 </script>
