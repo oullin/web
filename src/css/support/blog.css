@@ -14,7 +14,8 @@
 }
 
 .recommendations-list {
-	@apply h-96 overflow-y-auto pr-2;
+	height: calc(var(--recommendations-section-min) * 0.8);
+	@apply overflow-y-auto pr-2;
 	@apply scroll-smooth;
 }
 

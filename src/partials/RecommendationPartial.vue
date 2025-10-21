@@ -1,10 +1,10 @@
 <template>
-	<section class="space-y-8">
+	<section class="space-y-8" :style="recommendationsSectionStyle">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
 			<BackToTopLink :target="backToTopTarget" />
 		</div>
-		<ul class="recommendations-list space-y-8">
+		<ul class="recommendations-list custom-scrollbar space-y-8">
 			<!-- Item -->
 			<li v-for="item in paginatedRecommendations" :key="item.uuid" class="relative group">
 				<div class="flex items-start">
@@ -50,6 +50,7 @@ import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
 import { usePagination } from '@/support/pagination.ts';
+import { Heights } from '@/support/heights.ts';
 
 const props = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
@@ -59,6 +60,12 @@ const props = defineProps<{
 const { recommendations, backToTopTarget } = toRefs(props);
 
 const ITEMS_PER_PAGE = 3;
+
+const RECOMMENDATIONS_SECTION_MIN_VARIABLE = '--recommendations-section-min';
+const recommendationsSectionMinHeight = `${Heights.resumeSectionMinHeights().recommendations.base}rem`;
+const recommendationsSectionStyle = computed(() => ({
+	[RECOMMENDATIONS_SECTION_MIN_VARIABLE]: recommendationsSectionMinHeight,
+}));
 
 const processedRecommendations = computed(() => {
 	return recommendations.value.map((item) => {
