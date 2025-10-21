@@ -42,13 +42,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, ref, watch } from 'vue';
+import { computed, toRefs } from 'vue';
 import DOMPurify from 'dompurify';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import PaginationControls from '@components/PaginationControls.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
+import { usePagination } from '@/support/pagination.ts';
 
 const props = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
@@ -58,8 +59,6 @@ const props = defineProps<{
 const { recommendations, backToTopTarget } = toRefs(props);
 
 const ITEMS_PER_PAGE = 3;
-
-const currentPage = ref(1);
 
 const processedRecommendations = computed(() => {
 	return recommendations.value.map((item) => {
@@ -73,42 +72,7 @@ const processedRecommendations = computed(() => {
 	});
 });
 
-const totalPages = computed(() => Math.max(1, Math.ceil(processedRecommendations.value.length / ITEMS_PER_PAGE)));
+const { currentPage, totalPages, paginatedItems, goToPreviousPage, goToNextPage } = usePagination(processedRecommendations, { itemsPerPage: ITEMS_PER_PAGE });
 
-const paginatedRecommendations = computed(() => {
-	const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
-
-	return processedRecommendations.value.slice(start, start + ITEMS_PER_PAGE);
-});
-
-const isFirstPage = computed(() => currentPage.value === 1);
-const isLastPage = computed(() => currentPage.value === totalPages.value);
-
-watch(
-	processedRecommendations,
-	(items) => {
-		if (!items.length) {
-			currentPage.value = 1;
-
-			return;
-		}
-
-		if (currentPage.value > totalPages.value) {
-			currentPage.value = totalPages.value;
-		}
-	},
-	{ immediate: true },
-);
-
-const goToPreviousPage = () => {
-	if (!isFirstPage.value) {
-		currentPage.value -= 1;
-	}
-};
-
-const goToNextPage = () => {
-	if (!isLastPage.value) {
-		currentPage.value += 1;
-	}
-};
+const paginatedRecommendations = paginatedItems;
 </script>
