@@ -6,7 +6,7 @@
 		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
-			<li v-for="item in processedRecommendations" :key="item.uuid" class="relative group">
+			<li v-for="item in paginatedRecommendations" :key="item.uuid" class="relative group">
 				<div class="flex items-start">
 					<div
 						class="absolute left-0 h-14 w-14 flex items-center justify-center dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
@@ -29,6 +29,15 @@
 				</div>
 			</li>
 		</ul>
+		<PaginationControls
+			:current-page="currentPage"
+			:total-pages="totalPages"
+			aria-label="Recommendations pagination"
+			previous-label="Previous"
+			next-label="Next"
+			@previous="goToPreviousPage"
+			@next="goToNextPage"
+		/>
 	</section>
 </template>
 
@@ -36,9 +45,11 @@
 import { computed, toRefs } from 'vue';
 import DOMPurify from 'dompurify';
 import BackToTopLink from '@partials/BackToTopLink.vue';
+import PaginationControls from '@components/PaginationControls.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
+import { usePagination } from '@/support/pagination.ts';
 
 const props = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
@@ -46,6 +57,8 @@ const props = defineProps<{
 }>();
 
 const { recommendations, backToTopTarget } = toRefs(props);
+
+const ITEMS_PER_PAGE = 3;
 
 const processedRecommendations = computed(() => {
 	return recommendations.value.map((item) => {
@@ -58,4 +71,6 @@ const processedRecommendations = computed(() => {
 		};
 	});
 });
+
+const { currentPage, totalPages, paginatedItems: paginatedRecommendations, goToPreviousPage, goToNextPage } = usePagination(processedRecommendations, { itemsPerPage: ITEMS_PER_PAGE });
 </script>
