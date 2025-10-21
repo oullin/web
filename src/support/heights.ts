@@ -12,22 +12,22 @@ export class Heights {
 		recommendations: Object.freeze({ base: 42, lg: 44.8 }),
 	} satisfies SectionMinMap);
 
-	private static readonly classesInResume = Object.freeze({
-		education: 'min-h-[26rem] lg:min-h-[28rem]',
-		experience: 'min-h-[34rem] lg:min-h-[36rem]',
-		recommendations: 'min-h-[42rem] lg:min-h-[44.8rem]',
-	} satisfies SectionClassMap);
+	private static get classesInResume(): SectionClassMap {
+		const buildClasses = (section: SectionMin) => `min-h-[${section.base}rem] lg:min-h-[${section.lg}rem]`;
 
-	private static readonly safeInResume = Object.freeze([
-		'min-h-[26rem]',
-		'lg:min-h-[28rem]',
-		'min-h-[34rem]',
-		'lg:min-h-[36rem]',
-		'min-h-[42rem]',
-		'lg:min-h-[44.8rem]',
-		'min-h-[108rem]',
-		'lg:min-h-[114.8rem]',
-	] satisfies SectionSafe);
+		return Object.freeze({
+			education: buildClasses(this.minInResume.education),
+			experience: buildClasses(this.minInResume.experience),
+			recommendations: buildClasses(this.minInResume.recommendations),
+		} satisfies SectionClassMap);
+	}
+
+	private static get safeInResume(): SectionSafe {
+		const sectionClasses = Object.values(this.classesInResume).flatMap((c) => c.split(' '));
+		const totalClasses = this.resumeSectionsTotalHeight().split(' ');
+
+		return Object.freeze([...sectionClasses, ...totalClasses]);
+	}
 
 	static resumeSectionMinHeights(): SectionMinMap {
 		return this.minInResume;
