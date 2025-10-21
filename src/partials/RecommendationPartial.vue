@@ -93,10 +93,8 @@ watch(
 			return;
 		}
 
-		const maxPage = Math.max(1, Math.ceil(items.length / ITEMS_PER_PAGE));
-
-		if (currentPage.value > maxPage) {
-			currentPage.value = maxPage;
+		if (currentPage.value > totalPages.value) {
+			currentPage.value = totalPages.value;
 		}
 	},
 	{ immediate: true },
