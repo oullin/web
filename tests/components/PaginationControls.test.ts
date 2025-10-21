@@ -33,6 +33,6 @@ describe('PaginationControls', () => {
 			props: { currentPage: 1, totalPages: 1 },
 		});
 
-		expect(wrapper.html()).toBe('<!--v-if-->');
+		expect(wrapper.find('nav').exists()).toBe(false);
 	});
 });
