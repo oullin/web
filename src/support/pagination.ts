@@ -5,7 +5,7 @@ export interface UsePaginationOptions {
 	initialPage?: number;
 }
 
-export interface UsePaginationReturn<T> {
+export interface PaginationResponse<T> {
 	currentPage: Ref<number>;
 	totalPages: ComputedRef<number>;
 	paginatedItems: ComputedRef<readonly T[]>;
@@ -13,7 +13,7 @@ export interface UsePaginationReturn<T> {
 	goToNextPage: () => void;
 }
 
-export function usePagination<T>(items: ComputedRef<readonly T[]> | Ref<readonly T[]>, { itemsPerPage, initialPage = 1 }: UsePaginationOptions): UsePaginationReturn<T> {
+export function usePagination<T>(items: ComputedRef<readonly T[]> | Ref<readonly T[]>, { itemsPerPage, initialPage = 1 }: UsePaginationOptions): PaginationResponse<T> {
 	const currentPage = ref(initialPage);
 
 	const totalPages = computed(() => Math.max(1, Math.ceil(items.value.length / Math.max(1, itemsPerPage))));
