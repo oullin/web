@@ -6,7 +6,7 @@
 		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
-			<li v-for="item in processedRecommendations" :key="item.uuid" class="relative group">
+			<li v-for="item in paginatedRecommendations" :key="item.uuid" class="relative group">
 				<div class="flex items-start">
 					<div
 						class="absolute left-0 h-14 w-14 flex items-center justify-center dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
@@ -29,11 +29,32 @@
 				</div>
 			</li>
 		</ul>
+		<nav v-if="hasMultiplePages" aria-label="Recommendations pagination" class="flex flex-wrap items-center justify-end gap-3 text-sm text-slate-500 dark:text-slate-400">
+			<p class="font-medium">Page {{ currentPage }} of {{ totalPages }}</p>
+			<div class="flex items-center gap-2">
+				<button
+					type="button"
+					class="btn btn-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+					:disabled="isFirstPage"
+					@click="goToPreviousPage"
+				>
+					Previous
+				</button>
+				<button
+					type="button"
+					class="btn btn-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+					:disabled="isLastPage"
+					@click="goToNextPage"
+				>
+					Next
+				</button>
+			</div>
+		</nav>
 	</section>
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs } from 'vue';
+import { computed, toRefs, ref, watch } from 'vue';
 import DOMPurify from 'dompurify';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { image, date } from '@/public.ts';
@@ -47,6 +68,10 @@ const props = defineProps<{
 
 const { recommendations, backToTopTarget } = toRefs(props);
 
+const ITEMS_PER_PAGE = 3;
+
+const currentPage = ref(1);
+
 const processedRecommendations = computed(() => {
 	return recommendations.value.map((item) => {
 		const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.text));
@@ -58,4 +83,46 @@ const processedRecommendations = computed(() => {
 		};
 	});
 });
+
+const totalPages = computed(() => Math.max(1, Math.ceil(processedRecommendations.value.length / ITEMS_PER_PAGE)));
+
+const paginatedRecommendations = computed(() => {
+	const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
+
+	return processedRecommendations.value.slice(start, start + ITEMS_PER_PAGE);
+});
+
+const hasMultiplePages = computed(() => totalPages.value > 1);
+const isFirstPage = computed(() => currentPage.value === 1);
+const isLastPage = computed(() => currentPage.value === totalPages.value);
+
+watch(
+	processedRecommendations,
+	(items) => {
+		if (!items.length) {
+			currentPage.value = 1;
+
+			return;
+		}
+
+		const maxPage = Math.max(1, Math.ceil(items.length / ITEMS_PER_PAGE));
+
+		if (currentPage.value > maxPage) {
+			currentPage.value = maxPage;
+		}
+	},
+	{ immediate: true },
+);
+
+const goToPreviousPage = () => {
+	if (!isFirstPage.value) {
+		currentPage.value -= 1;
+	}
+};
+
+const goToNextPage = () => {
+	if (!isLastPage.value) {
+		currentPage.value += 1;
+	}
+};
 </script>

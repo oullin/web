@@ -36,6 +36,7 @@ describe('RecommendationPartial', () => {
 		expect(wrapper.html()).toContain('<strong>great</strong>');
 		expect(wrapper.text()).toContain('now');
 		expect(wrapper.text()).toContain(data[0].person.designation);
+		expect(wrapper.find('[aria-label="Recommendations pagination"]').exists()).toBe(false);
 	});
 
 	it('does not render designation markup when missing', () => {
@@ -55,5 +56,43 @@ describe('RecommendationPartial', () => {
 		});
 
 		expect(wrapper.html()).not.toContain('text-sm text-slate-600 dark:text-slate-300');
+	});
+
+	it('paginates recommendations and toggles pages', async () => {
+		const recommendations = Array.from({ length: 4 }, () => ({
+			...data[0],
+			uuid: faker.string.uuid(),
+			person: {
+				...data[0].person,
+				full_name: faker.person.fullName(),
+			},
+		}));
+
+		const wrapper = mount(RecommendationPartial, {
+			props: { recommendations, backToTopTarget: '#top' },
+		});
+
+		const pageIndicator = () => wrapper.get('[aria-label="Recommendations pagination"] p');
+		const [previousButton, nextButton] = wrapper.findAll('[aria-label="Recommendations pagination"] button');
+
+		expect(previousButton.attributes('disabled')).toBeDefined();
+		expect(nextButton.attributes('disabled')).toBeUndefined();
+		expect(wrapper.text()).toContain(recommendations[0].person.full_name);
+		expect(wrapper.text()).not.toContain(recommendations[3].person.full_name);
+		expect(pageIndicator().text()).toBe('Page 1 of 2');
+
+		await nextButton.trigger('click');
+
+		expect(nextButton.attributes('disabled')).toBeDefined();
+		expect(previousButton.attributes('disabled')).toBeUndefined();
+		expect(wrapper.text()).toContain(recommendations[3].person.full_name);
+		expect(wrapper.text()).not.toContain(recommendations[0].person.full_name);
+		expect(pageIndicator().text()).toBe('Page 2 of 2');
+
+		await previousButton.trigger('click');
+
+		expect(previousButton.attributes('disabled')).toBeDefined();
+		expect(nextButton.attributes('disabled')).toBeUndefined();
+		expect(wrapper.text()).toContain(recommendations[0].person.full_name);
 	});
 });
