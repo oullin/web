@@ -14,7 +14,7 @@
 }
 
 .recommendations-list {
-	height: 33.6rem;
+	height: calc(var(--recommendations-section-min, 42rem) * 0.8);
 	@apply overflow-y-auto pr-2;
 	@apply scroll-smooth;
 }

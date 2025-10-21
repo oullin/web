@@ -1,5 +1,5 @@
 <template>
-	<section class="space-y-8">
+	<section class="space-y-8" :style="{ '--recommendations-section-min': recommendationsSectionMinHeight }">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
 			<BackToTopLink :target="backToTopTarget" />
@@ -50,6 +50,7 @@ import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { renderMarkdown } from '@/support/markdown.ts';
 import { usePagination } from '@/support/pagination.ts';
+import { Heights } from '@/support/heights.ts';
 
 const props = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
@@ -59,6 +60,8 @@ const props = defineProps<{
 const { recommendations, backToTopTarget } = toRefs(props);
 
 const ITEMS_PER_PAGE = 3;
+
+const recommendationsSectionMinHeight = `${Heights.resumeSectionMinHeights().recommendations.base}rem`;
 
 const processedRecommendations = computed(() => {
 	return recommendations.value.map((item) => {
