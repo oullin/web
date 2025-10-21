@@ -28,8 +28,10 @@ export function usePagination<T>(items: ComputedRef<readonly T[]> | Ref<readonly
 	const isLastPage = computed(() => currentPage.value === totalPages.value);
 
 	watch(
-		items,
-		(collection) => {
+		[items, () => items.value.length],
+		() => {
+			const collection = items.value;
+
 			if (!collection.length) {
 				currentPage.value = 1;
 

@@ -36,6 +36,22 @@ describe('usePagination', () => {
 		expect(pagination.totalPages.value).toBe(1);
 	});
 
+	it('responds to in-place mutations of the collection', async () => {
+		const items = ref([1, 2, 3, 4]);
+		const pagination = usePagination(items, { itemsPerPage: 2 });
+
+		pagination.goToNextPage();
+
+		expect(pagination.currentPage.value).toBe(2);
+		expect(pagination.totalPages.value).toBe(2);
+
+		items.value.splice(2);
+		await nextTick();
+
+		expect(pagination.currentPage.value).toBe(1);
+		expect(pagination.totalPages.value).toBe(1);
+	});
+
 	it('handles empty collections by returning a single page', async () => {
 		const items = ref<number[]>([]);
 		const pagination = usePagination(items, { itemsPerPage: 5 });
