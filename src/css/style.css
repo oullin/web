@@ -9,7 +9,7 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/base.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -21,9 +21,7 @@
 @import '@css/support/theme.css';
 @import '@css/support/blog.css';
 
-@plugin "@tailwindcss/forms" {
-	strategy: base;
-}
+@plugin "@tailwindcss/forms";
 
 @custom-variant dark (&:is(.dark *));
 
