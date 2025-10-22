@@ -7,7 +7,7 @@
 .recommendations-list {
 	height: calc(var(--recommendations-section-min) * 0.8);
 	@apply overflow-y-auto pr-2;
-	@apply scroll-smooth;
+	@apply scroll-smooth custom-scrollbar;
 }
 
 .blog-h1 {
