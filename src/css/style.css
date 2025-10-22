@@ -4,6 +4,8 @@
 
 @import '@css/support/custom-fonts.css' layer(base);
 
+@plugin "@tailwindcss/forms";
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------------------- tailwindcss ---------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -20,8 +22,6 @@
 @import '@css/support/toggle-switch.css' layer(components);
 @import '@css/support/theme.css';
 @import '@css/support/blog.css';
-
-@plugin "@tailwindcss/forms";
 
 @custom-variant dark (&:is(.dark *));
 
