@@ -50,7 +50,7 @@
 		</section>
 		<section class="space-y-8">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
-			<ul class="space-y-8">
+			<ul class="recommendations-list custom-scrollbar space-y-8">
 				<li v-for="item in 2" :key="`resume-recommendation-skeleton-${item}`" class="relative group">
 					<div class="flex items-start">
 						<div
