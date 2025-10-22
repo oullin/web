@@ -9,7 +9,7 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme' layer(theme);
-@import 'tailwindcss/base' layer(base);
+@import 'tailwindcss/preflight' layer(base);
 @import 'tailwindcss/utilities' layer(utilities);
 
 /* ------------------------------------------------------------------------------------------------------------------ */
