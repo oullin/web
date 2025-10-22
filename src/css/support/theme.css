@@ -50,7 +50,7 @@
 
 :root {
 	--custom-scrollbar-track: var(--color-gray-100);
-	--custom-scrollbar-thumb: var(--color-fuchsia-500);
+	--custom-scrollbar-thumb: var(--color-fuchsia-300);
 	--custom-scrollbar-thumb-hover: var(--color-fuchsia-400);
 }
 
