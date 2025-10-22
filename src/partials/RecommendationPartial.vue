@@ -2,7 +2,6 @@
 	<section class="space-y-8" :style="recommendationsSectionStyle">
 		<div class="flex flex-wrap items-center justify-between gap-4">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Recommendations</h2>
-			<BackToTopLink :target="backToTopTarget" />
 		</div>
 		<ul class="recommendations-list custom-scrollbar space-y-8">
 			<!-- Item -->
@@ -44,7 +43,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue';
 import DOMPurify from 'dompurify';
-import BackToTopLink from '@partials/BackToTopLink.vue';
 import PaginationControls from '@components/PaginationControls.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
@@ -54,10 +52,9 @@ import { Heights } from '@/support/heights.ts';
 
 const props = defineProps<{
 	recommendations: Array<RecommendationsResponse>;
-	backToTopTarget: string;
 }>();
 
-const { recommendations, backToTopTarget } = toRefs(props);
+const { recommendations } = toRefs(props);
 
 const ITEMS_PER_PAGE = 3;
 
