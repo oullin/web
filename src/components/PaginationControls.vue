@@ -1,5 +1,5 @@
 <template>
-	<nav v-if="totalPages > 1" class="flex flex-wrap items-center justify-start gap-3 text-sm text-slate-500 dark:text-slate-400" :aria-label="ariaLabel">
+	<nav v-if="totalPages > 1" class="mt-6 flex flex-wrap items-center justify-end gap-3 text-sm text-slate-500 dark:text-slate-400" :aria-label="ariaLabel">
 		<p class="font-medium">Page {{ currentPage }} of {{ totalPages }}</p>
 		<div class="flex items-center gap-2">
 			<button type="button" class="pill-button" :disabled="isFirstPage" @click="$emit('previous')">
