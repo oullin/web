@@ -29,15 +29,17 @@
 				</div>
 			</li>
 		</ul>
-		<PaginationControls
-			:current-page="currentPage"
-			:total-pages="totalPages"
-			aria-label="Recommendations pagination"
-			previous-label="Previous"
-			next-label="Next"
-			@previous="goToPreviousPage"
-			@next="goToNextPage"
-		/>
+		<div class="flex justify-end pt-4 md:pt-6">
+			<PaginationControls
+				:current-page="currentPage"
+				:total-pages="totalPages"
+				aria-label="Recommendations pagination"
+				previous-label="Previous"
+				next-label="Next"
+				@previous="goToPreviousPage"
+				@next="goToNextPage"
+			/>
+		</div>
 	</section>
 </template>
 
