@@ -12,6 +12,8 @@
 @import 'tailwindcss/preflight' layer(base);
 @import 'tailwindcss/utilities' layer(utilities);
 
+@plugin "@tailwindcss/forms";
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------------------- customised ----------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -20,8 +22,6 @@
 @import '@css/support/toggle-switch.css' layer(components);
 @import '@css/support/theme.css';
 @import '@css/support/blog.css';
-
-@plugin "@tailwindcss/forms";
 
 @custom-variant dark (&:is(.dark *));
 
