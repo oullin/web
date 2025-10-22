@@ -44,12 +44,9 @@
 											</div>
 											<div :class="resumeSectionHeights.recommendations">
 												<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
+												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
 											</div>
 										</div>
-									</div>
-									<div class="flex justify-end pt-10">
-										<BackToTopLink target="#resume-top" />
 									</div>
 								</section>
 							</div>
@@ -78,7 +75,6 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import EducationPartial from '@partials/EducationPartial.vue';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
-import BackToTopLink from '@partials/BackToTopLink.vue';
 import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';

@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi } from 'vitest';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
+import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { RecommendationsResponse } from '@api/response/index.ts';
 
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>great</strong></p>'));
@@ -55,6 +56,28 @@ describe('RecommendationPartial', () => {
 		});
 
 		expect(wrapper.html()).not.toContain('text-sm text-slate-600 dark:text-slate-300');
+	});
+
+	it('does not render back-to-top link when no target is provided', () => {
+		const wrapper = mount(RecommendationPartial, {
+			props: { recommendations: data },
+		});
+
+		expect(wrapper.findComponent(BackToTopLink).exists()).toBe(false);
+	});
+
+	it('renders back-to-top link with provided target', () => {
+		const wrapper = mount(RecommendationPartial, {
+			props: {
+				recommendations: data,
+				backToTopTarget: '#resume-top',
+			},
+		});
+
+		const backToTopLink = wrapper.getComponent(BackToTopLink);
+
+		expect(backToTopLink.exists()).toBe(true);
+		expect(backToTopLink.get('a').attributes('href')).toBe('#resume-top');
 	});
 
 	it('paginates recommendations and toggles pages', async () => {
