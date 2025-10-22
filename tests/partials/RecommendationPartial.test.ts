@@ -30,7 +30,7 @@ describe('RecommendationPartial', () => {
 
 	it('sanitises and formats recommendation', () => {
 		const wrapper = mount(RecommendationPartial, {
-			props: { recommendations: data, backToTopTarget: '#top' },
+			props: { recommendations: data },
 		});
 		expect(renderMarkdown).toHaveBeenCalledWith('**great**');
 		expect(wrapper.html()).toContain('<strong>great</strong>');
@@ -51,7 +51,6 @@ describe('RecommendationPartial', () => {
 						},
 					},
 				],
-				backToTopTarget: '#top',
 			},
 		});
 
@@ -69,7 +68,7 @@ describe('RecommendationPartial', () => {
 		}));
 
 		const wrapper = mount(RecommendationPartial, {
-			props: { recommendations, backToTopTarget: '#top' },
+			props: { recommendations },
 		});
 
 		const pageIndicator = () => wrapper.get('[aria-label="Recommendations pagination"] p');

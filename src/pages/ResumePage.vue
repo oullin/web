@@ -44,7 +44,7 @@
 											</div>
 											<div :class="resumeSectionHeights.recommendations">
 												<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" />
 											</div>
 										</div>
 									</div>
