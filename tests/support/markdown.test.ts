@@ -64,6 +64,12 @@ describe('renderMarkdown', () => {
 		expect(html).toContain('<pre class=\'code-block code-block--light\'><code class="language-yml">');
 	});
 
+	it('sanitizes rendered HTML output', () => {
+		const html = renderMarkdown('<img src="x" onerror="alert(1)">');
+
+		expect(html).toBe('<p><img src="x"></p>\n');
+	});
+
 	it('merges code block classes with existing pre tag classes', () => {
 		const html = ensureCodeBlockClasses('<pre class="existing" data-demo="true"><code>example</code></pre>');
 

@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import type { HLJSApi, LanguageFn } from 'highlight.js';
 import { marked } from 'marked';
 
@@ -113,7 +114,9 @@ export function renderMarkdown(markdown?: string | null): string {
 
 	const cleanedMarkdown = stripFrontMatter(markdown);
 
-	return ensureString(marked.parse(cleanedMarkdown));
+	const rendered = ensureString(marked.parse(cleanedMarkdown));
+
+	return DOMPurify.sanitize(rendered);
 }
 
 export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {
