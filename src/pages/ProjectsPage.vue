@@ -34,9 +34,21 @@
 												data-testid="projects-skeleton-grid"
 												class="projects-grid grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5"
 												:class="{ 'projects-grid--loading': isLoadingProjects || projects.length === 0 }"
+												:style="
+													isLoadingProjects || projects.length === 0
+														? {
+																'--skeleton-count': skeletonCount,
+																'--skeleton-rows-2-col': Math.ceil(skeletonCount / 2),
+															}
+														: {}
+												"
 											>
 												<template v-if="isLoadingProjects || projects.length === 0">
-													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
+													<ProjectCardSkeletonPartial
+														v-for="index in skeletonCount"
+														:key="`projects-page-skeleton-${index}`"
+														:is-animated="isLoadingProjects && projects.length === 0"
+													/>
 												</template>
 												<template v-else>
 													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
@@ -70,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
@@ -86,10 +98,13 @@ import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 const apiStore = useApiStore();
+const DEFAULT_PROJECT_SKELETON_COUNT = 4;
+
 const isLoadingProjects = ref(true);
 const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
 const isLoadingProfile = ref(true);
+const skeletonCount = ref(DEFAULT_PROJECT_SKELETON_COUNT);
 
 useSeo({
 	title: 'Projects',
@@ -130,6 +145,13 @@ const loadProjects = async () => {
 
 		if (response.data) {
 			projects.value = response.data;
+
+			if (response.data.length > 0) {
+				skeletonCount.value = response.data.length;
+				await nextTick();
+			} else {
+				skeletonCount.value = DEFAULT_PROJECT_SKELETON_COUNT;
+			}
 		}
 	} catch (error) {
 		debugError(error);
@@ -141,14 +163,18 @@ const loadProjects = async () => {
 onMounted(async () => {
 	await Promise.all([loadProfile(), loadProjects()]);
 });
+
+defineExpose({ skeletonCount });
 </script>
 
 <style scoped>
 .projects-grid {
-	--project-card-min-height: 16.25rem;
+	--project-card-min-height: 13.75rem;
 	--grid-gap: 1.25rem;
-	--min-height-1-col: calc(var(--project-card-min-height) * 4 + var(--grid-gap) * 3);
-	--min-height-2-col: calc(var(--project-card-min-height) * 2 + var(--grid-gap) * 1);
+	--skeleton-count: 4;
+	--skeleton-rows-2-col: 2;
+	--min-height-1-col: calc(var(--project-card-min-height) * var(--skeleton-count) + var(--grid-gap) * (var(--skeleton-count) - 1));
+	--min-height-2-col: calc(var(--project-card-min-height) * var(--skeleton-rows-2-col) + var(--grid-gap) * (var(--skeleton-rows-2-col) - 1));
 }
 
 .projects-grid.projects-grid--loading {
