@@ -24,22 +24,24 @@ const profile: ProfileResponse = {
 	skills,
 };
 
-const projects: ProjectsResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		title: faker.lorem.words(2),
-		excerpt: faker.lorem.sentence(),
-		url: faker.internet.url(),
-		language: faker.lorem.word(),
-		icon: faker.image.avatarGitHub(),
-		is_open_source: true,
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
-	},
-];
+const createProject = (): ProjectsResponse => ({
+	uuid: faker.string.uuid(),
+	title: faker.lorem.words(2),
+	excerpt: faker.lorem.sentence(),
+	url: faker.internet.url(),
+	language: faker.lorem.word(),
+	icon: faker.image.avatarGitHub(),
+	is_open_source: true,
+	created_at: faker.date.past().toISOString(),
+	updated_at: faker.date.recent().toISOString(),
+});
+
+const projects: ProjectsResponse[] = [createProject()];
 
 const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>();
 const getProjects = vi.fn<[], Promise<{ version: string; data: ProjectsResponse[] }>>();
+
+const multipleProjects = Array.from({ length: 6 }, () => createProject());
 
 beforeEach(() => {
 	getProfile.mockReset();
@@ -125,5 +127,27 @@ describe('ProjectsPage', () => {
 		await nextTick();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
+	});
+
+	it('updates the skeleton count to match the loaded projects', async () => {
+		getProjects.mockResolvedValueOnce({ version: '1.0.0', data: multipleProjects });
+
+		const wrapper = mount(ProjectsPage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					BackToTopLink: true,
+					WidgetSponsorPartial: true,
+					WidgetSkillsPartial: true,
+					FooterPartial: true,
+					ProjectCardPartial: true,
+				},
+			},
+		});
+
+		await flushPromises();
+
+		expect((wrapper.vm as { skeletonCount: number }).skeletonCount).toBe(multipleProjects.length);
 	});
 });
