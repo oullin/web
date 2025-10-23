@@ -1,7 +1,7 @@
 # --- Builder Stage ---
 # Use a standard Node.js image as the base for building the application.
 # This stage compiles your source code into static assets.
-FROM node:22.12.0-alpine3.20 AS builder
+FROM node:24-alpine AS builder
 
 ARG VITE_API_ENV
 ARG VITE_API_URL
