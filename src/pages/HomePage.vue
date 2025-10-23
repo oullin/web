@@ -4,7 +4,7 @@
 			<SideNavPartial />
 
 			<!-- Main content -->
-			<main class="grow overflow-hidden px-6">
+			<main class="grow overflow-x-hidden px-6">
 				<div id="home-top" class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
 					<HeaderPartial />
 					<HeroPartial />
@@ -23,7 +23,7 @@
 						</div>
 
 						<!-- Right sidebar -->
-						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
+						<aside class="md:w-[240px] lg:w-[300px] shrink-0 md:sticky md:top-24 md:self-start">
 							<div class="space-y-6">
 								<WidgetOullinPartial />
 								<template v-if="isLoadingProfile || !profile">
