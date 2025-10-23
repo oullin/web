@@ -17,12 +17,12 @@ export function ensureCodeBlockClasses(rendered: string): string {
 
 	const classAttributeMatch = preTagMatch[0].match(/\bclass=(['"])(.*?)\1/);
 	if (classAttributeMatch) {
-		const [classAttribute, quote, classValue] = classAttributeMatch;
+		const [classAttribute, , classValue] = classAttributeMatch;
 		const existingClasses = classValue.split(/\s+/).filter(Boolean);
 		const classes = new Set(existingClasses);
 		classes.add('code-block');
 		classes.add('code-block--light');
-		const mergedClassAttribute = `class=${quote}${Array.from(classes).join(' ')}${quote}`;
+		const mergedClassAttribute = `class="${Array.from(classes).join(' ')}"`;
 		const updatedPreTag = preTagMatch[0].replace(classAttribute, mergedClassAttribute);
 		return rendered.replace(preTagMatch[0], updatedPreTag);
 	}
