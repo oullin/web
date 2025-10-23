@@ -27,7 +27,7 @@ export function ensureCodeBlockClasses(rendered: string): string {
 		return rendered.replace(preTagMatch[0], updatedPreTag);
 	}
 
-	const updatedPreTag = preTagMatch[0].replace(/^<pre/, "<pre class='code-block code-block--light'");
+	const updatedPreTag = preTagMatch[0].replace(/^<pre/, '<pre class="code-block code-block--light"');
 	return rendered.replace(preTagMatch[0], updatedPreTag);
 }
 

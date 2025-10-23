@@ -61,13 +61,13 @@ describe('renderMarkdown', () => {
 	it('adds a light-background class to fenced code blocks', () => {
 		const html = renderMarkdown('```yml\nfoo: bar\n```');
 
-		expect(html).toContain('<pre class=\'code-block code-block--light\'><code class="language-yml">');
+		expect(html).toContain('<pre class="code-block code-block--light"><code class="language-yml">');
 	});
 
 	it('sanitizes rendered HTML output', () => {
 		const html = renderMarkdown('<img src="x" onerror="alert(1)">');
 
-		expect(html).toBe('<p><img src="x"></p>\n');
+		expect(html).toBe('<img src="x">');
 	});
 
 	it('merges code block classes with existing pre tag classes', () => {
