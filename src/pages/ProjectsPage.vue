@@ -34,6 +34,14 @@
 												data-testid="projects-skeleton-grid"
 												class="projects-grid grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5"
 												:class="{ 'projects-grid--loading': isLoadingProjects || projects.length === 0 }"
+												:style="
+													isLoadingProjects || projects.length === 0
+														? {
+																'--skeleton-count': skeletonCount,
+																'--skeleton-rows-2-col': Math.ceil(skeletonCount / 2),
+															}
+														: {}
+												"
 											>
 												<template v-if="isLoadingProjects || projects.length === 0">
 													<ProjectCardSkeletonPartial
@@ -163,8 +171,10 @@ defineExpose({ skeletonCount });
 .projects-grid {
 	--project-card-min-height: 13.75rem;
 	--grid-gap: 1.25rem;
-	--min-height-1-col: calc(var(--project-card-min-height) * 4 + var(--grid-gap) * 3);
-	--min-height-2-col: calc(var(--project-card-min-height) * 2 + var(--grid-gap) * 1);
+	--skeleton-count: 4;
+	--skeleton-rows-2-col: 2;
+	--min-height-1-col: calc(var(--project-card-min-height) * var(--skeleton-count) + var(--grid-gap) * (var(--skeleton-count) - 1));
+	--min-height-2-col: calc(var(--project-card-min-height) * var(--skeleton-rows-2-col) + var(--grid-gap) * (var(--skeleton-rows-2-col) - 1));
 }
 
 .projects-grid.projects-grid--loading {
