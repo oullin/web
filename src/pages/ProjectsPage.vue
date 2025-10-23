@@ -32,8 +32,8 @@
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div
 												data-testid="projects-skeleton-grid"
-												class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5"
-												:class="{ 'min-h-[25rem]': isLoadingProjects || projects.length === 0 }"
+												class="projects-grid grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5"
+												:class="{ 'projects-grid--loading': isLoadingProjects || projects.length === 0 }"
 											>
 												<template v-if="isLoadingProjects || projects.length === 0">
 													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
@@ -142,3 +142,34 @@ onMounted(async () => {
 	await Promise.all([loadProfile(), loadProjects()]);
 });
 </script>
+
+<style scoped>
+.projects-grid {
+	--project-card-min-height: 16.25rem;
+	--grid-gap: 1.25rem;
+	--min-height-1-col: calc(var(--project-card-min-height) * 4 + var(--grid-gap) * 3);
+	--min-height-2-col: calc(var(--project-card-min-height) * 2 + var(--grid-gap) * 1);
+}
+
+.projects-grid.projects-grid--loading {
+	min-height: var(--min-height-1-col);
+}
+
+@media (min-width: 640px) {
+	.projects-grid.projects-grid--loading {
+		min-height: var(--min-height-2-col);
+	}
+}
+
+@media (min-width: 768px) {
+	.projects-grid.projects-grid--loading {
+		min-height: var(--min-height-1-col);
+	}
+}
+
+@media (min-width: 1024px) {
+	.projects-grid.projects-grid--loading {
+		min-height: var(--min-height-2-col);
+	}
+}
+</style>
