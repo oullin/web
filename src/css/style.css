@@ -8,17 +8,17 @@
 /* ------------------------------------------------------- tailwindcss ---------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 @layer theme, base, components, utilities;
-@import 'tailwindcss/theme' layer(theme);
-@import 'tailwindcss/preflight' layer(base);
 
 @plugin "@tailwindcss/forms";
 
+@import 'tailwindcss/theme' layer(theme);
+@import 'tailwindcss/preflight' layer(base);
 @import 'tailwindcss/utilities' layer(utilities);
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------------------- customised ----------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
-@import '@css/support/utility-patterns.css' layer(components);
+@import '@css/support/utility-patterns.css' layer(utilities);
 @import '@css/support/range-slider.css' layer(components);
 @import '@css/support/toggle-switch.css' layer(components);
 @import '@css/support/theme.css';
