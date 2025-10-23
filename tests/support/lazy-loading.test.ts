@@ -172,7 +172,7 @@ describe('lazyLinkDirective', () => {
 
 	it('reinitialises listeners when href changes during updates', async () => {
 		const observers = installMockIntersectionObserver();
-		const idle = installIdleCallback({ immediate: true });
+		const _idle = installIdleCallback({ immediate: true });
 
 		await withDirective(async (directive, router) => {
 			const element = document.createElement('a');
