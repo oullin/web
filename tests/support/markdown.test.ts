@@ -70,6 +70,12 @@ describe('renderMarkdown', () => {
 		expect(html).toBe('<img src="x">');
 	});
 
+	it('sanitizes various XSS attack vectors', () => {
+		expect(renderMarkdown('<script>alert(1)</script>')).not.toContain('<script>');
+		expect(renderMarkdown('<a href="javascript:alert(1)">link</a>')).not.toContain('javascript:');
+		expect(renderMarkdown('<div onclick="alert(1)">text</div>')).not.toContain('onclick');
+	});
+
 	it('merges code block classes with existing pre tag classes', () => {
 		const html = ensureCodeBlockClasses('<pre class="existing" data-demo="true"><code>example</code></pre>');
 
