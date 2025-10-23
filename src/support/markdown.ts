@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import type { HLJSApi, LanguageFn } from 'highlight.js';
 import { marked } from 'marked';
 
@@ -16,17 +17,17 @@ export function ensureCodeBlockClasses(rendered: string): string {
 
 	const classAttributeMatch = preTagMatch[0].match(/\bclass=(['"])(.*?)\1/);
 	if (classAttributeMatch) {
-		const [classAttribute, quote, classValue] = classAttributeMatch;
+		const [classAttribute, , classValue] = classAttributeMatch;
 		const existingClasses = classValue.split(/\s+/).filter(Boolean);
 		const classes = new Set(existingClasses);
 		classes.add('code-block');
 		classes.add('code-block--light');
-		const mergedClassAttribute = `class=${quote}${Array.from(classes).join(' ')}${quote}`;
+		const mergedClassAttribute = `class="${Array.from(classes).join(' ')}"`;
 		const updatedPreTag = preTagMatch[0].replace(classAttribute, mergedClassAttribute);
 		return rendered.replace(preTagMatch[0], updatedPreTag);
 	}
 
-	const updatedPreTag = preTagMatch[0].replace(/^<pre/, "<pre class='code-block code-block--light'");
+	const updatedPreTag = preTagMatch[0].replace(/^<pre/, '<pre class="code-block code-block--light"');
 	return rendered.replace(preTagMatch[0], updatedPreTag);
 }
 
@@ -113,7 +114,9 @@ export function renderMarkdown(markdown?: string | null): string {
 
 	const cleanedMarkdown = stripFrontMatter(markdown);
 
-	return ensureString(marked.parse(cleanedMarkdown));
+	const rendered = ensureString(marked.parse(cleanedMarkdown));
+
+	return DOMPurify.sanitize(rendered);
 }
 
 export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {

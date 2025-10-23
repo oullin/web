@@ -61,7 +61,19 @@ describe('renderMarkdown', () => {
 	it('adds a light-background class to fenced code blocks', () => {
 		const html = renderMarkdown('```yml\nfoo: bar\n```');
 
-		expect(html).toContain('<pre class=\'code-block code-block--light\'><code class="language-yml">');
+		expect(html).toContain('<pre class="code-block code-block--light"><code class="language-yml">');
+	});
+
+	it('sanitizes rendered HTML output', () => {
+		const html = renderMarkdown('<img src="x" onerror="alert(1)">');
+
+		expect(html).toBe('<img src="x">');
+	});
+
+	it('sanitizes various XSS attack vectors', () => {
+		expect(renderMarkdown('<script>alert(1)</script>')).not.toContain('<script>');
+		expect(renderMarkdown('<a href="javascript:alert(1)">link</a>')).not.toContain('javascript:');
+		expect(renderMarkdown('<div onclick="alert(1)">text</div>')).not.toContain('onclick');
 	});
 
 	it('merges code block classes with existing pre tag classes', () => {
