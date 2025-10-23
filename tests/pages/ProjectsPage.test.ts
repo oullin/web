@@ -147,6 +147,7 @@ describe('ProjectsPage', () => {
 		});
 
 		await flushPromises();
+		await nextTick();
 
 		expect((wrapper.vm as { skeletonCount: number }).skeletonCount).toBe(multipleProjects.length);
 	});
