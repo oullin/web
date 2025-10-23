@@ -146,27 +146,30 @@ onMounted(async () => {
 <style scoped>
 .projects-grid {
 	--project-card-min-height: 16.25rem;
+	--grid-gap: 1.25rem;
+	--min-height-1-col: calc(var(--project-card-min-height) * 4 + var(--grid-gap) * 3);
+	--min-height-2-col: calc(var(--project-card-min-height) * 2 + var(--grid-gap) * 1);
 }
 
 .projects-grid.projects-grid--loading {
-	min-height: calc(var(--project-card-min-height) * 12);
+	min-height: var(--min-height-1-col);
 }
 
 @media (min-width: 640px) {
 	.projects-grid.projects-grid--loading {
-		min-height: calc(var(--project-card-min-height) * 6);
+		min-height: var(--min-height-2-col);
 	}
 }
 
 @media (min-width: 768px) {
 	.projects-grid.projects-grid--loading {
-		min-height: calc(var(--project-card-min-height) * 12);
+		min-height: var(--min-height-1-col);
 	}
 }
 
 @media (min-width: 1024px) {
 	.projects-grid.projects-grid--loading {
-		min-height: calc(var(--project-card-min-height) * 6);
+		min-height: var(--min-height-2-col);
 	}
 }
 </style>
