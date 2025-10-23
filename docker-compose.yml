@@ -73,7 +73,7 @@ services:
 
     caddy-watcher:
         working_dir: /app
-        image: node:24-alpine
+        image: node:24.10.0-alpine
         user: "${UID:-1000}:${GID:-1000}"
         volumes:
             - .:/app
