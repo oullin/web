@@ -4,7 +4,7 @@
 			<SideNavPartial />
 
 			<!-- Main content -->
-			<main class="grow overflow-hidden px-6">
+			<main class="blog-main-content">
 				<div class="rounded-lg w-full h-full max-w-[1072px] mx-auto flex flex-col">
 					<HeaderPartial />
 
@@ -66,7 +66,7 @@
 						</div>
 
 						<!-- Right sidebar -->
-						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
+						<aside class="blog-widgets-column">
 							<div class="space-y-6">
 								<WidgetSocialPartial />
 								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />

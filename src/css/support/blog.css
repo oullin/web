@@ -74,6 +74,14 @@
 	@apply rounded-full border-2 border-white dark:border-slate-800 box-content;
 }
 
+.blog-main-content {
+	@apply grow overflow-x-hidden px-6;
+}
+
+.blog-widgets-column {
+	@apply md:w-[240px] lg:w-[300px] shrink-0 md:sticky md:top-6 md:self-start;
+}
+
 /* --- header --- */
 .blog-header-search-icon {
 	@apply fill-fuchsia-500;
