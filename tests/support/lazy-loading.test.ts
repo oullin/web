@@ -1,6 +1,17 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
+import type { ObjectDirective, DirectiveBinding, VNode } from 'vue';
 
-type LazyDirective = NonNullable<(typeof import('@/support/lazy-loading.ts'))['lazyLinkDirective']>;
+const emptyBinding = {} as unknown as DirectiveBinding;
+
+type LazyDirective = {
+	mounted?: ObjectDirective<HTMLAnchorElement>['mounted'];
+	updated?: (el: HTMLAnchorElement, binding: DirectiveBinding, vnode: VNode, prevVnode: VNode | null) => void;
+	unmounted?: ObjectDirective<HTMLAnchorElement>['unmounted'];
+};
+
+const makeVNode = (el: HTMLAnchorElement): VNode<any, HTMLAnchorElement, Record<string, any>> => ({ el }) as unknown as VNode<any, HTMLAnchorElement, Record<string, any>>;
+
+const prevForMounted = null as null;
 
 type MockObserverInstance = {
 	observe: ReturnType<typeof vi.fn>;
@@ -13,29 +24,26 @@ const installMockIntersectionObserver = () => {
 	const instances: MockObserverInstance[] = [];
 
 	class MockIntersectionObserver {
-		private callback: IntersectionObserverCallback;
-
-		public observe = vi.fn();
-		public unobserve = vi.fn();
-		public disconnect = vi.fn();
-
-		constructor(callback: IntersectionObserverCallback) {
-			this.callback = callback;
-
+		// Use a constructor parameter property to avoid eslint prefer-readonly or no-inferrable
+		constructor(private readonly callback: IntersectionObserverCallback) {
 			instances.push({
 				observe: this.observe,
 				unobserve: this.unobserve,
 				disconnect: this.disconnect,
 				trigger: (target: Element, isIntersecting = true) => {
 					const entry = { isIntersecting, target } as IntersectionObserverEntry;
-
 					this.callback([entry], this as unknown as IntersectionObserver);
 				},
 			});
 		}
+
+		public observe = vi.fn();
+		public unobserve = vi.fn();
+		public disconnect = vi.fn();
 	}
 
-	(window as unknown as { IntersectionObserver: typeof IntersectionObserver }).IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+	// Narrow window typing via globalThis and cast once
+	(globalThis as unknown as { IntersectionObserver: typeof IntersectionObserver }).IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
 
 	return instances;
 };
@@ -43,9 +51,9 @@ const installMockIntersectionObserver = () => {
 const installIdleCallback = (options: { immediate?: boolean } = {}) => {
 	let handle = 0;
 	const callbacks = new Map<number, IdleRequestCallback>();
+
 	const requestIdleCallback = vi.fn((cb: IdleRequestCallback) => {
 		const id = ++handle;
-
 		callbacks.set(id, cb);
 
 		if (options.immediate) {
@@ -59,8 +67,9 @@ const installIdleCallback = (options: { immediate?: boolean } = {}) => {
 		callbacks.delete(id);
 	});
 
-	(window as unknown as { requestIdleCallback?: typeof requestIdleCallback }).requestIdleCallback = requestIdleCallback as unknown as typeof window.requestIdleCallback;
-	(window as unknown as { cancelIdleCallback?: typeof cancelIdleCallback }).cancelIdleCallback = cancelIdleCallback as unknown as typeof window.cancelIdleCallback;
+	(globalThis as unknown as { requestIdleCallback?: typeof window.requestIdleCallback }).requestIdleCallback = requestIdleCallback as unknown as typeof window.requestIdleCallback;
+
+	(globalThis as unknown as { cancelIdleCallback?: typeof window.cancelIdleCallback }).cancelIdleCallback = cancelIdleCallback as unknown as typeof window.cancelIdleCallback;
 
 	return {
 		requestIdleCallback,
@@ -75,20 +84,21 @@ const installIdleCallback = (options: { immediate?: boolean } = {}) => {
 };
 
 afterEach(() => {
-	delete (window as { IntersectionObserver?: typeof IntersectionObserver }).IntersectionObserver;
-	delete (window as { requestIdleCallback?: typeof window.requestIdleCallback }).requestIdleCallback;
-	delete (window as { cancelIdleCallback?: typeof window.cancelIdleCallback }).cancelIdleCallback;
+	delete (globalThis as { IntersectionObserver?: typeof IntersectionObserver }).IntersectionObserver;
+	delete (globalThis as { requestIdleCallback?: typeof window.requestIdleCallback }).requestIdleCallback;
+	delete (globalThis as { cancelIdleCallback?: typeof window.cancelIdleCallback }).cancelIdleCallback;
+
 	vi.useRealTimers();
 	vi.resetModules();
 	vi.restoreAllMocks();
 	vi.clearAllMocks();
+
 	document.body.innerHTML = '';
 	document.head.innerHTML = '';
 });
 
 const mountDirective = async () => {
 	const module = await import('@/support/lazy-loading.ts');
-
 	return module.lazyLinkDirective as LazyDirective;
 };
 
@@ -110,7 +120,8 @@ describe('lazyLinkDirective', () => {
 			const element = document.createElement('a');
 			element.setAttribute('href', 'mailto:hello@example.com');
 
-			directive.mounted?.(element as HTMLAnchorElement, undefined as never);
+			const vnode = makeVNode(element);
+			directive.mounted?.(element as HTMLAnchorElement, emptyBinding, vnode, prevForMounted);
 
 			expect(element.dataset.lazyLink).toBe('ignored');
 			expect(idle.requestIdleCallback).not.toHaveBeenCalled();
@@ -125,7 +136,8 @@ describe('lazyLinkDirective', () => {
 			const element = document.createElement('a');
 			element.setAttribute('href', 'https://example.com/about');
 
-			directive.mounted?.(element as HTMLAnchorElement, undefined as never);
+			const vnode = makeVNode(element);
+			directive.mounted?.(element as HTMLAnchorElement, emptyBinding, vnode, prevForMounted);
 
 			expect(element.dataset.lazyLink).toBe('ignored');
 		});
@@ -151,7 +163,8 @@ describe('lazyLinkDirective', () => {
 				],
 			} as unknown as ReturnType<typeof router.resolve>);
 
-			directive.mounted?.(element as HTMLAnchorElement, undefined as never);
+			const vnode = makeVNode(element);
+			directive.mounted?.(element as HTMLAnchorElement, emptyBinding, vnode, prevForMounted);
 
 			expect(element.dataset.lazyLink).toBe('observed');
 			expect(observers).toHaveLength(1);
@@ -172,7 +185,7 @@ describe('lazyLinkDirective', () => {
 
 	it('reinitialises listeners when href changes during updates', async () => {
 		const observers = installMockIntersectionObserver();
-		const _idle = installIdleCallback({ immediate: true });
+		installIdleCallback({ immediate: true });
 
 		await withDirective(async (directive, router) => {
 			const element = document.createElement('a');
@@ -187,7 +200,8 @@ describe('lazyLinkDirective', () => {
 				],
 			} as unknown as ReturnType<typeof router.resolve>);
 
-			directive.mounted?.(element as HTMLAnchorElement, undefined as never);
+			const vnode = makeVNode(element);
+			directive.mounted?.(element as HTMLAnchorElement, emptyBinding, vnode, prevForMounted);
 
 			observers[0]?.trigger(element);
 
@@ -195,7 +209,7 @@ describe('lazyLinkDirective', () => {
 			expect(componentSpy).toHaveBeenCalledTimes(1);
 
 			element.setAttribute('href', '/projects');
-			directive.updated?.(element as HTMLAnchorElement, undefined as never);
+			directive.updated?.(element, emptyBinding, vnode, vnode);
 
 			expect(observers[0]?.unobserve).toHaveBeenCalledWith(element);
 			expect(observers[0]?.disconnect).toHaveBeenCalled();
@@ -207,7 +221,7 @@ describe('lazyLinkDirective', () => {
 			expect(resolveSpy).toHaveBeenLastCalledWith('/projects');
 			expect(componentSpy).toHaveBeenCalledTimes(2);
 
-			directive.unmounted?.(element as HTMLAnchorElement, undefined as never);
+			directive.unmounted?.(element, emptyBinding, vnode, prevForMounted);
 
 			expect(observers[1]?.unobserve).toHaveBeenCalledWith(element);
 			expect(observers[1]?.disconnect).toHaveBeenCalled();
@@ -225,13 +239,14 @@ describe('lazyLinkDirective', () => {
 
 			vi.spyOn(router, 'resolve').mockReturnValue({ matched: [] } as unknown as ReturnType<typeof router.resolve>);
 
-			directive.mounted?.(element as HTMLAnchorElement, undefined as never);
+			const vnode = makeVNode(element);
 
+			directive.mounted?.(element as HTMLAnchorElement, emptyBinding, vnode, prevForMounted);
 			element.dispatchEvent(new Event('pointerenter'));
 
 			expect(idle.requestIdleCallback).toHaveBeenCalledTimes(1);
 
-			directive.unmounted?.(element as HTMLAnchorElement, undefined as never);
+			directive.unmounted?.(element, emptyBinding, vnode, prevForMounted);
 
 			expect(idle.cancelIdleCallback).toHaveBeenCalledTimes(1);
 			expect(element.dataset.lazyLink).toBeUndefined();
@@ -240,8 +255,8 @@ describe('lazyLinkDirective', () => {
 
 	it('falls back to timeouts when requestIdleCallback is unavailable', async () => {
 		const observers = installMockIntersectionObserver();
-		delete (window as { requestIdleCallback?: typeof window.requestIdleCallback }).requestIdleCallback;
-		delete (window as { cancelIdleCallback?: typeof window.cancelIdleCallback }).cancelIdleCallback;
+		delete (globalThis as { requestIdleCallback?: typeof window.requestIdleCallback }).requestIdleCallback;
+		delete (globalThis as { cancelIdleCallback?: typeof window.cancelIdleCallback }).cancelIdleCallback;
 
 		vi.resetModules();
 		vi.useFakeTimers();
@@ -260,16 +275,18 @@ describe('lazyLinkDirective', () => {
 				},
 			],
 		} as unknown as ReturnType<typeof routerModule.default.resolve>);
-		const clearTimeoutSpy = vi.spyOn(window, 'clearTimeout');
 
-		directive.mounted?.(element as HTMLAnchorElement, undefined as never);
+		const clearTimeoutSpy = vi.spyOn(globalThis, 'clearTimeout');
+
+		const vnode = makeVNode(element);
+		directive.mounted?.(element as HTMLAnchorElement, emptyBinding, vnode, prevForMounted);
 
 		expect(observers).toHaveLength(1);
 		observers[0]?.trigger(element);
 
 		expect(resolveSpy).not.toHaveBeenCalled();
 
-		directive.unmounted?.(element as HTMLAnchorElement, undefined as never);
+		directive.unmounted?.(element, emptyBinding, vnode, prevForMounted);
 
 		expect(resolveSpy).not.toHaveBeenCalled();
 		expect(clearTimeoutSpy).toHaveBeenCalled();
@@ -296,7 +313,9 @@ describe('lazyLinkDirective', () => {
 
 			const first = document.createElement('a');
 			first.setAttribute('href', '/about');
-			directive.mounted?.(first as HTMLAnchorElement, undefined as never);
+
+			const vnodeFirst = makeVNode(first);
+			directive.mounted?.(first as HTMLAnchorElement, emptyBinding, vnodeFirst, prevForMounted);
 			observers[0]?.trigger(first);
 
 			expect(resolveSpy).toHaveBeenCalledTimes(1);
@@ -304,7 +323,10 @@ describe('lazyLinkDirective', () => {
 
 			const second = document.createElement('a');
 			second.setAttribute('href', '/about');
-			directive.mounted?.(second as HTMLAnchorElement, undefined as never);
+
+			const vnodeSecond = makeVNode(second);
+			directive.mounted?.(second as HTMLAnchorElement, emptyBinding, vnodeSecond, prevForMounted);
+
 			observers[1]?.trigger(second);
 
 			expect(resolveSpy).toHaveBeenCalledTimes(1);
