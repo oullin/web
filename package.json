@@ -28,6 +28,7 @@
 		"@eslint/js": "^9.25.1",
 		"@faker-js/faker": "^8.4.0",
 		"@tailwindcss/forms": "^0.5.10",
+		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.1.12",
 		"@types/lodash": "^4.17.20",
 		"@types/node": "^22.14.1",
