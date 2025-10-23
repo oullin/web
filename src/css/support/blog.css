@@ -79,7 +79,7 @@
 }
 
 .blog-widgets-column {
-	@apply md:w-[240px] lg:w-[300px] shrink-0 md:sticky md:top-24 md:self-start;
+	@apply md:w-[240px] lg:w-[300px] shrink-0 md:sticky md:top-6 md:self-start;
 }
 
 /* --- header --- */
