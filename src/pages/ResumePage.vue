@@ -29,14 +29,14 @@
 
 								<nav aria-label="Resume sections" class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12">
 									<a
-										v-for="item in navigationItems"
+										v-for="item in navigationItemsWithState"
 										:key="item.href"
-										class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
+										:class="['resume-nav-link', item.isActive ? 'resume-nav-link--active' : 'resume-nav-link--inactive']"
 										:href="item.href"
-										:aria-current="item.href === `#${activeSectionId}` ? 'location' : undefined"
-										:data-active="item.href === `#${activeSectionId}` ? 'true' : undefined"
+										:aria-current="item.isActive ? 'location' : undefined"
+										:data-active="item.isActive ? 'true' : undefined"
 									>
-										<span class="size-2 rounded-full bg-fuchsia-400/70 dark:bg-teal-500/80"></span>
+										<span :class="['resume-nav-indicator', item.isActive ? 'resume-nav-indicator--active' : 'resume-nav-indicator--inactive']"></span>
 										{{ item.text }}
 									</a>
 								</nav>
@@ -90,9 +90,9 @@ import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
 const navigationItems = [
-	{ href: '#education', text: 'Education' },
-	{ href: '#experience', text: 'Work Experience' },
-	{ href: '#recommendations', text: 'Recommendations' },
+	{ id: 'education', href: '#education', text: 'Education' },
+	{ id: 'experience', href: '#experience', text: 'Work Experience' },
+	{ id: 'recommendations', href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
 const resumeSectionHeights = Heights.resumeSectionHeights();
@@ -101,13 +101,20 @@ const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 const apiStore = useApiStore();
 const isLoading = ref(true);
 const hasError = ref(false);
-const activeSectionId = ref<string>(navigationItems[0].href.slice(1));
+const activeSectionId = ref<string>(navigationItems[0].id);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
 const hasResumeContent = computed(() => Boolean(education.value?.length || experience.value?.length || recommendations.value?.length));
 const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
 const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
+
+const navigationItemsWithState = computed(() =>
+	navigationItems.map((item) => ({
+		...item,
+		isActive: activeSectionId.value === item.id,
+	})),
+);
 
 const updateInitialActiveSection = () => {
 	const firstSectionWithData = [
@@ -195,3 +202,29 @@ onBeforeUnmount(() => {
 	disconnectSectionsObserver();
 });
 </script>
+
+<style scoped lang="postcss">
+.resume-nav-link {
+	@apply inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100;
+}
+
+.resume-nav-link--active {
+	@apply border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80;
+}
+
+.resume-nav-link--inactive {
+	@apply border-slate-200/70 dark:border-slate-700/80;
+}
+
+.resume-nav-indicator {
+	@apply size-2 rounded-full transition-colors;
+}
+
+.resume-nav-indicator--active {
+	@apply bg-fuchsia-500 dark:bg-teal-400;
+}
+
+.resume-nav-indicator--inactive {
+	@apply bg-fuchsia-400/70 dark:bg-teal-500/80;
+}
+</style>

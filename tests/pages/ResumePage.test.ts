@@ -96,12 +96,16 @@ describe('ResumePage', () => {
 		expect(getEducation).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('My resume');
 
-		const dot = wrapper.find('nav span');
-		expect(dot.classes()).toContain('bg-fuchsia-400/70');
-		expect(dot.classes()).toContain('dark:bg-teal-500/80');
 		const navLinks = wrapper.findAll('nav a');
+		const navDots = wrapper.findAll('nav span');
 		expect(navLinks[0].attributes('aria-current')).toBe('location');
 		expect(navLinks[0].attributes('data-active')).toBe('true');
+		expect(navLinks[0].classes()).toContain('resume-nav-link');
+		expect(navLinks[0].classes()).toContain('resume-nav-link--active');
+		expect(navLinks[1].classes()).toContain('resume-nav-link--inactive');
+		expect(navDots[0].classes()).toContain('resume-nav-indicator');
+		expect(navDots[0].classes()).toContain('resume-nav-indicator--active');
+		expect(navDots[1].classes()).toContain('resume-nav-indicator--inactive');
 		expect(navLinks[1].attributes('aria-current')).toBeUndefined();
 		expect(navLinks[1].attributes('data-active')).toBeUndefined();
 		expect(navLinks[2].attributes('aria-current')).toBeUndefined();
@@ -166,7 +170,9 @@ describe('ResumePage', () => {
 		expect(navLinks[0].attributes('aria-current')).toBeUndefined();
 		expect(navLinks[1].attributes('aria-current')).toBe('location');
 		expect(navLinks[1].attributes('data-active')).toBe('true');
+		expect(navLinks[1].classes()).toContain('resume-nav-link--active');
 		expect(navLinks[0].attributes('data-active')).toBeUndefined();
+		expect(navLinks[0].classes()).toContain('resume-nav-link--inactive');
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
 	});
