@@ -13,6 +13,8 @@ type SectionRefs = Record<SectionId, Ref<HTMLElement | null>>;
 
 type SectionAvailability = Record<SectionId, boolean>;
 
+type SectionsWithDataResolver = () => SectionAvailability;
+
 export const createNavigationItemsWithState = (activeSectionId: Ref<SectionId>) =>
 	computed(() =>
 		navigationItems.map((item) => ({
@@ -91,4 +93,32 @@ export const updateActiveSectionFromData = (activeSectionId: Ref<SectionId>, sec
 	if (firstSectionWithData && activeSectionId.value !== firstSectionWithData) {
 		activeSectionId.value = firstSectionWithData;
 	}
+};
+
+type CreateResumeNavigationOptions = {
+	activeSectionId: Ref<SectionId>;
+	sectionRefs: SectionRefs;
+	getSectionsWithData: SectionsWithDataResolver;
+	updateHistory?: (itemId: SectionId) => void;
+	scrollToSection?: (section: HTMLElement) => void;
+};
+
+export const createResumeNavigation = ({ activeSectionId, sectionRefs, getSectionsWithData, updateHistory, scrollToSection }: CreateResumeNavigationOptions) => {
+	const resolveSectionElement = createSectionResolver(sectionRefs);
+
+	const handleNavigationItemClick = createNavigationClickHandler({
+		activeSectionId,
+		resolveSectionElement,
+		updateHistory,
+		scrollToSection,
+	});
+
+	const updateInitialActiveSection = () => {
+		updateActiveSectionFromData(activeSectionId, getSectionsWithData());
+	};
+
+	return {
+		handleNavigationItemClick,
+		updateInitialActiveSection,
+	};
 };

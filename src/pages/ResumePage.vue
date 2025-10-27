@@ -90,7 +90,7 @@ import { observeSections, disconnectSectionsObserver } from '@/support/observer'
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
-import { navigationItems, type SectionId, createNavigationItemsWithState, createSectionResolver, createNavigationClickHandler, updateActiveSectionFromData } from '@pages/support/resume.ts';
+import { navigationItems, type SectionId, createNavigationItemsWithState, createResumeNavigation } from '@pages/support/resume.ts';
 
 const navLinkBaseClasses = 'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100';
 const navLinkActiveClasses = 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80';
@@ -118,24 +118,19 @@ const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResume
 
 const navigationItemsWithState = createNavigationItemsWithState(activeSectionId);
 
-const resolveSectionElement = createSectionResolver({
-	education: educationSectionRef,
-	experience: experienceSectionRef,
-	recommendations: recommendationsSectionRef,
-});
-
-const handleNavigationItemClick = createNavigationClickHandler({
+const { handleNavigationItemClick, updateInitialActiveSection } = createResumeNavigation({
 	activeSectionId,
-	resolveSectionElement,
-});
-
-const updateInitialActiveSection = () => {
-	updateActiveSectionFromData(activeSectionId, {
+	sectionRefs: {
+		education: educationSectionRef,
+		experience: experienceSectionRef,
+		recommendations: recommendationsSectionRef,
+	},
+	getSectionsWithData: () => ({
 		education: Boolean(education.value?.length),
 		experience: Boolean(experience.value?.length),
 		recommendations: Boolean(recommendations.value?.length),
-	});
-};
+	}),
+});
 
 watch(
 	[education, experience, recommendations],
