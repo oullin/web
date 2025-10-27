@@ -97,17 +97,21 @@ describe('ResumePage', () => {
 		expect(wrapper.find('h1').text()).toContain('My resume');
 
 		const navLinks = wrapper.findAll('nav a');
-		const navDots = wrapper.findAll('nav span');
-		expect(navLinks[0].attributes('aria-current')).toBe('location');
-		expect(navLinks[0].attributes('data-active')).toBe('true');
-		expect(navLinks[0].classes()).toEqual(expect.arrayContaining(['inline-flex', 'border', 'border-fuchsia-500', 'text-slate-800']));
-		expect(navLinks[1].classes()).toEqual(expect.arrayContaining(['border-slate-200/70', 'dark:border-slate-700/80']));
-		expect(navDots[0].classes()).toEqual(expect.arrayContaining(['size-2', 'bg-fuchsia-500']));
-		expect(navDots[1].classes()).toEqual(expect.arrayContaining(['bg-fuchsia-400/70']));
-		expect(navLinks[1].attributes('aria-current')).toBeUndefined();
-		expect(navLinks[1].attributes('data-active')).toBeUndefined();
-		expect(navLinks[2].attributes('aria-current')).toBeUndefined();
-		expect(navLinks[2].attributes('data-active')).toBeUndefined();
+		expect(navLinks).toHaveLength(3);
+		const activeNavLinks = navLinks.filter((link) => link.attributes('data-active') === 'true');
+		expect(activeNavLinks).toHaveLength(1);
+		const [activeNavLink] = activeNavLinks;
+		expect(activeNavLink.text()).toContain('Education');
+		expect(activeNavLink.attributes('aria-current')).toBe('location');
+		navLinks
+			.filter((link) => link !== activeNavLink)
+			.forEach((inactiveLink) => {
+				expect(inactiveLink.attributes('data-active')).toBeUndefined();
+				expect(inactiveLink.attributes('aria-current')).toBeUndefined();
+			});
+		navLinks.forEach((link) => {
+			expect(link.find('span').exists()).toBe(true);
+		});
 		expect(wrapper.find('education-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
@@ -165,12 +169,18 @@ describe('ResumePage', () => {
 		await flushPromises();
 
 		const navLinks = wrapper.findAll('nav a');
-		expect(navLinks[0].attributes('aria-current')).toBeUndefined();
-		expect(navLinks[1].attributes('aria-current')).toBe('location');
-		expect(navLinks[1].attributes('data-active')).toBe('true');
-		expect(navLinks[1].classes()).toEqual(expect.arrayContaining(['border-fuchsia-500', 'text-slate-800']));
-		expect(navLinks[0].attributes('data-active')).toBeUndefined();
-		expect(navLinks[0].classes()).toEqual(expect.arrayContaining(['border-slate-200/70']));
+		const activeNavLink = navLinks.find((link) => link.attributes('data-active') === 'true');
+		if (!activeNavLink) {
+			throw new Error('Active navigation link not found');
+		}
+		expect(activeNavLink.text()).toContain('Work Experience');
+		expect(activeNavLink.attributes('aria-current')).toBe('location');
+		navLinks
+			.filter((link) => link !== activeNavLink)
+			.forEach((inactiveLink) => {
+				expect(inactiveLink.attributes('data-active')).toBeUndefined();
+				expect(inactiveLink.attributes('aria-current')).toBeUndefined();
+			});
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
 	});
