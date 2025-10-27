@@ -9,59 +9,52 @@
 					<HeaderPartial />
 
 					<!-- Content -->
-					<div class="grow md:flex space-y-8 md:space-y-0 md:space-x-8 pt-12 md:pt-16 pb-16 md:pb-20">
-						<!-- Middle area -->
-						<div class="grow">
-							<div class="max-w-[700px]">
-								<section>
-									<!-- Page title -->
-									<h1 id="resume-top" class="h1 font-aspekta mb-6">My resume</h1>
+					<div class="grow pt-12 md:pt-16 pb-16 md:pb-20">
+						<!-- Main area -->
+						<div class="max-w-[700px]">
+							<section>
+								<!-- Page title -->
+								<h1 id="resume-top" class="h1 font-aspekta mb-6">My resume</h1>
 
-									<nav aria-label="Resume sections" class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12">
-										<a
-											v-for="item in navigationItems"
-											:key="item.href"
-											class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
-											:href="item.href"
-										>
-											<span class="size-2 rounded-full bg-fuchsia-400/70 dark:bg-teal-500/80"></span>
-											{{ item.text }}
-										</a>
-									</nav>
-									<!-- Page content -->
-									<div class="text-slate-500 dark:text-slate-400">
-										<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
-											<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
+								<nav aria-label="Resume sections" class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12">
+									<a
+										v-for="item in navigationItems"
+										:key="item.href"
+										class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
+										:href="item.href"
+										:aria-current="item.href === `#${activeSectionId}` ? 'location' : undefined"
+										:data-active="item.href === `#${activeSectionId}` ? 'true' : undefined"
+									>
+										<span class="size-2 rounded-full bg-fuchsia-400/70 dark:bg-teal-500/80"></span>
+										{{ item.text }}
+									</a>
+								</nav>
+								<!-- Page content -->
+								<div class="text-slate-500 dark:text-slate-400">
+									<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
+										<ResumePageSkeletonPartial :show-refresh-button="hasError && !hasResumeContent" @retry="refreshResumePage" />
+									</div>
+									<div v-if="!isLoading" class="space-y-12">
+										<div v-if="shouldShowPartialErrorRefresh" class="flex justify-center lg:justify-start" data-testid="resume-partial-error">
+											<button type="button" class="btn bg-fuchsia-500 hover:bg-fuchsia-600 text-white shadow-sm" @click="refreshResumePage">Refresh page</button>
 										</div>
-										<div v-else class="space-y-12">
-											<div :class="resumeSectionHeights.education">
-												<span id="education" class="block h-0" aria-hidden="true"></span>
-												<EducationPartial v-if="education" :education="education" />
-											</div>
-											<div :class="resumeSectionHeights.experience">
-												<span id="experience" class="block h-0" aria-hidden="true"></span>
-												<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
-											</div>
-											<div :class="resumeSectionHeights.recommendations">
-												<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
-											</div>
+										<div v-if="education?.length" :class="resumeSectionHeights.education" data-section-id="education">
+											<span id="education" class="block h-0" aria-hidden="true"></span>
+											<EducationPartial :education="education" back-to-top-target="#resume-top" />
+										</div>
+										<div v-if="experience?.length" :class="resumeSectionHeights.experience" data-section-id="experience">
+											<span id="experience" class="block h-0" aria-hidden="true"></span>
+											<ExperiencePartial :experience="experience" back-to-top-target="#resume-top" />
+										</div>
+										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations" data-section-id="recommendations">
+											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
+											<RecommendationPartial :recommendations="recommendations" back-to-top-target="#resume-top" />
 										</div>
 									</div>
-								</section>
-							</div>
+								</div>
+							</section>
 						</div>
-
-						<!-- Right sidebar -->
-						<aside class="blog-widgets-column">
-							<div class="space-y-6">
-								<WidgetLangPartial />
-								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
-								<WidgetSkillsPartial v-else :skills="profile.skills" />
-							</div>
-						</aside>
 					</div>
-
 					<FooterPartial />
 				</div>
 			</main>
@@ -70,23 +63,20 @@
 </template>
 
 <script setup lang="ts">
+import { Heights } from '@/support/heights';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import EducationPartial from '@partials/EducationPartial.vue';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
-import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
-import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
-import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
-
-import { ref, onMounted, computed } from 'vue';
-import { useApiStore } from '@api/store.ts';
-import { debugError } from '@api/http-error.ts';
+import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue';
+import { observeSections, disconnectSectionsObserver } from '@/support/observer';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
-import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
-import { Heights } from '@/support/heights';
+import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
@@ -98,13 +88,39 @@ const resumeSectionHeights = Heights.resumeSectionHeights();
 const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 
 const apiStore = useApiStore();
-const profile = ref<ProfileResponse | null>(null);
-const isLoadingProfile = ref(true);
-const hasProfileError = ref(false);
-const shouldShowSkeleton = computed(() => isLoadingProfile.value || hasProfileError.value);
+const isLoading = ref(true);
+const hasError = ref(false);
+const activeSectionId = ref<string>(navigationItems[0].href.slice(1));
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
+const hasResumeContent = computed(() => Boolean(education.value?.length || experience.value?.length || recommendations.value?.length));
+const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
+const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
+
+const updateInitialActiveSection = () => {
+	const firstSectionWithData = [
+		{ id: 'education', hasData: Boolean(education.value?.length) },
+		{ id: 'experience', hasData: Boolean(experience.value?.length) },
+		{ id: 'recommendations', hasData: Boolean(recommendations.value?.length) },
+	].find((section) => section.hasData);
+
+	if (firstSectionWithData && activeSectionId.value !== firstSectionWithData.id) {
+		activeSectionId.value = firstSectionWithData.id;
+	}
+};
+
+watch(
+	[education, experience, recommendations],
+	() => {
+		if (!education.value?.length && !experience.value?.length && !recommendations.value?.length) {
+			return;
+		}
+
+		updateInitialActiveSection();
+	},
+	{ flush: 'post' },
+);
 
 useSeo({
 	title: 'Resume',
@@ -126,34 +142,35 @@ useSeo({
 });
 
 onMounted(async () => {
-	try {
-		const [profileResponse, experienceResponse, recommendationsResponse, educationResponse] = await Promise.all([
-			apiStore.getProfile(),
-			apiStore.getExperience(),
-			apiStore.getRecommendations(),
-			apiStore.getEducation(),
-		]);
+	const [expRes, recRes, eduRes] = await Promise.allSettled([apiStore.getExperience(), apiStore.getRecommendations(), apiStore.getEducation()]);
 
-		if (profileResponse.data) {
-			profile.value = profileResponse.data;
-		}
+	if (expRes.status === 'fulfilled' && expRes.value.data) {
+		experience.value = expRes.value.data;
+	} else if (expRes.status === 'rejected') {
+		debugError(expRes.reason);
+		hasError.value = true;
+	}
 
-		if (experienceResponse.data) {
-			experience.value = experienceResponse.data;
-		}
+	if (recRes.status === 'fulfilled' && recRes.value.data) {
+		recommendations.value = recRes.value.data;
+	} else if (recRes.status === 'rejected') {
+		debugError(recRes.reason);
+		hasError.value = true;
+	}
 
-		if (recommendationsResponse.data) {
-			recommendations.value = recommendationsResponse.data;
-		}
+	if (eduRes.status === 'fulfilled' && eduRes.value.data) {
+		education.value = eduRes.value.data;
+	} else if (eduRes.status === 'rejected') {
+		debugError(eduRes.reason);
+		hasError.value = true;
+	}
 
-		if (educationResponse.data) {
-			education.value = educationResponse.data;
-		}
-	} catch (error) {
-		debugError(error);
-		hasProfileError.value = true;
-	} finally {
-		isLoadingProfile.value = false;
+	isLoading.value = false;
+	updateInitialActiveSection();
+	await nextTick();
+
+	if (hasResumeContent.value && typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+		observeSections(navigationItems, activeSectionId);
 	}
 });
 
@@ -162,4 +179,8 @@ const refreshResumePage = () => {
 		window.location.reload();
 	}
 };
+
+onBeforeUnmount(() => {
+	disconnectSectionsObserver();
+});
 </script>
