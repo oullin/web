@@ -57,7 +57,9 @@ const defaultScrollToSection = (section: HTMLElement) => {
 	}
 
 	try {
-		section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		const prefersReduced = typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		section.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
 	} catch {
 		section.scrollIntoView();
 	}
