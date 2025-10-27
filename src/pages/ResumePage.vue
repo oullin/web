@@ -130,16 +130,28 @@ const navigationItemsWithState = computed(() =>
 );
 
 const getSectionElement = (itemId: SectionId) => {
-	switch (itemId) {
-		case 'education':
-			return educationSectionRef.value;
-		case 'experience':
-			return experienceSectionRef.value;
-		case 'recommendations':
-			return recommendationsSectionRef.value;
-		default:
-			return null;
+	const sectionFromRef = (() => {
+		switch (itemId) {
+			case 'education':
+				return educationSectionRef.value;
+			case 'experience':
+				return experienceSectionRef.value;
+			case 'recommendations':
+				return recommendationsSectionRef.value;
+			default:
+				return null;
+		}
+	})();
+
+	if (sectionFromRef) {
+		return sectionFromRef;
 	}
+
+	if (typeof document === 'undefined') {
+		return null;
+	}
+
+	return document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
 };
 
 const handleNavigationItemClick = (itemId: SectionId, event?: MouseEvent) => {
