@@ -111,9 +111,17 @@ const updateInitialActiveSection = () => {
 	}
 };
 
-watch([education, experience, recommendations], () => {
-	updateInitialActiveSection();
-});
+watch(
+	[education, experience, recommendations],
+	() => {
+		if (!education.value?.length && !experience.value?.length && !recommendations.value?.length) {
+			return;
+		}
+
+		updateInitialActiveSection();
+	},
+	{ flush: 'post' },
+);
 
 useSeo({
 	title: 'Resume',
