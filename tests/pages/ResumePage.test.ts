@@ -151,6 +151,44 @@ describe('ResumePage', () => {
 		expect(educationLink.attributes('data-active')).toBeUndefined();
 	});
 
+	it('scrolls to the matching section when navigation items are clicked', async () => {
+		const target = document.createElement('div');
+		target.dataset.sectionId = 'experience';
+		const scrollIntoView = vi.fn();
+		target.scrollIntoView = scrollIntoView as unknown as typeof target.scrollIntoView;
+		document.body.appendChild(target);
+
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		try {
+			await flushPromises();
+
+			const navLinks = wrapper.findAll('nav a');
+			const experienceLink = navLinks[1];
+			if (!experienceLink) {
+				throw new Error('Expected experience navigation link to be rendered');
+			}
+
+			await experienceLink.trigger('click');
+
+			expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
+		} finally {
+			wrapper.unmount();
+			document.body.removeChild(target);
+		}
+	});
+
 	it('does not render resume sections when the API returns empty arrays', async () => {
 		getExperience.mockResolvedValueOnce({ version: '1.0.0', data: [] });
 		getRecommendations.mockResolvedValueOnce({ version: '1.0.0', data: [] });

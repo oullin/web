@@ -35,7 +35,7 @@
 										:href="item.href"
 										:aria-current="item.isActive ? 'location' : undefined"
 										:data-active="item.isActive ? 'true' : undefined"
-										@click="handleNavigationItemClick(item.id)"
+										@click.prevent="handleNavigationItemClick(item.id)"
 									>
 										<span :class="[navIndicatorBaseClasses, item.isActive ? navIndicatorActiveClasses : navIndicatorInactiveClasses]"></span>
 										{{ item.text }}
@@ -86,7 +86,7 @@ import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
 import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue';
-import { observeSections, disconnectSectionsObserver } from '@/support/observer';
+import { observeSections, disconnectSectionsObserver, setManuallySelectedSectionId } from '@/support/observer';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
@@ -126,6 +126,18 @@ const navigationItemsWithState = computed(() =>
 
 const handleNavigationItemClick = (itemId: string) => {
 	activeSectionId.value = itemId;
+	setManuallySelectedSectionId(itemId);
+
+	if (typeof document !== 'undefined') {
+		const section = document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
+
+		if (section) {
+			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			return;
+		}
+	}
+
+	setManuallySelectedSectionId(null);
 };
 
 const updateInitialActiveSection = () => {

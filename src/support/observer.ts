@@ -5,6 +5,7 @@ type SectionNavigationItem = {
 };
 
 let sectionObserver: IntersectionObserver | null = null;
+let manuallySelectedSectionId: string | null = null;
 
 const getSectionElements = (navigationItems: readonly SectionNavigationItem[]) => {
 	if (typeof document === 'undefined') {
@@ -33,7 +34,15 @@ const createObserver = (activeSectionId: Ref<string>, rootMargin: string) =>
 				const { sectionId } = (visibleEntries[0].target as HTMLElement).dataset;
 
 				if (sectionId) {
+					if (manuallySelectedSectionId && manuallySelectedSectionId !== sectionId) {
+						return;
+					}
+
 					activeSectionId.value = sectionId;
+
+					if (manuallySelectedSectionId === sectionId) {
+						manuallySelectedSectionId = null;
+					}
 				}
 			}
 		},
@@ -69,4 +78,9 @@ export const observeSections = (navigationItems: readonly SectionNavigationItem[
 export const disconnectSectionsObserver = () => {
 	sectionObserver?.disconnect();
 	sectionObserver = null;
+	manuallySelectedSectionId = null;
+};
+
+export const setManuallySelectedSectionId = (sectionId: string | null) => {
+	manuallySelectedSectionId = sectionId;
 };
