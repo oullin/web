@@ -194,7 +194,7 @@ describe('ResumePage', () => {
 		const reloadSpy = vi.fn();
 		const locationGetSpy = vi.spyOn(window, 'location', 'get');
 		locationGetSpy.mockReturnValue({ reload: reloadSpy } as Location);
-		const _wrapper = mount(ResumePage, {
+		const wrapper = mount(ResumePage, {
 			global: {
 				stubs: {
 					SideNavPartial: true,
@@ -209,11 +209,46 @@ describe('ResumePage', () => {
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
-		const skeleton = _wrapper.find('[data-testid="resume-page-skeleton"]');
-		expect(skeleton.exists()).toBe(true);
-		expect(skeleton.attributes('aria-hidden')).toBe('false');
-		const refreshButton = skeleton.get('button');
+		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
+		expect(skeleton.exists()).toBe(false);
+		const partialError = wrapper.get('[data-testid="resume-partial-error"]');
+		const refreshButton = partialError.get('button');
 		expect(refreshButton.text()).toBe('Refresh page');
+		expect(wrapper.find('education-partial-stub').exists()).toBe(true);
+		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
+		expect(wrapper.find('experience-partial-stub').exists()).toBe(false);
+		await refreshButton.trigger('click');
+		expect(reloadSpy).toHaveBeenCalled();
+		locationGetSpy.mockRestore();
+	});
+
+	it('shows the skeleton refresh state when all resume data requests fail', async () => {
+		const error = new Error('total failure');
+		getExperience.mockRejectedValueOnce(error);
+		getRecommendations.mockRejectedValueOnce(error);
+		getEducation.mockRejectedValueOnce(error);
+		const reloadSpy = vi.fn();
+		const locationGetSpy = vi.spyOn(window, 'location', 'get');
+		locationGetSpy.mockReturnValue({ reload: reloadSpy } as Location);
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		await flushPromises();
+
+		const { debugError } = await import('@api/http-error.ts');
+		expect(debugError).toHaveBeenCalledWith(error);
+		const skeleton = wrapper.get('[data-testid="resume-page-skeleton"]');
+		expect(skeleton.attributes('aria-hidden')).toBe('false');
 		const skeletonWrapper = skeleton.element.parentElement as HTMLElement | null;
 		if (!skeletonWrapper) {
 			throw new Error('Skeleton wrapper not found');
@@ -228,9 +263,12 @@ describe('ResumePage', () => {
 		}
 		expect(layout.classList.contains('lg:grid')).toBe(true);
 		expect(layout.classList.contains('lg:grid-cols-2')).toBe(true);
-		expect(_wrapper.find('education-partial-stub').exists()).toBe(true);
-		expect(_wrapper.find('recommendation-partial-stub').exists()).toBe(true);
-		expect(_wrapper.find('experience-partial-stub').exists()).toBe(false);
+		const refreshButton = skeleton.get('button');
+		expect(refreshButton.text()).toBe('Refresh page');
+		expect(wrapper.find('[data-testid="resume-partial-error"]').exists()).toBe(false);
+		expect(wrapper.find('education-partial-stub').exists()).toBe(false);
+		expect(wrapper.find('experience-partial-stub').exists()).toBe(false);
+		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(false);
 		await refreshButton.trigger('click');
 		expect(reloadSpy).toHaveBeenCalled();
 		locationGetSpy.mockRestore();

@@ -32,9 +32,12 @@
 								<!-- Page content -->
 								<div class="text-slate-500 dark:text-slate-400">
 									<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
-										<ResumePageSkeletonPartial :show-refresh-button="hasError" @retry="refreshResumePage" />
+										<ResumePageSkeletonPartial :show-refresh-button="hasError && !hasResumeContent" @retry="refreshResumePage" />
 									</div>
 									<div v-if="!isLoading" class="space-y-12">
+										<div v-if="shouldShowPartialErrorRefresh" class="flex justify-center lg:justify-start" data-testid="resume-partial-error">
+											<button type="button" class="btn bg-fuchsia-500 hover:bg-fuchsia-600 text-white shadow-sm" @click="refreshResumePage">Refresh page</button>
+										</div>
 										<div v-if="education?.length" :class="resumeSectionHeights.education" data-section-id="education">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial :education="education" back-to-top-target="#resume-top" />
@@ -89,10 +92,12 @@ const apiStore = useApiStore();
 const isLoading = ref(true);
 const hasError = ref(false);
 const activeSectionId = ref<string>(navigationItems[0].href.slice(1));
-const shouldShowSkeleton = computed(() => isLoading.value || hasError.value);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
+const hasResumeContent = computed(() => Boolean(education.value?.length || experience.value?.length || recommendations.value?.length));
+const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
+const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
 
 const updateInitialActiveSection = () => {
 	const firstSectionWithData = [
