@@ -60,7 +60,7 @@
 								<div
 									class="absolute left-0 h-14 w-14 flex items-center justify-center border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
 								>
-									<div class="h-14 w-14 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+									<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700"></div>
 								</div>
 								<div class="pl-20 space-y-3 w-full">
 									<div class="h-4 w-2/3 max-w-[320px] bg-slate-200 dark:bg-slate-700 rounded"></div>
