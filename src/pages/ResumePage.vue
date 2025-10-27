@@ -173,7 +173,9 @@ onMounted(async () => {
 	isLoading.value = false;
 	updateInitialActiveSection();
 	await nextTick();
-	observeSections(navigationItems, activeSectionId);
+	if (hasResumeContent.value && typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+		observeSections(navigationItems, activeSectionId);
+	}
 });
 
 const refreshResumePage = () => {
