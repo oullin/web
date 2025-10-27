@@ -63,6 +63,9 @@
 </template>
 
 <script setup lang="ts">
+import { Heights } from '@/support/heights';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
@@ -70,14 +73,10 @@ import EducationPartial from '@partials/EducationPartial.vue';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
-
 import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue';
-import { useApiStore } from '@api/store.ts';
-import { debugError } from '@api/http-error.ts';
+import { observeSections, disconnectSectionsObserver } from '@/support/observer';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
-import { Heights } from '@/support/heights';
-import { observeSections, disconnectSectionsObserver } from '@/support/observer';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
@@ -169,6 +168,7 @@ onMounted(async () => {
 	isLoading.value = false;
 	updateInitialActiveSection();
 	await nextTick();
+
 	if (hasResumeContent.value && typeof window !== 'undefined' && 'IntersectionObserver' in window) {
 		observeSections(navigationItems, activeSectionId);
 	}
