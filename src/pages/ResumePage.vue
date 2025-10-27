@@ -5,7 +5,7 @@
 
 			<!-- Main content -->
 			<main class="blog-main-content">
-				<div class="w-full h-full mx-auto flex flex-col">
+				<div class="w-full h-full mx-auto flex flex-col max-w-5xl">
 					<HeaderPartial />
 
 					<!-- Content -->
@@ -15,6 +15,18 @@
 							<section>
 								<!-- Page title -->
 								<h1 id="resume-top" class="h1 font-aspekta mb-6">My resume</h1>
+
+								<div class="max-w-3xl text-base text-slate-500 dark:text-slate-400 space-y-4 mb-12">
+									<p>
+										I’m a hands-on Head of Engineering who turns complex ideas into dependable products. I build and scale teams that deliver, setting clear direction, de-risking
+										delivery, and coaching people to perform at a high level.
+									</p>
+									<p>
+										I cut through noise, fix what’s slow, simplify what’s messy, and ship fast without losing quality—keeping stakeholders aligned on outcomes while balancing
+										product needs with operational excellence.
+									</p>
+								</div>
+
 
 								<div class="max-w-3xl text-base text-slate-500 dark:text-slate-400 space-y-4 mb-12">
 									<p>
