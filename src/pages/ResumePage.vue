@@ -29,14 +29,14 @@
 
 								<nav aria-label="Resume sections" class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12">
 									<a
-										v-for="item in navigationItems"
+										v-for="item in navigationItemsWithState"
 										:key="item.href"
-										:class="['resume-nav-link', isNavigationItemActive(item.href) ? 'resume-nav-link--active' : 'resume-nav-link--inactive']"
+										:class="['resume-nav-link', item.isActive ? 'resume-nav-link--active' : 'resume-nav-link--inactive']"
 										:href="item.href"
-										:aria-current="isNavigationItemActive(item.href) ? 'location' : undefined"
-										:data-active="isNavigationItemActive(item.href) ? 'true' : undefined"
+										:aria-current="item.isActive ? 'location' : undefined"
+										:data-active="item.isActive ? 'true' : undefined"
 									>
-										<span :class="['resume-nav-indicator', isNavigationItemActive(item.href) ? 'resume-nav-indicator--active' : 'resume-nav-indicator--inactive']"></span>
+										<span :class="['resume-nav-indicator', item.isActive ? 'resume-nav-indicator--active' : 'resume-nav-indicator--inactive']"></span>
 										{{ item.text }}
 									</a>
 								</nav>
@@ -109,7 +109,12 @@ const hasResumeContent = computed(() => Boolean(education.value?.length || exper
 const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
 const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
 
-const isNavigationItemActive = (href: string): boolean => activeSectionId.value === href.slice(1);
+const navigationItemsWithState = computed(() =>
+	navigationItems.map((item) => ({
+		...item,
+		isActive: activeSectionId.value === item.href.slice(1),
+	})),
+);
 
 const updateInitialActiveSection = () => {
 	const firstSectionWithData = [
