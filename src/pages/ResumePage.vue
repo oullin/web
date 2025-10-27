@@ -143,38 +143,37 @@ useSeo({
 });
 
 onMounted(async () => {
-	try {
-		const [expRes, recRes, eduRes] = await Promise.allSettled([apiStore.getExperience(), apiStore.getRecommendations(), apiStore.getEducation()]);
+	const [expRes, recRes, eduRes] = await Promise.allSettled([
+		Promise.resolve().then(() => apiStore.getExperience()),
+		Promise.resolve().then(() => apiStore.getRecommendations()),
+		Promise.resolve().then(() => apiStore.getEducation()),
+	]);
 
-		if (expRes.status === 'fulfilled' && expRes.value.data) {
-			experience.value = expRes.value.data;
-		} else if (expRes.status === 'rejected') {
-			debugError(expRes.reason);
-			hasError.value = true;
-		}
-
-		if (recRes.status === 'fulfilled' && recRes.value.data) {
-			recommendations.value = recRes.value.data;
-		} else if (recRes.status === 'rejected') {
-			debugError(recRes.reason);
-			hasError.value = true;
-		}
-
-		if (eduRes.status === 'fulfilled' && eduRes.value.data) {
-			education.value = eduRes.value.data;
-		} else if (eduRes.status === 'rejected') {
-			debugError(eduRes.reason);
-			hasError.value = true;
-		}
-	} catch (error) {
-		debugError(error);
+	if (expRes.status === 'fulfilled' && expRes.value.data) {
+		experience.value = expRes.value.data;
+	} else if (expRes.status === 'rejected') {
+		debugError(expRes.reason);
 		hasError.value = true;
-	} finally {
-		isLoading.value = false;
-		updateInitialActiveSection();
-		await nextTick();
-		observeSections(navigationItems, activeSectionId);
 	}
+
+	if (recRes.status === 'fulfilled' && recRes.value.data) {
+		recommendations.value = recRes.value.data;
+	} else if (recRes.status === 'rejected') {
+		debugError(recRes.reason);
+		hasError.value = true;
+	}
+
+	if (eduRes.status === 'fulfilled' && eduRes.value.data) {
+		education.value = eduRes.value.data;
+	} else if (eduRes.status === 'rejected') {
+		debugError(eduRes.reason);
+		hasError.value = true;
+	}
+
+	isLoading.value = false;
+	updateInitialActiveSection();
+	await nextTick();
+	observeSections(navigationItems, activeSectionId);
 });
 
 const refreshResumePage = () => {
