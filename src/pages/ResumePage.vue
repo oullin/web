@@ -50,15 +50,15 @@
 										<div v-if="shouldShowPartialErrorRefresh" class="flex justify-center lg:justify-start" data-testid="resume-partial-error">
 											<button type="button" class="btn bg-fuchsia-500 hover:bg-fuchsia-600 text-white shadow-sm" @click="refreshResumePage">Refresh page</button>
 										</div>
-										<div v-if="education?.length" :class="resumeSectionHeights.education" data-section-id="education" ref="educationSectionRef">
+										<div v-if="education?.length" ref="educationSectionRef" :class="resumeSectionHeights.education" data-section-id="education">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial :education="education" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="experience?.length" :class="resumeSectionHeights.experience" data-section-id="experience" ref="experienceSectionRef">
+										<div v-if="experience?.length" ref="experienceSectionRef" :class="resumeSectionHeights.experience" data-section-id="experience">
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
 											<ExperiencePartial :experience="experience" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations" data-section-id="recommendations" ref="recommendationsSectionRef">
+										<div v-if="recommendations?.length" ref="recommendationsSectionRef" :class="resumeSectionHeights.recommendations" data-section-id="recommendations">
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
 											<RecommendationPartial :recommendations="recommendations" back-to-top-target="#resume-top" />
 										</div>
