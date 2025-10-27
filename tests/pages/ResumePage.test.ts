@@ -202,6 +202,49 @@ describe('ResumePage', () => {
 		}
 	});
 
+	it('ignores navigation clicks when the target section is not rendered', async () => {
+		getExperience.mockResolvedValueOnce({ version: '1.0.0', data: [] });
+
+		const pushStateSpy = vi.spyOn(window.history, 'pushState');
+
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		try {
+			await flushPromises();
+
+			const navLinks = wrapper.findAll('nav a');
+			const [educationLink, experienceLink] = navLinks;
+
+			if (!educationLink || !experienceLink) {
+				throw new Error('Expected navigation links to be rendered');
+			}
+
+			expect(wrapper.find('[data-section-id="experience"]').exists()).toBe(false);
+			expect(educationLink.attributes('data-active')).toBe('true');
+
+			await experienceLink.trigger('click');
+			await nextTick();
+
+			expect(pushStateSpy).not.toHaveBeenCalled();
+			expect(educationLink.attributes('data-active')).toBe('true');
+			expect(experienceLink.attributes('data-active')).toBeUndefined();
+		} finally {
+			wrapper.unmount();
+			pushStateSpy.mockRestore();
+		}
+	});
+
 	it('does not render resume sections when the API returns empty arrays', async () => {
 		getExperience.mockResolvedValueOnce({ version: '1.0.0', data: [] });
 		getRecommendations.mockResolvedValueOnce({ version: '1.0.0', data: [] });

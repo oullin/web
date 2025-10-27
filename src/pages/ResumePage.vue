@@ -126,6 +126,17 @@ const navigationItemsWithState = computed(() =>
 
 const handleNavigationItemClick = (itemId: string, event?: MouseEvent) => {
 	event?.preventDefault();
+
+	if (typeof document === 'undefined') {
+		return;
+	}
+
+	const section = document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
+
+	if (!section) {
+		return;
+	}
+
 	activeSectionId.value = itemId;
 	setManuallySelectedSectionId(itemId);
 
@@ -135,18 +146,6 @@ const handleNavigationItemClick = (itemId: string, event?: MouseEvent) => {
 		if (window.location.hash !== targetHash) {
 			window.history.pushState(null, '', targetHash);
 		}
-	}
-
-	if (typeof document === 'undefined') {
-		setManuallySelectedSectionId(null);
-		return;
-	}
-
-	const section = document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
-
-	if (!section) {
-		setManuallySelectedSectionId(null);
-		return;
 	}
 
 	if (typeof section.scrollIntoView === 'function') {
