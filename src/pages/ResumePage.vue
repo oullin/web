@@ -31,12 +31,22 @@
 									<a
 										v-for="item in navigationItems"
 										:key="item.href"
-										class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
+										:class="[
+											'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100',
+											isNavigationItemActive(item.href)
+												? 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80'
+												: 'border-slate-200/70 dark:border-slate-700/80',
+										]"
 										:href="item.href"
-										:aria-current="item.href === `#${activeSectionId}` ? 'location' : undefined"
-										:data-active="item.href === `#${activeSectionId}` ? 'true' : undefined"
+										:aria-current="isNavigationItemActive(item.href) ? 'location' : undefined"
+										:data-active="isNavigationItemActive(item.href) ? 'true' : undefined"
 									>
-										<span class="size-2 rounded-full bg-fuchsia-400/70 dark:bg-teal-500/80"></span>
+										<span
+											:class="[
+												'size-2 rounded-full transition-colors',
+												isNavigationItemActive(item.href) ? 'bg-fuchsia-500 dark:bg-teal-400' : 'bg-fuchsia-400/70 dark:bg-teal-500/80',
+											]"
+										></span>
 										{{ item.text }}
 									</a>
 								</nav>
@@ -108,6 +118,8 @@ const recommendations = ref<RecommendationsResponse[] | null>(null);
 const hasResumeContent = computed(() => Boolean(education.value?.length || experience.value?.length || recommendations.value?.length));
 const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
 const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
+
+const isNavigationItemActive = (href: string): boolean => activeSectionId.value === href.slice(1);
 
 const updateInitialActiveSection = () => {
 	const firstSectionWithData = [
