@@ -69,6 +69,7 @@
 						<aside class="blog-widgets-column">
 							<div class="space-y-6">
 								<WidgetSocialPartial />
+								<WidgetLangPartial />
 								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
 								<WidgetSkillsPartial v-else :skills="profile.skills" />
 							</div>
@@ -91,6 +92,7 @@ import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
+import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
