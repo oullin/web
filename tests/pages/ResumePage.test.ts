@@ -2,18 +2,9 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ResumePage from '@pages/ResumePage.vue';
-import type { ProfileResponse, ProfileSkillResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
+import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 import { Heights } from '@/support/heights';
 
-const skills: ProfileSkillResponse[] = [{ uuid: faker.string.uuid(), percentage: 50, item: faker.lorem.word(), description: faker.lorem.sentence() }];
-const profile: ProfileResponse = {
-	nickname: faker.person.firstName(),
-	handle: faker.internet.userName(),
-	name: faker.person.fullName(),
-	email: faker.internet.email(),
-	profession: faker.person.jobTitle(),
-	skills,
-};
 const education: EducationResponse[] = [
 	{
 		uuid: faker.string.uuid(),
@@ -56,12 +47,11 @@ const recommendations: RecommendationsResponse[] = [
 	},
 ];
 
-const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
 const getExperience = vi.fn<[], Promise<{ version: string; data: ExperienceResponse[] }>>(() => Promise.resolve({ version: '1.0.0', data: experience }));
 const getRecommendations = vi.fn<[], Promise<{ version: string; data: RecommendationsResponse[] }>>(() => Promise.resolve({ version: '1.0.0', data: recommendations }));
 const getEducation = vi.fn<[], Promise<{ version: string; data: EducationResponse[] }>>(() => Promise.resolve({ version: '1.0.0', data: education }));
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getExperience, getRecommendations, getEducation }) }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getExperience, getRecommendations, getEducation }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('ResumePage', () => {
@@ -76,8 +66,6 @@ describe('ResumePage', () => {
 					SideNavPartial: true,
 					HeaderPartial: true,
 					FooterPartial: true,
-					WidgetLangPartial: true,
-					WidgetSkillsPartial: true,
 					EducationPartial: true,
 					ExperiencePartial: true,
 					RecommendationPartial: true,
@@ -85,7 +73,6 @@ describe('ResumePage', () => {
 			},
 		});
 		await flushPromises();
-		expect(getProfile).toHaveBeenCalled();
 		expect(getExperience).toHaveBeenCalled();
 		expect(getRecommendations).toHaveBeenCalled();
 		expect(getEducation).toHaveBeenCalled();
@@ -97,7 +84,6 @@ describe('ResumePage', () => {
 	});
 
 	it('renders skeleton while the resume data is loading', () => {
-		getProfile.mockReturnValueOnce(new Promise(() => {}));
 		getExperience.mockReturnValueOnce(new Promise(() => {}));
 		getRecommendations.mockReturnValueOnce(new Promise(() => {}));
 		getEducation.mockReturnValueOnce(new Promise(() => {}));
@@ -108,8 +94,6 @@ describe('ResumePage', () => {
 					SideNavPartial: true,
 					HeaderPartial: true,
 					FooterPartial: true,
-					WidgetLangPartial: true,
-					WidgetSkillsPartial: true,
 				},
 			},
 		});
@@ -126,11 +110,17 @@ describe('ResumePage', () => {
 		heightClasses.forEach((className) => {
 			expect(skeletonWrapper.classList.contains(className)).toBe(true);
 		});
+		const layout = skeleton.element.firstElementChild as HTMLElement | null;
+		if (!layout) {
+			throw new Error('Skeleton layout not found');
+		}
+		expect(layout.classList.contains('lg:grid')).toBe(true);
+		expect(layout.classList.contains('lg:grid-cols-2')).toBe(true);
 	});
 
 	it('handles fetch failures', async () => {
 		const error = new Error('oops');
-		getProfile.mockRejectedValueOnce(error);
+		getExperience.mockRejectedValueOnce(error);
 		const reloadSpy = vi.fn();
 		const locationGetSpy = vi.spyOn(window, 'location', 'get');
 		locationGetSpy.mockReturnValue({ reload: reloadSpy } as Location);
@@ -140,8 +130,6 @@ describe('ResumePage', () => {
 					SideNavPartial: true,
 					HeaderPartial: true,
 					FooterPartial: true,
-					WidgetLangPartial: true,
-					WidgetSkillsPartial: true,
 					EducationPartial: true,
 					ExperiencePartial: true,
 					RecommendationPartial: true,
@@ -164,6 +152,12 @@ describe('ResumePage', () => {
 		heightClasses.forEach((className) => {
 			expect(skeletonWrapper.classList.contains(className)).toBe(true);
 		});
+		const layout = skeleton.element.firstElementChild as HTMLElement | null;
+		if (!layout) {
+			throw new Error('Skeleton layout not found');
+		}
+		expect(layout.classList.contains('lg:grid')).toBe(true);
+		expect(layout.classList.contains('lg:grid-cols-2')).toBe(true);
 		await refreshButton.trigger('click');
 		expect(reloadSpy).toHaveBeenCalled();
 		locationGetSpy.mockRestore();
