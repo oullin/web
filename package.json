@@ -10,7 +10,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"watch": "make local-watch",
-		"test": "vitest run --coverage",
+		"test": "vitest --environment jsdom",
 		"build:stats": "VITE_VISUALIZER=true vite build"
 	},
 	"dependencies": {
