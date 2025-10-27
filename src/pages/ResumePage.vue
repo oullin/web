@@ -143,11 +143,7 @@ useSeo({
 });
 
 onMounted(async () => {
-	const [expRes, recRes, eduRes] = await Promise.allSettled([
-		Promise.resolve().then(() => apiStore.getExperience()),
-		Promise.resolve().then(() => apiStore.getRecommendations()),
-		Promise.resolve().then(() => apiStore.getEducation()),
-	]);
+	const [expRes, recRes, eduRes] = await Promise.allSettled([apiStore.getExperience(), apiStore.getRecommendations(), apiStore.getEducation()]);
 
 	if (expRes.status === 'fulfilled' && expRes.value.data) {
 		experience.value = expRes.value.data;
