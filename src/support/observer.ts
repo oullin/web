@@ -14,8 +14,8 @@ const getSectionElements = (navigationItems: readonly SectionNavigationItem[]) =
 	return navigationItems.map((item) => document.querySelector<HTMLElement>(`[data-section-id='${item.href.slice(1)}']`)).filter((section): section is HTMLElement => Boolean(section));
 };
 
-const ensureInitialSectionId = (sections: HTMLElement[], activeSectionId: Ref<string>) => {
-	if (sections.length > 0 && !sections.some((section) => section.dataset.sectionId === activeSectionId.value)) {
+const ensureInitialSectionId = (sections: HTMLElement[], sectionIds: ReadonlySet<string>, activeSectionId: Ref<string>) => {
+	if (sections.length > 0 && !sectionIds.has(activeSectionId.value)) {
 		const initialSectionId = sections[0].dataset.sectionId;
 
 		if (initialSectionId) {
@@ -46,13 +46,14 @@ export const observeSections = (navigationItems: readonly SectionNavigationItem[
 	}
 
 	const observedSections = getSectionElements(navigationItems);
+	const observedSectionIds = new Set(observedSections.map((section) => section.dataset.sectionId).filter((sectionId): sectionId is string => Boolean(sectionId)));
 
 	if (observedSections.length === 0) {
 		disconnectSectionsObserver();
 		return;
 	}
 
-	ensureInitialSectionId(observedSections, activeSectionId);
+	ensureInitialSectionId(observedSections, observedSectionIds, activeSectionId);
 
 	if (typeof IntersectionObserver === 'undefined') {
 		return;
