@@ -90,9 +90,9 @@ import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
 const navigationItems = [
-	{ href: '#education', text: 'Education' },
-	{ href: '#experience', text: 'Work Experience' },
-	{ href: '#recommendations', text: 'Recommendations' },
+	{ id: 'education', href: '#education', text: 'Education' },
+	{ id: 'experience', href: '#experience', text: 'Work Experience' },
+	{ id: 'recommendations', href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
 const resumeSectionHeights = Heights.resumeSectionHeights();
@@ -101,7 +101,7 @@ const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 const apiStore = useApiStore();
 const isLoading = ref(true);
 const hasError = ref(false);
-const activeSectionId = ref<string>(navigationItems[0].href.slice(1));
+const activeSectionId = ref<string>(navigationItems[0].id);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
@@ -112,7 +112,7 @@ const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResume
 const navigationItemsWithState = computed(() =>
 	navigationItems.map((item) => ({
 		...item,
-		isActive: activeSectionId.value === item.href.slice(1),
+		isActive: activeSectionId.value === item.id,
 	})),
 );
 
