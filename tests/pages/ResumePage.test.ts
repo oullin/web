@@ -1,6 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, afterEach, beforeAll, afterAll } from 'vitest';
+import { nextTick } from 'vue';
 import ResumePage from '@pages/ResumePage.vue';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 import { Heights } from '@/support/heights';
@@ -116,6 +117,38 @@ describe('ResumePage', () => {
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('[data-testid="resume-page-skeleton"]').exists()).toBe(false);
+	});
+
+	it('activates navigation items when clicked', async () => {
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		await flushPromises();
+
+		const navLinks = wrapper.findAll('nav a');
+		const [educationLink, experienceLink] = navLinks;
+		if (!educationLink || !experienceLink) {
+			throw new Error('Expected navigation links to be rendered');
+		}
+
+		expect(educationLink.attributes('data-active')).toBe('true');
+		expect(experienceLink.attributes('data-active')).toBeUndefined();
+
+		await experienceLink.trigger('click');
+		await nextTick();
+
+		expect(experienceLink.attributes('data-active')).toBe('true');
+		expect(educationLink.attributes('data-active')).toBeUndefined();
 	});
 
 	it('does not render resume sections when the API returns empty arrays', async () => {

@@ -35,6 +35,7 @@
 										:href="item.href"
 										:aria-current="item.isActive ? 'location' : undefined"
 										:data-active="item.isActive ? 'true' : undefined"
+										@click="handleNavigationItemClick(item.id)"
 									>
 										<span :class="[navIndicatorBaseClasses, item.isActive ? navIndicatorActiveClasses : navIndicatorInactiveClasses]"></span>
 										{{ item.text }}
@@ -122,6 +123,10 @@ const navigationItemsWithState = computed(() =>
 		isActive: activeSectionId.value === item.id,
 	})),
 );
+
+const handleNavigationItemClick = (itemId: string) => {
+	activeSectionId.value = itemId;
+};
 
 const updateInitialActiveSection = () => {
 	const firstSectionWithData = [
