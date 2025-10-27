@@ -32,7 +32,7 @@
 									<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
 										<ResumePageSkeletonPartial :show-refresh-button="hasError" @retry="refreshResumePage" />
 									</div>
-									<div v-else class="space-y-12">
+									<div v-if="!isLoading" class="space-y-12">
 										<div v-if="education?.length" :class="resumeSectionHeights.education">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial :education="education" back-to-top-target="#resume-top" />
@@ -111,18 +111,27 @@ useSeo({
 
 onMounted(async () => {
 	try {
-		const [experienceResponse, recommendationsResponse, educationResponse] = await Promise.all([apiStore.getExperience(), apiStore.getRecommendations(), apiStore.getEducation()]);
+		const [expRes, recRes, eduRes] = await Promise.allSettled([apiStore.getExperience(), apiStore.getRecommendations(), apiStore.getEducation()]);
 
-		if (experienceResponse.data) {
-			experience.value = experienceResponse.data;
+		if (expRes.status === 'fulfilled' && expRes.value.data) {
+			experience.value = expRes.value.data;
+		} else if (expRes.status === 'rejected') {
+			debugError(expRes.reason);
+			hasError.value = true;
 		}
 
-		if (recommendationsResponse.data) {
-			recommendations.value = recommendationsResponse.data;
+		if (recRes.status === 'fulfilled' && recRes.value.data) {
+			recommendations.value = recRes.value.data;
+		} else if (recRes.status === 'rejected') {
+			debugError(recRes.reason);
+			hasError.value = true;
 		}
 
-		if (educationResponse.data) {
-			education.value = educationResponse.data;
+		if (eduRes.status === 'fulfilled' && eduRes.value.data) {
+			education.value = eduRes.value.data;
+		} else if (eduRes.status === 'rejected') {
+			debugError(eduRes.reason);
+			hasError.value = true;
 		}
 	} catch (error) {
 		debugError(error);

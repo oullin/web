@@ -84,12 +84,13 @@ describe('ResumePage', () => {
 		expect(wrapper.find('education-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
+		expect(wrapper.find('[data-testid="resume-page-skeleton"]').exists()).toBe(false);
 	});
 
 	it('does not render resume sections when the API returns empty arrays', async () => {
-		getExperience.mockResolvedValueOnce(Promise.resolve({ version: '1.0.0', data: [] }));
-		getRecommendations.mockResolvedValueOnce(Promise.resolve({ version: '1.0.0', data: [] }));
-		getEducation.mockResolvedValueOnce(Promise.resolve({ version: '1.0.0', data: [] }));
+		getExperience.mockResolvedValueOnce({ version: '1.0.0', data: [] });
+		getRecommendations.mockResolvedValueOnce({ version: '1.0.0', data: [] });
+		getEducation.mockResolvedValueOnce({ version: '1.0.0', data: [] });
 
 		const wrapper = mount(ResumePage, {
 			global: {
@@ -112,6 +113,8 @@ describe('ResumePage', () => {
 		expect(wrapper.find('education-partial-stub').exists()).toBe(false);
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(false);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(false);
+		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
+		expect(skeleton.exists()).toBe(false);
 	});
 
 	it('renders skeleton while the resume data is loading', () => {
@@ -149,7 +152,7 @@ describe('ResumePage', () => {
 		expect(layout.classList.contains('lg:grid-cols-2')).toBe(true);
 	});
 
-	it('handles fetch failures', async () => {
+	it('handles fetch failures without hiding successful sections', async () => {
 		const error = new Error('oops');
 		getExperience.mockRejectedValueOnce(error);
 		const reloadSpy = vi.fn();
@@ -189,6 +192,9 @@ describe('ResumePage', () => {
 		}
 		expect(layout.classList.contains('lg:grid')).toBe(true);
 		expect(layout.classList.contains('lg:grid-cols-2')).toBe(true);
+		expect(_wrapper.find('education-partial-stub').exists()).toBe(true);
+		expect(_wrapper.find('recommendation-partial-stub').exists()).toBe(true);
+		expect(_wrapper.find('experience-partial-stub').exists()).toBe(false);
 		await refreshButton.trigger('click');
 		expect(reloadSpy).toHaveBeenCalled();
 		locationGetSpy.mockRestore();
