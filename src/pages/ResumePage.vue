@@ -68,7 +68,7 @@ import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
 
-import { ref, onMounted, computed, nextTick, onBeforeUnmount } from 'vue';
+import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
@@ -95,16 +95,20 @@ const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
 
 const updateInitialActiveSection = () => {
-        const firstSectionWithData = [
-                { id: 'education', hasData: Boolean(education.value?.length) },
-                { id: 'experience', hasData: Boolean(experience.value?.length) },
-                { id: 'recommendations', hasData: Boolean(recommendations.value?.length) },
-        ].find((section) => section.hasData);
+	const firstSectionWithData = [
+		{ id: 'education', hasData: Boolean(education.value?.length) },
+		{ id: 'experience', hasData: Boolean(experience.value?.length) },
+		{ id: 'recommendations', hasData: Boolean(recommendations.value?.length) },
+	].find((section) => section.hasData);
 
-        if (firstSectionWithData && activeSectionId.value !== firstSectionWithData.id) {
-                activeSectionId.value = firstSectionWithData.id;
-        }
+	if (firstSectionWithData && activeSectionId.value !== firstSectionWithData.id) {
+		activeSectionId.value = firstSectionWithData.id;
+	}
 };
+
+watch([education, experience, recommendations], () => {
+	updateInitialActiveSection();
+});
 
 useSeo({
 	title: 'Resume',
@@ -152,12 +156,12 @@ onMounted(async () => {
 	} catch (error) {
 		debugError(error);
 		hasError.value = true;
-        } finally {
-                isLoading.value = false;
-                updateInitialActiveSection();
-                await nextTick();
-                observeSections(navigationItems, activeSectionId);
-        }
+	} finally {
+		isLoading.value = false;
+		updateInitialActiveSection();
+		await nextTick();
+		observeSections(navigationItems, activeSectionId);
+	}
 });
 
 const refreshResumePage = () => {
