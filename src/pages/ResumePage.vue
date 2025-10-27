@@ -35,7 +35,7 @@
 									<div v-else class="space-y-12">
 										<div v-if="education?.length" :class="resumeSectionHeights.education">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
-											<EducationPartial :education="education" />
+											<EducationPartial :education="education" back-to-top-target="#resume-top" />
 										</div>
 										<div v-if="experience?.length" :class="resumeSectionHeights.experience">
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
