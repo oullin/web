@@ -94,6 +94,18 @@ const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
 
+const updateInitialActiveSection = () => {
+        const firstSectionWithData = [
+                { id: 'education', hasData: Boolean(education.value?.length) },
+                { id: 'experience', hasData: Boolean(experience.value?.length) },
+                { id: 'recommendations', hasData: Boolean(recommendations.value?.length) },
+        ].find((section) => section.hasData);
+
+        if (firstSectionWithData && activeSectionId.value !== firstSectionWithData.id) {
+                activeSectionId.value = firstSectionWithData.id;
+        }
+};
+
 useSeo({
 	title: 'Resume',
 	image: ABOUT_IMAGE,
@@ -140,11 +152,12 @@ onMounted(async () => {
 	} catch (error) {
 		debugError(error);
 		hasError.value = true;
-	} finally {
-		isLoading.value = false;
-		await nextTick();
-		observeSections(navigationItems, activeSectionId);
-	}
+        } finally {
+                isLoading.value = false;
+                updateInitialActiveSection();
+                await nextTick();
+                observeSections(navigationItems, activeSectionId);
+        }
 });
 
 const refreshResumePage = () => {
