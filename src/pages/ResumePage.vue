@@ -186,11 +186,13 @@ const handleNavigationItemClick = (itemId: SectionId, event?: MouseEvent) => {
 };
 
 const updateInitialActiveSection = () => {
-	const firstSectionWithData = [
+	const sectionsWithData: Array<{ id: SectionId; hasData: boolean }> = [
 		{ id: 'education', hasData: Boolean(education.value?.length) },
 		{ id: 'experience', hasData: Boolean(experience.value?.length) },
 		{ id: 'recommendations', hasData: Boolean(recommendations.value?.length) },
-	].find((section) => section.hasData);
+	];
+
+	const firstSectionWithData = sectionsWithData.find((section) => section.hasData);
 
 	if (firstSectionWithData && activeSectionId.value !== firstSectionWithData.id) {
 		activeSectionId.value = firstSectionWithData.id;
