@@ -86,17 +86,11 @@ import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
 import { ref, onMounted, computed, nextTick, onBeforeUnmount, watch } from 'vue';
-import { observeSections, disconnectSectionsObserver, setManuallySelectedSectionId } from '@/support/observer';
+import { observeSections, disconnectSectionsObserver } from '@/support/observer';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
-const navigationItems = [
-	{ id: 'education', href: '#education', text: 'Education' },
-	{ id: 'experience', href: '#experience', text: 'Work Experience' },
-	{ id: 'recommendations', href: '#recommendations', text: 'Recommendations' },
-] as const;
-
-type SectionId = (typeof navigationItems)[number]['id'];
+import { navigationItems, type SectionId, createNavigationItemsWithState, createSectionResolver, createNavigationClickHandler, updateActiveSectionFromData } from '@pages/support/resume.ts';
 
 const navLinkBaseClasses = 'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100';
 const navLinkActiveClasses = 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80';
@@ -122,81 +116,25 @@ const hasResumeContent = computed(() => Boolean(education.value?.length || exper
 const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
 const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
 
-const navigationItemsWithState = computed(() =>
-	navigationItems.map((item) => ({
-		...item,
-		isActive: activeSectionId.value === item.id,
-	})),
-);
+const navigationItemsWithState = createNavigationItemsWithState(activeSectionId);
 
-const getSectionElement = (itemId: SectionId) => {
-	const sectionFromRef = (() => {
-		switch (itemId) {
-			case 'education':
-				return educationSectionRef.value;
-			case 'experience':
-				return experienceSectionRef.value;
-			case 'recommendations':
-				return recommendationsSectionRef.value;
-			default:
-				return null;
-		}
-	})();
+const resolveSectionElement = createSectionResolver({
+	education: educationSectionRef,
+	experience: experienceSectionRef,
+	recommendations: recommendationsSectionRef,
+});
 
-	if (sectionFromRef) {
-		return sectionFromRef;
-	}
-
-	if (typeof document === 'undefined') {
-		return null;
-	}
-
-	return document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
-};
-
-const handleNavigationItemClick = (itemId: SectionId, event?: MouseEvent) => {
-	event?.preventDefault();
-
-	const section = getSectionElement(itemId);
-
-	if (!section) {
-		return;
-	}
-
-	activeSectionId.value = itemId;
-	setManuallySelectedSectionId(itemId);
-
-	if (typeof window !== 'undefined' && typeof window.history?.pushState === 'function') {
-		const targetHash = `#${itemId}`;
-
-		if (window.location.hash !== targetHash) {
-			window.history.pushState(null, '', targetHash);
-		}
-	}
-
-	if (typeof section.scrollIntoView === 'function') {
-		try {
-			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			return;
-		} catch {
-			section.scrollIntoView();
-			return;
-		}
-	}
-};
+const handleNavigationItemClick = createNavigationClickHandler({
+	activeSectionId,
+	resolveSectionElement,
+});
 
 const updateInitialActiveSection = () => {
-	const sectionsWithData: Array<{ id: SectionId; hasData: boolean }> = [
-		{ id: 'education', hasData: Boolean(education.value?.length) },
-		{ id: 'experience', hasData: Boolean(experience.value?.length) },
-		{ id: 'recommendations', hasData: Boolean(recommendations.value?.length) },
-	];
-
-	const firstSectionWithData = sectionsWithData.find((section) => section.hasData);
-
-	if (firstSectionWithData && activeSectionId.value !== firstSectionWithData.id) {
-		activeSectionId.value = firstSectionWithData.id;
-	}
+	updateActiveSectionFromData(activeSectionId, {
+		education: Boolean(education.value?.length),
+		experience: Boolean(experience.value?.length),
+		recommendations: Boolean(recommendations.value?.length),
+	});
 };
 
 watch(
