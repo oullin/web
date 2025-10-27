@@ -152,11 +152,6 @@ describe('ResumePage', () => {
 	});
 
 	it('scrolls to the matching section when navigation items are clicked', async () => {
-		const target = document.createElement('div');
-		target.dataset.sectionId = 'experience';
-		const scrollIntoView = vi.fn();
-		target.scrollIntoView = scrollIntoView as unknown as typeof target.scrollIntoView;
-		document.body.appendChild(target);
 		const originalUrl = window.location.href;
 
 		if (typeof window.history.replaceState === 'function') {
@@ -164,6 +159,8 @@ describe('ResumePage', () => {
 		}
 
 		const pushStateSpy = vi.spyOn(window.history, 'pushState');
+		let sectionElement: HTMLElement | null = null;
+		let originalScrollIntoView: typeof HTMLElement.prototype.scrollIntoView | undefined;
 
 		const wrapper = mount(ResumePage, {
 			global: {
@@ -187,13 +184,20 @@ describe('ResumePage', () => {
 				throw new Error('Expected experience navigation link to be rendered');
 			}
 
+			sectionElement = wrapper.get('[data-section-id="experience"]').element as HTMLElement;
+			originalScrollIntoView = sectionElement.scrollIntoView;
+			const scrollIntoView = vi.fn();
+			sectionElement.scrollIntoView = scrollIntoView as unknown as typeof sectionElement.scrollIntoView;
+
 			await experienceLink.trigger('click');
 
 			expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
 			expect(pushStateSpy).toHaveBeenCalledWith(null, '', '#experience');
 		} finally {
+			if (sectionElement && originalScrollIntoView) {
+				sectionElement.scrollIntoView = originalScrollIntoView;
+			}
 			wrapper.unmount();
-			document.body.removeChild(target);
 			pushStateSpy.mockRestore();
 
 			if (typeof window.history.replaceState === 'function') {

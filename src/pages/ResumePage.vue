@@ -50,15 +50,15 @@
 										<div v-if="shouldShowPartialErrorRefresh" class="flex justify-center lg:justify-start" data-testid="resume-partial-error">
 											<button type="button" class="btn bg-fuchsia-500 hover:bg-fuchsia-600 text-white shadow-sm" @click="refreshResumePage">Refresh page</button>
 										</div>
-										<div v-if="education?.length" :class="resumeSectionHeights.education" data-section-id="education">
+										<div v-if="education?.length" :class="resumeSectionHeights.education" data-section-id="education" ref="educationSectionRef">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial :education="education" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="experience?.length" :class="resumeSectionHeights.experience" data-section-id="experience">
+										<div v-if="experience?.length" :class="resumeSectionHeights.experience" data-section-id="experience" ref="experienceSectionRef">
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
 											<ExperiencePartial :experience="experience" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations" data-section-id="recommendations">
+										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations" data-section-id="recommendations" ref="recommendationsSectionRef">
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
 											<RecommendationPartial :recommendations="recommendations" back-to-top-target="#resume-top" />
 										</div>
@@ -96,6 +96,8 @@ const navigationItems = [
 	{ id: 'recommendations', href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
+type SectionId = (typeof navigationItems)[number]['id'];
+
 const navLinkBaseClasses = 'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100';
 const navLinkActiveClasses = 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80';
 const navLinkInactiveClasses = 'border-slate-200/70 dark:border-slate-700/80';
@@ -109,10 +111,13 @@ const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 const apiStore = useApiStore();
 const isLoading = ref(true);
 const hasError = ref(false);
-const activeSectionId = ref<string>(navigationItems[0].id);
+const activeSectionId = ref<SectionId>(navigationItems[0].id);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
+const educationSectionRef = ref<HTMLElement | null>(null);
+const experienceSectionRef = ref<HTMLElement | null>(null);
+const recommendationsSectionRef = ref<HTMLElement | null>(null);
 const hasResumeContent = computed(() => Boolean(education.value?.length || experience.value?.length || recommendations.value?.length));
 const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
 const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
@@ -124,14 +129,23 @@ const navigationItemsWithState = computed(() =>
 	})),
 );
 
-const handleNavigationItemClick = (itemId: string, event?: MouseEvent) => {
+const getSectionElement = (itemId: SectionId) => {
+	switch (itemId) {
+		case 'education':
+			return educationSectionRef.value;
+		case 'experience':
+			return experienceSectionRef.value;
+		case 'recommendations':
+			return recommendationsSectionRef.value;
+		default:
+			return null;
+	}
+};
+
+const handleNavigationItemClick = (itemId: SectionId, event?: MouseEvent) => {
 	event?.preventDefault();
 
-	if (typeof document === 'undefined') {
-		return;
-	}
-
-	const section = document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
+	const section = getSectionElement(itemId);
 
 	if (!section) {
 		return;
