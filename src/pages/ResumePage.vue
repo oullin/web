@@ -74,6 +74,7 @@ import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 import { Heights } from '@/support/heights';
+import { observeSections, disconnectSectionsObserver } from '@/support/observer';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
@@ -92,51 +93,6 @@ const shouldShowSkeleton = computed(() => isLoading.value || hasError.value);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
-
-let sectionObserver: IntersectionObserver | null = null;
-
-const observeVisibleSections = () => {
-	if (typeof window === 'undefined' || typeof document === 'undefined') {
-		return;
-	}
-
-	const observedSections = navigationItems
-		.map((item) => document.querySelector<HTMLElement>(`[data-section-id='${item.href.slice(1)}']`))
-		.filter((section): section is HTMLElement => Boolean(section));
-
-	if (observedSections.length > 0 && !observedSections.some((section) => section.dataset.sectionId === activeSectionId.value)) {
-		const initialSectionId = observedSections[0].dataset.sectionId;
-
-		if (initialSectionId) {
-			activeSectionId.value = initialSectionId;
-		}
-	}
-
-	if (typeof IntersectionObserver === 'undefined') {
-		return;
-	}
-
-	sectionObserver?.disconnect();
-
-	sectionObserver = new IntersectionObserver(
-		(entries) => {
-			const visibleEntries = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-			if (visibleEntries.length > 0) {
-				const { sectionId } = (visibleEntries[0].target as HTMLElement).dataset;
-
-				if (sectionId) {
-					activeSectionId.value = sectionId;
-				}
-			}
-		},
-		{ rootMargin: '-40% 0px -40%' },
-	);
-
-	observedSections.forEach((section) => {
-		sectionObserver?.observe(section);
-	});
-};
 
 useSeo({
 	title: 'Resume',
@@ -187,7 +143,7 @@ onMounted(async () => {
 	} finally {
 		isLoading.value = false;
 		await nextTick();
-		observeVisibleSections();
+		observeSections(navigationItems, activeSectionId);
 	}
 });
 
@@ -198,7 +154,6 @@ const refreshResumePage = () => {
 };
 
 onBeforeUnmount(() => {
-	sectionObserver?.disconnect();
-	sectionObserver = null;
+	disconnectSectionsObserver();
 });
 </script>
