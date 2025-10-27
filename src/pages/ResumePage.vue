@@ -31,15 +31,12 @@
 									<a
 										v-for="item in navigationItemsWithState"
 										:key="item.href"
-										:class="[
-											'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100',
-											item.isActive ? 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80' : 'border-slate-200/70 dark:border-slate-700/80',
-										]"
+										:class="[navLinkBaseClasses, item.isActive ? navLinkActiveClasses : navLinkInactiveClasses]"
 										:href="item.href"
 										:aria-current="item.isActive ? 'location' : undefined"
 										:data-active="item.isActive ? 'true' : undefined"
 									>
-										<span :class="['size-2 rounded-full transition-colors', item.isActive ? 'bg-fuchsia-500 dark:bg-teal-400' : 'bg-fuchsia-400/70 dark:bg-teal-500/80']"></span>
+										<span :class="[navIndicatorBaseClasses, item.isActive ? navIndicatorActiveClasses : navIndicatorInactiveClasses]"></span>
 										{{ item.text }}
 									</a>
 								</nav>
@@ -97,6 +94,13 @@ const navigationItems = [
 	{ id: 'experience', href: '#experience', text: 'Work Experience' },
 	{ id: 'recommendations', href: '#recommendations', text: 'Recommendations' },
 ] as const;
+
+const navLinkBaseClasses = 'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100';
+const navLinkActiveClasses = 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80';
+const navLinkInactiveClasses = 'border-slate-200/70 dark:border-slate-700/80';
+const navIndicatorBaseClasses = 'size-2 rounded-full transition-colors';
+const navIndicatorActiveClasses = 'bg-fuchsia-500 dark:bg-teal-400';
+const navIndicatorInactiveClasses = 'bg-fuchsia-400/70 dark:bg-teal-500/80';
 
 const resumeSectionHeights = Heights.resumeSectionHeights();
 const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
