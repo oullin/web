@@ -46,6 +46,12 @@ export const observeSections = (navigationItems: readonly SectionNavigationItem[
 	}
 
 	const observedSections = getSectionElements(navigationItems);
+
+	if (observedSections.length === 0) {
+		disconnectSectionsObserver();
+		return;
+	}
+
 	ensureInitialSectionId(observedSections, activeSectionId);
 
 	if (typeof IntersectionObserver === 'undefined') {
