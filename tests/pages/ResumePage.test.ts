@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeAll, afterAll } from 'vitest';
 import ResumePage from '@pages/ResumePage.vue';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 import { Heights } from '@/support/heights';
@@ -53,6 +53,24 @@ const getEducation = vi.fn<[], Promise<{ version: string; data: EducationRespons
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getExperience, getRecommendations, getEducation }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
+
+beforeAll(() => {
+	class MockIntersectionObserver {
+		observe() {}
+		unobserve() {}
+		disconnect() {}
+	}
+
+	Object.defineProperty(globalThis, 'IntersectionObserver', {
+		writable: true,
+		configurable: true,
+		value: MockIntersectionObserver,
+	});
+});
+
+afterAll(() => {
+	delete (globalThis as { IntersectionObserver?: unknown }).IntersectionObserver;
+});
 
 describe('ResumePage', () => {
 	afterEach(() => {
