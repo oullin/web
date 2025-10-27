@@ -75,7 +75,17 @@ type CreateNavigationClickHandlerOptions = {
 export const createNavigationClickHandler =
 	({ activeSectionId, resolveSectionElement, updateHistory = defaultHistoryUpdater, scrollToSection = defaultScrollToSection }: CreateNavigationClickHandlerOptions) =>
 	(itemId: SectionId, event?: MouseEvent) => {
-		event?.preventDefault();
+		// Respect standard link behaviors
+		if (event) {
+			const isAuxClick = event.button !== 0;
+			const isModifier = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+
+			if (isAuxClick || isModifier) {
+				return; // Let the browser handle it
+			}
+
+			event.preventDefault();
+		}
 
 		const section = resolveSectionElement(itemId);
 
