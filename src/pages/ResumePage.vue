@@ -16,6 +16,17 @@
 								<!-- Page title -->
 								<h1 id="resume-top" class="h1 font-aspekta mb-6">My resume</h1>
 
+								<div class="max-w-3xl text-base text-slate-500 dark:text-slate-400 space-y-4 mb-12">
+									<p>
+										I’m a hands-on Head of Engineering who turns complex ideas into dependable products. I build and scale teams that deliver, setting clear direction, de-risking
+										delivery, and coaching people to perform at a high level.
+									</p>
+									<p>
+										I cut through noise, fix what’s slow, simplify what’s messy, and ship fast without losing quality—keeping stakeholders aligned on outcomes while balancing
+										product needs with operational excellence.
+									</p>
+								</div>
+
 								<nav aria-label="Resume sections" class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12">
 									<a
 										v-for="item in navigationItems"
