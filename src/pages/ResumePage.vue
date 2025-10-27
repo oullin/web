@@ -5,13 +5,13 @@
 
 			<!-- Main content -->
 			<main class="blog-main-content">
-				<div class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
+				<div class="w-full h-full mx-auto flex flex-col">
 					<HeaderPartial />
 
 					<!-- Content -->
 					<div class="grow pt-12 md:pt-16 pb-16 md:pb-20">
 						<!-- Main area -->
-						<div class="max-w-[700px]">
+						<div class="w-full">
 							<section>
 								<!-- Page title -->
 								<h1 id="resume-top" class="h1 font-aspekta mb-6">My resume</h1>
