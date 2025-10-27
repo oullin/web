@@ -30,7 +30,7 @@
 								<!-- Page content -->
 								<div class="text-slate-500 dark:text-slate-400">
 									<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
-										<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
+										<ResumePageSkeletonPartial :show-refresh-button="hasError" @retry="refreshResumePage" />
 									</div>
 									<div v-else class="space-y-12">
 										<div :class="resumeSectionHeights.education">
@@ -84,8 +84,8 @@ const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 
 const apiStore = useApiStore();
 const isLoading = ref(true);
-const hasProfileError = ref(false);
-const shouldShowSkeleton = computed(() => isLoading.value || hasProfileError.value);
+const hasError = ref(false);
+const shouldShowSkeleton = computed(() => isLoading.value || hasError.value);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
@@ -126,7 +126,7 @@ onMounted(async () => {
 		}
 	} catch (error) {
 		debugError(error);
-		hasProfileError.value = true;
+		hasError.value = true;
 	} finally {
 		isLoading.value = false;
 	}
