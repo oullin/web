@@ -31,12 +31,12 @@
 									<a
 										v-for="item in navigationItemsWithState"
 										:key="item.href"
-										:class="['resume-nav-link', item.isActive ? 'resume-nav-link--active' : 'resume-nav-link--inactive']"
+										:class="[navLinkBaseClasses, item.isActive ? navLinkActiveClasses : navLinkInactiveClasses]"
 										:href="item.href"
 										:aria-current="item.isActive ? 'location' : undefined"
 										:data-active="item.isActive ? 'true' : undefined"
 									>
-										<span :class="['resume-nav-indicator', item.isActive ? 'resume-nav-indicator--active' : 'resume-nav-indicator--inactive']"></span>
+										<span :class="[navIndicatorBaseClasses, item.isActive ? navIndicatorActiveClasses : navIndicatorInactiveClasses]"></span>
 										{{ item.text }}
 									</a>
 								</nav>
@@ -94,6 +94,13 @@ const navigationItems = [
 	{ id: 'experience', href: '#experience', text: 'Work Experience' },
 	{ id: 'recommendations', href: '#recommendations', text: 'Recommendations' },
 ] as const;
+
+const navLinkBaseClasses = 'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100';
+const navLinkActiveClasses = 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80';
+const navLinkInactiveClasses = 'border-slate-200/70 dark:border-slate-700/80';
+const navIndicatorBaseClasses = 'size-2 rounded-full transition-colors';
+const navIndicatorActiveClasses = 'bg-fuchsia-500 dark:bg-teal-400';
+const navIndicatorInactiveClasses = 'bg-fuchsia-400/70 dark:bg-teal-500/80';
 
 const resumeSectionHeights = Heights.resumeSectionHeights();
 const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
@@ -202,29 +209,3 @@ onBeforeUnmount(() => {
 	disconnectSectionsObserver();
 });
 </script>
-
-<style scoped lang="postcss">
-.resume-nav-link {
-	@apply inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100;
-}
-
-.resume-nav-link--active {
-	@apply border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80;
-}
-
-.resume-nav-link--inactive {
-	@apply border-slate-200/70 dark:border-slate-700/80;
-}
-
-.resume-nav-indicator {
-	@apply size-2 rounded-full transition-colors;
-}
-
-.resume-nav-indicator--active {
-	@apply bg-fuchsia-500 dark:bg-teal-400;
-}
-
-.resume-nav-indicator--inactive {
-	@apply bg-fuchsia-400/70 dark:bg-teal-500/80;
-}
-</style>
