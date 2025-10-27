@@ -81,6 +81,37 @@ describe('ResumePage', () => {
 		const dot = wrapper.find('nav span');
 		expect(dot.classes()).toContain('bg-fuchsia-400/70');
 		expect(dot.classes()).toContain('dark:bg-teal-500/80');
+		expect(wrapper.find('education-partial-stub').exists()).toBe(true);
+		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
+		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
+	});
+
+	it('does not render resume sections when the API returns empty arrays', async () => {
+		getExperience.mockResolvedValueOnce(Promise.resolve({ version: '1.0.0', data: [] }));
+		getRecommendations.mockResolvedValueOnce(Promise.resolve({ version: '1.0.0', data: [] }));
+		getEducation.mockResolvedValueOnce(Promise.resolve({ version: '1.0.0', data: [] }));
+
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		await flushPromises();
+
+		expect(wrapper.find('#education').exists()).toBe(false);
+		expect(wrapper.find('#experience').exists()).toBe(false);
+		expect(wrapper.find('#recommendations').exists()).toBe(false);
+		expect(wrapper.find('education-partial-stub').exists()).toBe(false);
+		expect(wrapper.find('experience-partial-stub').exists()).toBe(false);
+		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(false);
 	});
 
 	it('renders skeleton while the resume data is loading', () => {

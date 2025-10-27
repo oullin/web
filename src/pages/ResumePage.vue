@@ -33,17 +33,17 @@
 										<ResumePageSkeletonPartial :show-refresh-button="hasError" @retry="refreshResumePage" />
 									</div>
 									<div v-else class="space-y-12">
-										<div :class="resumeSectionHeights.education">
+										<div v-if="education?.length" :class="resumeSectionHeights.education">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
-											<EducationPartial v-if="education" :education="education" />
+											<EducationPartial :education="education" />
 										</div>
-										<div :class="resumeSectionHeights.experience">
+										<div v-if="experience?.length" :class="resumeSectionHeights.experience">
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
-											<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
+											<ExperiencePartial :experience="experience" back-to-top-target="#resume-top" />
 										</div>
-										<div :class="resumeSectionHeights.recommendations">
+										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations">
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-											<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+											<RecommendationPartial :recommendations="recommendations" back-to-top-target="#resume-top" />
 										</div>
 									</div>
 								</div>
