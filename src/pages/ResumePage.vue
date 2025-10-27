@@ -35,7 +35,7 @@
 										:href="item.href"
 										:aria-current="item.isActive ? 'location' : undefined"
 										:data-active="item.isActive ? 'true' : undefined"
-										@click.prevent="handleNavigationItemClick(item.id)"
+										@click="handleNavigationItemClick(item.id, $event)"
 									>
 										<span :class="[navIndicatorBaseClasses, item.isActive ? navIndicatorActiveClasses : navIndicatorInactiveClasses]"></span>
 										{{ item.text }}
@@ -124,20 +124,40 @@ const navigationItemsWithState = computed(() =>
 	})),
 );
 
-const handleNavigationItemClick = (itemId: string) => {
+const handleNavigationItemClick = (itemId: string, event?: MouseEvent) => {
+	event?.preventDefault();
 	activeSectionId.value = itemId;
 	setManuallySelectedSectionId(itemId);
 
-	if (typeof document !== 'undefined') {
-		const section = document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
+	if (typeof window !== 'undefined' && typeof window.history?.pushState === 'function') {
+		const targetHash = `#${itemId}`;
 
-		if (section) {
-			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			return;
+		if (window.location.hash !== targetHash) {
+			window.history.pushState(null, '', targetHash);
 		}
 	}
 
-	setManuallySelectedSectionId(null);
+	if (typeof document === 'undefined') {
+		setManuallySelectedSectionId(null);
+		return;
+	}
+
+	const section = document.querySelector<HTMLElement>(`[data-section-id='${itemId}']`);
+
+	if (!section) {
+		setManuallySelectedSectionId(null);
+		return;
+	}
+
+	if (typeof section.scrollIntoView === 'function') {
+		try {
+			section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			return;
+		} catch {
+			section.scrollIntoView();
+			return;
+		}
+	}
 };
 
 const updateInitialActiveSection = () => {

@@ -157,6 +157,13 @@ describe('ResumePage', () => {
 		const scrollIntoView = vi.fn();
 		target.scrollIntoView = scrollIntoView as unknown as typeof target.scrollIntoView;
 		document.body.appendChild(target);
+		const originalUrl = window.location.href;
+
+		if (typeof window.history.replaceState === 'function') {
+			window.history.replaceState(null, '', '/');
+		}
+
+		const pushStateSpy = vi.spyOn(window.history, 'pushState');
 
 		const wrapper = mount(ResumePage, {
 			global: {
@@ -183,9 +190,15 @@ describe('ResumePage', () => {
 			await experienceLink.trigger('click');
 
 			expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
+			expect(pushStateSpy).toHaveBeenCalledWith(null, '', '#experience');
 		} finally {
 			wrapper.unmount();
 			document.body.removeChild(target);
+			pushStateSpy.mockRestore();
+
+			if (typeof window.history.replaceState === 'function') {
+				window.history.replaceState(null, '', originalUrl);
+			}
 		}
 	});
 
