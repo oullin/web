@@ -100,12 +100,10 @@ describe('ResumePage', () => {
 		const navDots = wrapper.findAll('nav span');
 		expect(navLinks[0].attributes('aria-current')).toBe('location');
 		expect(navLinks[0].attributes('data-active')).toBe('true');
-		expect(navLinks[0].classes()).toContain('resume-nav-link');
-		expect(navLinks[0].classes()).toContain('resume-nav-link--active');
-		expect(navLinks[1].classes()).toContain('resume-nav-link--inactive');
-		expect(navDots[0].classes()).toContain('resume-nav-indicator');
-		expect(navDots[0].classes()).toContain('resume-nav-indicator--active');
-		expect(navDots[1].classes()).toContain('resume-nav-indicator--inactive');
+		expect(navLinks[0].classes()).toEqual(expect.arrayContaining(['inline-flex', 'border', 'border-fuchsia-500', 'text-slate-800']));
+		expect(navLinks[1].classes()).toEqual(expect.arrayContaining(['border-slate-200/70', 'dark:border-slate-700/80']));
+		expect(navDots[0].classes()).toEqual(expect.arrayContaining(['size-2', 'bg-fuchsia-500']));
+		expect(navDots[1].classes()).toEqual(expect.arrayContaining(['bg-fuchsia-400/70']));
 		expect(navLinks[1].attributes('aria-current')).toBeUndefined();
 		expect(navLinks[1].attributes('data-active')).toBeUndefined();
 		expect(navLinks[2].attributes('aria-current')).toBeUndefined();
@@ -170,9 +168,9 @@ describe('ResumePage', () => {
 		expect(navLinks[0].attributes('aria-current')).toBeUndefined();
 		expect(navLinks[1].attributes('aria-current')).toBe('location');
 		expect(navLinks[1].attributes('data-active')).toBe('true');
-		expect(navLinks[1].classes()).toContain('resume-nav-link--active');
+		expect(navLinks[1].classes()).toEqual(expect.arrayContaining(['border-fuchsia-500', 'text-slate-800']));
 		expect(navLinks[0].attributes('data-active')).toBeUndefined();
-		expect(navLinks[0].classes()).toContain('resume-nav-link--inactive');
+		expect(navLinks[0].classes()).toEqual(expect.arrayContaining(['border-slate-200/70']));
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
 	});

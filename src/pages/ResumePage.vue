@@ -31,12 +31,15 @@
 									<a
 										v-for="item in navigationItemsWithState"
 										:key="item.href"
-										:class="['resume-nav-link', item.isActive ? 'resume-nav-link--active' : 'resume-nav-link--inactive']"
+										:class="[
+											'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100',
+											item.isActive ? 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80' : 'border-slate-200/70 dark:border-slate-700/80',
+										]"
 										:href="item.href"
 										:aria-current="item.isActive ? 'location' : undefined"
 										:data-active="item.isActive ? 'true' : undefined"
 									>
-										<span :class="['resume-nav-indicator', item.isActive ? 'resume-nav-indicator--active' : 'resume-nav-indicator--inactive']"></span>
+										<span :class="['size-2 rounded-full transition-colors', item.isActive ? 'bg-fuchsia-500 dark:bg-teal-400' : 'bg-fuchsia-400/70 dark:bg-teal-500/80']"></span>
 										{{ item.text }}
 									</a>
 								</nav>
@@ -202,29 +205,3 @@ onBeforeUnmount(() => {
 	disconnectSectionsObserver();
 });
 </script>
-
-<style scoped lang="postcss">
-.resume-nav-link {
-	@apply inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100;
-}
-
-.resume-nav-link--active {
-	@apply border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80;
-}
-
-.resume-nav-link--inactive {
-	@apply border-slate-200/70 dark:border-slate-700/80;
-}
-
-.resume-nav-indicator {
-	@apply size-2 rounded-full transition-colors;
-}
-
-.resume-nav-indicator--active {
-	@apply bg-fuchsia-500 dark:bg-teal-400;
-}
-
-.resume-nav-indicator--inactive {
-	@apply bg-fuchsia-400/70 dark:bg-teal-500/80;
-}
-</style>
