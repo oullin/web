@@ -22,6 +22,8 @@
 										:key="item.href"
 										class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
 										:href="item.href"
+										:aria-current="item.href === `#${activeSectionId}` ? 'location' : undefined"
+										:data-active="item.href === `#${activeSectionId}` ? 'true' : undefined"
 									>
 										<span class="size-2 rounded-full bg-fuchsia-400/70 dark:bg-teal-500/80"></span>
 										{{ item.text }}
@@ -33,15 +35,15 @@
 										<ResumePageSkeletonPartial :show-refresh-button="hasError" @retry="refreshResumePage" />
 									</div>
 									<div v-if="!isLoading" class="space-y-12">
-										<div v-if="education?.length" :class="resumeSectionHeights.education">
+										<div v-if="education?.length" :class="resumeSectionHeights.education" data-section-id="education">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial :education="education" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="experience?.length" :class="resumeSectionHeights.experience">
+										<div v-if="experience?.length" :class="resumeSectionHeights.experience" data-section-id="experience">
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
 											<ExperiencePartial :experience="experience" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations">
+										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations" data-section-id="recommendations">
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
 											<RecommendationPartial :recommendations="recommendations" back-to-top-target="#resume-top" />
 										</div>
@@ -66,7 +68,7 @@ import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
 
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, nextTick, onBeforeUnmount } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
@@ -85,10 +87,56 @@ const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 const apiStore = useApiStore();
 const isLoading = ref(true);
 const hasError = ref(false);
+const activeSectionId = ref<string>(navigationItems[0].href.slice(1));
 const shouldShowSkeleton = computed(() => isLoading.value || hasError.value);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
+
+let sectionObserver: IntersectionObserver | null = null;
+
+const observeVisibleSections = () => {
+	if (typeof window === 'undefined' || typeof document === 'undefined') {
+		return;
+	}
+
+	const observedSections = navigationItems
+		.map((item) => document.querySelector<HTMLElement>(`[data-section-id='${item.href.slice(1)}']`))
+		.filter((section): section is HTMLElement => Boolean(section));
+
+	if (observedSections.length > 0 && !observedSections.some((section) => section.dataset.sectionId === activeSectionId.value)) {
+		const initialSectionId = observedSections[0].dataset.sectionId;
+
+		if (initialSectionId) {
+			activeSectionId.value = initialSectionId;
+		}
+	}
+
+	if (typeof IntersectionObserver === 'undefined') {
+		return;
+	}
+
+	sectionObserver?.disconnect();
+
+	sectionObserver = new IntersectionObserver(
+		(entries) => {
+			const visibleEntries = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+			if (visibleEntries.length > 0) {
+				const { sectionId } = (visibleEntries[0].target as HTMLElement).dataset;
+
+				if (sectionId) {
+					activeSectionId.value = sectionId;
+				}
+			}
+		},
+		{ rootMargin: '-40% 0px -40%' },
+	);
+
+	observedSections.forEach((section) => {
+		sectionObserver?.observe(section);
+	});
+};
 
 useSeo({
 	title: 'Resume',
@@ -138,6 +186,8 @@ onMounted(async () => {
 		hasError.value = true;
 	} finally {
 		isLoading.value = false;
+		await nextTick();
+		observeVisibleSections();
 	}
 });
 
@@ -146,4 +196,9 @@ const refreshResumePage = () => {
 		window.location.reload();
 	}
 };
+
+onBeforeUnmount(() => {
+	sectionObserver?.disconnect();
+	sectionObserver = null;
+});
 </script>

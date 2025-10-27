@@ -81,6 +81,13 @@ describe('ResumePage', () => {
 		const dot = wrapper.find('nav span');
 		expect(dot.classes()).toContain('bg-fuchsia-400/70');
 		expect(dot.classes()).toContain('dark:bg-teal-500/80');
+		const navLinks = wrapper.findAll('nav a');
+		expect(navLinks[0].attributes('aria-current')).toBe('location');
+		expect(navLinks[0].attributes('data-active')).toBe('true');
+		expect(navLinks[1].attributes('aria-current')).toBeUndefined();
+		expect(navLinks[1].attributes('data-active')).toBeUndefined();
+		expect(navLinks[2].attributes('aria-current')).toBeUndefined();
+		expect(navLinks[2].attributes('data-active')).toBeUndefined();
 		expect(wrapper.find('education-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
@@ -110,11 +117,40 @@ describe('ResumePage', () => {
 		expect(wrapper.find('#education').exists()).toBe(false);
 		expect(wrapper.find('#experience').exists()).toBe(false);
 		expect(wrapper.find('#recommendations').exists()).toBe(false);
+		const navLinks = wrapper.findAll('nav a');
+		expect(navLinks[0].attributes('aria-current')).toBe('location');
 		expect(wrapper.find('education-partial-stub').exists()).toBe(false);
 		expect(wrapper.find('experience-partial-stub').exists()).toBe(false);
 		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(false);
 		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(false);
+	});
+
+	it('defaults the active nav item to the first rendered section when some data is missing', async () => {
+		getEducation.mockResolvedValueOnce({ version: '1.0.0', data: [] });
+
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		await flushPromises();
+
+		const navLinks = wrapper.findAll('nav a');
+		expect(navLinks[0].attributes('aria-current')).toBeUndefined();
+		expect(navLinks[1].attributes('aria-current')).toBe('location');
+		expect(navLinks[1].attributes('data-active')).toBe('true');
+		expect(navLinks[0].attributes('data-active')).toBeUndefined();
+		expect(wrapper.find('experience-partial-stub').exists()).toBe(true);
+		expect(wrapper.find('recommendation-partial-stub').exists()).toBe(true);
 	});
 
 	it('renders skeleton while the resume data is loading', () => {
