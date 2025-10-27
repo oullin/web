@@ -151,6 +151,104 @@ describe('ResumePage', () => {
 		expect(educationLink.attributes('data-active')).toBeUndefined();
 	});
 
+	it('scrolls to the matching section when navigation items are clicked', async () => {
+		const originalUrl = window.location.href;
+
+		if (typeof window.history.replaceState === 'function') {
+			window.history.replaceState(null, '', '/');
+		}
+
+		const pushStateSpy = vi.spyOn(window.history, 'pushState');
+		let sectionElement: HTMLElement | null = null;
+		let originalScrollIntoView: typeof HTMLElement.prototype.scrollIntoView | undefined;
+
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		try {
+			await flushPromises();
+
+			const navLinks = wrapper.findAll('nav a');
+			const experienceLink = navLinks[1];
+			if (!experienceLink) {
+				throw new Error('Expected experience navigation link to be rendered');
+			}
+
+			sectionElement = wrapper.get('[data-section-id="experience"]').element as HTMLElement;
+			originalScrollIntoView = sectionElement.scrollIntoView;
+			const scrollIntoView = vi.fn();
+			sectionElement.scrollIntoView = scrollIntoView as unknown as typeof sectionElement.scrollIntoView;
+
+			await experienceLink.trigger('click');
+
+			expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
+			expect(pushStateSpy).toHaveBeenCalledWith(null, '', '#experience');
+		} finally {
+			if (sectionElement && originalScrollIntoView) {
+				sectionElement.scrollIntoView = originalScrollIntoView;
+			}
+			wrapper.unmount();
+			pushStateSpy.mockRestore();
+
+			if (typeof window.history.replaceState === 'function') {
+				window.history.replaceState(null, '', originalUrl);
+			}
+		}
+	});
+
+	it('ignores navigation clicks when the target section is not rendered', async () => {
+		getExperience.mockResolvedValueOnce({ version: '1.0.0', data: [] });
+
+		const pushStateSpy = vi.spyOn(window.history, 'pushState');
+
+		const wrapper = mount(ResumePage, {
+			global: {
+				stubs: {
+					SideNavPartial: true,
+					HeaderPartial: true,
+					FooterPartial: true,
+					EducationPartial: true,
+					ExperiencePartial: true,
+					RecommendationPartial: true,
+				},
+			},
+		});
+
+		try {
+			await flushPromises();
+
+			const navLinks = wrapper.findAll('nav a');
+			const [educationLink, experienceLink] = navLinks;
+
+			if (!educationLink || !experienceLink) {
+				throw new Error('Expected navigation links to be rendered');
+			}
+
+			expect(wrapper.find('[data-section-id="experience"]').exists()).toBe(false);
+			expect(educationLink.attributes('data-active')).toBe('true');
+
+			await experienceLink.trigger('click');
+			await nextTick();
+
+			expect(pushStateSpy).not.toHaveBeenCalled();
+			expect(educationLink.attributes('data-active')).toBe('true');
+			expect(experienceLink.attributes('data-active')).toBeUndefined();
+		} finally {
+			wrapper.unmount();
+			pushStateSpy.mockRestore();
+		}
+	});
+
 	it('does not render resume sections when the API returns empty arrays', async () => {
 		getExperience.mockResolvedValueOnce({ version: '1.0.0', data: [] });
 		getRecommendations.mockResolvedValueOnce({ version: '1.0.0', data: [] });

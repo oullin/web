@@ -35,7 +35,7 @@
 										:href="item.href"
 										:aria-current="item.isActive ? 'location' : undefined"
 										:data-active="item.isActive ? 'true' : undefined"
-										@click="handleNavigationItemClick(item.id)"
+										@click="handleNavigationItemClick(item.id, $event)"
 									>
 										<span :class="[navIndicatorBaseClasses, item.isActive ? navIndicatorActiveClasses : navIndicatorInactiveClasses]"></span>
 										{{ item.text }}
@@ -50,15 +50,15 @@
 										<div v-if="shouldShowPartialErrorRefresh" class="flex justify-center lg:justify-start" data-testid="resume-partial-error">
 											<button type="button" class="btn bg-fuchsia-500 hover:bg-fuchsia-600 text-white shadow-sm" @click="refreshResumePage">Refresh page</button>
 										</div>
-										<div v-if="education?.length" :class="resumeSectionHeights.education" data-section-id="education">
+										<div v-if="education?.length" ref="educationSectionRef" :class="resumeSectionHeights.education" data-section-id="education">
 											<span id="education" class="block h-0" aria-hidden="true"></span>
 											<EducationPartial :education="education" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="experience?.length" :class="resumeSectionHeights.experience" data-section-id="experience">
+										<div v-if="experience?.length" ref="experienceSectionRef" :class="resumeSectionHeights.experience" data-section-id="experience">
 											<span id="experience" class="block h-0" aria-hidden="true"></span>
 											<ExperiencePartial :experience="experience" back-to-top-target="#resume-top" />
 										</div>
-										<div v-if="recommendations?.length" :class="resumeSectionHeights.recommendations" data-section-id="recommendations">
+										<div v-if="recommendations?.length" ref="recommendationsSectionRef" :class="resumeSectionHeights.recommendations" data-section-id="recommendations">
 											<span id="recommendations" class="block h-0" aria-hidden="true"></span>
 											<RecommendationPartial :recommendations="recommendations" back-to-top-target="#resume-top" />
 										</div>
@@ -90,11 +90,7 @@ import { observeSections, disconnectSectionsObserver } from '@/support/observer'
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 
-const navigationItems = [
-	{ id: 'education', href: '#education', text: 'Education' },
-	{ id: 'experience', href: '#experience', text: 'Work Experience' },
-	{ id: 'recommendations', href: '#recommendations', text: 'Recommendations' },
-] as const;
+import { navigationItems, type SectionId, createNavigationItemsWithState, createResumeNavigation } from '@pages/support/resume.ts';
 
 const navLinkBaseClasses = 'inline-flex items-center gap-2 rounded-full border px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100';
 const navLinkActiveClasses = 'border-fuchsia-500 text-slate-800 dark:text-slate-100 dark:border-teal-500/80';
@@ -109,36 +105,32 @@ const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 const apiStore = useApiStore();
 const isLoading = ref(true);
 const hasError = ref(false);
-const activeSectionId = ref<string>(navigationItems[0].id);
+const activeSectionId = ref<SectionId>(navigationItems[0].id);
 const education = ref<EducationResponse[] | null>(null);
 const experience = ref<ExperienceResponse[] | null>(null);
 const recommendations = ref<RecommendationsResponse[] | null>(null);
+const educationSectionRef = ref<HTMLElement | null>(null);
+const experienceSectionRef = ref<HTMLElement | null>(null);
+const recommendationsSectionRef = ref<HTMLElement | null>(null);
 const hasResumeContent = computed(() => Boolean(education.value?.length || experience.value?.length || recommendations.value?.length));
 const shouldShowSkeleton = computed(() => isLoading.value || (hasError.value && !hasResumeContent.value));
 const shouldShowPartialErrorRefresh = computed(() => hasError.value && hasResumeContent.value);
 
-const navigationItemsWithState = computed(() =>
-	navigationItems.map((item) => ({
-		...item,
-		isActive: activeSectionId.value === item.id,
-	})),
-);
+const navigationItemsWithState = createNavigationItemsWithState(activeSectionId);
 
-const handleNavigationItemClick = (itemId: string) => {
-	activeSectionId.value = itemId;
-};
-
-const updateInitialActiveSection = () => {
-	const firstSectionWithData = [
-		{ id: 'education', hasData: Boolean(education.value?.length) },
-		{ id: 'experience', hasData: Boolean(experience.value?.length) },
-		{ id: 'recommendations', hasData: Boolean(recommendations.value?.length) },
-	].find((section) => section.hasData);
-
-	if (firstSectionWithData && activeSectionId.value !== firstSectionWithData.id) {
-		activeSectionId.value = firstSectionWithData.id;
-	}
-};
+const { handleNavigationItemClick, updateInitialActiveSection } = createResumeNavigation({
+	activeSectionId,
+	sectionRefs: {
+		education: educationSectionRef,
+		experience: experienceSectionRef,
+		recommendations: recommendationsSectionRef,
+	},
+	getSectionsWithData: () => ({
+		education: Boolean(education.value?.length),
+		experience: Boolean(experience.value?.length),
+		recommendations: Boolean(recommendations.value?.length),
+	}),
+});
 
 watch(
 	[education, experience, recommendations],
