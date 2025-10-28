@@ -68,10 +68,10 @@
 						<!-- Right sidebar -->
 						<aside class="blog-widgets-column">
 							<div class="space-y-6">
-								<WidgetSocialPartial />
 								<WidgetLangPartial />
 								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
 								<WidgetSkillsPartial v-else :skills="profile.skills" />
+								<WidgetSocialPartial />
 							</div>
 						</aside>
 					</div>
