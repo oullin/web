@@ -32,15 +32,6 @@
 								<article v-else-if="post">
 									<!-- Post header -->
 									<header>
-										<div
-											v-if="post.tags?.length"
-											class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-3"
-											data-testid="post-tags"
-										>
-											<span v-for="tag in post.tags" :key="tag.uuid ?? tag.slug" class="inline-flex" data-testid="post-tag">
-												{{ `#${tag.name}` }}
-											</span>
-										</div>
 										<div class="flex items-center justify-between mb-1">
 											<!-- Post date -->
 											<div class="text-xs text-slate-500 uppercase">
@@ -103,7 +94,25 @@
 									</header>
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
-										<p>{{ post.excerpt }}</p>
+										<div class="space-y-4">
+											<p data-testid="post-excerpt">{{ post.excerpt }}</p>
+											<div
+												v-if="post.tags?.length"
+												class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+												data-testid="post-tags"
+											>
+												<router-link
+													v-for="tag in post.tags"
+													:key="tag.uuid ?? tag.slug"
+													class="inline-flex hover:text-fuchsia-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-500 dark:hover:text-teal-600"
+													:to="{ name: 'home' }"
+													data-testid="post-tag"
+													@click="onTagClick(tag.name)"
+												>
+													{{ `#${tag.name}` }}
+												</router-link>
+											</div>
+										</div>
 										<CoverImageLoader class="w-full aspect-[16/9]" :src="post.cover_image_url ?? ''" :alt="post.title" :width="692" :height="390" />
 										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
@@ -135,7 +144,7 @@
 
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 import highlight from 'highlight.js/lib/core';
@@ -157,11 +166,26 @@ import CoverImageLoader from '@components/CoverImageLoader.vue';
 // --- Component
 const route = useRoute();
 const apiStore = useApiStore();
+const router = useRouter();
 const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
 const isLoading = ref(true);
 const postContainer = ref<HTMLElement | null>(null);
 const slug = ref<string>(route.params.slug as string);
+
+const onTagClick = (tagName: string) => {
+	const trimmedTag = tagName.trim();
+
+	if (!trimmedTag) {
+		return;
+	}
+
+	apiStore.setSearchTerm(trimmedTag);
+
+	if (route.name !== 'home') {
+		void router.push({ name: 'home' });
+	}
+};
 
 useSeoFromPost(post);
 
