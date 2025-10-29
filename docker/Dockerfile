@@ -25,7 +25,8 @@ COPY . .
 
 # Run the build script (e.g., for Vue, React, Angular)
 # This creates the static files in a directory like '/app/dist'.
-RUN npm run build
+RUN npm run build \
+    && node ./build/scripts/generate-early-hints.mjs --html dist/index.html --snippet caddy/snippets/early_hints.caddy
 
 
 # --- Artifact Stage ---
@@ -35,5 +36,6 @@ FROM caddy:2.10.2-alpine
 # Copy only the built static assets from the 'builder' stage's output directory
 COPY --from=builder /app/dist /usr/share/caddy
 
-# Copy the Caddy configuration file
+# Copy the Caddy configuration file and supporting snippets
 COPY caddy/WebCaddyfile.internal /etc/caddy/Caddyfile
+COPY --from=builder /app/caddy/snippets /etc/caddy/snippets
