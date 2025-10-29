@@ -75,6 +75,74 @@ describe('useApiStore', () => {
 		expect(res).toEqual({ list: [] });
 	});
 
+	it('returns posts with tag metadata intact', async () => {
+		const filters = {};
+		const postsResponse = {
+			page: 1,
+			total: 1,
+			page_size: 5,
+			total_pages: 1,
+			data: [
+				{
+					uuid: 'post-1',
+					author: {
+						uuid: 'author-1',
+						first_name: 'Gus',
+						last_name: 'Tester',
+						username: 'gocanto',
+						display_name: 'Gus User',
+						bio: 'Software Engineer with an eye for details.',
+						picture_file_name: '',
+						profile_picture_url: '',
+					},
+					categories: [
+						{
+							uuid: 'category-1',
+							name: 'Engineering',
+							slug: 'engineering',
+							description: 'Engineering insights',
+						},
+					],
+					tags: [
+						{
+							uuid: 'tag-1',
+							name: 'Automation',
+							slug: 'automation',
+							description: 'Automation tag',
+						},
+						{
+							uuid: 'tag-2',
+							name: 'Development',
+							slug: 'development',
+							description: 'Development tag',
+						},
+					],
+					slug: 'building-oullin',
+					title: 'Building Oullin',
+					excerpt: 'Building oullin from scratch.',
+					content: 'Long-form content',
+					cover_image_url: 'https://example.com/image.png',
+					published_at: '2025-10-15T06:27:48.413061+08:00',
+					created_at: '2025-10-15T14:27:48.417034+08:00',
+					updated_at: '2025-10-15T14:27:48.417034+08:00',
+				},
+			],
+		};
+
+		client.post.mockResolvedValue(postsResponse);
+
+		const res = await store.getPosts(filters);
+
+		expect(res.data[0].tags).toHaveLength(2);
+		expect(res.data[0].tags[0]).toMatchObject({
+			uuid: 'tag-1',
+			name: 'Automation',
+			slug: 'automation',
+			description: 'Automation tag',
+		});
+		expect(res.data[0].tags[1].slug).toBe('development');
+	});
+
 	it('handles posts errors', async () => {
 		client.post.mockRejectedValue(new Error('nope'));
 		await expect(store.getPosts({})).rejects.toThrow('parsed');
@@ -85,6 +153,65 @@ describe('useApiStore', () => {
 		const res = await store.getPost('a');
 		expect(client.get).toHaveBeenCalledWith('posts/a');
 		expect(res).toEqual({ slug: 'a' });
+	});
+
+	it('returns tag metadata when fetching a single post', async () => {
+		const postResponse = {
+			uuid: 'post-1',
+			author: {
+				uuid: 'author-1',
+				first_name: 'Gus',
+				last_name: 'Tester',
+				username: 'gocanto',
+				display_name: 'Gus User',
+				bio: 'Software Engineer with an eye for details.',
+				picture_file_name: '',
+				profile_picture_url: '',
+			},
+			categories: [
+				{
+					uuid: 'category-1',
+					name: 'Engineering',
+					slug: 'engineering',
+					description: 'Engineering insights',
+				},
+			],
+			tags: [
+				{
+					uuid: 'tag-1',
+					name: 'Automation',
+					slug: 'automation',
+					description: 'Automation tag',
+				},
+				{
+					uuid: 'tag-2',
+					name: 'Development',
+					slug: 'development',
+					description: 'Development tag',
+				},
+			],
+			slug: 'building-oullin',
+			title: 'Building Oullin',
+			excerpt: 'Building oullin from scratch.',
+			content: 'Long-form content',
+			cover_image_url: 'https://example.com/image.png',
+			published_at: '2025-10-15T06:27:48.413061+08:00',
+			created_at: '2025-10-15T14:27:48.417034+08:00',
+			updated_at: '2025-10-15T14:27:48.417034+08:00',
+		};
+
+		client.get.mockResolvedValue(postResponse);
+
+		const res = await store.getPost('building-oullin');
+
+		expect(res.tags).toHaveLength(2);
+		expect(res.tags[0]).toMatchObject({
+			uuid: 'tag-1',
+			name: 'Automation',
+			slug: 'automation',
+			description: 'Automation tag',
+		});
+		expect(res.tags[1].slug).toBe('development');
 	});
 
 	it('handles single post errors', async () => {
