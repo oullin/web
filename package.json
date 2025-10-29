@@ -11,7 +11,9 @@
 		"preview": "vite preview",
 		"watch": "make local-watch",
 		"test": "vitest --environment jsdom --coverage",
-		"build:stats": "VITE_VISUALIZER=true vite build"
+		"build:stats": "VITE_VISUALIZER=true vite build",
+		"generate:early-hints": "make caddy-generate-early-hints",
+		"postbuild": "npm run generate:early-hints"
 	},
 	"dependencies": {
 		"dompurify": "^3.3.0",

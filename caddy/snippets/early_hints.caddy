@@ -1,0 +1,18 @@
+# Auto-generated snippet for Early Hints support.
+# The block between the BEGIN/END markers is managed by build/scripts/generate-early-hints.mjs.
+# Do not edit manually.
+
+(early_hints) {
+        @oullin_early_hints {
+                not path /assets/*
+                not path /images/*
+                not path /relay/*
+                not path /seo/*
+                not path /favicon.ico
+                not path /robots.txt
+        }
+
+        # BEGIN EARLY HINTS
+        # No eligible assets discovered for Early Hints
+        # END EARLY HINTS
+}

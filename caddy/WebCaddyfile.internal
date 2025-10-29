@@ -1,3 +1,5 @@
+import snippets/early_hints.caddy
+
 :80 {
     # --- Relay (mTLS to API) ---
     @relay_get {
@@ -60,6 +62,8 @@
     # --- Optional: force SEO view for humans via ?__seo=1 ---
     @force_seo expression `{query}.matches("(^|&)(__seo=1)($|&)")`
     handle @force_seo {
+        import early_hints
+
         root * /usr/share/caddy
         try_files /seo{path}.seo.html /seo/index.seo.html {path} {path}/index.html /index.html
         encode zstd gzip
@@ -79,6 +83,8 @@
     }
 
     handle @share_post_bots {
+        import early_hints
+
         root * /usr/share/caddy
         rewrite * /seo/posts/{re.post.1}.seo.html
         encode zstd gzip
@@ -94,6 +100,8 @@
     # --- Bots → SEO pages (uncacheable, general fallback) ---
     @sharebots header_regexp ua User-Agent "(?i)(googlebot|bingbot|duckduckbot|yandex(bot|images)|baiduspider|facebookexternalhit|meta-externalagent|twitterbot|linkedinbot|slackbot|telegrambot|discordbot|pinterest|whatsapp|skypeuripreview|bitlybot|vkshare|quora link preview|embedly|outbrain|nuzzel|ios link preview|snapchat|applebot|google-inspectiontool|googleother)"
     handle @sharebots {
+        import early_hints
+
         root * /usr/share/caddy
 
         # Try SEO flat files first, then SPA files
@@ -137,6 +145,8 @@
 
     # --- Everyone else → SPA (humans) ---
     handle {
+        import early_hints
+
         root * /usr/share/caddy
         try_files {path} {path}/index.html /index.html
         encode zstd gzip

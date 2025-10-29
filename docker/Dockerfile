@@ -13,6 +13,9 @@ ARG ENV_API_LOCAL_DIR
 # Set the working directory inside the container
 WORKDIR /app
 
+# Install build tooling required for Make targets invoked during npm scripts
+RUN apk add --no-cache make
+
 # Copy package.json and lock files first to leverage Docker layer caching
 COPY package*.json ./
 
@@ -35,5 +38,6 @@ FROM caddy:2.10.2-alpine
 # Copy only the built static assets from the 'builder' stage's output directory
 COPY --from=builder /app/dist /usr/share/caddy
 
-# Copy the Caddy configuration file
+# Copy the Caddy configuration file and supporting snippets
 COPY caddy/WebCaddyfile.internal /etc/caddy/Caddyfile
+COPY --from=builder /app/caddy/snippets /etc/caddy/snippets

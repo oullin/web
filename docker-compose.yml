@@ -62,6 +62,7 @@ services:
             - RELAY_UPSTREAM=http://host.docker.internal:8080
         volumes:
             - ./dist:/usr/share/caddy:ro
+            - ./caddy/snippets:/etc/caddy/snippets:ro
             - ./caddy/mtls:/etc/caddy/mtls:ro
             - ./public/seo:/usr/share/caddy/seo:ro
             - ./public/images:/usr/share/caddy/images:ro
