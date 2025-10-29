@@ -96,7 +96,7 @@
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<div class="space-y-4">
 											<p data-testid="post-excerpt">{{ post.excerpt }}</p>
-											<div v-if="post.tags?.length" class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-wide" data-testid="post-tags">
+											<div v-if="post.tags?.length" class="flex flex-wrap items-center gap-x-2 gap-y-2 text-xs font-semibold uppercase tracking-wide" data-testid="post-tags">
 												<router-link
 													v-for="tag in post.tags"
 													:key="tag.uuid ?? tag.slug"
