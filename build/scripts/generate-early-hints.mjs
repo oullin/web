@@ -117,7 +117,7 @@ for (const { href, rel, as, crossorigin, type } of resources.values()) {
 			parts.push('crossorigin');
 		}
 	}
-	lines.push(`+Link "${parts.join('; ')}"`);
+	lines.push(`early_hint @oullin_early_hints Link "${parts.join('; ')}"`);
 }
 
 lines.sort((a, b) => a.localeCompare(b));
@@ -135,7 +135,7 @@ const after = snippet.slice(endIndex);
 let replacement;
 if (lines.length > 0) {
 	const content = lines.map((line) => `        ${line}`).join('\n');
-	replacement = `\n${content}\n        early_hint Link`;
+	replacement = `\n${content}`;
 } else {
 	replacement = '\n        # No eligible assets discovered for Early Hints';
 }
@@ -145,7 +145,7 @@ await writeFile(snippetPath, updated, 'utf8');
 
 if (args.has('--verbose')) {
 	if (lines.length > 0) {
-		console.info(`Generated ${lines.length} early hint Link header(s).`);
+		console.info(`Generated ${lines.length} early_hint directive(s).`);
 	} else {
 		console.info('No assets discovered for Early Hints.');
 	}

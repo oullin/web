@@ -12,9 +12,7 @@
                 not path /robots.txt
         }
 
-        header @oullin_early_hints {
-                # BEGIN EARLY HINTS
-                # No Early Hints have been generated yet.
-                # END EARLY HINTS
-        }
+        # BEGIN EARLY HINTS
+        # No Early Hints have been generated yet.
+        # END EARLY HINTS
 }
