@@ -70,6 +70,8 @@ const mountComponent = () =>
 describe('PostPage', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		post.tags = [];
+		getPost.mockImplementation(() => Promise.resolve(post));
 	});
 
 	it('fetches post on mount', async () => {
@@ -136,5 +138,34 @@ describe('PostPage', () => {
 
 		const backToTopLink = wrapper.find('a[href="#post-top"]');
 		expect(backToTopLink.exists()).toBe(true);
+	});
+
+	it('displays post tags as hashtags near the top of the article', async () => {
+		post.tags = [
+			{
+				uuid: faker.string.uuid(),
+				name: 'Automation',
+				slug: 'automation',
+				description: 'Automation tag',
+			},
+			{
+				uuid: faker.string.uuid(),
+				name: 'Development',
+				slug: 'development',
+				description: 'Development tag',
+			},
+		];
+
+		const wrapper = mountComponent();
+
+		await flushPromises();
+
+		const tagsContainer = wrapper.find('[data-testid="post-tags"]');
+		expect(tagsContainer.exists()).toBe(true);
+
+		const tags = tagsContainer.findAll('[data-testid="post-tag"]');
+		expect(tags).toHaveLength(2);
+		expect(tags[0].text()).toBe('#Automation');
+		expect(tags[1].text()).toBe('#Development');
 	});
 });

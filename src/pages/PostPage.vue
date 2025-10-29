@@ -32,6 +32,15 @@
 								<article v-else-if="post">
 									<!-- Post header -->
 									<header>
+										<div
+											v-if="post.tags?.length"
+											class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-3"
+											data-testid="post-tags"
+										>
+											<span v-for="tag in post.tags" :key="tag.uuid ?? tag.slug" class="inline-flex" data-testid="post-tag">
+												{{ `#${tag.name}` }}
+											</span>
+										</div>
 										<div class="flex items-center justify-between mb-1">
 											<!-- Post date -->
 											<div class="text-xs text-slate-500 uppercase">
