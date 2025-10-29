@@ -100,12 +100,16 @@
 												<router-link
 													v-for="tag in post.tags"
 													:key="tag.uuid ?? tag.slug"
-													class="inline-flex items-center gap-1 text-slate-500 transition-colors duration-200 after:ml-2 after:text-slate-300 after:content-['/'] last:after:content-none hover:text-fuchsia-500 hover:underline hover:decoration-2 hover:decoration-fuchsia-400 hover:underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-500 dark:text-slate-300 dark:after:text-slate-600 dark:hover:text-teal-300 dark:hover:decoration-teal-400"
+													class="group inline-flex items-center gap-1 text-slate-500 transition-colors duration-200 after:ml-2 after:text-slate-300 after:content-['/'] last:after:content-none hover:text-fuchsia-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-500 dark:text-slate-300 dark:after:text-slate-600 dark:hover:text-teal-300"
 													:to="{ name: 'home' }"
 													data-testid="post-tag"
 													@click="onTagClick(tag.name)"
 												>
-													{{ `#${tag.name}` }}
+													<span
+														class="group-hover:underline group-hover:decoration-2 group-hover:decoration-fuchsia-400 group-hover:underline-offset-4 dark:group-hover:decoration-teal-400"
+													>
+														{{ `#${tag.name}` }}
+													</span>
 												</router-link>
 											</div>
 										</div>
