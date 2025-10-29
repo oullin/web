@@ -108,7 +108,8 @@ for (const { href, rel, as, crossorigin, type } of resources.values()) {
 		parts.push(`as=${as}`);
 	}
 	if (type) {
-		parts.push(`type="${type}"`);
+		const escapedType = type.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+		parts.push(`type='${escapedType}'`);
 	}
 	if (crossorigin) {
 		if (crossorigin === 'use-credentials') {
