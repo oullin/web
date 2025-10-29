@@ -1,6 +1,11 @@
-.PHONY: caddy-gen-certs caddy-del-certs caddy-validate caddy-fresh caddy-restart caddy-gen-sync
+.PHONY: caddy-gen-certs caddy-del-certs caddy-validate caddy-fresh caddy-restart caddy-gen-sync caddy-generate-early-hints
 
 CADDY_MTLS_DIR := $(ROOT_PATH)/caddy/mtls
+EARLY_HINTS_HTML := $(ROOT_PATH)/dist/index.html
+EARLY_HINTS_SNIPPET := $(ROOT_PATH)/caddy/snippets/early_hints.caddy
+
+caddy-generate-early-hints:
+	@node "$(ROOT_PATH)/build/scripts/generate-early-hints.mjs" --html "$(EARLY_HINTS_HTML)" --snippet "$(EARLY_HINTS_SNIPPET)"
 
 caddy-fresh:
 	@echo " "
@@ -15,7 +20,7 @@ caddy-validate:
 	docker run --rm \
 	-v "$(ROOT_PATH)/caddy/WebCaddyfile.internal:/etc/caddy/Caddyfile:ro" \
 	-v "$(ROOT_PATH)/caddy/mtls:/etc/caddy/mtls:ro" \
-        caddy:2.10.2 caddy validate --config /etc/caddy/Caddyfile
+	caddy:2.10.2 caddy validate --config /etc/caddy/Caddyfile
 
 caddy-sync-certs:
 	@set -euo pipefail; \

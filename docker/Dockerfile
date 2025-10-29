@@ -13,6 +13,9 @@ ARG ENV_API_LOCAL_DIR
 # Set the working directory inside the container
 WORKDIR /app
 
+# Install build tooling required for Make targets invoked during npm scripts
+RUN apk add --no-cache make
+
 # Copy package.json and lock files first to leverage Docker layer caching
 COPY package*.json ./
 
@@ -25,8 +28,7 @@ COPY . .
 
 # Run the build script (e.g., for Vue, React, Angular)
 # This creates the static files in a directory like '/app/dist'.
-RUN npm run build \
-    && node ./build/scripts/generate-early-hints.mjs --html dist/index.html --snippet caddy/snippets/early_hints.caddy
+RUN npm run build
 
 
 # --- Artifact Stage ---

@@ -12,7 +12,7 @@
 		"watch": "make local-watch",
 		"test": "vitest --environment jsdom --coverage",
 		"build:stats": "VITE_VISUALIZER=true vite build",
-		"generate:early-hints": "node ./build/scripts/generate-early-hints.mjs --html dist/index.html --snippet caddy/snippets/early_hints.caddy",
+		"generate:early-hints": "make caddy-generate-early-hints",
 		"postbuild": "npm run generate:early-hints"
 	},
 	"dependencies": {
