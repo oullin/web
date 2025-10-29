@@ -118,7 +118,7 @@ for (const { href, rel, as, crossorigin, type } of resources.values()) {
 			parts.push('crossorigin');
 		}
 	}
-	lines.push(`early_hint @oullin_early_hints Link "${parts.join('; ')}"`);
+	lines.push(`header @oullin_early_hints +Link "${parts.join('; ')}"`);
 }
 
 lines.sort((a, b) => a.localeCompare(b));
@@ -146,7 +146,7 @@ await writeFile(snippetPath, updated, 'utf8');
 
 if (args.has('--verbose')) {
 	if (lines.length > 0) {
-		console.info(`Generated ${lines.length} early_hint directive(s).`);
+		console.info(`Generated ${lines.length} Link header directive(s).`);
 	} else {
 		console.info('No assets discovered for Early Hints.');
 	}
