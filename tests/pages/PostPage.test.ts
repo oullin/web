@@ -31,12 +31,10 @@ const post: PostResponse = {
 
 const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
 const setSearchTerm = vi.fn();
-const routerPush = vi.fn(() => Promise.resolve());
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost, setSearchTerm }) }));
 vi.mock('vue-router', () => ({
 	useRoute: () => ({ params: { slug: post.slug }, name: 'PostDetail' }),
-	useRouter: () => ({ push: routerPush }),
 }));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
@@ -180,7 +178,7 @@ describe('PostPage', () => {
 		expect(excerpt.element.nextElementSibling).toBe(tagsContainer.element);
 	});
 
-	it('initiates a search for the clicked tag and navigates home', async () => {
+	it('initiates a search for the clicked tag', async () => {
 		post.tags = [
 			{
 				uuid: faker.string.uuid(),
@@ -198,6 +196,5 @@ describe('PostPage', () => {
 		await tagLink.trigger('click');
 
 		expect(setSearchTerm).toHaveBeenCalledWith('Automation');
-		expect(routerPush).toHaveBeenCalledWith({ name: 'home' });
 	});
 });

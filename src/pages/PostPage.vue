@@ -144,7 +144,7 @@
 
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 import highlight from 'highlight.js/lib/core';
@@ -166,7 +166,6 @@ import CoverImageLoader from '@components/CoverImageLoader.vue';
 // --- Component
 const route = useRoute();
 const apiStore = useApiStore();
-const router = useRouter();
 const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
 const isLoading = ref(true);
@@ -181,10 +180,6 @@ const onTagClick = (tagName: string) => {
 	}
 
 	apiStore.setSearchTerm(trimmedTag);
-
-	if (route.name !== 'home') {
-		void router.push({ name: 'home' });
-	}
 };
 
 useSeoFromPost(post);
