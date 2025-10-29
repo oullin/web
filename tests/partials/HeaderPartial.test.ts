@@ -1,18 +1,29 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { reactive, nextTick } from 'vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 
 const toggleDarkMode = vi.fn();
 vi.mock('@/dark-mode.ts', () => ({ useDarkMode: () => ({ toggleDarkMode }) }));
 
-const setSearchTerm = vi.fn();
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ setSearchTerm }) }));
+const store = reactive<{ searchTerm: string; setSearchTerm: (term: string) => void }>({
+	searchTerm: '',
+	setSearchTerm: () => {
+		/* placeholder */
+	},
+});
+const setSearchTerm = vi.fn((term: string) => {
+	store.searchTerm = term;
+});
+store.setSearchTerm = setSearchTerm;
+vi.mock('@api/store.ts', () => ({ useApiStore: () => store }));
 
 describe('HeaderPartial', () => {
 	beforeEach(() => {
 		setSearchTerm.mockClear();
 		toggleDarkMode.mockClear();
+		store.searchTerm = '';
 	});
 
 	it('validates search length', async () => {
@@ -71,5 +82,17 @@ describe('HeaderPartial', () => {
 		expect(wrapper.vm.validationError).toBe('');
 		expect(wrapper.vm.searchQuery).toBe('');
 		expect(setSearchTerm).toHaveBeenCalledWith('');
+	});
+
+	it('prefills the search input when the store term changes', async () => {
+		const wrapper = mount(HeaderPartial);
+
+		store.searchTerm = 'Automation';
+		await nextTick();
+
+		const input = wrapper.get('#search');
+		expect((input.element as HTMLInputElement).value).toBe('Automation');
+		expect(wrapper.vm.searchQuery).toBe('Automation');
+		expect(wrapper.vm.validationError).toBe('');
 	});
 });

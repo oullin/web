@@ -198,6 +198,26 @@ describe('ArticlesListPartial', () => {
 		expect(articleItems[0].text()).toContain(posts[0].title);
 	});
 
+	it('applies an existing search term before fetching posts on mount', async () => {
+		const categories = [createCategory()];
+		const posts = [createPost()];
+
+		const getCategories = vi.fn<[], Promise<CategoriesCollectionResponse>>().mockResolvedValue(buildCategoriesResponse(categories));
+		const getPosts = vi.fn<[PostsFilters], Promise<PostsCollectionResponse>>().mockResolvedValue(buildPostsResponse(posts));
+
+		setApiStore(reactive({ searchTerm: 'automation', getCategories, getPosts }));
+
+		mount(ArticlesListPartial);
+		await flushPromises();
+
+		expect(getCategories).toHaveBeenCalledTimes(1);
+		expect(getPosts).toHaveBeenCalledTimes(1);
+		expect(getPosts.mock.calls[0][0]).toMatchObject({
+			category: categories[0].slug,
+			text: 'automation',
+		});
+	});
+
 	it('shows skeletons while loading new posts and updates results when the search term changes', async () => {
 		vi.useFakeTimers();
 

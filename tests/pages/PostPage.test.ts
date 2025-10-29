@@ -30,9 +30,12 @@ const post: PostResponse = {
 };
 
 const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
+const setSearchTerm = vi.fn();
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost }) }));
-vi.mock('vue-router', () => ({ useRoute: () => ({ params: { slug: post.slug } }) }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost, setSearchTerm }) }));
+vi.mock('vue-router', () => ({
+	useRoute: () => ({ params: { slug: post.slug }, name: 'PostDetail' }),
+}));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
 
@@ -62,7 +65,7 @@ const mountComponent = () =>
 				WidgetSponsorPartial: true,
 				WidgetSocialPartial: true,
 				WidgetSkillsPartial: true,
-				RouterLink: { template: '<a><slot /></a>' },
+				RouterLink: { props: ['to'], template: '<a @click="$emit(\'click\', $event)"><slot /></a>' },
 			},
 		},
 	});
@@ -140,7 +143,7 @@ describe('PostPage', () => {
 		expect(backToTopLink.exists()).toBe(true);
 	});
 
-	it('displays post tags as hashtags near the top of the article', async () => {
+	it('displays post tags as hashtags directly below the excerpt', async () => {
 		post.tags = [
 			{
 				uuid: faker.string.uuid(),
@@ -160,6 +163,9 @@ describe('PostPage', () => {
 
 		await flushPromises();
 
+		const excerpt = wrapper.find('[data-testid="post-excerpt"]');
+		expect(excerpt.exists()).toBe(true);
+
 		const tagsContainer = wrapper.find('[data-testid="post-tags"]');
 		expect(tagsContainer.exists()).toBe(true);
 
@@ -167,5 +173,28 @@ describe('PostPage', () => {
 		expect(tags).toHaveLength(2);
 		expect(tags[0].text()).toBe('#Automation');
 		expect(tags[1].text()).toBe('#Development');
+		expect(tags[0].element.tagName).toBe('A');
+
+		expect(excerpt.element.nextElementSibling).toBe(tagsContainer.element);
+	});
+
+	it('initiates a search for the clicked tag', async () => {
+		post.tags = [
+			{
+				uuid: faker.string.uuid(),
+				name: 'Automation',
+				slug: 'automation',
+				description: 'Automation tag',
+			},
+		];
+
+		const wrapper = mountComponent();
+
+		await flushPromises();
+
+		const tagLink = wrapper.get('[data-testid="post-tag"]');
+		await tagLink.trigger('click');
+
+		expect(setSearchTerm).toHaveBeenCalledWith('Automation');
 	});
 });
