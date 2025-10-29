@@ -42,6 +42,7 @@ export interface PostsCategoryResponse {
 export interface PostsTagResponse {
 	uuid: string;
 	name: string;
+	slug: string;
 	description: string;
 }
 
