@@ -48,6 +48,7 @@ const items = ref<PostResponse[]>([]);
 const isLoading = ref(false);
 const DEFAULT_SKELETON_COUNT = 3;
 const skeletonCount = ref(DEFAULT_SKELETON_COUNT);
+const hasMounted = ref(false);
 
 const categoriesCollection = ref<CategoriesCollectionResponse>();
 const categories = ref<CategoryResponse[]>([]);
@@ -123,9 +124,19 @@ onBeforeUnmount(() => {
 watch(
 	() => apiStore.searchTerm,
 	(newSearchTerm: string): void => {
-		filters.text = newSearchTerm.trim();
-		debouncedSearch();
+		const trimmedSearchTerm = newSearchTerm.trim();
+
+		if (trimmedSearchTerm === filters.text) {
+			return;
+		}
+
+		filters.text = trimmedSearchTerm;
+
+		if (hasMounted.value) {
+			debouncedSearch();
+		}
 	},
+	{ immediate: true },
 );
 
 // --- Mount the Vue component
@@ -140,5 +151,7 @@ onMounted(async () => {
 	} catch (error) {
 		debugError(error);
 	}
+
+	hasMounted.value = true;
 });
 </script>
