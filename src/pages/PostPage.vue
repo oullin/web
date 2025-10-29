@@ -96,15 +96,11 @@
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<div class="space-y-4">
 											<p data-testid="post-excerpt">{{ post.excerpt }}</p>
-											<div
-												v-if="post.tags?.length"
-												class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
-												data-testid="post-tags"
-											>
+											<div v-if="post.tags?.length" class="flex flex-wrap items-center gap-x-2 gap-y-2 text-xs font-semibold uppercase tracking-wide" data-testid="post-tags">
 												<router-link
 													v-for="tag in post.tags"
 													:key="tag.uuid ?? tag.slug"
-													class="inline-flex hover:text-fuchsia-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-500 dark:hover:text-teal-600"
+													class="inline-flex items-center gap-1 text-slate-500 transition-colors duration-200 after:ml-2 after:text-slate-300 after:content-['/'] last:after:content-none hover:text-fuchsia-500 hover:underline hover:decoration-2 hover:decoration-fuchsia-400 hover:underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-500 dark:text-slate-300 dark:after:text-slate-600 dark:hover:text-teal-300 dark:hover:decoration-teal-400"
 													:to="{ name: 'home' }"
 													data-testid="post-tag"
 													@click="onTagClick(tag.name)"
