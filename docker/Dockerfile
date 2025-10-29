@@ -14,7 +14,8 @@ ARG ENV_API_LOCAL_DIR
 WORKDIR /app
 
 # Install build tooling required for Make targets invoked during npm scripts
-RUN apk add --no-cache make
+# Some Make targets rely on Bash-specific features, so install Bash alongside Make.
+RUN apk add --no-cache bash make
 
 # Copy package.json and lock files first to leverage Docker layer caching
 COPY package*.json ./
