@@ -58,8 +58,9 @@ caddy-gen-certs:
 		umask 077; \
 		openssl genrsa -out "$$WEB_MTLS/client.key" 4096; \
 		openssl req -new -key "$$WEB_MTLS/client.key" -subj "/CN=web-caddy" -out "$$WEB_MTLS/client.csr"; \
-		EXTFILE="$$(mktemp)"; trap 'rm -f "$$EXTFILE"' EXIT; printf "extendedKeyUsage=clientAuth\n" > "$$EXTFILE"; \
-		printf "$(BLUE)🖊️  Signing client cert with CA...\033[0m\n"; \
+		EXTFILE="$$(mktemp)"; trap 'rm -f "$$EXTFILE"' EXIT; \
+		printf "subjectAltName=DNS:web-caddy,DNS:web_caddy_prod\nextendedKeyUsage=clientAuth\n" > "$$EXTFILE"; \
+		printf "$(BLUE)🖊️  Signing client cert with CA (including SANs)...\033[0m\n"; \
 		if [ -f "$$API_MTLS/ca.srl" ]; then \
 		  openssl x509 -req -in "$$WEB_MTLS/client.csr" -CA "$$API_MTLS/ca.pem" -CAkey "$$API_MTLS/ca.key" -CAserial "$$API_MTLS/ca.srl" -out "$$WEB_MTLS/client.pem" -days 1095 -sha256 -extfile "$$EXTFILE"; \
 		else \
