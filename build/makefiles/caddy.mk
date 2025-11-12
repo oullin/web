@@ -76,6 +76,10 @@ caddy-gen-certs:
 		printf "$(GREEN)✅ All certs generated at: \033[0m%s\n" "$$WEB_MTLS"; \
 		printf "$(BLUE)🔎 Verifying client certificate against CA...\033[0m\n"; \
 		openssl verify -CAfile "$$API_MTLS/ca.pem" "$$WEB_MTLS/client.pem"; \
+		if [ -f "$$API_MTLS/server.pem" ]; then \
+		  printf "\n$(BLUE)🔎 Checking server certificate SANs...\033[0m\n"; \
+		  openssl x509 -in "$$API_MTLS/server.pem" -text -noout | grep -A 2 "Subject Alternative Name"; \
+		fi; \
 		printf "\n"
 
 caddy-del-certs:
