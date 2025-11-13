@@ -140,7 +140,7 @@ describe('PostPage', () => {
 			expect(tagWrapper.text()).toContain(expectedLabel);
 		});
 		const firstTagLink = wrapper.findComponent(RouterLinkStub);
-		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]?.name } });
+		expect(firstTagLink.props('to')).toEqual({ name: 'Home', query: { tag: post.tags[0]?.name } });
 	});
 
 	it('populates the search term when a tag is clicked', async () => {
