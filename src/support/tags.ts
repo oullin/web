@@ -39,10 +39,11 @@ export class Tags {
 	}
 
 	static summaryFor(tag: string, state: TagSummaryState): string {
-		const label = this.formatLabel(tag);
 		if (!tag) {
 			return 'Select a tag to explore related posts.';
 		}
+
+		const label = this.formatLabel(tag);
 
 		if (state.isLoading) {
 			return `Loading posts for ${label}…`;

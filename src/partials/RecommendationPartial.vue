@@ -6,26 +6,29 @@
 		</div>
 		<ul class="space-y-8">
 			<!-- Item -->
-			<li v-for="item in processedRecommendations" :key="item.uuid" class="relative group">
-				<div class="flex items-start">
-					<div
-						class="absolute left-0 h-14 w-14 flex items-center justify-center dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
-					>
-						<img class="rounded-full" :src="image(item.person.avatar)" width="56" height="56" :alt="item.person.full_name" loading="lazy" decoding="async" fetchpriority="low" />
-					</div>
-					<div class="pl-20 space-y-1">
-						<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.person.full_name }}</div>
-						<div class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ item.person.company }}</div>
-						<div v-if="item.person.designation" class="text-sm font-medium italic text-fuchsia-600 dark:text-slate-500">
-							{{ item.person.designation }}
+			<li v-for="item in processedRecommendations" :key="item.uuid" class="group space-y-3">
+				<div class="flex items-start justify-between gap-4">
+					<div class="flex items-center gap-4">
+						<div class="h-14 w-14 flex items-center justify-center rounded-full bg-white dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30">
+							<img class="rounded-full" :src="image(item.person.avatar)" width="56" height="56" :alt="item.person.full_name" loading="lazy" decoding="async" fetchpriority="low" />
 						</div>
-						<div class="flex justify-between text-xs dark:text-teal-600 text-slate-500 pb-2">
-							<div>{{ item.relation }}</div>
-							<div>{{ item.formattedDate }}</div>
+						<div>
+							<div class="font-aspekta font-[650] text-slate-800 dark:text-slate-100">{{ item.person.full_name }}</div>
+							<div class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ item.person.company }}</div>
+							<div v-if="item.person.designation" class="text-sm font-medium italic text-fuchsia-600 dark:text-slate-500">
+								{{ item.person.designation }}
+							</div>
 						</div>
-						<!-- eslint-disable-next-line vue/no-v-html -->
-						<div class="text-sm text-slate-500 dark:text-slate-400" v-html="item.html"></div>
 					</div>
+					<BackToTopLink class="shrink-0" variant="link" label="Go back to top" :target="backToTopTarget" />
+				</div>
+				<div class="space-y-2 pl-[72px] md:pl-[88px]">
+					<div class="flex justify-between text-xs text-slate-500 dark:text-teal-600">
+						<div>{{ item.relation }}</div>
+						<div>{{ item.formattedDate }}</div>
+					</div>
+					<!-- eslint-disable-next-line vue/no-v-html -->
+					<div class="text-sm text-slate-500 dark:text-slate-400" v-html="item.html"></div>
 				</div>
 			</li>
 		</ul>
