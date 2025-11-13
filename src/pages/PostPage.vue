@@ -90,10 +90,12 @@
 												</li>
 											</ul>
 										</div>
+
 										<h1 id="post-top" class="h1 font-aspekta mb-4">{{ post.title }}</h1>
+
 										<nav
 											v-if="post.tags?.length"
-											class="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300"
+											class="mt-6 mb-6 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300"
 											aria-label="Post tags"
 											data-testid="post-tags"
 										>
@@ -114,6 +116,7 @@
 											</ul>
 										</nav>
 									</header>
+
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
