@@ -4,7 +4,7 @@
 
 		<!-- Cards -->
 		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-			<transition name="fade" mode="out-in" appear>
+			<transition name="fade" appear>
 				<div v-if="isLoading" key="loading" class="contents">
 					<ProjectCardSkeletonPartial v-for="index in 2" :key="`featured-project-skeleton-${index}`" wrapper-class="odd:-rotate-1 even:rotate-1" />
 				</div>
