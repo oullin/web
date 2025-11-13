@@ -117,7 +117,7 @@
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
 										<p>{{ post.excerpt }}</p>
-										<CoverImageLoader class="w-full aspect-[16/9]" :src="post.cover_image_url ?? ''" :alt="post.title" :width="692" :height="390" />
+										<CoverImageLoader class="w-full aspect-[16/9]" :src="post.cover_image_url || ''" :alt="post.title" :width="692" :height="390" />
 										<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 									</div>
 								</article>

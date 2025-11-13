@@ -72,7 +72,7 @@ const RouterLinkStub = defineComponent({
 		},
 	},
 	emits: ['click'],
-	template: '<a :href="typeof to === \'string\' ? to : \"#\"" @click="$emit(\'click\', $event)"><slot /></a>',
+	template: '<a :href="typeof to === \'string\' ? to : \'#\'" @click="$emit(\'click\', $event)"><slot /></a>',
 });
 
 import PostPage from '@pages/PostPage.vue';
@@ -140,7 +140,8 @@ describe('PostPage', () => {
 			const expectedLabel = `#${post.tags[index]?.name.toUpperCase()}`;
 			expect(tagWrapper.text()).toContain(expectedLabel);
 		});
-		const firstTagLink = wrapper.findComponent(RouterLinkStub);
+		const firstTag = tags[0];
+		const firstTagLink = firstTag.findComponent(RouterLinkStub);
 		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]?.name } });
 	});
 

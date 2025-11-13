@@ -9,6 +9,7 @@ dist/
 .idea/
 dist-ssr/
 node_modules/
+coverage/
 
 # --- [Caddy]: mtls
 caddy/mtls/*.*
