@@ -45,7 +45,7 @@
 
 										<section role="status">
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Articles</h2>
-											<transition name="fade" mode="out-in" appear>
+											<transition name="fade" appear>
 												<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
 													<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
 												</div>
