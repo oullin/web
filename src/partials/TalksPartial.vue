@@ -3,12 +3,14 @@
 		<h2 class="font-aspekta text-xl font-[650] mb-5">Popular Talks</h2>
 
 		<!-- Cards -->
-		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-			<transition-group name="fade" mode="out-in" appear>
-				<template v-if="isLoadingTalks || talks.length === 0">
+		<transition name="fade" mode="out-in" appear>
+			<template v-if="isLoadingTalks || talks.length === 0">
+				<div key="skeleton" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
 					<TalkCardSkeletonPartial v-for="index in 4" :key="`talk-skeleton-${index}`" :is-animated="isLoadingTalks && talks.length === 0" />
-				</template>
-				<template v-else>
+				</div>
+			</template>
+			<template v-else>
+				<div key="talks" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
 					<a
 						v-for="talk in talks"
 						:key="talk.uuid"
@@ -37,9 +39,9 @@
 							</div>
 						</div>
 					</a>
-				</template>
-			</transition-group>
-		</div>
+				</div>
+			</template>
+		</transition>
 	</section>
 </template>
 

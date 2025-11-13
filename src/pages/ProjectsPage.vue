@@ -21,7 +21,7 @@
 									<div class="space-y-10">
 										<div class="mb-5">
 											<p>
-												Over the years, I’ve built and shared command-line tools and frameworks to tackle real engineering challenges—complete with clear docs and automated
+												Over the years, I've built and shared command-line tools and frameworks to tackle real engineering challenges—complete with clear docs and automated
 												tests—and partnered with banks, insurers, and fintech to deliver custom software that balances performance, security, and scalability.
 											</p>
 											<p class="mt-2">
@@ -31,18 +31,19 @@
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div data-testid="projects-skeleton-grid" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5 min-h-[25rem]">
-												<transition-group name="fade" mode="out-in" appear>
-													<template v-if="isLoadingProjects || projects.length === 0">
+												<transition name="fade" mode="out-in" appear>
+													<div v-if="isLoadingProjects" key="loading" class="contents">
 														<ProjectCardSkeletonPartial
 															v-for="index in 4"
 															:key="`projects-page-skeleton-${index}`"
 															:is-animated="isLoadingProjects && projects.length === 0"
 														/>
-													</template>
-													<template v-else>
+													</div>
+													<div v-else-if="projects.length > 0" key="projects" class="contents">
 														<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-													</template>
-												</transition-group>
+													</div>
+													<p v-else key="empty" class="col-span-full text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
+												</transition>
 											</div>
 										</section>
 									</div>

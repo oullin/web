@@ -11,12 +11,12 @@ export class Tags {
 
 	static normalizeParam(value: unknown): string {
 		if (typeof value === 'string') {
-			return value.trim();
+			return value.trim().toLowerCase();
 		}
 
 		if (Array.isArray(value)) {
 			const [first] = value as Array<unknown>;
-			return typeof first === 'string' ? first.trim() : '';
+			return typeof first === 'string' ? first.trim().toLowerCase() : '';
 		}
 
 		return '';

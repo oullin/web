@@ -4,11 +4,11 @@
 
 		<!-- Cards -->
 		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
-			<transition-group name="fade" mode="out-in" appear>
-				<template v-if="isLoading">
+			<transition name="fade" mode="out-in" appear>
+				<div v-if="isLoading" key="loading" class="contents">
 					<ProjectCardSkeletonPartial v-for="index in 2" :key="`featured-project-skeleton-${index}`" wrapper-class="odd:-rotate-1 even:rotate-1" />
-				</template>
-				<template v-else-if="projects.length > 0">
+				</div>
+				<div v-else-if="projects.length > 0" key="projects" class="contents">
 					<a
 						v-for="project in projects"
 						:key="project.uuid"
@@ -38,9 +38,9 @@
 							</div>
 						</div>
 					</a>
-				</template>
+				</div>
 				<p v-else key="empty" class="col-span-full text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
-			</transition-group>
+			</transition>
 		</div>
 	</section>
 </template>
