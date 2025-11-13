@@ -72,7 +72,7 @@ const RouterLinkStub = defineComponent({
 		},
 	},
 	emits: ['click'],
-	template: '<a :href="typeof to === \'string\' ? to : \'#\'" @click="$emit(\'click\', $event)"><slot /></a>',
+	template: "<a :href=\"typeof to === 'string' ? to : '#'\" @click=\"$emit('click', $event)\"><slot /></a>",
 });
 
 import PostPage from '@pages/PostPage.vue';
