@@ -91,6 +91,16 @@
 											</ul>
 										</div>
 										<h1 id="post-top" class="h1 font-aspekta mb-4">{{ post.title }}</h1>
+										<div v-if="post.tags?.length" class="flex flex-wrap gap-2 mt-6" aria-label="Post tags" data-testid="post-tags">
+											<span
+												v-for="tag in post.tags"
+												:key="tag.uuid"
+												data-testid="post-tag"
+												class="inline-flex items-center text-xs font-medium px-3 py-1 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-900/60 dark:text-slate-300 border border-slate-200/70 dark:border-slate-800/70"
+											>
+												#{{ tag.name }}
+											</span>
+										</div>
 									</header>
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">

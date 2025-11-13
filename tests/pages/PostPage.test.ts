@@ -26,7 +26,18 @@ const post: PostResponse = {
 		profile_picture_url: faker.image.avatar(),
 	},
 	categories: [],
-	tags: [],
+	tags: [
+		{
+			uuid: faker.string.uuid(),
+			name: faker.lorem.word(),
+			description: faker.lorem.sentence(),
+		},
+		{
+			uuid: faker.string.uuid(),
+			name: faker.lorem.word(),
+			description: faker.lorem.sentence(),
+		},
+	],
 };
 
 const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
@@ -99,6 +110,18 @@ describe('PostPage', () => {
 		expect(renderMarkdown).toHaveBeenCalledWith(post.content);
 		expect(DOMPurify.default.sanitize).toHaveBeenCalled();
 		expect(wrapper.html()).toContain('<p></p>');
+	});
+
+	it('renders tags when available', async () => {
+		const wrapper = mountComponent();
+		await flushPromises();
+		const tagContainer = wrapper.find('[data-testid="post-tags"]');
+		expect(tagContainer.exists()).toBe(true);
+		const tags = wrapper.findAll('[data-testid="post-tag"]');
+		expect(tags).toHaveLength(post.tags.length);
+		tags.forEach((tagWrapper, index) => {
+			expect(tagWrapper.text()).toContain(`#${post.tags[index]?.name}`);
+		});
 	});
 
 	it('handles post errors gracefully', async () => {

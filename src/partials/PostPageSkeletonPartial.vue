@@ -19,6 +19,12 @@
 			</div>
 		</header>
 
+		<div class="flex flex-wrap gap-2 mt-6">
+			<div class="h-6 w-20 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+			<div class="h-6 w-16 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+			<div class="h-6 w-24 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
+		</div>
+
 		<div class="space-y-6">
 			<div class="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
 			<div class="h-[390px] w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
