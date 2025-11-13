@@ -36,10 +36,7 @@ const post: PostResponse = {
 		profile_picture_url: faker.image.avatar(),
 	},
 	categories: [],
-	tags: [
-		createTag(),
-		createTag(),
-	],
+	tags: [createTag(), createTag()],
 };
 
 const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));

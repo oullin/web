@@ -5,13 +5,14 @@ import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import type { RecommendationsResponse } from '@api/response/index.ts';
 
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>great</strong></p>'));
+const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
 
 vi.mock('@/support/markdown.ts', async (importOriginal) => {
 	const actual = await importOriginal();
 	return {
 		...actual,
 		renderMarkdown,
-		initializeHighlighter: vi.fn().mockResolvedValue(undefined),
+		initializeHighlighter,
 	};
 });
 vi.mock('@/public.ts', () => ({
