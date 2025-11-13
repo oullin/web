@@ -31,6 +31,11 @@ const router: Router = createRouter({
 			component: () => import('@pages/PostPage.vue'),
 		},
 		{
+			path: '/tags/:tag',
+			name: 'TagPosts',
+			component: () => import('@pages/TagPostsPage.vue'),
+		},
+		{
 			path: '/about',
 			component: () => import('@pages/AboutPage.vue'),
 		},

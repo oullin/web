@@ -189,8 +189,8 @@ const htmlContent = computed(() => {
 const formatTagLabel = (tagName: string) => `#${tagName.toUpperCase()}`;
 
 const tagRouteFor = (tagName: string) => ({
-	name: 'Home',
-	query: { tag: tagName },
+	name: 'TagPosts',
+	params: { tag: tagName },
 });
 
 const handleTagClick = (tagName: string) => {
