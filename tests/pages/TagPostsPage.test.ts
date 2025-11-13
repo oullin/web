@@ -1,7 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { defineComponent, reactive } from 'vue';
-import TagPostsPage from '@pages/TagPostsPage.vue';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 
 const buildPost = (index: number): PostResponse => ({
@@ -55,6 +54,8 @@ vi.mock('@api/http-error.ts', () => ({
 vi.mock('vue-router', () => ({
 	useRoute: () => reactive({ params: routeParams }),
 }));
+
+import TagPostsPage from '@pages/TagPostsPage.vue';
 
 const ArticleItemPartialStub = defineComponent({
 	name: 'ArticleItemPartialStub',
