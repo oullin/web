@@ -37,9 +37,9 @@ const buildCollection = (posts: PostResponse[]): PostsCollectionResponse => ({
 
 const posts = [buildPost(1), buildPost(2)];
 
-const getPosts = vi.fn();
-const debugError = vi.fn();
-const routeParams = reactive<{ tag: string }>({ tag: 'design' });
+const getPosts = vi.hoisted(() => vi.fn());
+const debugError = vi.hoisted(() => vi.fn());
+const routeParams = vi.hoisted(() => reactive<{ tag: string }>({ tag: 'design' }));
 
 vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({
