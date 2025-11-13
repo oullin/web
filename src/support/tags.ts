@@ -15,7 +15,7 @@ export class Tags {
 		}
 
 		if (Array.isArray(value)) {
-			const [first] = value as Array<unknown>;
+			const [first] = value;
 			return typeof first === 'string' ? first.trim().toLowerCase() : '';
 		}
 

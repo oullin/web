@@ -4,6 +4,17 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { defineComponent, ref } from 'vue';
 import type { PostResponse } from '@api/response/index.ts';
 
+const createTag = () => {
+	const tag = faker.lorem.word();
+	const normalized = `${tag.charAt(0).toUpperCase()}${tag.slice(1)}`;
+
+	return {
+		uuid: faker.string.uuid(),
+		name: normalized,
+		description: faker.lorem.sentence(),
+	};
+};
+
 const post: PostResponse = {
 	uuid: faker.string.uuid(),
 	slug: faker.lorem.slug(),
@@ -26,16 +37,8 @@ const post: PostResponse = {
 	},
 	categories: [],
 	tags: [
-		{
-			uuid: faker.string.uuid(),
-			name: faker.lorem.word(),
-			description: faker.lorem.sentence(),
-		},
-		{
-			uuid: faker.string.uuid(),
-			name: faker.lorem.word(),
-			description: faker.lorem.sentence(),
-		},
+		createTag(),
+		createTag(),
 	],
 };
 
@@ -148,7 +151,7 @@ describe('PostPage', () => {
 		});
 		const firstTag = tags[0];
 		const firstTagLink = firstTag.findComponent(RouterLinkStub);
-		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]?.name } });
+		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]!.name.toLowerCase() } });
 	});
 
 	it('populates the search term when a tag is clicked', async () => {
