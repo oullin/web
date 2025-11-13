@@ -23,13 +23,13 @@
 											{{ summaryMessage }}
 										</p>
 									</div>
-									<router-link
+									<RouterLink
 										v-lazy-link
 										class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-500 transition duration-150 ease-in-out"
 										to="/"
 									>
 										← Back to home
-									</router-link>
+									</RouterLink>
 								</div>
 
 								<div role="status">
@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, RouterLink } from 'vue-router';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
@@ -83,6 +83,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@/support/seo';
+import { Tags } from '@/support/tags.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;
 const apiStore = useApiStore();
@@ -94,55 +95,17 @@ const isLoading = ref(false);
 const hasError = ref(false);
 let lastRequestId = 0;
 
-const rawTag = computed(() => {
-	const value = route.params.tag;
+const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
 
-	if (typeof value === 'string') {
-		return value;
-	}
+const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
 
-	if (Array.isArray(value)) {
-		return value[0] ?? '';
-	}
-
-	return '';
-});
-
-const normalizedTag = computed(() => rawTag.value.trim());
-
-const formattedTagLabel = computed(() => {
-	const tag = normalizedTag.value;
-
-	if (!tag) {
-		return '#TAG';
-	}
-
-	return `#${tag.toUpperCase()}`;
-});
-
-const summaryMessage = computed(() => {
-	const tagLabel = formattedTagLabel.value;
-
-	if (!normalizedTag.value) {
-		return 'Select a tag to explore related posts.';
-	}
-
-	if (isLoading.value) {
-		return `Loading posts for ${tagLabel}…`;
-	}
-
-	if (hasError.value) {
-		return `We couldn't load posts for ${tagLabel}.`;
-	}
-
-	if (posts.value.length === 0) {
-		return `No posts found for ${tagLabel}.`;
-	}
-
-	const count = posts.value.length;
-	const noun = count === 1 ? 'post' : 'posts';
-	return `${count} ${noun} found for ${tagLabel}.`;
-});
+const summaryMessage = computed(() =>
+	Tags.summaryFor(normalizedTag.value, {
+		isLoading: isLoading.value,
+		hasError: hasError.value,
+		postCount: posts.value.length,
+	}),
+);
 
 const seoOptions = computed(() => {
 	const tag = normalizedTag.value;

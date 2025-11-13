@@ -13,19 +13,19 @@
 						<!-- Middle area -->
 						<div class="grow">
 							<div class="max-w-[700px]">
-								<!-- Back -->
-								<div class="mb-3">
-									<router-link
-										v-lazy-link
-										class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
-										to="/"
-									>
-										<span class="sr-only">Back</span>
-										<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
-											<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
-										</svg>
-									</router-link>
-								</div>
+							<!-- Back -->
+							<div class="mb-3">
+								<RouterLink
+									v-lazy-link
+									class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
+									to="/"
+								>
+									<span class="sr-only">Back</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+										<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
+									</svg>
+								</RouterLink>
+							</div>
 
 								<PostPageSkeletonPartial v-if="isLoading" class="min-h-[25rem]" />
 
@@ -91,7 +91,7 @@
 											</ul>
 										</div>
 										<h1 id="post-top" class="h1 font-aspekta mb-4">{{ post.title }}</h1>
-										<nav
+								<nav
 											v-if="post.tags?.length"
 											class="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300"
 											aria-label="Post tags"
@@ -99,14 +99,14 @@
 										>
 											<ul class="flex flex-wrap items-center gap-y-1">
 												<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
-													<router-link
-														:to="tagRouteFor(tag.name)"
-														data-testid="post-tag"
-														class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
-														@click="handleTagClick(tag.name)"
-													>
-														{{ formatTagLabel(tag.name) }}
-													</router-link>
+                                                    <RouterLink
+                                                        :to="Tags.routeFor(tag.name)"
+                                                        data-testid="post-tag"
+                                                        class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
+                                                        @click="handleTagClick(tag.name)"
+                                                    >
+                                                        {{ Tags.formatLabel(tag.name) }}
+                                                    </RouterLink>
 													<span v-if="index < post.tags.length - 1" class="mx-2 text-slate-400 dark:text-slate-600" aria-hidden="true" data-testid="post-tag-separator">
 														/
 													</span>
@@ -148,7 +148,7 @@
 
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { useRoute } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 import highlight from 'highlight.js/lib/core';
@@ -160,6 +160,7 @@ import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
+import { Tags } from '@/support/tags.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
@@ -186,29 +187,20 @@ const htmlContent = computed(() => {
 	return '';
 });
 
-const formatTagLabel = (tagName: string) => `#${tagName.toUpperCase()}`;
-
-const tagRouteFor = (tagName: string) => ({
-	name: 'TagPosts',
-	params: { tag: tagName },
-});
+const searchInput = ref<HTMLInputElement | null>(null);
 
 const handleTagClick = (tagName: string) => {
-	const label = formatTagLabel(tagName);
+	const label = Tags.formatLabel(tagName);
 	apiStore.setSearchTerm(label);
 
-	if (typeof document === 'undefined') {
+	const input = searchInput.value;
+	if (!input) {
 		return;
 	}
 
-	const searchInput = document.getElementById('search') as HTMLInputElement | null;
-	if (!searchInput) {
-		return;
-	}
-
-	searchInput.value = label;
-	searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-	searchInput.focus();
+	input.value = label;
+	input.dispatchEvent(new Event('input', { bubbles: true }));
+	input.focus();
 };
 
 const xURLFor = (post: PostResponse) => {
@@ -267,6 +259,10 @@ watch(htmlContent, async (newContent) => {
 });
 
 onMounted(async () => {
+	if (typeof document !== 'undefined') {
+		searchInput.value = document.getElementById('search') as HTMLInputElement | null;
+	}
+
 	await initializeHighlighter(highlight);
 
 	try {
