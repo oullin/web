@@ -30,23 +30,25 @@
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400">
-										<div v-if="shouldShowSkeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
-											<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
-										</div>
-										<div v-else class="space-y-12">
-											<div :class="resumeSectionHeights.education">
-												<span id="education" class="block h-0" aria-hidden="true"></span>
-												<EducationPartial v-if="education" :education="education" />
+										<transition name="fade" mode="out-in" appear>
+											<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
+												<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
 											</div>
-											<div :class="resumeSectionHeights.experience">
-												<span id="experience" class="block h-0" aria-hidden="true"></span>
-												<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
+											<div v-else key="content" class="space-y-12">
+												<div :class="resumeSectionHeights.education">
+													<span id="education" class="block h-0" aria-hidden="true"></span>
+													<EducationPartial v-if="education" :education="education" />
+												</div>
+												<div :class="resumeSectionHeights.experience">
+													<span id="experience" class="block h-0" aria-hidden="true"></span>
+													<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
+												</div>
+												<div :class="resumeSectionHeights.recommendations">
+													<span id="recommendations" class="block h-0" aria-hidden="true"></span>
+													<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+												</div>
 											</div>
-											<div :class="resumeSectionHeights.recommendations">
-												<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
-											</div>
-										</div>
+										</transition>
 									</div>
 									<div class="flex justify-end pt-10">
 										<BackToTopLink target="#resume-top" />
@@ -59,8 +61,10 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetLangPartial />
-								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
-								<WidgetSkillsPartial v-else :skills="profile.skills" />
+								<transition name="fade" mode="out-in" appear>
+									<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
+									<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
+								</transition>
 							</div>
 						</aside>
 					</div>

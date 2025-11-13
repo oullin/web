@@ -26,12 +26,10 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetOullinPartial />
-								<template v-if="isLoadingProfile || !profile">
-									<WidgetSkillsSkeletonPartial />
-								</template>
-								<template v-else>
-									<WidgetSkillsPartial :skills="profile.skills" />
-								</template>
+								<transition name="fade" mode="out-in" appear>
+									<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
+									<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
+								</transition>
 								<WidgetSponsorPartial />
 							</div>
 						</aside>

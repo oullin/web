@@ -30,17 +30,19 @@
 										</div>
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
-											<div
-												data-testid="projects-skeleton-grid"
-												class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5"
-												:class="{ 'min-h-[25rem]': isLoadingProjects || projects.length === 0 }"
-											>
-												<template v-if="isLoadingProjects || projects.length === 0">
-													<ProjectCardSkeletonPartial v-for="index in 4" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
-												</template>
-												<template v-else>
-													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-												</template>
+											<div data-testid="projects-skeleton-grid" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5 min-h-[25rem]">
+												<transition-group name="fade" mode="out-in" appear>
+													<template v-if="isLoadingProjects || projects.length === 0">
+														<ProjectCardSkeletonPartial
+															v-for="index in 4"
+															:key="`projects-page-skeleton-${index}`"
+															:is-animated="isLoadingProjects && projects.length === 0"
+														/>
+													</template>
+													<template v-else>
+														<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+													</template>
+												</transition-group>
 											</div>
 										</section>
 									</div>
@@ -52,8 +54,10 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSponsorPartial />
-								<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" />
-								<WidgetSkillsPartial v-else :skills="profile.skills" />
+								<transition name="fade" mode="out-in" appear>
+									<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
+									<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
+								</transition>
 							</div>
 						</aside>
 					</div>
