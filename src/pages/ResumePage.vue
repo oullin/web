@@ -98,7 +98,7 @@ const navigationItems = [
 	{ href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
-const resumeSectionMinHeights = Heights.resumeSectionMinHeights();
+const _resumeSectionMinHeights = Heights.resumeSectionMinHeights();
 const resumeSectionHeights = Heights.resumeSectionHeights();
 const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
 

@@ -3,9 +3,9 @@
 		<div class="h-full flex flex-col justify-between after:flex-1 after:mt-auto">
 			<!-- Sidebar avatar -->
 			<div v-if="!isHome" class="flex justify-center my-4">
-				<router-link v-lazy-link to="/">
+				<RouterLink v-lazy-link to="/">
 					<AvatarPartial width="w-16" height="h-16" loading="lazy" decoding="async" fetchpriority="low" />
-				</router-link>
+				</RouterLink>
 			</div>
 
 			<!-- Sidebar menu-->
@@ -14,7 +14,7 @@
 					<ul class="space-y-4">
 						<li class="py-2">
 							<!-- home -->
-							<router-link v-slot="{ href, navigate, isExactActive }" to="/" custom>
+							<RouterLink v-slot="{ href, navigate, isExactActive }" to="/" custom>
 								<a v-lazy-link class="h6 blog-side-nav-router-link-a" :class="bindIconClassFor(isExactActive)" :href="href" @click="navigate">
 									<span class="sr-only">Home</span>
 									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="21" height="19">
@@ -22,12 +22,12 @@
 										<path d="m10.433 3.242-8.837 6.56L.404 8.198l10.02-7.44L20.59 8.194l-1.18 1.614-8.977-6.565ZM16 17V9h2v10H3V9h2v8h11Z" />
 									</svg>
 								</a>
-							</router-link>
+							</RouterLink>
 						</li>
 
 						<!-- about -->
 						<li class="py-2">
-							<router-link v-slot="{ href, navigate, isExactActive }" to="/about" custom>
+							<RouterLink v-slot="{ href, navigate, isExactActive }" to="/about" custom>
 								<a v-lazy-link class="h6 blog-side-nav-router-link-a" :class="bindIconClassFor(isExactActive)" :href="href" @click="navigate">
 									<span class="sr-only">About</span>
 									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
@@ -37,12 +37,12 @@
 										/>
 									</svg>
 								</a>
-							</router-link>
+							</RouterLink>
 						</li>
 
 						<!-- projects -->
 						<li class="py-2">
-							<router-link v-slot="{ href, navigate, isExactActive }" to="/projects" custom>
+							<RouterLink v-slot="{ href, navigate, isExactActive }" to="/projects" custom>
 								<a v-lazy-link class="h6 blog-side-nav-router-link-a" :class="bindIconClassFor(isExactActive)" :href="href" @click="navigate">
 									<span class="sr-only">Projects</span>
 									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
@@ -50,12 +50,12 @@
 										<path d="M8 3h4V2H8v1ZM6 3V0h8v3h6v12H0V3h6ZM2 5v8h16V5H2Zm14 13v-2h2v4H2v-4h2v2h12Z" />
 									</svg>
 								</a>
-							</router-link>
+							</RouterLink>
 						</li>
 
 						<!-- resume -->
 						<li class="py-2">
-							<router-link v-slot="{ href, navigate, isExactActive }" to="/resume" custom>
+							<RouterLink v-slot="{ href, navigate, isExactActive }" to="/resume" custom>
 								<a v-lazy-link class="h6 blog-side-nav-router-link-a" :class="bindIconClassFor(isExactActive)" :href="href" @click="navigate">
 									<span class="sr-only">Resume</span>
 									<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="18" height="20">
@@ -63,9 +63,30 @@
 										<path fill-rule="nonzero" d="M2 6v12h14V6H2Zm16-2v16H0V4h18ZM2 2V0h14v2H2Z" />
 									</svg>
 								</a>
-							</router-link>
+							</RouterLink>
 						</li>
 					</ul>
+
+					<div v-if="socialNavLinks.length > 0" class="mt-8 flex flex-col items-center space-y-4" data-testid="side-nav-social-links" aria-label="Primary social profiles">
+						<span class="text-base font-semibold text-slate-400 dark:text-slate-600" data-testid="side-nav-social-separator" aria-hidden="true">-</span>
+
+						<ul class="flex flex-col items-center space-y-4">
+							<li v-for="item in socialNavLinks" :key="item.href">
+								<a
+									v-lazy-link
+									:href="item.href"
+									class="text-slate-400 transition-colors duration-150 ease-in-out hover:text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600"
+									target="_blank"
+									rel="noopener noreferrer"
+									:aria-label="item.label"
+								>
+									<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+										<path :d="item.icon" />
+									</svg>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</nav>
 			</div>
 		</div>
@@ -73,11 +94,14 @@
 </template>
 
 <script setup lang="ts">
-import { RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
+import { RouteLocationNormalizedLoaded, RouterLink, useRoute } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { Social, type SocialNavLink } from '../support/social.ts';
 
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
+const socialService = new Social();
+const socialNavLinks = ref<SocialNavLink[]>([]);
 
 const isHome = computed<boolean>(() => {
 	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
@@ -88,4 +112,9 @@ const isHome = computed<boolean>(() => {
 function bindIconClassFor(isActive: boolean): string {
 	return isActive ? 'blog-side-nav-router-link-a-active' : 'blog-side-nav-router-link-a-resting';
 }
+
+onMounted(async () => {
+	const social = await socialService.fetch();
+	socialNavLinks.value = socialService.buildNavLinks(social, ['github', 'linkedin']);
+});
 </script>

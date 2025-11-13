@@ -1,8 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ref } from 'vue';
-import PostPage from '@pages/PostPage.vue';
+import { defineComponent, ref } from 'vue';
 import type { PostResponse } from '@api/response/index.ts';
 
 const post: PostResponse = {
@@ -26,13 +25,31 @@ const post: PostResponse = {
 		profile_picture_url: faker.image.avatar(),
 	},
 	categories: [],
-	tags: [],
+	tags: [
+		{
+			uuid: faker.string.uuid(),
+			name: faker.lorem.word(),
+			description: faker.lorem.sentence(),
+		},
+		{
+			uuid: faker.string.uuid(),
+			name: faker.lorem.word(),
+			description: faker.lorem.sentence(),
+		},
+	],
 };
 
 const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
+const setSearchTerm = vi.fn();
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost }) }));
-vi.mock('vue-router', () => ({ useRoute: () => ({ params: { slug: post.slug } }) }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost, setSearchTerm }) }));
+vi.mock('vue-router', () => ({
+	useRoute: () => ({ params: { slug: post.slug } }),
+	RouterLink: {
+		name: 'RouterLink',
+		template: '<a><slot /></a>',
+	},
+}));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
 
@@ -52,6 +69,20 @@ vi.mock('@/public.ts', () => ({
 	getReadingTime: () => '',
 }));
 
+import PostPage from '@pages/PostPage.vue';
+
+const RouterLinkStub = defineComponent({
+	name: 'RouterLinkStub',
+	props: {
+		to: {
+			type: [String, Object],
+			required: true,
+		},
+	},
+	emits: ['click'],
+	template: "<a :href=\"typeof to === 'string' ? to : '#'\" @click=\"$emit('click', $event)\"><slot /></a>",
+});
+
 const mountComponent = () =>
 	mount(PostPage, {
 		global: {
@@ -62,7 +93,7 @@ const mountComponent = () =>
 				WidgetSponsorPartial: true,
 				WidgetSocialPartial: true,
 				WidgetSkillsPartial: true,
-				RouterLink: { template: '<a><slot /></a>' },
+				RouterLink: RouterLinkStub,
 			},
 		},
 	});
@@ -99,6 +130,35 @@ describe('PostPage', () => {
 		expect(renderMarkdown).toHaveBeenCalledWith(post.content);
 		expect(DOMPurify.default.sanitize).toHaveBeenCalled();
 		expect(wrapper.html()).toContain('<p></p>');
+	});
+
+	it('renders tags when available', async () => {
+		const wrapper = mountComponent();
+		await flushPromises();
+		const tagContainer = wrapper.find('[data-testid="post-tags"]');
+		expect(tagContainer.exists()).toBe(true);
+		expect(tagContainer.element.tagName).toBe('NAV');
+		const tags = wrapper.findAll('[data-testid="post-tag"]');
+		expect(tags).toHaveLength(post.tags.length);
+		const separators = wrapper.findAll('[data-testid="post-tag-separator"]');
+		expect(separators).toHaveLength(Math.max(0, post.tags.length - 1));
+		tags.forEach((tagWrapper, index) => {
+			const expectedLabel = `#${post.tags[index]?.name.toUpperCase()}`;
+			expect(tagWrapper.text()).toContain(expectedLabel);
+		});
+		const firstTag = tags[0];
+		const firstTagLink = firstTag.findComponent(RouterLinkStub);
+		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]?.name } });
+	});
+
+	it('populates the search term when a tag is clicked', async () => {
+		const wrapper = mountComponent();
+		await flushPromises();
+		const firstTag = wrapper.find('[data-testid="post-tag"]');
+		expect(firstTag.exists()).toBe(true);
+		await firstTag.trigger('click');
+		const expectedLabel = `#${post.tags[0]?.name.toUpperCase()}`;
+		expect(setSearchTerm).toHaveBeenCalledWith(expectedLabel);
 	});
 
 	it('handles post errors gracefully', async () => {

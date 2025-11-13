@@ -88,7 +88,7 @@ const props = withDefaults(defineProps<{ showRefreshButton?: boolean }>(), {
 	showRefreshButton: false,
 });
 
-const emit = defineEmits<{ (event: 'retry'): void }>();
+const emit = defineEmits<{ (_event: 'retry'): void }>();
 
 const showRefreshButton = toRef(props, 'showRefreshButton');
 </script>

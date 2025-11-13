@@ -1,7 +1,7 @@
 <template>
 	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800 group">
 		<div class="flex items-start">
-			<router-link
+			<RouterLink
 				v-lazy-link
 				class="relative block mr-4 sm:mr-6 flex-shrink-0 cursor-pointer grayscale-[65%] transition duration-300 ease-out group-hover:grayscale-0 group-focus-within:grayscale-0"
 				:to="{ name: 'PostDetail', params: { slug: item.slug } }"
@@ -32,21 +32,21 @@
 						</svg>
 					</template>
 				</CoverImageLoader>
-			</router-link>
+			</RouterLink>
 			<div>
 				<div class="text-xs text-fuchsia-500 uppercase mb-1 dark:text-teal-500">
 					{{ date().format(new Date(item.published_at)) }}
 				</div>
 				<h3 class="text-slate-700 font-aspekta text-lg font-[650] mb-1 dark:text-slate-300">
-					<router-link v-lazy-link :class="titleLinkClass" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
+					<RouterLink v-lazy-link :class="titleLinkClass" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
 						{{ item.title }}
-					</router-link>
+					</RouterLink>
 				</h3>
 				<div class="flex">
-					<router-link v-lazy-link class="grow text-sm text-slate-500 dark:text-slate-600" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
+					<RouterLink v-lazy-link class="grow text-sm text-slate-500 dark:text-slate-600" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
 						{{ item.excerpt }}
-					</router-link>
-					<router-link
+					</RouterLink>
+					<RouterLink
 						v-lazy-link
 						class="hidden lg:flex shrink-0 text-fuchsia-500 dark:text-teal-500 items-center justify-center w-12 group"
 						:to="{ name: 'PostDetail', params: { slug: item.slug } }"
@@ -55,7 +55,7 @@
 						<svg class="fill-current group-hover:translate-x-2 duration-150 ease-in-out" xmlns="http://www.w3.org/2000/svg" width="14" height="12">
 							<path d="M9.586 5 6.293 1.707 7.707.293 13.414 6l-5.707 5.707-1.414-1.414L9.586 7H0V5h9.586Z" />
 						</svg>
-					</router-link>
+					</RouterLink>
 				</div>
 			</div>
 		</div>
@@ -63,6 +63,7 @@
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { date } from '@/public.ts';
 import type { PostResponse } from '@api/response/index.ts';

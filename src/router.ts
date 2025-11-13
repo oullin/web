@@ -22,12 +22,18 @@ const router: Router = createRouter({
 	routes: [
 		{
 			path: '/',
+			name: 'Home',
 			component: () => import('@pages/HomePage.vue'),
 		},
 		{
 			path: '/post/:slug',
 			name: 'PostDetail',
 			component: () => import('@pages/PostPage.vue'),
+		},
+		{
+			path: '/tags/:tag',
+			name: 'TagPosts',
+			component: () => import('@pages/TagPostsPage.vue'),
 		},
 		{
 			path: '/about',
