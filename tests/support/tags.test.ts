@@ -12,6 +12,10 @@ describe('Tags.normalizeParam', () => {
 		expect(Tags.normalizeParam('  vue ')).toBe('vue');
 	});
 
+	it('normalizes tag casing to lowercase', () => {
+		expect(Tags.normalizeParam('  ReAcT  ')).toBe('react');
+	});
+
 	it('returns the first trimmed string when provided an array parameter', () => {
 		expect(Tags.normalizeParam(['  php  ', 'extra'])).toBe('php');
 	});

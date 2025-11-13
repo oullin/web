@@ -21,6 +21,10 @@
 	@apply after:right-0 after:top-0 after:bottom-0;
 }
 
+.blog-side-nav-icon {
+	@apply size-5 flex-none;
+}
+
 .blog-side-nav-router-link-a-resting {
 	@apply text-slate-200 hover:text-fuchsia-500 hover:after:bg-fuchsia-600;
 	@apply dark:text-slate-700 dark:hover:text-teal-600 dark:hover:after:bg-teal-600;
@@ -204,4 +208,15 @@
 .post-markdown img {
 	@apply shadow-sm dark:shadow-none rounded-md;
 	max-width: 100%;
+}
+
+/* --- transitions --- */
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
 }

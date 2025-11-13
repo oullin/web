@@ -3,52 +3,69 @@
 		<div class="min-h-screen flex">
 			<SideNavPartial />
 
+			<!-- Main content -->
 			<main class="grow overflow-hidden px-6">
-				<div id="tag-posts-top" class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
+				<div class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
 					<HeaderPartial />
 
+					<!-- Content -->
 					<div class="grow md:flex space-y-8 md:space-y-0 md:space-x-8 pt-12 md:pt-16 pb-16 md:pb-20">
+						<!-- Middle area -->
 						<div class="grow">
 							<div class="max-w-[700px]" data-testid="tag-posts">
-								<div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4 mb-8">
-									<div>
-										<p class="text-xs uppercase text-slate-500">
-											<span class="text-fuchsia-500 dark:text-teal-600">—</span>
-											Tag
-										</p>
-										<h1 class="font-aspekta text-2xl md:text-3xl font-[650] text-slate-700 dark:text-slate-200 mt-1">
-											Posts tagged <span class="text-fuchsia-500 dark:text-teal-500">{{ formattedTagLabel }}</span>
-										</h1>
-										<p class="text-sm text-slate-500 dark:text-slate-400 mt-2" data-testid="tag-posts-summary">
-											{{ summaryMessage }}
-										</p>
-									</div>
-									<RouterLink
-										v-lazy-link
-										class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-500 transition duration-150 ease-in-out"
-										to="/"
-									>
-										← Back to home
-									</RouterLink>
-								</div>
+								<section>
+									<!-- Page title -->
+									<h1 id="tag-posts-top" class="h1 font-aspekta mb-12">Topics & Tags Explorer</h1>
 
-								<div role="status">
-									<div v-if="isLoading" class="space-y-5" data-testid="tag-posts-skeleton">
-										<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
+									<!-- Page content -->
+									<div class="space-y-10">
+										<div class="flex flex-col gap-4">
+											<div class="mb-3">
+												<RouterLink
+													v-lazy-link
+													class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
+													to="/"
+												>
+													<span class="sr-only">Back</span>
+													<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+														<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
+													</svg>
+												</RouterLink>
+											</div>
+											<div>
+												<p class="text-base text-slate-600 dark:text-slate-300 mt-4">
+													Post tags help you quickly find the themes, tools or ideas you care about most across the blog. Browse through the tags below to group related posts
+													together and dive deeper into specific topics, from high-level concepts to hands-on guides.
+												</p>
+												<p class="text-sm text-slate-500 dark:text-slate-400 mt-2" data-testid="tag-posts-summary">
+													{{ summaryMessage }}
+												</p>
+											</div>
+										</div>
+
+										<section role="status">
+											<h2 class="font-aspekta text-xl font-[650] mb-6">Articles</h2>
+											<transition name="fade" mode="out-in" appear>
+												<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
+													<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
+												</div>
+												<div v-else-if="hasError" key="error" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-error">
+													{{ summaryMessage }}
+												</div>
+												<div v-else-if="posts.length === 0" key="empty" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-empty">
+													{{ summaryMessage }}
+												</div>
+												<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
+													<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
+												</div>
+											</transition>
+										</section>
 									</div>
-									<div v-else-if="hasError" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-error">
-										{{ summaryMessage }}
-									</div>
-									<div v-else-if="posts.length === 0" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-empty">
-										{{ summaryMessage }}
-									</div>
-									<div v-else class="space-y-5" data-testid="tag-posts-list">
-										<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
-									</div>
-								</div>
+								</section>
 							</div>
 						</div>
 
+						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSocialPartial />

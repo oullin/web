@@ -75,7 +75,7 @@ describe('ProjectsPage', () => {
 		expect(wrapper.text()).toContain(projects[0].title);
 	});
 
-	it('renders static skeletons when no projects are returned', async () => {
+	it('renders empty state message when no projects are returned', async () => {
 		getProjects.mockResolvedValueOnce({ version: '1.0.0', data: [] });
 
 		const wrapper = mount(ProjectsPage, {
@@ -96,10 +96,9 @@ describe('ProjectsPage', () => {
 		await nextTick();
 
 		const skeletons = wrapper.findAllComponents(ProjectCardSkeletonPartial);
-		expect(skeletons).toHaveLength(4);
-		skeletons.forEach((skeleton) => {
-			expect(skeleton.classes()).not.toContain('animate-pulse');
-		});
+		expect(skeletons).toHaveLength(0);
+
+		expect(wrapper.text()).toContain('Projects will be added soon. Check back later!');
 
 		const skeletonGrid = wrapper.find('[data-testid="projects-skeleton-grid"]');
 		expect(skeletonGrid.classes()).toContain('min-h-[25rem]');

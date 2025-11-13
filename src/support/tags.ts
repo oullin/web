@@ -11,12 +11,12 @@ export class Tags {
 
 	static normalizeParam(value: unknown): string {
 		if (typeof value === 'string') {
-			return value.trim();
+			return value.trim().toLowerCase();
 		}
 
 		if (Array.isArray(value)) {
-			const [first] = value as Array<unknown>;
-			return typeof first === 'string' ? first.trim() : '';
+			const [first] = value;
+			return typeof first === 'string' ? first.trim().toLowerCase() : '';
 		}
 
 		return '';
@@ -31,10 +31,16 @@ export class Tags {
 		return `#${normalized.toUpperCase()}`;
 	}
 
+	private static formatParam(tag: string): string {
+		return tag.trim().toLowerCase();
+	}
+
 	static routeFor(tag: string): RouteLocationRaw {
+		const param = this.formatParam(tag);
+
 		return {
 			name: 'TagPosts',
-			params: { tag },
+			params: { tag: param },
 		};
 	}
 
