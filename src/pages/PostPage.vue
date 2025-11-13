@@ -13,19 +13,19 @@
 						<!-- Middle area -->
 						<div class="grow">
 							<div class="max-w-[700px]">
-							<!-- Back -->
-							<div class="mb-3">
-								<RouterLink
-									v-lazy-link
-									class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
-									to="/"
-								>
-									<span class="sr-only">Back</span>
-									<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
-										<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
-									</svg>
-								</RouterLink>
-							</div>
+								<!-- Back -->
+								<div class="mb-3">
+									<RouterLink
+										v-lazy-link
+										class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
+										to="/"
+									>
+										<span class="sr-only">Back</span>
+										<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+											<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
+										</svg>
+									</RouterLink>
+								</div>
 
 								<PostPageSkeletonPartial v-if="isLoading" class="min-h-[25rem]" />
 
@@ -91,7 +91,7 @@
 											</ul>
 										</div>
 										<h1 id="post-top" class="h1 font-aspekta mb-4">{{ post.title }}</h1>
-								<nav
+										<nav
 											v-if="post.tags?.length"
 											class="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300"
 											aria-label="Post tags"
@@ -99,14 +99,14 @@
 										>
 											<ul class="flex flex-wrap items-center gap-y-1">
 												<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
-                                                    <RouterLink
-                                                        :to="Tags.routeFor(tag.name)"
-                                                        data-testid="post-tag"
-                                                        class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
-                                                        @click="handleTagClick(tag.name)"
-                                                    >
-                                                        {{ Tags.formatLabel(tag.name) }}
-                                                    </RouterLink>
+													<RouterLink
+														:to="Tags.routeFor(tag.name)"
+														data-testid="post-tag"
+														class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
+														@click="handleTagClick(tag.name)"
+													>
+														{{ Tags.formatLabel(tag.name) }}
+													</RouterLink>
 													<span v-if="index < post.tags.length - 1" class="mx-2 text-slate-400 dark:text-slate-600" aria-hidden="true" data-testid="post-tag-separator">
 														/
 													</span>

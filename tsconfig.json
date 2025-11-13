@@ -26,7 +26,8 @@
 			"@public/*": ["./src/public/*"],
 			"@fonts/*": ["./src/fonts/*"],
 			"@stores/*": ["./src/stores/*"],
-			"@api/*": ["./src/stores/api/*"]
+			"@api/*": ["./src/stores/api/*"],
+			"@support/*": ["./src/support/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},

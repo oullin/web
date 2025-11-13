@@ -18,6 +18,7 @@ export const aliases: AliasOptions = [
 	{ find: '@partials', replacement: path.resolve(__dirname, './src/partials') },
 	{ find: '@stores', replacement: path.resolve(__dirname, './src/stores') },
 	{ find: '@api', replacement: path.resolve(__dirname, './src/stores/api') },
+	{ find: '@support', replacement: path.resolve(__dirname, './src/support') },
 ];
 
 export default aliases;
