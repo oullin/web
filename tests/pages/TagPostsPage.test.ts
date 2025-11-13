@@ -52,9 +52,14 @@ vi.mock('@api/http-error.ts', () => ({
 	debugError,
 }));
 
-vi.mock('vue-router', () => ({
-	useRoute: () => reactive({ params: routeParams }),
-}));
+vi.mock('vue-router', async () => {
+	const actual = await vi.importActual<typeof import('vue-router')>('vue-router');
+
+	return {
+		...actual,
+		useRoute: () => reactive({ params: routeParams }),
+	};
+});
 
 import TagPostsPage from '@pages/TagPostsPage.vue';
 

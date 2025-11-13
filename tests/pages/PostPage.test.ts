@@ -43,7 +43,13 @@ const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
 const setSearchTerm = vi.fn();
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost, setSearchTerm }) }));
-vi.mock('vue-router', () => ({ useRoute: () => ({ params: { slug: post.slug } }) }));
+vi.mock('vue-router', () => ({
+	useRoute: () => ({ params: { slug: post.slug } }),
+	RouterLink: {
+		name: 'RouterLink',
+		template: '<a><slot /></a>',
+	},
+}));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
 
@@ -63,6 +69,8 @@ vi.mock('@/public.ts', () => ({
 	getReadingTime: () => '',
 }));
 
+import PostPage from '@pages/PostPage.vue';
+
 const RouterLinkStub = defineComponent({
 	name: 'RouterLinkStub',
 	props: {
@@ -74,8 +82,6 @@ const RouterLinkStub = defineComponent({
 	emits: ['click'],
 	template: "<a :href=\"typeof to === 'string' ? to : '#'\" @click=\"$emit('click', $event)\"><slot /></a>",
 });
-
-import PostPage from '@pages/PostPage.vue';
 
 const mountComponent = () =>
 	mount(PostPage, {
