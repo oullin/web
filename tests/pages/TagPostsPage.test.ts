@@ -1,5 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { VueWrapper } from '@vue/test-utils';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { defineComponent, reactive } from 'vue';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 
@@ -39,7 +40,7 @@ const posts = [buildPost(1), buildPost(2)];
 
 const getPosts = vi.hoisted(() => vi.fn());
 const debugError = vi.hoisted(() => vi.fn());
-const routeParams = vi.hoisted(() => reactive<{ tag: string }>({ tag: 'design' }));
+const routeParams = reactive<{ tag: string }>({ tag: 'design' });
 
 vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({
@@ -73,8 +74,10 @@ const ArticleItemSkeletonPartialStub = defineComponent({
 	template: '<div class="article-item-skeleton-stub" data-testid="article-item-skeleton-stub"></div>',
 });
 
-const mountComponent = () =>
-	mount(TagPostsPage, {
+const mountedWrappers: VueWrapper[] = [];
+
+const mountComponent = () => {
+	const wrapper = mount(TagPostsPage, {
 		global: {
 			stubs: {
 				SideNavPartial: true,
@@ -90,11 +93,21 @@ const mountComponent = () =>
 		},
 	});
 
+	mountedWrappers.push(wrapper);
+	return wrapper;
+};
+
 describe('TagPostsPage', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		routeParams.tag = 'design';
 		getPosts.mockResolvedValue(buildCollection(posts));
+	});
+
+	afterEach(() => {
+		while (mountedWrappers.length > 0) {
+			mountedWrappers.pop()?.unmount();
+		}
 	});
 
 	it('fetches posts for the provided tag', async () => {
