@@ -92,7 +92,7 @@ watch(
 			highlight.highlightElement(block as HTMLElement);
 		});
 	},
-	{ immediate: true }
+	{ immediate: true },
 );
 
 onMounted(async () => {
