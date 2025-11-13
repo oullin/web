@@ -5,8 +5,9 @@ import EducationPartial from '@partials/EducationPartial.vue';
 import type { EducationResponse } from '@api/response/index.ts';
 
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>hi</strong></p>'));
+const initializeHighlighter = vi.hoisted(() => vi.fn());
 
-vi.mock('@/support/markdown.ts', () => ({ renderMarkdown }));
+vi.mock('@/support/markdown.ts', () => ({ renderMarkdown, initializeHighlighter }));
 
 const education: EducationResponse[] = [
 	{
