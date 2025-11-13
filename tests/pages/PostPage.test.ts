@@ -1,7 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import PostPage from '@pages/PostPage.vue';
 import type { PostResponse } from '@api/response/index.ts';
 
@@ -64,6 +64,18 @@ vi.mock('@/public.ts', () => ({
 	getReadingTime: () => '',
 }));
 
+const RouterLinkStub = defineComponent({
+	name: 'RouterLinkStub',
+	props: {
+		to: {
+			type: [String, Object],
+			required: true,
+		},
+	},
+	emits: ['click'],
+	template: '<a :href="typeof to === \'string\' ? to : \"#\"" @click="$emit(\'click\', $event)"><slot /></a>',
+});
+
 const mountComponent = () =>
 	mount(PostPage, {
 		global: {
@@ -74,7 +86,7 @@ const mountComponent = () =>
 				WidgetSponsorPartial: true,
 				WidgetSocialPartial: true,
 				WidgetSkillsPartial: true,
-				RouterLink: { template: '<a><slot /></a>' },
+				RouterLink: RouterLinkStub,
 			},
 		},
 	});
@@ -118,12 +130,17 @@ describe('PostPage', () => {
 		await flushPromises();
 		const tagContainer = wrapper.find('[data-testid="post-tags"]');
 		expect(tagContainer.exists()).toBe(true);
+		expect(tagContainer.element.tagName).toBe('NAV');
 		const tags = wrapper.findAll('[data-testid="post-tag"]');
 		expect(tags).toHaveLength(post.tags.length);
+		const separators = wrapper.findAll('[data-testid="post-tag-separator"]');
+		expect(separators).toHaveLength(Math.max(0, post.tags.length - 1));
 		tags.forEach((tagWrapper, index) => {
 			const expectedLabel = `#${post.tags[index]?.name.toUpperCase()}`;
 			expect(tagWrapper.text()).toContain(expectedLabel);
 		});
+		const firstTagLink = wrapper.findComponent(RouterLinkStub);
+		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]?.name } });
 	});
 
 	it('populates the search term when a tag is clicked', async () => {

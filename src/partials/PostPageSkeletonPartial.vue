@@ -19,11 +19,21 @@
 			</div>
 		</header>
 
-		<div class="flex flex-wrap gap-2 mt-6">
-			<div class="h-6 w-20 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-			<div class="h-6 w-16 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-			<div class="h-6 w-24 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-		</div>
+		<nav class="mt-6">
+			<ul class="flex flex-wrap items-center gap-y-2 text-xs font-semibold uppercase tracking-wide text-slate-300 dark:text-slate-700">
+				<li class="flex items-center space-x-2">
+					<div class="h-4 w-16 bg-slate-200 dark:bg-slate-700"></div>
+					<span class="text-slate-300 dark:text-slate-700">/</span>
+				</li>
+				<li class="flex items-center space-x-2">
+					<div class="h-4 w-20 bg-slate-200 dark:bg-slate-700"></div>
+					<span class="text-slate-300 dark:text-slate-700">/</span>
+				</li>
+				<li>
+					<div class="h-4 w-14 bg-slate-200 dark:bg-slate-700"></div>
+				</li>
+			</ul>
+		</nav>
 
 		<div class="space-y-6">
 			<div class="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded"></div>

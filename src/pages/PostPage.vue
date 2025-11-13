@@ -91,18 +91,28 @@
 											</ul>
 										</div>
 										<h1 id="post-top" class="h1 font-aspekta mb-4">{{ post.title }}</h1>
-										<div v-if="post.tags?.length" class="flex flex-wrap gap-2 mt-6" aria-label="Post tags" data-testid="post-tags">
-											<button
-												v-for="tag in post.tags"
-												:key="tag.uuid"
-												type="button"
-												data-testid="post-tag"
-												class="inline-flex items-center text-xs font-semibold px-3 py-1 uppercase tracking-wide text-slate-600 dark:text-slate-300 border border-slate-200/70 dark:border-slate-800/70 transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
-												@click="handleTagClick(tag.name)"
-											>
-												{{ formatTagLabel(tag.name) }}
-											</button>
-										</div>
+										<nav
+											v-if="post.tags?.length"
+											class="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300"
+											aria-label="Post tags"
+											data-testid="post-tags"
+										>
+											<ul class="flex flex-wrap items-center gap-y-1">
+												<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
+													<router-link
+														:to="tagRouteFor(tag.name)"
+														data-testid="post-tag"
+														class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
+														@click="handleTagClick(tag.name)"
+													>
+														{{ formatTagLabel(tag.name) }}
+													</router-link>
+													<span v-if="index < post.tags.length - 1" class="mx-2 text-slate-400 dark:text-slate-600" aria-hidden="true" data-testid="post-tag-separator">
+														/
+													</span>
+												</li>
+											</ul>
+										</nav>
 									</header>
 									<!-- Post content -->
 									<div class="text-slate-500 dark:text-slate-400 space-y-8">
@@ -177,6 +187,11 @@ const htmlContent = computed(() => {
 });
 
 const formatTagLabel = (tagName: string) => `#${tagName.toUpperCase()}`;
+
+const tagRouteFor = (tagName: string) => ({
+	name: 'TagPosts',
+	params: { tag: tagName },
+});
 
 const handleTagClick = (tagName: string) => {
 	const label = formatTagLabel(tagName);
