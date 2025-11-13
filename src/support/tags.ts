@@ -31,10 +31,16 @@ export class Tags {
 		return `#${normalized.toUpperCase()}`;
 	}
 
+	private static formatParam(tag: string): string {
+		return tag.trim().toLowerCase();
+	}
+
 	static routeFor(tag: string): RouteLocationRaw {
+		const param = this.formatParam(tag);
+
 		return {
 			name: 'TagPosts',
-			params: { tag },
+			params: { tag: param },
 		};
 	}
 

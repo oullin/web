@@ -126,6 +126,7 @@ function bindIconClassFor(isActive: boolean): string {
 
 onMounted(async () => {
 	isLoadingSocialLinks.value = true;
+
 	try {
 		const social = await socialService.fetch();
 		socialNavLinks.value = socialService.buildNavLinks(social, ['github', 'linkedin']);
