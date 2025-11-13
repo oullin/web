@@ -92,14 +92,16 @@
 										</div>
 										<h1 id="post-top" class="h1 font-aspekta mb-4">{{ post.title }}</h1>
 										<div v-if="post.tags?.length" class="flex flex-wrap gap-2 mt-6" aria-label="Post tags" data-testid="post-tags">
-											<span
+											<button
 												v-for="tag in post.tags"
 												:key="tag.uuid"
+												type="button"
 												data-testid="post-tag"
-												class="inline-flex items-center text-xs font-medium px-3 py-1 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-900/60 dark:text-slate-300 border border-slate-200/70 dark:border-slate-800/70"
+												class="inline-flex items-center text-xs font-semibold px-3 py-1 uppercase tracking-wide text-slate-600 dark:text-slate-300 border border-slate-200/70 dark:border-slate-800/70 transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
+												@click="handleTagClick(tag.name)"
 											>
-												#{{ tag.name }}
-											</span>
+												{{ formatTagLabel(tag.name) }}
+											</button>
 										</div>
 									</header>
 									<!-- Post content -->
@@ -173,6 +175,26 @@ const htmlContent = computed(() => {
 
 	return '';
 });
+
+const formatTagLabel = (tagName: string) => `#${tagName.toUpperCase()}`;
+
+const handleTagClick = (tagName: string) => {
+	const label = formatTagLabel(tagName);
+	apiStore.setSearchTerm(label);
+
+	if (typeof document === 'undefined') {
+		return;
+	}
+
+	const searchInput = document.getElementById('search') as HTMLInputElement | null;
+	if (!searchInput) {
+		return;
+	}
+
+	searchInput.value = label;
+	searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+	searchInput.focus();
+};
 
 const xURLFor = (post: PostResponse) => {
 	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;

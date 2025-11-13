@@ -41,8 +41,9 @@ const post: PostResponse = {
 };
 
 const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
+const setSearchTerm = vi.fn();
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost }) }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost, setSearchTerm }) }));
 vi.mock('vue-router', () => ({ useRoute: () => ({ params: { slug: post.slug } }) }));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
@@ -120,8 +121,19 @@ describe('PostPage', () => {
 		const tags = wrapper.findAll('[data-testid="post-tag"]');
 		expect(tags).toHaveLength(post.tags.length);
 		tags.forEach((tagWrapper, index) => {
-			expect(tagWrapper.text()).toContain(`#${post.tags[index]?.name}`);
+			const expectedLabel = `#${post.tags[index]?.name.toUpperCase()}`;
+			expect(tagWrapper.text()).toContain(expectedLabel);
 		});
+	});
+
+	it('populates the search term when a tag is clicked', async () => {
+		const wrapper = mountComponent();
+		await flushPromises();
+		const firstTag = wrapper.find('[data-testid="post-tag"]');
+		expect(firstTag.exists()).toBe(true);
+		await firstTag.trigger('click');
+		const expectedLabel = `#${post.tags[0]?.name.toUpperCase()}`;
+		expect(setSearchTerm).toHaveBeenCalledWith(expectedLabel);
 	});
 
 	it('handles post errors gracefully', async () => {
