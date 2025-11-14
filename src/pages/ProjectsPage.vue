@@ -31,7 +31,7 @@
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div class="relative min-h-[25rem]">
-												<transition name="fade" appear>
+												<transition name="fade" appear mode="out-in">
 													<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
 														<ProjectCardSkeletonPartial
 															v-for="index in 4"

@@ -4,7 +4,7 @@
 
 		<!-- Cards -->
 		<div class="relative min-h-[300px]">
-			<transition name="fade" appear>
+			<transition name="fade" appear mode="out-in">
 				<div v-if="isLoading" key="loading" class="blog-projects-grid">
 					<ProjectCardSkeletonPartial v-for="index in 2" :key="`featured-project-skeleton-${index}`" wrapper-class="odd:-rotate-1 even:rotate-1" />
 				</div>
