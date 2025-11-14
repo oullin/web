@@ -45,20 +45,22 @@
 
 										<section role="status">
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Articles</h2>
-											<transition name="fade" appear>
-												<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
-													<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
-												</div>
-												<div v-else-if="hasError" key="error" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-error">
-													{{ summaryMessage }}
-												</div>
-												<div v-else-if="posts.length === 0" key="empty" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-empty">
-													{{ summaryMessage }}
-												</div>
-												<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
-													<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
-												</div>
-											</transition>
+											<div class="relative min-h-[20rem]">
+												<transition name="fade" appear>
+													<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
+														<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
+													</div>
+													<div v-else-if="hasError" key="error" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-error">
+														{{ summaryMessage }}
+													</div>
+													<div v-else-if="posts.length === 0" key="empty" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-empty">
+														{{ summaryMessage }}
+													</div>
+													<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
+														<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
+													</div>
+												</transition>
+											</div>
 										</section>
 									</div>
 								</section>

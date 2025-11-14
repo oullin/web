@@ -29,7 +29,7 @@
 										</a>
 									</nav>
 									<!-- Page content -->
-									<div class="text-slate-500 dark:text-slate-400">
+									<div class="text-slate-500 dark:text-slate-400 relative">
 										<transition name="fade" appear>
 											<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
 												<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
@@ -61,10 +61,12 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetLangPartial />
-								<transition name="fade" appear>
-									<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
-									<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
-								</transition>
+								<div class="relative">
+									<transition name="fade" appear>
+										<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
+										<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
+									</transition>
+								</div>
 							</div>
 						</aside>
 					</div>

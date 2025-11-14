@@ -220,3 +220,18 @@
 .fade-leave-to {
 	opacity: 0;
 }
+
+/* Prevent layout shift during fade transitions by overlaying elements */
+.fade-enter-active {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+.fade-leave-active {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
