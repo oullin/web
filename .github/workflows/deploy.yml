@@ -3,21 +3,9 @@ name: Deploy to VPS
 on:
   push:
     branches: [main]
-  pull_request:
-    types: [closed]
-    branches: [main]
-
-# Concurrency control: Prevents multiple deployments from running simultaneously
-#   - group: Creates unique concurrency group per PR (workflow name + git ref)
-#   - cancel-in-progress: Cancels old deployments when a new one starts
-#   - This ensures only the latest deployment runs, preventing conflicts and saving resources
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build-and-push:
-    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release')
     strategy:
       matrix:
         os: [ubuntu-24.04]
