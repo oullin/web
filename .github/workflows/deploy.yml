@@ -1,8 +1,9 @@
 name: Deploy to VPS
 
 on:
-    push:
-        branches: [main]
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,6 +11,7 @@ concurrency:
 
 jobs:
   build-and-push:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release')
     strategy:
       matrix:
         os: [ubuntu-24.04]
