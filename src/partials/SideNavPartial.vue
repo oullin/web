@@ -71,11 +71,11 @@
 						<span class="text-base font-semibold text-slate-400 dark:text-slate-600" data-testid="side-nav-social-separator" aria-hidden="true">-</span>
 
 						<ul v-if="!isLoadingSocialLinks && socialNavLinks.length > 0" class="flex flex-col items-center space-y-4">
-							<li v-for="item in socialNavLinks" :key="item.href">
+							<li v-for="item in socialNavLinks" :key="item.href" class="py-2">
 								<a
 									v-lazy-link
 									:href="item.href"
-									class="text-slate-400 transition-colors duration-150 ease-in-out hover:text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600"
+									class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
 									target="_blank"
 									rel="noopener noreferrer"
 									:aria-label="item.label"
