@@ -3,8 +3,8 @@
 		<h2 class="font-aspekta text-xl font-[650] mb-5">Popular Talks</h2>
 
 		<!-- Cards -->
-		<div class="relative min-h-[300px]">
-			<transition name="fade" appear mode="out-in">
+		<div class="relative min-h-[300px] fade-transition-wrapper">
+			<transition name="fade" appear>
 				<div v-if="isLoadingTalks || talks.length === 0" key="skeleton" class="blog-projects-grid">
 					<TalkCardSkeletonPartial v-for="index in 4" :key="`talk-skeleton-${index}`" :is-animated="isLoadingTalks && talks.length === 0" />
 				</div>

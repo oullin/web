@@ -234,3 +234,22 @@
 .fade-leave-active {
 	pointer-events: none;
 }
+
+/* Transition wrapper - makes elements overlay during crossfade */
+.fade-transition-wrapper {
+	display: grid;
+}
+
+.fade-transition-wrapper > * {
+	grid-column: 1;
+	grid-row: 1;
+}
+
+/* Entering element appears on top, leaving element (skeleton) stays visible underneath */
+.fade-enter-active {
+	z-index: 2;
+}
+
+.fade-leave-active {
+	z-index: 1;
+}

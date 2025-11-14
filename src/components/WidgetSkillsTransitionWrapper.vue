@@ -1,6 +1,6 @@
 <template>
-	<div class="relative min-h-[18rem]">
-		<transition name="fade" appear mode="out-in">
+	<div class="relative min-h-[18rem] fade-transition-wrapper">
+		<transition name="fade" appear>
 			<WidgetSkillsSkeletonPartial v-if="isLoading || !profile" key="skeleton" />
 			<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
 		</transition>
