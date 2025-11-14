@@ -27,9 +27,9 @@
 									</RouterLink>
 								</div>
 
-								<div class="relative min-h-[25rem] fade-transition-wrapper">
-									<transition name="fade" appear>
-										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" aria-hidden="true" />
+								<div class="relative min-h-[25rem]">
+									<transition name="fade" appear mode="out-in">
+										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" />
 
 										<article v-else-if="post" key="post">
 											<!-- Post header -->
