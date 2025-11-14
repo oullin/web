@@ -6,9 +6,9 @@ on:
     branches: [main]
 
 # Concurrency control: Prevents multiple deployments from running simultaneously
-# - group: Creates unique concurrency group per PR (workflow name + git ref)
-# - cancel-in-progress: Cancels old deployments when a new one starts
-# This ensures only the latest deployment runs, preventing conflicts and saving resources
+#   - group: Creates unique concurrency group per PR (workflow name + git ref)
+#   - cancel-in-progress: Cancels old deployments when a new one starts
+#   - This ensures only the latest deployment runs, preventing conflicts and saving resources
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
