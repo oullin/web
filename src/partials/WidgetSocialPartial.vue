@@ -1,5 +1,5 @@
 <template>
-	<div v-if="displaySocial.length > 0" class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 p-5">
+	<div class="rounded-lg border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 p-5">
 		<div class="flex items-center space-x-3 mb-2">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 blog-side-nav-router-link-a-active">
 				<path
@@ -12,7 +12,7 @@
 		</div>
 
 		<ul role="list" class="mt-5 space-y-2">
-			<li v-for="item in displaySocial" :key="item.href">
+			<li v-for="item in props.social" :key="item.href">
 				<a v-lazy-link target="_blank" rel="noopener noreferrer" :href="item.href" :title="item.label" class="group blog-widgets-social-links">
 					<svg viewBox="0 0 24 24" aria-hidden="true" class="blog-widgets-social-svg">
 						<path :d="item.icon" />
@@ -25,16 +25,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { Social, type SocialNavLink } from '@support/social.ts';
+import type { SocialNavLink } from '@support/social.ts';
 
-const socialService = new Social();
-const social = ref<SocialNavLink[]>([]);
-
-const displaySocial = computed(() => social.value);
-
-onMounted(async () => {
-	const response = await socialService.fetch();
-	social.value = socialService.buildNavLinks(response);
-});
+const props = defineProps<{
+	social: SocialNavLink[];
+}>();
 </script>
