@@ -55,12 +55,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSponsorPartial />
-								<div class="relative min-h-[18rem]">
-									<transition name="fade" appear>
-										<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
-										<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
-									</transition>
-								</div>
+								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
 							</div>
 						</aside>
 					</div>
@@ -84,13 +79,12 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
-import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
 
 const apiStore = useApiStore();
 const isLoadingProjects = ref(true);

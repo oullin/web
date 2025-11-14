@@ -61,12 +61,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetLangPartial />
-								<div class="relative min-h-[18rem]">
-									<transition name="fade" appear>
-										<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
-										<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
-									</transition>
-								</div>
+								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
 							</div>
 						</aside>
 					</div>
@@ -86,10 +81,9 @@ import EducationPartial from '@partials/EducationPartial.vue';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import WidgetLangPartial from '@partials/WidgetLangPartial.vue';
-import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
-import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import ResumePageSkeletonPartial from '@partials/ResumePageSkeletonPartial.vue';
+import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
 
 import { ref, onMounted, computed } from 'vue';
 import { useApiStore } from '@api/store.ts';

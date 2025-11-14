@@ -27,9 +27,9 @@
 									</RouterLink>
 								</div>
 
-								<div class="relative min-h-[25rem]">
+								<div class="relative" :class="{ 'min-h-[25rem]': isLoading || post }">
 									<transition name="fade" appear>
-										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" class="min-h-[25rem]" />
+										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" />
 
 										<article v-else-if="post" key="post">
 											<!-- Post header -->

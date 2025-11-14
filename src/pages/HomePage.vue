@@ -26,12 +26,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetOullinPartial />
-								<div class="relative min-h-[18rem]">
-									<transition name="fade" appear>
-										<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
-										<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
-									</transition>
-								</div>
+								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
 								<WidgetSponsorPartial />
 							</div>
 						</aside>
@@ -54,11 +49,10 @@ import TalksPartial from '@partials/TalksPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
-import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
+import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
-import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import WidgetOullinPartial from '@partials/WidgetOullinPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 
