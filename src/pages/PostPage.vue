@@ -29,7 +29,7 @@
 
 								<div class="relative min-h-[25rem] fade-transition-wrapper">
 									<transition name="fade" appear>
-										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" />
+										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" aria-hidden="true" />
 
 										<article v-else-if="post" key="post">
 											<!-- Post header -->
