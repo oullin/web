@@ -29,8 +29,8 @@
 										</a>
 									</nav>
 									<!-- Page content -->
-									<div class="text-slate-500 dark:text-slate-400 relative fade-transition-wrapper">
-										<transition name="fade" appear>
+									<div class="text-slate-500 dark:text-slate-400 relative">
+										<transition name="fade" appear mode="out-in">
 											<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
 												<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
 											</div>
