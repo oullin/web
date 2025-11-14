@@ -72,14 +72,7 @@
 
 						<ul v-if="!isLoadingSocialLinks && socialNavLinks.length > 0" class="flex flex-col items-center space-y-4">
 							<li v-for="item in socialNavLinks" :key="item.href" class="py-2">
-								<a
-									v-lazy-link
-									:href="item.href"
-									class="h6 blog-side-nav-router-link-a blog-side-nav-router-link-a-resting"
-									target="_blank"
-									rel="noopener noreferrer"
-									:aria-label="item.label"
-								>
+								<a v-lazy-link :href="item.href" class="h6 blog-side-nav-router-link-a blog-side-nav-social-link" target="_blank" rel="noopener noreferrer" :aria-label="item.label">
 									<svg class="blog-side-nav-icon fill-current" viewBox="0 0 24 24" aria-hidden="true">
 										<path :d="item.icon" />
 									</svg>
