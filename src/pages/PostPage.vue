@@ -27,7 +27,7 @@
 									</RouterLink>
 								</div>
 
-								<div class="relative">
+								<div class="relative min-h-[25rem]">
 									<transition name="fade" appear>
 										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" class="min-h-[25rem]" />
 

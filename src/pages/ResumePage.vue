@@ -61,7 +61,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetLangPartial />
-								<div class="relative">
+								<div class="relative min-h-[18rem]">
 									<transition name="fade" appear>
 										<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
 										<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />

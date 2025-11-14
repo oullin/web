@@ -59,7 +59,7 @@
 														<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
 														to discuss projects and ideas. While I'm not always available for freelance or long-term work, please don't hesitate to reach out anytime.
 													</p>
-													<AboutConnectSkeletonPartial v-else key="skeleton" class="min-h-[25rem]" />
+													<AboutConnectSkeletonPartial v-else key="skeleton" />
 												</transition>
 											</div>
 										</div>
@@ -73,7 +73,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSocialPartial />
-								<div class="relative">
+								<div class="relative min-h-[18rem]">
 									<transition name="fade" appear>
 										<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
 										<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
