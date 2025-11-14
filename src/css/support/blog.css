@@ -233,7 +233,6 @@
 /* Ensure smooth transitions without layout shift */
 .fade-leave-active {
 	pointer-events: none;
-	z-index: 1;
 }
 
 /* Transition wrapper - makes elements overlay during crossfade */
@@ -247,6 +246,11 @@
 }
 
 /* Entering element appears on top, leaving element (skeleton) stays visible underneath */
-.fade-enter-active {
+/* Scoped to wrapper to avoid breaking z-index on dialogs/overlays */
+.fade-transition-wrapper .fade-enter-active {
 	z-index: 2;
+}
+
+.fade-transition-wrapper .fade-leave-active {
+	z-index: 1;
 }
