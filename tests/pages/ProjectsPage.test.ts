@@ -101,7 +101,7 @@ describe('ProjectsPage', () => {
 		expect(wrapper.text()).toContain('Projects will be added soon. Check back later!');
 
 		const skeletonGrid = wrapper.find('[data-testid="projects-skeleton-grid"]');
-		expect(skeletonGrid.classes()).toContain('min-h-[25rem]');
+		expect(skeletonGrid.exists()).toBe(false);
 	});
 
 	it('handles API errors', async () => {
