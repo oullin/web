@@ -30,11 +30,11 @@
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 relative">
-										<transition name="fade" appear>
+										<transition name="fade" appear mode="out-in">
 											<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
 												<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
 											</div>
-											<div v-else key="content" class="space-y-12">
+											<div v-else key="content" :class="['space-y-12', resumeSectionsTotalHeight]">
 												<div :class="resumeSectionHeights.education">
 													<span id="education" class="block h-0" aria-hidden="true"></span>
 													<EducationPartial v-if="education" :education="education" />

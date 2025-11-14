@@ -1,6 +1,6 @@
 <template>
 	<div class="relative min-h-[200px]">
-		<transition name="fade" appear>
+		<transition name="fade" appear mode="out-in">
 			<WidgetSocialSkeletonPartial v-if="isLoading" key="skeleton" />
 			<WidgetSocialPartial v-else key="social" :social="social" />
 		</transition>

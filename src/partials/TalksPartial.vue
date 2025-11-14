@@ -4,7 +4,7 @@
 
 		<!-- Cards -->
 		<div class="relative min-h-[300px]">
-			<transition name="fade" appear>
+			<transition name="fade" appear mode="out-in">
 				<div v-if="isLoadingTalks || talks.length === 0" key="skeleton" class="blog-projects-grid">
 					<TalkCardSkeletonPartial v-for="index in 4" :key="`talk-skeleton-${index}`" :is-animated="isLoadingTalks && talks.length === 0" />
 				</div>

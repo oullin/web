@@ -1,6 +1,6 @@
 <template>
 	<Teleport to="body">
-		<Transition :name="transitionName">
+		<Transition :name="transitionName" mode="out-in">
 			<div v-if="modelValue" :class="['fixed inset-0 z-50 flex items-center justify-center p-4', rootClass]">
 				<div :class="['absolute inset-0 bg-slate-900/70 dark:bg-slate-950/80', overlayClass]" @click="handleBackdropClick" />
 

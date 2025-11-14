@@ -31,10 +31,10 @@
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div class="relative min-h-[25rem]">
-												<transition name="fade" appear>
+												<transition name="fade" appear mode="out-in">
 													<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
 														<ProjectCardSkeletonPartial
-															v-for="index in 4"
+															v-for="index in skeletonCount"
 															:key="`projects-page-skeleton-${index}`"
 															:is-animated="isLoadingProjects && projects.length === 0"
 														/>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
@@ -91,6 +91,10 @@ const isLoadingProjects = ref(true);
 const projects = ref<ProjectsResponse[]>([]);
 const profile = ref<ProfileResponse | null>(null);
 const isLoadingProfile = ref(true);
+
+const skeletonCount = computed(() => {
+	return projects.value.length > 0 ? projects.value.length : 4;
+});
 
 useSeo({
 	title: 'Projects',
