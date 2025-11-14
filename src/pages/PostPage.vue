@@ -27,7 +27,7 @@
 									</RouterLink>
 								</div>
 
-								<div class="relative" :class="{ 'min-h-[25rem]': isLoading || post }">
+								<div class="relative min-h-[25rem]">
 									<transition name="fade" appear>
 										<PostPageSkeletonPartial v-if="isLoading" key="skeleton" />
 
