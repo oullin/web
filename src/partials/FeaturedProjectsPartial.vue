@@ -3,12 +3,12 @@
 		<h2 class="font-aspekta text-xl font-[650] mb-5">Open-Source Projects</h2>
 
 		<!-- Cards -->
-		<div class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+		<div class="relative min-h-[300px]">
 			<transition name="fade" appear>
-				<div v-if="isLoading" key="loading" class="contents">
+				<div v-if="isLoading" key="loading" class="blog-projects-grid">
 					<ProjectCardSkeletonPartial v-for="index in 2" :key="`featured-project-skeleton-${index}`" wrapper-class="odd:-rotate-1 even:rotate-1" />
 				</div>
-				<div v-else-if="projects.length > 0" key="projects" class="contents">
+				<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
 					<a
 						v-for="project in projects"
 						:key="project.uuid"

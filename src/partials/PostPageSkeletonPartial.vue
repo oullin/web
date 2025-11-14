@@ -1,5 +1,5 @@
 <template>
-	<div data-testid="post-page-skeleton" class="space-y-8 animate-pulse" aria-hidden="true">
+	<div data-testid="post-page-skeleton" class="space-y-8 animate-pulse min-h-[25rem]" aria-hidden="true">
 		<div class="mb-3">
 			<div class="inline-flex rounded-full border border-slate-200 dark:border-slate-800 w-10 h-10 items-center justify-center bg-slate-100 dark:bg-slate-800/60"></div>
 		</div>

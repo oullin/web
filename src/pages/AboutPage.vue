@@ -52,14 +52,16 @@
 
 										<div class="mt-5 space-y-5">
 											<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
-											<transition name="fade" appear>
-												<p v-if="profile" key="connect">
-													I'm happy to connect by
-													<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
-													to discuss projects and ideas. While I'm not always available for freelance or long-term work, please don't hesitate to reach out anytime.
-												</p>
-												<AboutConnectSkeletonPartial v-else key="skeleton" class="min-h-[25rem]" />
-											</transition>
+											<div class="relative min-h-[5rem]">
+												<transition name="fade" appear>
+													<p v-if="profile" key="connect">
+														I'm happy to connect by
+														<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
+														to discuss projects and ideas. While I'm not always available for freelance or long-term work, please don't hesitate to reach out anytime.
+													</p>
+													<AboutConnectSkeletonPartial v-else key="skeleton" />
+												</transition>
+											</div>
 										</div>
 									</div>
 								</section>
@@ -71,10 +73,7 @@
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
 								<WidgetSocialPartial />
-								<transition name="fade" appear>
-									<WidgetSkillsSkeletonPartial v-if="isLoadingProfile || !profile" key="skeleton" />
-									<WidgetSkillsPartial v-else key="skills" :skills="profile.skills" />
-								</transition>
+								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
 							</div>
 						</aside>
 					</div>
@@ -93,10 +92,9 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
-import WidgetSkillsPartial from '@partials/WidgetSkillsPartial.vue';
-import WidgetSkillsSkeletonPartial from '@partials/WidgetSkillsSkeletonPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
+import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
