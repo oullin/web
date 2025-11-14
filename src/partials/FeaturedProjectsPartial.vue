@@ -5,10 +5,10 @@
 		<!-- Cards -->
 		<div class="relative min-h-[300px]">
 			<transition name="fade" appear>
-				<div v-if="isLoading" key="loading" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+				<div v-if="isLoading" key="loading" class="blog-projects-grid">
 					<ProjectCardSkeletonPartial v-for="index in 2" :key="`featured-project-skeleton-${index}`" wrapper-class="odd:-rotate-1 even:rotate-1" />
 				</div>
-				<div v-else-if="projects.length > 0" key="projects" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+				<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
 					<a
 						v-for="project in projects"
 						:key="project.uuid"

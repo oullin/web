@@ -5,10 +5,10 @@
 		<!-- Cards -->
 		<div class="relative min-h-[300px]">
 			<transition name="fade" appear>
-				<div v-if="isLoadingTalks || talks.length === 0" key="skeleton" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+				<div v-if="isLoadingTalks || talks.length === 0" key="skeleton" class="blog-projects-grid">
 					<TalkCardSkeletonPartial v-for="index in 4" :key="`talk-skeleton-${index}`" :is-animated="isLoadingTalks && talks.length === 0" />
 				</div>
-				<div v-else key="talks" class="grid sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-5">
+				<div v-else key="talks" class="blog-projects-grid">
 					<a
 						v-for="talk in talks"
 						:key="talk.uuid"
