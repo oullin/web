@@ -52,8 +52,8 @@
 
 										<div class="mt-5 space-y-5">
 											<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
-											<div class="relative min-h-[5rem]">
-												<transition name="fade" appear mode="out-in">
+											<div class="relative min-h-[5rem] fade-transition-wrapper">
+												<transition name="fade" appear>
 													<p v-if="profile" key="connect">
 														I'm happy to connect by
 														<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>

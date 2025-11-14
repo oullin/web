@@ -21,8 +21,8 @@
 		</ul>
 
 		<!-- Articles list -->
-		<div class="relative min-h-[24rem]">
-			<transition name="fade" appear mode="out-in">
+		<div class="relative min-h-[24rem] fade-transition-wrapper">
+			<transition name="fade" appear>
 				<div v-if="isLoading" key="skeleton" aria-busy="true" class="min-h-[24rem]">
 					<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
 				</div>
