@@ -141,7 +141,7 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSocialPartial />
+								<WidgetSocialTransitionWrapper />
 								<WidgetSponsorPartial />
 							</div>
 						</aside>
@@ -174,7 +174,7 @@ import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import { Tags } from '@/support/tags.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
+import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';

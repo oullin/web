@@ -38,7 +38,7 @@ describe('AboutPage', () => {
 				stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
-					WidgetSocialPartial: true,
+					WidgetSocialTransitionWrapper: true,
 					WidgetSkillsPartial: true,
 					FooterPartial: true,
 				},
@@ -58,7 +58,7 @@ describe('AboutPage', () => {
 				stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
-					WidgetSocialPartial: true,
+					WidgetSocialTransitionWrapper: true,
 					WidgetSkillsPartial: true,
 					FooterPartial: true,
 				},
@@ -78,7 +78,7 @@ describe('AboutPage', () => {
 				stubs: {
 					SideNavPartial: true,
 					HeaderPartial: true,
-					WidgetSocialPartial: true,
+					WidgetSocialTransitionWrapper: true,
 					WidgetSkillsPartial: true,
 					FooterPartial: true,
 				},

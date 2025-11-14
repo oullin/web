@@ -72,7 +72,7 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSocialPartial />
+								<WidgetSocialTransitionWrapper />
 								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
 							</div>
 						</aside>
@@ -91,7 +91,7 @@ import AboutPicture from '@images/profile/about.jpg';
 import FooterPartial from '@partials/FooterPartial.vue';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
-import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
+import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';

@@ -91,7 +91,7 @@ const mountComponent = () =>
 				HeaderPartial: true,
 				FooterPartial: true,
 				WidgetSponsorPartial: true,
-				WidgetSocialPartial: true,
+				WidgetSocialTransitionWrapper: true,
 				WidgetSkillsPartial: true,
 				RouterLink: RouterLinkStub,
 			},
@@ -185,7 +185,7 @@ describe('PostPage', () => {
 
 		const children = container.element.children;
 		expect(children.length).toBeGreaterThanOrEqual(2);
-		expect(children[0].tagName).toBe('WIDGET-SOCIAL-PARTIAL-STUB');
+		expect(children[0].tagName).toBe('WIDGET-SOCIAL-TRANSITION-WRAPPER-STUB');
 		expect(children[1].tagName).toBe('WIDGET-SPONSOR-PARTIAL-STUB');
 	});
 

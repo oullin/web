@@ -70,7 +70,7 @@
 						<!-- Right sidebar -->
 						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
 							<div class="space-y-6">
-								<WidgetSocialPartial />
+								<WidgetSocialTransitionWrapper />
 								<WidgetSponsorPartial />
 							</div>
 						</aside>
@@ -96,7 +96,7 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
+import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';

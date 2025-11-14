@@ -89,7 +89,7 @@ const mountComponent = () => {
 				HeaderPartial: true,
 				FooterPartial: true,
 				WidgetSponsorPartial: true,
-				WidgetSocialPartial: true,
+				WidgetSocialTransitionWrapper: true,
 				BackToTopLink: true,
 				RouterLink: true,
 				ArticleItemPartial: ArticleItemPartialStub,
