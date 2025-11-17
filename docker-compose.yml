@@ -77,6 +77,7 @@ services:
         user: "${UID:-1000}:${GID:-1000}"
         volumes:
             - .:/app
+            - oullin_web_node_modules:/app/node_modules
         profiles:
             - local
         depends_on:
@@ -97,3 +98,4 @@ networks:
 volumes:
     oullin_web_data:
     oullin_web_config:
+    oullin_web_node_modules:
