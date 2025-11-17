@@ -20,7 +20,7 @@
 										<button
 											type="button"
 											class="inline-flex items-center gap-2 text-sm font-medium transition-colors rounded-full border border-slate-200/70 px-4 py-2 text-slate-600 hover:border-fuchsia-400/70 hover:text-slate-800 dark:border-slate-700/80 dark:text-slate-300 dark:hover:text-slate-100 cursor-pointer"
-											@click="goBack(router)"
+											@click="handleGoBack"
 										>
 											<span aria-hidden="true">←</span>
 											Go back
@@ -34,12 +34,16 @@
 												Post tags help you quickly find the themes, tools or ideas you care about most across the blog. Browse through the tags below to group related posts
 												together and dive deeper into specific topics, from high-level concepts to hands-on guides.
 											</p>
-											<p class="mt-4">
-												<template v-if="summaryContent.tagLabel">
+											<p class="mt-4" data-testid="tag-posts-summary">
+												<template v-if="summaryContent.label">
 													{{ summaryContent.text }}
-													<RouterLink :to="summaryContent.tagRoute" class="font-semibold transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500">
-														{{ summaryContent.tagLabel }}
-													</RouterLink>
+													<a
+														href="#"
+														class="font-semibold transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
+														@click.prevent="summaryContent.onLabelClick?.()"
+													>
+														{{ summaryContent.label }}
+													</a>
 													<span v-if="summaryContent.suffix">{{ summaryContent.suffix }}</span>
 												</template>
 												<template v-else>
@@ -84,8 +88,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useRoute, RouterLink, useRouter } from 'vue-router';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
@@ -116,31 +120,43 @@ const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
 
 const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
 
-const summaryContent = computed(() => {
-	const tag = normalizedTag.value;
-
-	if (!tag) {
-		return { text: 'Select a tag to explore related posts.' };
+const handleGoBack = () => {
+	// If search is active, clear it and stay on the page
+	if (apiStore.searchTerm.trim()) {
+		apiStore.setSearchTerm('');
+		const searchElement = document.getElementById('search') as HTMLInputElement | null;
+		if (searchElement) {
+			searchElement.value = '';
+			searchElement.dispatchEvent(new Event('input', { bubbles: true }));
+		}
+	} else {
+		// No search active, go back to previous page
+		goBack(router);
 	}
+};
 
-	const tagLabel = formattedTagLabel.value;
-	const tagRoute = Tags.routeFor(tag);
+const onSummaryLabelClick = (label: string) => {
+	const searchTerm = label.replace(/^#/, '').toLowerCase();
+	apiStore.setSearchTerm(searchTerm);
 
-	if (isLoading.value) {
-		return { text: 'Loading posts for ', tagLabel, tagRoute, suffix: '…' };
+	const searchElement = document.getElementById('search') as HTMLInputElement | null;
+	if (searchElement) {
+		searchElement.value = searchTerm;
+		searchElement.dispatchEvent(new Event('input', { bubbles: true }));
 	}
+};
 
-	if (hasError.value) {
-		return { text: "We couldn't load posts for ", tagLabel, tagRoute, suffix: '.' };
-	}
-
-	if (posts.value.length === 0) {
-		return { text: 'No posts found for ', tagLabel, tagRoute, suffix: '.' };
-	}
-
-	const noun = posts.value.length === 1 ? 'post' : 'posts';
-	return { text: `${posts.value.length} ${noun} found for `, tagLabel, tagRoute, suffix: '.' };
-});
+const summaryContent = computed(() =>
+	Tags.summaryFor(
+		normalizedTag.value,
+		{
+			isLoading: isLoading.value,
+			hasError: hasError.value,
+			postCount: posts.value.length,
+		},
+		onSummaryLabelClick,
+	),
+);
 
 const seoOptions = computed(() => {
 	const tag = normalizedTag.value;
@@ -166,7 +182,7 @@ const seoOptions = computed(() => {
 
 useSeo(seoOptions);
 
-const fetchPosts = async (tagName: string) => {
+const loadPostsForTag = async (tagName: string) => {
 	const requestId = ++lastRequestId;
 	hasError.value = false;
 
@@ -182,7 +198,10 @@ const fetchPosts = async (tagName: string) => {
 	isLoading.value = true;
 
 	try {
-		const collection: PostsCollectionResponse = await apiStore.getPosts({ tag: tagName });
+		const collection: PostsCollectionResponse = await apiStore.getPosts({
+			tag: tagName,
+			text: apiStore.searchTerm.trim(),
+		});
 
 		if (requestId !== lastRequestId) {
 			return;
@@ -206,11 +225,55 @@ const fetchPosts = async (tagName: string) => {
 	}
 };
 
+const isInitializing = ref(true);
+
 watch(
-	normalizedTag,
-	(newTag) => {
-		fetchPosts(newTag);
+	() => apiStore.searchTerm,
+	() => {
+		// Don't trigger during initialization to avoid race conditions
+		if (!isInitializing.value) {
+			loadPostsForTag(normalizedTag.value);
+		}
 	},
-	{ immediate: true },
 );
+
+onMounted(() => {
+	// Clear any existing search term when mounting the page with a specific tag
+	// unless we're coming from a search (in which case the search term matches the tag)
+	const currentSearchTerm = apiStore.searchTerm.trim().toLowerCase();
+	const currentTag = normalizedTag.value.toLowerCase();
+
+	if (currentSearchTerm && currentSearchTerm !== currentTag) {
+		apiStore.setSearchTerm('');
+		const searchElement = document.getElementById('search') as HTMLInputElement | null;
+
+		if (searchElement) {
+			searchElement.value = '';
+		}
+	}
+
+	loadPostsForTag(normalizedTag.value);
+	isInitializing.value = false;
+});
+
+onBeforeRouteUpdate((to, from, next) => {
+	const newTag = Tags.normalizeParam(to.params.tag);
+	const oldTag = Tags.normalizeParam(from.params.tag);
+
+	// Clear search term when navigating to a different tag
+	if (newTag !== oldTag) {
+		isInitializing.value = true; // Prevent watcher from triggering during route update
+		apiStore.setSearchTerm('');
+		const searchElement = document.getElementById('search') as HTMLInputElement | null;
+
+		if (searchElement) {
+			searchElement.value = '';
+		}
+	}
+
+	loadPostsForTag(newTag);
+	isInitializing.value = false;
+
+	next();
+});
 </script>

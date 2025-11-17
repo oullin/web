@@ -124,6 +124,13 @@ watch(
 	() => apiStore.searchTerm,
 	(newSearchTerm: string): void => {
 		filters.text = newSearchTerm.trim();
+		// Clear category filter when searching to show all matching articles
+		if (filters.text) {
+			filters.category = '';
+		} else if (categories.value.length > 0) {
+			// Restore first category when search is cleared
+			filters.category = categories.value[0].slug;
+		}
 		debouncedSearch();
 	},
 );

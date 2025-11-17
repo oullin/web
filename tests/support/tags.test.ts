@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Tags, type TagSummaryState } from '@/support/tags.ts';
 
 const baseSummaryState: TagSummaryState = {
@@ -52,7 +52,7 @@ describe('Tags.routeFor', () => {
 
 describe('Tags.summaryFor', () => {
 	it('prompts the user to select a tag when one is missing', () => {
-		expect(Tags.summaryFor('', baseSummaryState)).toBe('Select a tag to explore related posts.');
+		expect(Tags.summaryFor('', baseSummaryState)).toEqual({ text: 'Select a tag to explore related posts.' });
 	});
 
 	it('describes loading state when awaiting posts', () => {
@@ -61,7 +61,7 @@ describe('Tags.summaryFor', () => {
 				...baseSummaryState,
 				isLoading: true,
 			}),
-		).toBe('Loading posts for #VUE…');
+		).toEqual({ text: 'Loading posts for ', label: '#VUE', suffix: '…', onLabelClick: undefined });
 	});
 
 	it('reports failures when the API request fails', () => {
@@ -70,7 +70,7 @@ describe('Tags.summaryFor', () => {
 				...baseSummaryState,
 				hasError: true,
 			}),
-		).toBe("We couldn't load posts for #VUE.");
+		).toEqual({ text: "We couldn't load posts for ", label: '#VUE', suffix: '.', onLabelClick: undefined });
 	});
 
 	it('mentions when no posts were found', () => {
@@ -78,7 +78,7 @@ describe('Tags.summaryFor', () => {
 			Tags.summaryFor('vue', {
 				...baseSummaryState,
 			}),
-		).toBe('No posts found for #VUE.');
+		).toEqual({ text: 'No posts found for ', label: '#VUE', suffix: '.', onLabelClick: undefined });
 	});
 
 	it('handles singular and plural post counts', () => {
@@ -87,13 +87,29 @@ describe('Tags.summaryFor', () => {
 				...baseSummaryState,
 				postCount: 1,
 			}),
-		).toBe('1 post found for #VUE.');
+		).toEqual({ text: '1 post found for ', label: '#VUE', suffix: '.', onLabelClick: undefined });
 
 		expect(
 			Tags.summaryFor('vue', {
 				...baseSummaryState,
 				postCount: 3,
 			}),
-		).toBe('3 posts found for #VUE.');
+		).toEqual({ text: '3 posts found for ', label: '#VUE', suffix: '.', onLabelClick: undefined });
+	});
+
+	it('uses the callback for label clicks', () => {
+		const handler = vi.fn();
+		const summary = Tags.summaryFor(
+			'vue',
+			{
+				...baseSummaryState,
+				postCount: 2,
+			},
+			handler,
+		);
+
+		expect(summary.label).toBe('#VUE');
+		summary.onLabelClick?.();
+		expect(handler).toHaveBeenCalledWith('#VUE');
 	});
 });
