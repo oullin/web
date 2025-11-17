@@ -24,7 +24,7 @@
 												Over the years, I've built and shared command-line tools and frameworks to tackle real engineering challenges—complete with clear docs and automated
 												tests—and partnered with banks, insurers, and fintech to deliver custom software that balances performance, security, and scalability.
 											</p>
-											<p class="mt-2">
+											<p class="mt-4">
 												Feel free to dive into my open-source repos and client case studies to see how I turn complex requirements into reliable, maintainable systems.
 											</p>
 										</div>
