@@ -11,11 +11,7 @@
 		respond 204
 	}
 
-	# CORS on normal requests
-	@localOrigin header Origin http://localhost:5173
-
-    header @localOrigin Access-Control-Allow-Origin "http://localhost:5173"
-
+	# CORS headers for all requests
 	header {
 		Vary "Origin"
 		X-Frame-Options "SAMEORIGIN"
