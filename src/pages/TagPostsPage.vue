@@ -225,16 +225,13 @@ const loadPostsForTag = async (tagName: string) => {
 	}
 };
 
-const isInitializing = ref(true);
-
+// Watch for changes to both tag and search term
 watch(
-	() => apiStore.searchTerm,
-	() => {
-		// Don't trigger during initialization to avoid race conditions
-		if (!isInitializing.value) {
-			loadPostsForTag(normalizedTag.value);
-		}
+	[normalizedTag, () => apiStore.searchTerm],
+	([newTag]) => {
+		loadPostsForTag(newTag);
 	},
+	{ immediate: true },
 );
 
 onMounted(() => {
@@ -251,9 +248,6 @@ onMounted(() => {
 			searchElement.value = '';
 		}
 	}
-
-	loadPostsForTag(normalizedTag.value);
-	isInitializing.value = false;
 });
 
 onBeforeRouteUpdate((to, from, next) => {
@@ -262,7 +256,6 @@ onBeforeRouteUpdate((to, from, next) => {
 
 	// Clear search term when navigating to a different tag
 	if (newTag !== oldTag) {
-		isInitializing.value = true; // Prevent watcher from triggering during route update
 		apiStore.setSearchTerm('');
 		const searchElement = document.getElementById('search') as HTMLInputElement | null;
 
@@ -270,9 +263,6 @@ onBeforeRouteUpdate((to, from, next) => {
 			searchElement.value = '';
 		}
 	}
-
-	loadPostsForTag(newTag);
-	isInitializing.value = false;
 
 	next();
 });
