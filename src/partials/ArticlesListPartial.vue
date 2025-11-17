@@ -22,15 +22,13 @@
 
 		<!-- Articles list -->
 		<div class="relative min-h-[24rem]">
-			<transition name="fade" appear mode="out-in">
-				<div v-if="isLoading" key="skeleton" aria-busy="true" class="min-h-[24rem]">
-					<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
-				</div>
-				<div v-else-if="items.length > 0" key="list" class="min-h-[24rem]">
-					<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
-				</div>
-				<p v-else key="empty" class="text-slate-500 dark:text-slate-400 py-8 min-h-[24rem]">No articles found.</p>
-			</transition>
+			<div v-if="isLoading" key="skeleton" aria-busy="true" class="min-h-[24rem]">
+				<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
+			</div>
+			<div v-else-if="items.length > 0" key="list" class="min-h-[24rem]">
+				<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
+			</div>
+			<p v-else key="empty" class="text-slate-500 dark:text-slate-400 py-8 min-h-[24rem]">No articles found.</p>
 		</div>
 	</section>
 </template>

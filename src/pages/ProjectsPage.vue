@@ -31,19 +31,17 @@
 										<section>
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
 											<div class="relative min-h-[25rem]">
-												<transition name="fade" appear mode="out-in">
-													<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
-														<ProjectCardSkeletonPartial
-															v-for="index in skeletonCount"
-															:key="`projects-page-skeleton-${index}`"
-															:is-animated="isLoadingProjects && projects.length === 0"
-														/>
-													</div>
-													<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
-														<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-													</div>
-													<p v-else key="empty" class="text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
-												</transition>
+												<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
+													<ProjectCardSkeletonPartial
+														v-for="index in skeletonCount"
+														:key="`projects-page-skeleton-${index}`"
+														:is-animated="isLoadingProjects && projects.length === 0"
+													/>
+												</div>
+												<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
+													<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+												</div>
+												<p v-else key="empty" class="text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
 											</div>
 										</section>
 									</div>

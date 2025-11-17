@@ -30,25 +30,23 @@
 									</nav>
 									<!-- Page content -->
 									<div class="text-slate-500 dark:text-slate-400 relative">
-										<transition name="fade" appear mode="out-in">
-											<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
-												<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
+										<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
+											<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
+										</div>
+										<div v-else key="content" :class="['space-y-12', resumeSectionsTotalHeight]">
+											<div :class="resumeSectionHeights.education">
+												<span id="education" class="block h-0" aria-hidden="true"></span>
+												<EducationPartial v-if="education" :education="education" />
 											</div>
-											<div v-else key="content" :class="['space-y-12', resumeSectionsTotalHeight]">
-												<div :class="resumeSectionHeights.education">
-													<span id="education" class="block h-0" aria-hidden="true"></span>
-													<EducationPartial v-if="education" :education="education" />
-												</div>
-												<div :class="resumeSectionHeights.experience">
-													<span id="experience" class="block h-0" aria-hidden="true"></span>
-													<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
-												</div>
-												<div :class="resumeSectionHeights.recommendations">
-													<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-													<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
-												</div>
+											<div :class="resumeSectionHeights.experience">
+												<span id="experience" class="block h-0" aria-hidden="true"></span>
+												<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
 											</div>
-										</transition>
+											<div :class="resumeSectionHeights.recommendations">
+												<span id="recommendations" class="block h-0" aria-hidden="true"></span>
+												<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+											</div>
+										</div>
 									</div>
 									<div class="flex justify-end pt-10">
 										<BackToTopLink target="#resume-top" />
