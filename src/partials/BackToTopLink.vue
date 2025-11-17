@@ -28,7 +28,7 @@ const variantClasses = computed(() => {
 	const baseClasses = 'inline-flex items-center gap-2 text-sm font-medium transition-colors';
 
 	if (variant.value === 'link') {
-		return `${baseClasses} text-fuchsia-600 hover:text-fuchsia-500 dark:text-teal-400 dark:hover:text-teal-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-300/80`;
+		return `${baseClasses} hover:text-fuchsia-500 dark:text-teal-800 dark:hover:text-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-300/80`;
 	}
 
 	return `${baseClasses} rounded-full border border-slate-200/70 px-4 py-2 text-slate-600 hover:border-fuchsia-400/70 hover:text-slate-800 dark:border-slate-700/80 dark:text-slate-300 dark:hover:text-slate-100`;
