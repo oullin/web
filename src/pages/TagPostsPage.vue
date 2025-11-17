@@ -36,8 +36,8 @@
 											</p>
 											<p class="mt-4" data-testid="tag-posts-summary">
 												<template v-if="summaryContent.label">
-													{{ summaryContent.text }}
-													<a
+													{{ summaryContent.text
+													}}<a
 														href="#"
 														class="font-semibold transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
 														@click.prevent="summaryContent.onLabelClick?.()"
@@ -57,7 +57,7 @@
 												<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
 													<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
 												</div>
-												<div key="list" class="space-y-5" data-testid="tag-posts-list">
+												<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
 													<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
 												</div>
 											</div>
@@ -117,7 +117,6 @@ const hasError = ref(false);
 let lastRequestId = 0;
 
 const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
-
 const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
 
 const handleGoBack = () => {
@@ -125,6 +124,7 @@ const handleGoBack = () => {
 	if (apiStore.searchTerm.trim()) {
 		apiStore.setSearchTerm('');
 		const searchElement = document.getElementById('search') as HTMLInputElement | null;
+
 		if (searchElement) {
 			searchElement.value = '';
 			searchElement.dispatchEvent(new Event('input', { bubbles: true }));
@@ -225,13 +225,21 @@ const loadPostsForTag = async (tagName: string) => {
 	}
 };
 
-// Watch for changes to both tag and search term
+// Watch for changes to tag
 watch(
-	[normalizedTag, () => apiStore.searchTerm],
-	([newTag]) => {
+	normalizedTag,
+	(newTag) => {
 		loadPostsForTag(newTag);
 	},
 	{ immediate: true },
+);
+
+// Watch for changes to search term
+watch(
+	() => apiStore.searchTerm,
+	() => {
+		loadPostsForTag(normalizedTag.value);
+	},
 );
 
 onMounted(() => {

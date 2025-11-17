@@ -61,7 +61,7 @@ describe('Tags.summaryFor', () => {
 				...baseSummaryState,
 				isLoading: true,
 			}),
-		).toEqual({ text: 'Loading posts for ', label: '#VUE', suffix: '…', onLabelClick: undefined });
+		).toEqual({ text: 'Loading posts for', label: '#VUE', suffix: '…', onLabelClick: undefined });
 	});
 
 	it('reports failures when the API request fails', () => {
@@ -70,7 +70,7 @@ describe('Tags.summaryFor', () => {
 				...baseSummaryState,
 				hasError: true,
 			}),
-		).toEqual({ text: "We couldn't load posts for ", label: '#VUE', suffix: '.', onLabelClick: undefined });
+		).toEqual({ text: "We couldn't load posts for", label: '#VUE', suffix: '.', onLabelClick: undefined });
 	});
 
 	it('mentions when no posts were found', () => {
@@ -78,7 +78,7 @@ describe('Tags.summaryFor', () => {
 			Tags.summaryFor('vue', {
 				...baseSummaryState,
 			}),
-		).toEqual({ text: 'No posts found for ', label: '#VUE', suffix: '.', onLabelClick: undefined });
+		).toEqual({ text: 'No posts found for', label: '#VUE', suffix: '.', onLabelClick: undefined });
 	});
 
 	it('handles singular and plural post counts', () => {
@@ -87,14 +87,14 @@ describe('Tags.summaryFor', () => {
 				...baseSummaryState,
 				postCount: 1,
 			}),
-		).toEqual({ text: '1 post found for ', label: '#VUE', suffix: '.', onLabelClick: undefined });
+		).toEqual({ text: '1 post found for ', label: '#VUE', suffix: '', onLabelClick: undefined });
 
 		expect(
 			Tags.summaryFor('vue', {
 				...baseSummaryState,
 				postCount: 3,
 			}),
-		).toEqual({ text: '3 posts found for ', label: '#VUE', suffix: '.', onLabelClick: undefined });
+		).toEqual({ text: '3 posts found for ', label: '#VUE', suffix: '', onLabelClick: undefined });
 	});
 
 	it('uses the callback for label clicks', () => {

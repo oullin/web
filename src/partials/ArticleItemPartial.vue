@@ -65,6 +65,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
+import DOMPurify from 'dompurify';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { date } from '@/public.ts';
 import { useApiStore } from '@api/store.ts';
@@ -89,13 +90,15 @@ const highlightText = (text: string): string => {
 	const term = searchTerm.value;
 
 	if (!term) {
-		return text;
+		return DOMPurify.sanitize(text);
 	}
 
 	// Escape special regex characters in the search term
 	const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	const regex = new RegExp(`(${escapedTerm})`, 'gi');
 
-	return text.replace(regex, '<mark class="bg-fuchsia-100 dark:bg-teal-500/30 text-fuchsia-900 dark:text-teal-100 font-semibold px-1 py-0.5 rounded-sm">$1</mark>');
+	const highlighted = text.replace(regex, '<mark class="bg-fuchsia-100 dark:bg-teal-500/30 text-fuchsia-900 dark:text-teal-100 font-semibold px-1 py-0.5 rounded-sm">$1</mark>');
+
+	return DOMPurify.sanitize(highlighted);
 };
 </script>

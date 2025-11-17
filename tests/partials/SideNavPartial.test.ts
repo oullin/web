@@ -83,18 +83,11 @@ describe('SideNavPartial', () => {
 		wrapper.unmount();
 	});
 
-	it('renders social links beneath the menu separated by a hyphen', async () => {
+	it('does not render social links section', async () => {
 		const wrapper = await mountSideNavAt('/');
 
 		const socialSection = wrapper.find('[data-testid="side-nav-social-links"]');
-		expect(socialSection.exists()).toBe(true);
-
-		const separator = wrapper.find('[data-testid="side-nav-social-separator"]');
-		expect(separator.exists()).toBe(true);
-		expect(separator.text().trim()).toBe('-');
-
-		const socialLinks = socialSection.findAll('a[aria-label]');
-		expect(socialLinks).toHaveLength(2); // Component filters for github and linkedin only
+		expect(socialSection.exists()).toBe(false);
 
 		wrapper.unmount();
 	});

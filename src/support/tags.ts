@@ -60,18 +60,18 @@ export class Tags {
 		const handleLabelClick = onLabelClick ? () => onLabelClick(label) : undefined;
 
 		if (state.isLoading) {
-			return { text: 'Loading posts for ', label, suffix: '…', onLabelClick: handleLabelClick };
+			return { text: 'Loading posts for', label, suffix: '…', onLabelClick: handleLabelClick };
 		}
 
 		if (state.hasError) {
-			return { text: "We couldn't load posts for ", label, suffix: '.', onLabelClick: handleLabelClick };
+			return { text: "We couldn't load posts for", label, suffix: '.', onLabelClick: handleLabelClick };
 		}
 
 		if (state.postCount === 0) {
-			return { text: 'No posts found for ', label, suffix: '.', onLabelClick: handleLabelClick };
+			return { text: 'No posts found for', label, suffix: '.', onLabelClick: handleLabelClick };
 		}
 
 		const noun = state.postCount === 1 ? 'post' : 'posts';
-		return { text: `${state.postCount} ${noun} found for `, label, suffix: '.', onLabelClick: handleLabelClick };
+		return { text: `${state.postCount} ${noun} found for `, label, suffix: '', onLabelClick: handleLabelClick };
 	}
 }
