@@ -59,7 +59,7 @@ services:
         ports:
             - "5173:80"
         environment:
-            - RELAY_UPSTREAM=http://host.docker.internal:8080
+            - RELAY_UPSTREAM=http://host.docker.internal:18080
         volumes:
             - ./dist:/usr/share/caddy:ro
             - ./caddy/mtls:/etc/caddy/mtls:ro
