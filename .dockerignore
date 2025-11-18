@@ -35,7 +35,6 @@ tests
 dist
 coverage
 build
-caddy
 
 # Other
 LICENSE
