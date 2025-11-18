@@ -106,7 +106,6 @@
 															:to="Tags.routeFor(tag.name)"
 															data-testid="post-tag"
 															class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
-															@click="handleTagClick(tag.name)"
 														>
 															{{ Tags.formatLabel(tag.name) }}
 														</RouterLink>
@@ -192,10 +191,6 @@ const htmlContent = computed(() => {
 	return '';
 });
 
-const handleTagClick = (tagName: string) => {
-	const label = Tags.formatLabel(tagName);
-	apiStore.setSearchTerm(label);
-};
 
 const xURLFor = (post: PostResponse) => {
 	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;

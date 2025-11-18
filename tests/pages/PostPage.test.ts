@@ -161,16 +161,6 @@ describe('PostPage', () => {
 		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]!.name.toLowerCase() } });
 	});
 
-	it('populates the search term when a tag is clicked', async () => {
-		const wrapper = await mountComponent();
-		await flushPromises();
-		const firstTag = wrapper.find('[data-testid="post-tag"]');
-		expect(firstTag.exists()).toBe(true);
-		await firstTag.trigger('click');
-		const expectedLabel = `#${post.tags[0]?.name.toUpperCase()}`;
-		expect(setSearchTerm).toHaveBeenCalledWith(expectedLabel);
-	});
-
 	it('handles post errors gracefully', async () => {
 		const error = new Error('fail');
 		getPost.mockRejectedValueOnce(error);

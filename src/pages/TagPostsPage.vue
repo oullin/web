@@ -217,39 +217,23 @@ const loadPostsForTag = async (tagName: string) => {
 watch(
 	normalizedTag,
 	(newTag) => {
+		const newLabel = newTag ? Tags.formatLabel(newTag) : '';
+		if (apiStore.searchTerm !== newLabel) {
+			apiStore.setSearchTerm(newLabel);
+		}
 		loadPostsForTag(newTag);
 	},
 	{ immediate: true },
 );
 
-// Watch for changes to search term
+// Watch for changes to search term from other sources (like the header)
 watch(
 	() => apiStore.searchTerm,
-	() => {
-		loadPostsForTag(normalizedTag.value);
+	(newSearchTerm) => {
+		const currentTagLabel = normalizedTag.value ? Tags.formatLabel(normalizedTag.value) : '';
+		if (newSearchTerm !== currentTagLabel) {
+			loadPostsForTag(normalizedTag.value);
+		}
 	},
 );
-
-onMounted(() => {
-	// Clear any existing search term when mounting the page with a specific tag
-	// unless we're coming from a search (in which case the search term matches the tag)
-	const currentSearchTerm = apiStore.searchTerm.trim().toLowerCase();
-	const currentTag = normalizedTag.value.toLowerCase();
-
-	if (currentSearchTerm && currentSearchTerm !== currentTag) {
-		apiStore.setSearchTerm('');
-	}
-});
-
-onBeforeRouteUpdate((to, from, next) => {
-	const newTag = Tags.normalizeParam(to.params.tag);
-	const oldTag = Tags.normalizeParam(from.params.tag);
-
-	// Clear search term when navigating to a different tag
-	if (newTag !== oldTag) {
-		apiStore.setSearchTerm('');
-	}
-
-	next();
-});
 </script>
