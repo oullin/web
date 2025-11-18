@@ -217,9 +217,8 @@ const loadPostsForTag = async (tagName: string) => {
 watch(
 	normalizedTag,
 	(newTag) => {
-		const newLabel = newTag ? Tags.formatLabel(newTag) : '';
-		if (apiStore.searchTerm !== newLabel) {
-			apiStore.setSearchTerm(newLabel);
+		if (apiStore.searchTerm !== newTag) {
+			apiStore.setSearchTerm(newTag);
 		}
 		loadPostsForTag(newTag);
 	},
@@ -230,8 +229,7 @@ watch(
 watch(
 	() => apiStore.searchTerm,
 	(newSearchTerm) => {
-		const currentTagLabel = normalizedTag.value ? Tags.formatLabel(normalizedTag.value) : '';
-		if (newSearchTerm !== currentTagLabel) {
+		if (newSearchTerm !== normalizedTag.value) {
 			loadPostsForTag(normalizedTag.value);
 		}
 	},
