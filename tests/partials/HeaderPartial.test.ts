@@ -1,5 +1,4 @@
 import { mount } from '@vue/test-utils';
-import { faker } from '@faker-js/faker';
 import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { createRouter, createMemoryHistory } from 'vue-router';
 import HeaderPartial from '@partials/HeaderPartial.vue';
