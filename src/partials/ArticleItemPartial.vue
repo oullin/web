@@ -39,12 +39,12 @@
 				</div>
 				<h3 class="text-slate-700 font-aspekta text-lg font-[650] mb-1 dark:text-slate-300">
 					<RouterLink v-lazy-link :class="titleLinkClass" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
-						{{ item.title }}
+						<span v-html="highlight(item.title)"></span>
 					</RouterLink>
 				</h3>
 				<div class="flex">
 					<RouterLink v-lazy-link class="grow text-sm text-slate-500 dark:text-slate-600" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
-						{{ item.excerpt }}
+						<span v-html="highlight(item.excerpt)"></span>
 					</RouterLink>
 					<RouterLink
 						v-lazy-link
@@ -63,10 +63,13 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { date } from '@/public.ts';
+import { RouterLink } from 'vue-router';
 import type { PostResponse } from '@api/response/index.ts';
+import CoverImageLoader from '@components/CoverImageLoader.vue';
+import { useTextHighlight } from '@support/useTextHighlight.ts';
+
+const { highlight } = useTextHighlight();
 
 const titleLinkClass =
 	'inline-flex relative group-hover:text-fuchsia-500 dark:group-hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 group-hover:before:scale-100 before:duration-150 before:ease-in-out';

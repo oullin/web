@@ -11,11 +11,7 @@
 		respond 204
 	}
 
-	# CORS on normal requests
-	@localOrigin header Origin http://localhost:5173
-
-    header @localOrigin Access-Control-Allow-Origin "http://localhost:5173"
-
+	# CORS headers for all requests
 	header {
 		Vary "Origin"
 		X-Frame-Options "SAMEORIGIN"
@@ -28,11 +24,16 @@
 
 	# --- Local relay: strip /relay and call host API (no TLS) ---
 	handle_path /relay/* {
-		uri replace ^/relay /api
+		# In local mode, proxy to API Caddy which expects /api prefix
+		# handle_path strips /relay, so /relay/generate-signature becomes /generate-signature
+		# We prepend /api to the path before forwarding
+		rewrite * /api{uri}
 
-		reverse_proxy {$RELAY_UPSTREAM:http://host.docker.internal:8080} {
-            header_up Host {upstream_hostport}
-        }
+		reverse_proxy {$RELAY_UPSTREAM:http://host.docker.internal:18080} {
+			header_up Host {upstream_hostport}
+			# explicitly forward Origin so the Go CORS middleware can emit headers
+			header_up Origin {http.request.header.Origin}
+		}
 	}
 
 	# --- Serve SPA (simple) ---

@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { defineComponent, ref } from 'vue';
 import type { PostResponse } from '@api/response/index.ts';
+import { createRouter, createMemoryHistory, RouterView, type Router } from 'vue-router';
 
 const createTag = () => {
 	const tag = faker.lorem.word();
@@ -43,13 +44,6 @@ const getPost = vi.fn<[], Promise<PostResponse>>(() => Promise.resolve(post));
 const setSearchTerm = vi.fn();
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost, setSearchTerm }) }));
-vi.mock('vue-router', () => ({
-	useRoute: () => ({ params: { slug: post.slug } }),
-	RouterLink: {
-		name: 'RouterLink',
-		template: '<a><slot /></a>',
-	},
-}));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
 
@@ -83,9 +77,24 @@ const RouterLinkStub = defineComponent({
 	template: "<a :href=\"typeof to === 'string' ? to : '#'\" @click=\"$emit('click', $event)\"><slot /></a>",
 });
 
-const mountComponent = () =>
-	mount(PostPage, {
+const App = defineComponent({
+	template: '<router-view />',
+	components: { RouterView },
+});
+
+let router: Router;
+
+const mountComponent = async () => {
+	router = createRouter({
+		history: createMemoryHistory(),
+		routes: [{ path: '/posts/:slug', name: 'PostDetail', component: PostPage }],
+	});
+	await router.push({ name: 'PostDetail', params: { slug: post.slug } });
+	await router.isReady();
+
+	return mount(App, {
 		global: {
+			plugins: [router],
 			stubs: {
 				SideNavPartial: true,
 				HeaderPartial: true,
@@ -97,6 +106,7 @@ const mountComponent = () =>
 			},
 		},
 	});
+};
 
 describe('PostPage', () => {
 	beforeEach(() => {
@@ -104,7 +114,7 @@ describe('PostPage', () => {
 	});
 
 	it('fetches post on mount', async () => {
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		const skeleton = wrapper.find('[data-testid="post-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
 		expect(skeleton.classes()).toContain('min-h-[25rem]');
@@ -115,7 +125,7 @@ describe('PostPage', () => {
 	});
 
 	it('initializes highlight.js on mount', async () => {
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		await flushPromises();
 		const highlightCore = await import('highlight.js/lib/core');
 		expect(initializeHighlighter).toHaveBeenCalledWith(highlightCore.default);
@@ -125,7 +135,7 @@ describe('PostPage', () => {
 
 	it('processes markdown content', async () => {
 		const DOMPurify = await import('dompurify');
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		await flushPromises();
 		expect(renderMarkdown).toHaveBeenCalledWith(post.content);
 		expect(DOMPurify.default.sanitize).toHaveBeenCalled();
@@ -133,7 +143,7 @@ describe('PostPage', () => {
 	});
 
 	it('renders tags when available', async () => {
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		await flushPromises();
 		const tagContainer = wrapper.find('[data-testid="post-tags"]');
 		expect(tagContainer.exists()).toBe(true);
@@ -151,20 +161,10 @@ describe('PostPage', () => {
 		expect(firstTagLink.props('to')).toEqual({ name: 'TagPosts', params: { tag: post.tags[0]!.name.toLowerCase() } });
 	});
 
-	it('populates the search term when a tag is clicked', async () => {
-		const wrapper = mountComponent();
-		await flushPromises();
-		const firstTag = wrapper.find('[data-testid="post-tag"]');
-		expect(firstTag.exists()).toBe(true);
-		await firstTag.trigger('click');
-		const expectedLabel = `#${post.tags[0]?.name.toUpperCase()}`;
-		expect(setSearchTerm).toHaveBeenCalledWith(expectedLabel);
-	});
-
 	it('handles post errors gracefully', async () => {
 		const error = new Error('fail');
 		getPost.mockRejectedValueOnce(error);
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
@@ -173,7 +173,7 @@ describe('PostPage', () => {
 	});
 
 	it('renders the follow widget above the sponsor widget', async () => {
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 
 		await flushPromises();
 
@@ -190,7 +190,7 @@ describe('PostPage', () => {
 	});
 
 	it('renders a back to top link targeting the post header', async () => {
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 
 		await flushPromises();
 

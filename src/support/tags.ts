@@ -6,6 +6,13 @@ export type TagSummaryState = {
 	postCount: number;
 };
 
+export type TagSummaryDescription = {
+	text: string;
+	label?: string;
+	suffix?: string;
+	onLabelClick?: () => void;
+};
+
 export class Tags {
 	private static readonly DEFAULT_LABEL = '#TAG';
 
@@ -44,26 +51,27 @@ export class Tags {
 		};
 	}
 
-	static summaryFor(tag: string, state: TagSummaryState): string {
+	static summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (label: string) => void): TagSummaryDescription {
 		if (!tag) {
-			return 'Select a tag to explore related posts.';
+			return { text: 'Select a tag to explore related posts.' };
 		}
 
 		const label = this.formatLabel(tag);
+		const handleLabelClick = onLabelClick ? () => onLabelClick(label) : undefined;
 
 		if (state.isLoading) {
-			return `Loading posts for ${label}…`;
+			return { text: 'Loading posts for', label, suffix: '…', onLabelClick: handleLabelClick };
 		}
 
 		if (state.hasError) {
-			return `We couldn't load posts for ${label}.`;
+			return { text: "We couldn't load posts for", label, suffix: '.', onLabelClick: handleLabelClick };
 		}
 
 		if (state.postCount === 0) {
-			return `No posts found for ${label}.`;
+			return { text: 'No posts found for', label, suffix: '.', onLabelClick: handleLabelClick };
 		}
 
 		const noun = state.postCount === 1 ? 'post' : 'posts';
-		return `${state.postCount} ${noun} found for ${label}.`;
+		return { text: `${state.postCount} ${noun} found for `, label, suffix: '', onLabelClick: handleLabelClick };
 	}
 }

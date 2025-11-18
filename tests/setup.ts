@@ -1,7 +1,15 @@
+import { config } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { webcrypto } from 'node:crypto';
 
 faker.seed(123);
+
+// Mock the v-lazy-link directive
+config.global.directives['lazy-link'] = {
+	mounted: () => {},
+	updated: () => {},
+	unmounted: () => {},
+};
 
 // Ensure Web Crypto API is available in the test environment (jsdom)
 if (!globalThis.crypto || !('subtle' in globalThis.crypto)) {
@@ -12,6 +20,9 @@ if (!globalThis.crypto || !('subtle' in globalThis.crypto)) {
 
 class LocalStorageMock {
 	private store: Record<string, string> = {};
+	get length() {
+		return Object.keys(this.store).length;
+	}
 	clear() {
 		this.store = {};
 	}
@@ -23,6 +34,10 @@ class LocalStorageMock {
 	}
 	removeItem(key: string) {
 		delete this.store[key];
+	}
+	key(index: number) {
+		const keys = Object.keys(this.store);
+		return keys[index] ?? null;
 	}
 }
 

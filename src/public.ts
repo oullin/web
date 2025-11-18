@@ -1,3 +1,5 @@
+import type { Router as VueRouter } from 'vue-router';
+
 const IMAGES_DIR = 'images';
 
 export function image(filename: string): string {
@@ -49,4 +51,18 @@ export function getRandomInt(min: number, max: number): number {
 	}
 
 	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function goBack(router: VueRouter): void {
+	if (typeof window === 'undefined') {
+		router.push({ name: 'Home' });
+		return;
+	}
+
+	if (window.history.length > 1) {
+		router.back();
+		return;
+	}
+
+	router.push({ name: 'Home' });
 }

@@ -3,6 +3,8 @@ import type { VueWrapper } from '@vue/test-utils';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { defineComponent, reactive } from 'vue';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
+import { createRouter, createMemoryHistory, type Router, RouterView } from 'vue-router';
+import TagPostsPage from '@pages/TagPostsPage.vue';
 
 const buildPost = (index: number): PostResponse => ({
 	uuid: `uuid-${index}`,
@@ -40,28 +42,23 @@ const posts = [buildPost(1), buildPost(2)];
 
 const getPosts = vi.hoisted(() => vi.fn());
 const debugError = vi.hoisted(() => vi.fn());
-const routeParams = reactive<{ tag: string }>({ tag: 'design' });
+const storeState = reactive({ searchTerm: '' });
 
 vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({
 		getPosts,
+		get searchTerm() {
+			return storeState.searchTerm;
+		},
+		setSearchTerm: (term: string) => {
+			storeState.searchTerm = term;
+		},
 	}),
 }));
 
 vi.mock('@api/http-error.ts', () => ({
 	debugError,
 }));
-
-vi.mock('vue-router', async () => {
-	const actual = await vi.importActual<typeof import('vue-router')>('vue-router');
-
-	return {
-		...actual,
-		useRoute: () => reactive({ params: routeParams }),
-	};
-});
-
-import TagPostsPage from '@pages/TagPostsPage.vue';
 
 const ArticleItemPartialStub = defineComponent({
 	name: 'ArticleItemPartialStub',
@@ -79,11 +76,25 @@ const ArticleItemSkeletonPartialStub = defineComponent({
 	template: '<div class="article-item-skeleton-stub" data-testid="article-item-skeleton-stub"></div>',
 });
 
-const mountedWrappers: VueWrapper[] = [];
+const App = defineComponent({
+	template: '<router-view />',
+	components: { RouterView },
+});
 
-const mountComponent = () => {
-	const wrapper = mount(TagPostsPage, {
+const mountedWrappers: VueWrapper[] = [];
+let router: Router;
+
+const mountComponent = async () => {
+	router = createRouter({
+		history: createMemoryHistory(),
+		routes: [{ path: '/tags/:tag', name: 'TagPosts', component: TagPostsPage }],
+	});
+	router.push('/tags/design');
+	await router.isReady();
+
+	const wrapper = mount(App, {
 		global: {
+			plugins: [router],
 			stubs: {
 				SideNavPartial: true,
 				HeaderPartial: true,
@@ -105,7 +116,7 @@ const mountComponent = () => {
 describe('TagPostsPage', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		routeParams.tag = 'design';
+		storeState.searchTerm = '';
 		getPosts.mockResolvedValue(buildCollection(posts));
 	});
 
@@ -116,12 +127,9 @@ describe('TagPostsPage', () => {
 	});
 
 	it('fetches posts for the provided tag', async () => {
-		const wrapper = mountComponent();
-
-		expect(getPosts).toHaveBeenCalledWith({ tag: 'design' });
-
+		const wrapper = await mountComponent();
+		expect(getPosts).toHaveBeenCalledWith({ tag: 'design', text: '#DESIGN' });
 		await flushPromises();
-
 		const renderedPosts = wrapper.findAll('[data-testid="article-item-stub"]');
 		expect(renderedPosts).toHaveLength(posts.length);
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
@@ -130,40 +138,53 @@ describe('TagPostsPage', () => {
 
 	it('shows an empty message when no posts are returned', async () => {
 		getPosts.mockResolvedValueOnce(buildCollection([]));
-
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		await flushPromises();
-
-		expect(wrapper.find('[data-testid="tag-posts-list"]').exists()).toBe(false);
-		const emptyState = wrapper.get('[data-testid="tag-posts-empty"]');
-		expect(emptyState.text()).toContain('No posts found for #DESIGN');
+		const renderedPosts = wrapper.findAll('[data-testid="article-item-stub"]');
+		expect(renderedPosts).toHaveLength(0);
+		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
+		expect(summary.text()).toContain('No posts found for#DESIGN');
 	});
 
 	it('handles API errors gracefully', async () => {
 		const error = new Error('Network failure');
 		getPosts.mockRejectedValueOnce(error);
-
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		await flushPromises();
-
 		expect(debugError).toHaveBeenCalledWith(error);
-		const errorState = wrapper.get('[data-testid="tag-posts-error"]');
-		expect(errorState.text()).toContain("We couldn't load posts for #DESIGN");
+		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
+		expect(summary.text()).toContain("We couldn't load posts for#DESIGN");
 	});
 
 	it('refetches posts when the route tag parameter changes', async () => {
-		const wrapper = mountComponent();
+		const wrapper = await mountComponent();
 		await flushPromises();
 
 		const newPosts = [buildPost(3)];
 		getPosts.mockResolvedValueOnce(buildCollection(newPosts));
 
-		routeParams.tag = 'ux';
-		await flushPromises();
+		await router.push('/tags/ux');
 		await flushPromises();
 
-		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'ux' });
+		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'ux', text: '#UX' });
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
 		expect(summary.text()).toContain('1 post found for #UX');
+	});
+
+	it('refetches posts when the search term changes', async () => {
+		const wrapper = await mountComponent();
+		await flushPromises();
+
+		expect(getPosts).toHaveBeenCalledWith({ tag: 'design', text: '#DESIGN' });
+
+		const newPosts = [buildPost(3)];
+		getPosts.mockResolvedValueOnce(buildCollection(newPosts));
+
+		storeState.searchTerm = 'new search';
+		await flushPromises();
+
+		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'design', text: 'new search' });
+		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
+		expect(summary.text()).toContain('1 post found for #DESIGN');
 	});
 });

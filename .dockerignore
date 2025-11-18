@@ -1,7 +1,51 @@
-.github
-.idea
-tests
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+.dockerignore
+docker-compose.yml
+docker/
+
+# Node
 node_modules
+npm-debug.log
+.npmrc
+.nvmrc
+
+# Editor/IDE
+.idea
+.vscode
 .editorconfig
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+.github
+tests
 .env
 .env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+dist
+coverage
+build
+caddy
+
+# Other
+LICENSE
+README.md
+Makefile
+*.md
+
+# Config files not needed for build
+.prettierrc.json
+.prettierignore
+eslint.config.js
+vitest.config.ts
+

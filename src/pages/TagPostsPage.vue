@@ -15,51 +15,51 @@
 							<div class="max-w-[700px]" data-testid="tag-posts">
 								<section>
 									<!-- Page title -->
-									<h1 id="tag-posts-top" class="h1 font-aspekta mb-12">Topics & Tags Explorer</h1>
+									<div class="flex flex-wrap items-center justify-between gap-4 mb-12">
+										<h1 id="tag-posts-top" class="h1 font-aspekta">Topics & Tags Explorer</h1>
+										<button
+											type="button"
+											class="inline-flex items-center gap-2 text-sm font-medium transition-colors rounded-full border border-slate-200/70 px-4 py-2 text-slate-600 hover:border-fuchsia-400/70 hover:text-slate-800 dark:border-slate-700/80 dark:text-slate-300 dark:hover:text-slate-100 cursor-pointer"
+											@click="handleGoBack"
+										>
+											<span aria-hidden="true">←</span>
+											Go back
+										</button>
+									</div>
 
 									<!-- Page content -->
 									<div class="space-y-10">
-										<div class="flex flex-col gap-4">
-											<div class="mb-3">
-												<RouterLink
-													v-lazy-link
-													class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
-													to="/"
-												>
-													<span class="sr-only">Back</span>
-													<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
-														<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
-													</svg>
-												</RouterLink>
-											</div>
-											<div>
-												<p class="text-base text-slate-600 dark:text-slate-300 mt-4">
-													Post tags help you quickly find the themes, tools or ideas you care about most across the blog. Browse through the tags below to group related posts
-													together and dive deeper into specific topics, from high-level concepts to hands-on guides.
-												</p>
-												<p class="text-sm text-slate-500 dark:text-slate-400 mt-2" data-testid="tag-posts-summary">
-													{{ summaryMessage }}
-												</p>
-											</div>
+										<div class="mb-5">
+											<p>
+												Post tags help you quickly find the themes, tools or ideas you care about most across the blog. Browse through the tags below to group related posts
+												together and dive deeper into specific topics, from high-level concepts to hands-on guides.
+											</p>
+											<p class="mt-4" data-testid="tag-posts-summary">
+												<template v-if="summaryContent.label">
+													{{ summaryContent.text
+													}}<a
+														href="#"
+														class="font-semibold transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
+														@click.prevent="summaryContent.onLabelClick?.()"
+													>
+														{{ summaryContent.label }}
+													</a>
+													<span v-if="summaryContent.suffix">{{ summaryContent.suffix }}</span>
+												</template>
+												<template v-else>
+													{{ summaryContent.text }}
+												</template>
+											</p>
 										</div>
-
 										<section role="status">
 											<h2 class="font-aspekta text-xl font-[650] mb-6">Articles</h2>
 											<div class="relative min-h-[20rem]">
-												<transition name="fade" appear mode="out-in">
-													<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
-														<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
-													</div>
-													<div v-else-if="hasError" key="error" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-error">
-														{{ summaryMessage }}
-													</div>
-													<div v-else-if="posts.length === 0" key="empty" class="py-8 text-slate-500 dark:text-slate-400" data-testid="tag-posts-empty">
-														{{ summaryMessage }}
-													</div>
-													<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
-														<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
-													</div>
-												</transition>
+												<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
+													<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
+												</div>
+												<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
+													<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
+												</div>
 											</div>
 										</section>
 									</div>
@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute, RouterLink } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
@@ -103,10 +103,12 @@ import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@/support/seo';
 import { Tags } from '@/support/tags.ts';
+import { goBack } from '@/public.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;
 const apiStore = useApiStore();
 const route = useRoute();
+const router = useRouter();
 
 const posts = ref<PostResponse[]>([]);
 const skeletonCount = ref(DEFAULT_SKELETON_COUNT);
@@ -115,15 +117,33 @@ const hasError = ref(false);
 let lastRequestId = 0;
 
 const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
-
 const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
 
-const summaryMessage = computed(() =>
-	Tags.summaryFor(normalizedTag.value, {
-		isLoading: isLoading.value,
-		hasError: hasError.value,
-		postCount: posts.value.length,
-	}),
+const handleGoBack = () => {
+	// If search is active, clear it and stay on the page
+	if (apiStore.searchTerm.trim()) {
+		apiStore.setSearchTerm('');
+	} else {
+		// No search active, go back to previous page
+		goBack(router);
+	}
+};
+
+const onSummaryLabelClick = (label: string) => {
+	const searchTerm = label.replace(/^#/, '').toLowerCase();
+	apiStore.setSearchTerm(searchTerm);
+};
+
+const summaryContent = computed(() =>
+	Tags.summaryFor(
+		normalizedTag.value,
+		{
+			isLoading: isLoading.value,
+			hasError: hasError.value,
+			postCount: posts.value.length,
+		},
+		onSummaryLabelClick,
+	),
 );
 
 const seoOptions = computed(() => {
@@ -150,7 +170,7 @@ const seoOptions = computed(() => {
 
 useSeo(seoOptions);
 
-const fetchPosts = async (tagName: string) => {
+const loadPostsForTag = async (tagName: string) => {
 	const requestId = ++lastRequestId;
 	hasError.value = false;
 
@@ -166,7 +186,10 @@ const fetchPosts = async (tagName: string) => {
 	isLoading.value = true;
 
 	try {
-		const collection: PostsCollectionResponse = await apiStore.getPosts({ tag: tagName });
+		const collection: PostsCollectionResponse = await apiStore.getPosts({
+			tag: tagName,
+			text: apiStore.searchTerm.trim(),
+		});
 
 		if (requestId !== lastRequestId) {
 			return;
@@ -190,11 +213,27 @@ const fetchPosts = async (tagName: string) => {
 	}
 };
 
+// Watch for changes to tag
 watch(
 	normalizedTag,
 	(newTag) => {
-		fetchPosts(newTag);
+		const newLabel = newTag ? Tags.formatLabel(newTag) : '';
+		if (apiStore.searchTerm !== newLabel) {
+			apiStore.setSearchTerm(newLabel);
+		}
+		loadPostsForTag(newTag);
 	},
 	{ immediate: true },
+);
+
+// Watch for changes to search term from other sources (like the header)
+watch(
+	() => apiStore.searchTerm,
+	(newSearchTerm) => {
+		const currentTagLabel = normalizedTag.value ? Tags.formatLabel(normalizedTag.value) : '';
+		if (newSearchTerm !== currentTagLabel) {
+			loadPostsForTag(normalizedTag.value);
+		}
+	},
 );
 </script>

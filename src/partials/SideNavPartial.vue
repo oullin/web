@@ -66,25 +66,6 @@
 							</RouterLink>
 						</li>
 					</ul>
-
-					<div v-if="shouldDisplaySocialSection" class="mt-8 flex flex-col items-center space-y-4" data-testid="side-nav-social-links" aria-label="Primary social profiles">
-						<span class="text-base font-semibold text-slate-400 dark:text-slate-600" data-testid="side-nav-social-separator" aria-hidden="true">-</span>
-
-						<ul v-if="!isLoadingSocialLinks && socialNavLinks.length > 0" class="flex flex-col items-center space-y-4">
-							<li v-for="item in socialNavLinks" :key="item.href" class="py-2">
-								<a v-lazy-link :href="item.href" class="h6 blog-side-nav-router-link-a blog-side-nav-social-link" target="_blank" rel="noopener noreferrer" :aria-label="item.label">
-									<svg class="blog-side-nav-icon fill-current" viewBox="0 0 24 24" aria-hidden="true">
-										<path :d="item.icon" />
-									</svg>
-								</a>
-							</li>
-						</ul>
-						<ul v-else class="flex flex-col items-center space-y-4" aria-hidden="true">
-							<li v-for="index in socialSkeletonCount" :key="`social-skeleton-${index}`">
-								<span class="block rounded-full blog-side-nav-icon bg-slate-200/70 dark:bg-slate-700/70 animate-pulse"></span>
-							</li>
-						</ul>
-					</div>
 				</nav>
 			</div>
 		</div>
@@ -101,16 +82,11 @@ const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 const socialService = new Social();
 const socialNavLinks = ref<SocialNavLink[]>([]);
 const isLoadingSocialLinks = ref(true);
-const socialSkeletonCount = 2;
 
 const isHome = computed<boolean>(() => {
 	// `path` excludes query strings, ensuring the avatar is hidden on the homepage
 	// even when query parameters are present (e.g. `/?foo=bar`).
 	return currentRoute.path === '/';
-});
-
-const shouldDisplaySocialSection = computed<boolean>(() => {
-	return isLoadingSocialLinks.value || socialNavLinks.value.length > 0;
 });
 
 function bindIconClassFor(isActive: boolean): string {

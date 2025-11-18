@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { setActivePinia, createPinia } from 'pinia';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import type { PostResponse } from '@api/response/index.ts';
@@ -9,7 +10,17 @@ vi.mock('@/public.ts', () => ({
 	date: () => ({ format: () => 'formatted' }),
 }));
 
+vi.mock('@api/store.ts', () => ({
+	useApiStore: () => ({
+		searchTerm: '',
+	}),
+}));
+
 describe('ArticleItemPartial', () => {
+	beforeEach(() => {
+		setActivePinia(createPinia());
+	});
+
 	const item: PostResponse = {
 		uuid: faker.string.uuid(),
 		slug: faker.lorem.slug(),

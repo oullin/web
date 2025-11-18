@@ -10,7 +10,7 @@
 							<div class="relative flex items-center">
 								<input id="search" v-model="searchQuery" type="search" class="form-input py-1 w-full pl-10" :class="{ 'border-red-500': validationError }" @keyup="onSearchInput" />
 								<div class="absolute inset-0 right-auto flex items-center justify-center">
-									<svg v-if="validationError" class="w-4 h-4 shrink-0 mx-3" viewBox="0 0 16 16" title="Clear search" @click="clearSearchAndError">
+									<svg v-if="validationError" class="w-4 h-4 shrink-0 mx-3" viewBox="0 0 16 16" @click="clearSearchAndError">
 										<path class="stroke-current text-red-500 cursor-pointer" stroke-width="2" stroke-linecap="round" d="M4 4l8 8m0-8l-8 8" />
 									</svg>
 									<svg v-else class="w-4 h-4 shrink-0 mx-3" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -55,16 +55,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 import { useDarkMode } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
 
 const { toggleDarkMode } = useDarkMode();
 const apiStore = useApiStore();
+const router = useRouter();
 
-const searchQuery = ref('');
+const searchQuery = ref(apiStore.searchTerm);
 const validationError = ref<string>('');
+
+watch(
+	() => apiStore.searchTerm,
+	(newTerm) => {
+		searchQuery.value = newTerm;
+	},
+);
 
 const clearSearchAndError = () => {
 	onSearchInput.cancel();
@@ -93,5 +102,8 @@ const performSearch = () => {
 	}
 
 	apiStore.setSearchTerm(query);
+
+	// Redirect to TagPostsPage using the search term
+	router.push({ name: 'TagPosts', params: { tag: query.toLowerCase() } });
 };
 </script>

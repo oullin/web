@@ -3,6 +3,8 @@ import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import AboutPage from '@pages/AboutPage.vue';
 import type { ProfileResponse, ProfileSkillResponse } from '@api/response/index.ts';
+import { createRouter, createMemoryHistory, RouterView, type Router } from 'vue-router';
+import { defineComponent } from 'vue';
 
 const skills: ProfileSkillResponse[] = [
 	{
@@ -27,43 +29,52 @@ const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.r
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
+const App = defineComponent({
+	template: '<router-view />',
+	components: { RouterView },
+});
+
+let router: Router;
+
+const mountComponent = async () => {
+	router = createRouter({
+		history: createMemoryHistory(),
+		routes: [{ path: '/', name: 'About', component: AboutPage }],
+	});
+	await router.push('/');
+	await router.isReady();
+
+	return mount(App, {
+		global: {
+			plugins: [router],
+			stubs: {
+				SideNavPartial: true,
+				HeaderPartial: true,
+				WidgetSocialTransitionWrapper: true,
+				WidgetSkillsPartial: true,
+				FooterPartial: true,
+			},
+		},
+	});
+};
+
 describe('AboutPage', () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it('shows formatted nickname', async () => {
-		const wrapper = mount(AboutPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					WidgetSocialTransitionWrapper: true,
-					WidgetSkillsPartial: true,
-					FooterPartial: true,
-				},
-			},
-		});
+		const wrapper = await mountComponent();
 		await flushPromises();
 		const formatted = profile.nickname.charAt(0).toUpperCase() + profile.nickname.slice(1);
 		expect(getProfile).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain(formatted);
 	});
 
-	it('renders skeleton while loading the profile', () => {
+	it('renders skeleton while loading the profile', async () => {
 		getProfile.mockReturnValueOnce(new Promise(() => {}));
 
-		const wrapper = mount(AboutPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					WidgetSocialTransitionWrapper: true,
-					WidgetSkillsPartial: true,
-					FooterPartial: true,
-				},
-			},
-		});
+		const wrapper = await mountComponent();
 
 		const skeleton = wrapper.find('[data-testid="about-connect-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
@@ -73,17 +84,7 @@ describe('AboutPage', () => {
 	it('handles profile errors gracefully', async () => {
 		const error = new Error('fail');
 		getProfile.mockRejectedValueOnce(error);
-		const _wrapper = mount(AboutPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					WidgetSocialTransitionWrapper: true,
-					WidgetSkillsPartial: true,
-					FooterPartial: true,
-				},
-			},
-		});
+		await mountComponent();
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
