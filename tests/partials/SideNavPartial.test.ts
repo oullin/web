@@ -55,7 +55,14 @@ function createTestRouter(initialPath: string): Router {
 async function mountSideNavAt(initialPath: string): Promise<VueWrapper> {
 	const router = createTestRouter(initialPath);
 	const pinia = createPinia();
-	const wrapper = mount(SideNavPartial, { global: { plugins: [router, pinia] } });
+	const wrapper = mount(SideNavPartial, {
+		global: {
+			plugins: [router, pinia],
+			stubs: {
+				RouterView: true,
+			},
+		},
+	});
 
 	await router.isReady();
 	await flushPromises();

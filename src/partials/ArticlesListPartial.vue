@@ -52,8 +52,14 @@ const skeletonCount = ref(DEFAULT_SKELETON_COUNT);
 const categoriesCollection = ref<CategoriesCollectionResponse>();
 const categories = ref<CategoryResponse[]>([]);
 
+const categoryBeforeSearch = ref<string>('');
+
 const selectCategory = (categorySlug: string) => {
 	filters.category = categorySlug;
+
+	if (filters.text) {
+		categoryBeforeSearch.value = categorySlug;
+	}
 };
 
 const filters = reactive<PostsFilters>({
@@ -123,14 +129,24 @@ onBeforeUnmount(() => {
 watch(
 	() => apiStore.searchTerm,
 	(newSearchTerm: string): void => {
-		filters.text = newSearchTerm.trim();
-		// Clear category filter when searching to show all matching articles
-		if (filters.text) {
+		const newText = newSearchTerm.trim();
+		const oldText = filters.text;
+		filters.text = newText;
+
+		if (newText && !oldText) {
+			// Starting search
+			categoryBeforeSearch.value = filters.category ?? '';
 			filters.category = '';
-		} else if (categories.value.length > 0) {
-			// Restore first category when search is cleared
+		} else if (!newText && oldText) {
+			// Clearing search
+			filters.category = categoryBeforeSearch.value;
+			categoryBeforeSearch.value = '';
+		}
+
+		if (!filters.text && !filters.category && categories.value.length > 0) {
 			filters.category = categories.value[0].slug;
 		}
+
 		debouncedSearch();
 	},
 );

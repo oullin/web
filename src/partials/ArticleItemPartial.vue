@@ -77,5 +77,4 @@ const titleLinkClass =
 defineProps<{
 	item: PostResponse;
 }>();
-
 </script>
