@@ -128,7 +128,7 @@ describe('TagPostsPage', () => {
 
 	it('fetches posts for the provided tag', async () => {
 		const wrapper = await mountComponent();
-		expect(getPosts).toHaveBeenCalledWith({ tag: 'design', text: '#DESIGN' });
+		expect(getPosts).toHaveBeenCalledWith({ tag: 'design', text: 'design' });
 		await flushPromises();
 		const renderedPosts = wrapper.findAll('[data-testid="article-item-stub"]');
 		expect(renderedPosts).toHaveLength(posts.length);
@@ -166,7 +166,7 @@ describe('TagPostsPage', () => {
 		await router.push('/tags/ux');
 		await flushPromises();
 
-		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'ux', text: '#UX' });
+		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'ux', text: 'ux' });
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
 		expect(summary.text()).toContain('1 post found for #UX');
 	});
@@ -175,7 +175,7 @@ describe('TagPostsPage', () => {
 		const wrapper = await mountComponent();
 		await flushPromises();
 
-		expect(getPosts).toHaveBeenCalledWith({ tag: 'design', text: '#DESIGN' });
+		expect(getPosts).toHaveBeenCalledWith({ tag: 'design', text: 'design' });
 
 		const newPosts = [buildPost(3)];
 		getPosts.mockResolvedValueOnce(buildCollection(newPosts));

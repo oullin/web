@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import HeaderPartial from '@partials/HeaderPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
@@ -120,13 +120,8 @@ const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
 const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
 
 const handleGoBack = () => {
-	// If search is active, clear it and stay on the page
-	if (apiStore.searchTerm.trim()) {
-		apiStore.setSearchTerm('');
-	} else {
-		// No search active, go back to previous page
-		goBack(router);
-	}
+	apiStore.setSearchTerm('');
+	goBack(router);
 };
 
 const onSummaryLabelClick = (label: string) => {
@@ -234,4 +229,8 @@ watch(
 		}
 	},
 );
+
+onBeforeRouteLeave(() => {
+	apiStore.setSearchTerm('');
+});
 </script>
