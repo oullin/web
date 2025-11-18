@@ -120,7 +120,7 @@ const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
 const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
 
 const handleGoBack = () => {
-    apiStore.setSearchTerm('');
+	apiStore.setSearchTerm('');
 	goBack(router);
 };
 

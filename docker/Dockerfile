@@ -13,6 +13,9 @@ ARG ENV_API_LOCAL_DIR
 # Set the working directory inside the container
 WORKDIR /app
 
+# Ensure the 'node' user owns the /app directory
+RUN chown -R node:node /app
+
 # Copy package.json and lock files first to leverage Docker layer caching
 COPY package*.json ./
 
