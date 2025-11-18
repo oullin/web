@@ -20,6 +20,9 @@ if (!globalThis.crypto || !('subtle' in globalThis.crypto)) {
 
 class LocalStorageMock {
 	private store: Record<string, string> = {};
+	get length() {
+		return Object.keys(this.store).length;
+	}
 	clear() {
 		this.store = {};
 	}
@@ -31,6 +34,10 @@ class LocalStorageMock {
 	}
 	removeItem(key: string) {
 		delete this.store[key];
+	}
+	key(index: number) {
+		const keys = Object.keys(this.store);
+		return keys[index] ?? null;
 	}
 }
 
