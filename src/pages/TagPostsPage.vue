@@ -123,12 +123,6 @@ const handleGoBack = () => {
 	// If search is active, clear it and stay on the page
 	if (apiStore.searchTerm.trim()) {
 		apiStore.setSearchTerm('');
-		const searchElement = document.getElementById('search') as HTMLInputElement | null;
-
-		if (searchElement) {
-			searchElement.value = '';
-			searchElement.dispatchEvent(new Event('input', { bubbles: true }));
-		}
 	} else {
 		// No search active, go back to previous page
 		goBack(router);
@@ -138,12 +132,6 @@ const handleGoBack = () => {
 const onSummaryLabelClick = (label: string) => {
 	const searchTerm = label.replace(/^#/, '').toLowerCase();
 	apiStore.setSearchTerm(searchTerm);
-
-	const searchElement = document.getElementById('search') as HTMLInputElement | null;
-	if (searchElement) {
-		searchElement.value = searchTerm;
-		searchElement.dispatchEvent(new Event('input', { bubbles: true }));
-	}
 };
 
 const summaryContent = computed(() =>
@@ -250,11 +238,6 @@ onMounted(() => {
 
 	if (currentSearchTerm && currentSearchTerm !== currentTag) {
 		apiStore.setSearchTerm('');
-		const searchElement = document.getElementById('search') as HTMLInputElement | null;
-
-		if (searchElement) {
-			searchElement.value = '';
-		}
 	}
 });
 
@@ -265,11 +248,6 @@ onBeforeRouteUpdate((to, from, next) => {
 	// Clear search term when navigating to a different tag
 	if (newTag !== oldTag) {
 		apiStore.setSearchTerm('');
-		const searchElement = document.getElementById('search') as HTMLInputElement | null;
-
-		if (searchElement) {
-			searchElement.value = '';
-		}
 	}
 
 	next();

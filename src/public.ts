@@ -1,4 +1,4 @@
-import { Router as VueRouter } from 'vue-router';
+import type { Router as VueRouter } from 'vue-router';
 
 const IMAGES_DIR = 'images';
 

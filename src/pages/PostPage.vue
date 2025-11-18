@@ -192,20 +192,9 @@ const htmlContent = computed(() => {
 	return '';
 });
 
-const searchInput = ref<HTMLInputElement | null>(null);
-
 const handleTagClick = (tagName: string) => {
 	const label = Tags.formatLabel(tagName);
 	apiStore.setSearchTerm(label);
-
-	const input = searchInput.value;
-	if (!input) {
-		return;
-	}
-
-	input.value = label;
-	input.dispatchEvent(new Event('input', { bubbles: true }));
-	input.focus();
 };
 
 const xURLFor = (post: PostResponse) => {
@@ -264,10 +253,6 @@ watch(htmlContent, async (newContent) => {
 });
 
 onMounted(async () => {
-	if (typeof document !== 'undefined') {
-		searchInput.value = document.getElementById('search') as HTMLInputElement | null;
-	}
-
 	await initializeHighlighter(highlight);
 
 	try {

@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 import { useDarkMode } from '@/dark-mode.ts';
@@ -65,8 +65,15 @@ const { toggleDarkMode } = useDarkMode();
 const apiStore = useApiStore();
 const router = useRouter();
 
-const searchQuery = ref('');
+const searchQuery = ref(apiStore.searchTerm);
 const validationError = ref<string>('');
+
+watch(
+	() => apiStore.searchTerm,
+	(newTerm) => {
+		searchQuery.value = newTerm;
+	},
+);
 
 const clearSearchAndError = () => {
 	onSearchInput.cancel();
