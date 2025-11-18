@@ -33,13 +33,13 @@ describe('HeaderPartial', () => {
 		const input = wrapper.find('#search');
 		await input.setValue('abc');
 		await wrapper.find('form').trigger('submit');
-		expect(wrapper.vm.validationError).toBeDefined();
+		expect(wrapper.vm.validationError).toBeTruthy();
 		expect(setSearchTerm).not.toHaveBeenCalled();
 	});
 
 	it('submits valid search', async () => {
 		const wrapper = await mountWithRouter();
-		const query: string = faker.lorem.words(2);
+		const query = 'valid search';
 		const input = wrapper.find('#search');
 		await input.setValue(query);
 		await wrapper.find('form').trigger('submit');

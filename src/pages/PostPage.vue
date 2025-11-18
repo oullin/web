@@ -102,11 +102,7 @@
 											>
 												<ul class="flex flex-wrap items-center gap-y-1">
 													<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
-														<RouterLink
-															:to="Tags.routeFor(tag.name)"
-															data-testid="post-tag"
-															class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
-														>
+														<RouterLink :to="Tags.routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500">
 															{{ Tags.formatLabel(tag.name) }}
 														</RouterLink>
 														<span v-if="index < post.tags.length - 1" class="mx-2 text-slate-400 dark:text-slate-600" aria-hidden="true" data-testid="post-tag-separator">
@@ -190,7 +186,6 @@ const htmlContent = computed(() => {
 
 	return '';
 });
-
 
 const xURLFor = (post: PostResponse) => {
 	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
