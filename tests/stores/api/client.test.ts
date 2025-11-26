@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi, type Mock } from 'vitest';
 
-import { ApiClient, ApiClientOptions } from '@api/client.ts';
 import { HttpError } from '@api/http-error.ts';
+import { ApiClient, ApiClientOptions } from '@api/client.ts';
 import { SignatureResponse } from '@api/response/signature-response.ts';
 
 const options: ApiClientOptions = {
@@ -15,12 +15,14 @@ const url = 'http://example.com/';
 let client: ApiClient;
 
 beforeEach(() => {
+	localStorage.clear();
+
 	vi.stubEnv('VITE_API_URL', url);
 	vi.stubEnv('VITE_HOST_URL', url);
-	client = new ApiClient(options);
-	localStorage.clear();
 	vi.stubGlobal('fetch', vi.fn());
-	vi.spyOn(client as any, 'appendSignature').mockResolvedValue(undefined);
+
+    client = new ApiClient(options);
+    vi.spyOn(client as any, 'appendSignature').mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -49,12 +51,12 @@ describe('ApiClient', () => {
 
 	it('handles post success and error responses', async () => {
 		const data = { ok: true };
-		(fetch as vi.Mock).mockResolvedValue(new Response(JSON.stringify(data), { status: 200 }));
+		(fetch as Mock).mockResolvedValue(new Response(JSON.stringify(data), { status: 200 }));
 
 		const result = await client.post('test', { id: 1 });
 		expect(result).toEqual(data);
 
-		(fetch as vi.Mock).mockResolvedValue(new Response('fail', { status: 500, statusText: 'err' }));
+		(fetch as Mock).mockResolvedValue(new Response('fail', { status: 500, statusText: 'err' }));
 
 		await expect(client.post('test', { id: 2 })).rejects.toBeInstanceOf(HttpError);
 	});
@@ -64,7 +66,7 @@ describe('ApiClient', () => {
 		const cacheKey = 'api-cache-test';
 		localStorage.setItem(cacheKey, JSON.stringify({ etag: 'x', data: { cached: true } }));
 
-		(fetch as vi.Mock).mockResolvedValue(new Response(null, { status: 304 }));
+		(fetch as Mock).mockResolvedValue(new Response(null, { status: 304 }));
 
 		const result = await client.get('test');
 		expect(result).toEqual({ cached: true });
@@ -72,7 +74,7 @@ describe('ApiClient', () => {
 
 	it('stores response with etag in cache', async () => {
 		const data = { foo: 'bar' };
-		(fetch as vi.Mock).mockResolvedValue(
+		(fetch as Mock).mockResolvedValue(
 			new Response(JSON.stringify(data), {
 				status: 200,
 				headers: { ETag: 'abc' },
@@ -85,7 +87,7 @@ describe('ApiClient', () => {
 	});
 
 	it('throws HttpError on failed get', async () => {
-		(fetch as vi.Mock).mockResolvedValue(new Response('nope', { status: 404, statusText: 'NF' }));
+		(fetch as Mock).mockResolvedValue(new Response('nope', { status: 404, statusText: 'NF' }));
 
 		await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
 	});
@@ -93,7 +95,7 @@ describe('ApiClient', () => {
 	it('retries signature once when clock skew is detected and refreshes timestamp', async () => {
 		const serverDate = new Date('2025-01-01T00:00:00Z').toUTCString();
 		const realClient = new ApiClient(options);
-		const fetchMock = fetch as vi.Mock;
+		const fetchMock = fetch as Mock;
 
 		fetchMock.mockReset();
 		fetchMock.mockResolvedValueOnce(new Response('unauthorized', { status: 401, headers: { Date: serverDate } }));
@@ -106,6 +108,7 @@ describe('ApiClient', () => {
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 		expect(headers.get('X-API-Signature')).toBe('sig-1');
 		expect(headers.get('X-API-Timestamp')).not.toBeNull();
+		expect((realClient as any).clockOffsetMs).not.toBe(0);
 	});
 
 	it('applies Cristian RTT compensation when latency is acceptable', () => {
@@ -169,8 +172,13 @@ describe('ApiClient', () => {
 
 	it('passes request start times into syncClockOffset for POST', async () => {
 		const syncSpy = vi.spyOn(client as any, 'syncClockOffset');
-		(fetch as vi.Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
-		vi.spyOn(Date, 'now').mockReturnValue(5_000);
+		(fetch as Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
+
+		let callCountPost = 0;
+		vi.spyOn(Date, 'now').mockImplementation(() => {
+			callCountPost++;
+			return callCountPost === 1 ? 5_000 : 5_100; // 100ms RTT
+		});
 
 		await client.post('test', { a: 1 });
 
@@ -180,8 +188,13 @@ describe('ApiClient', () => {
 
 	it('passes request start times into syncClockOffset for GET', async () => {
 		const syncSpy = vi.spyOn(client as any, 'syncClockOffset');
-		(fetch as vi.Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
-		vi.spyOn(Date, 'now').mockReturnValue(10_000);
+		(fetch as Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
+
+		let callCountGet = 0;
+		vi.spyOn(Date, 'now').mockImplementation(() => {
+			callCountGet++;
+			return callCountGet === 1 ? 10_000 : 10_100; // 100ms RTT
+		});
 
 		await client.get('test');
 

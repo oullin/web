@@ -115,6 +115,7 @@ export class ApiClient {
 	private syncClockOffset(response: Response, requestStartTime: number): void {
 		const now = Date.now();
 		const rtt = now - requestStartTime;
+		const isClockSkewResponse = response.status === 401;
 
 		// 1. Safety: If the request took too long, the latency variance is too high for accurate sync.
 		if (rtt > MAX_LATENCY_FOR_SYNC_MS) {
@@ -135,7 +136,7 @@ export class ApiClient {
 		// 2. Safety: Detect Stale Cache.
 		// If the server date is significantly in the past, we hit a cached response (e.g., CDN).
 		// Using this would break our clock.
-		if (Math.abs(now - serverTime) > MAX_CACHE_AGE_MS) {
+		if (!isClockSkewResponse && Math.abs(now - serverTime) > MAX_CACHE_AGE_MS) {
 			return;
 		}
 
@@ -220,14 +221,13 @@ export class ApiClient {
 	}
 
 	public async post<T>(url: string, data: object): Promise<T> {
+		const startTime = Date.now();
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
 		this.refreshTimestamp(headers);
-
-		const startTime = Date.now();
 
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
@@ -245,6 +245,7 @@ export class ApiClient {
 	}
 
 	public async get<T>(url: string): Promise<T> {
+		const startTime = Date.now();
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const cached = this.getFromCache<T>(url);
@@ -256,8 +257,6 @@ export class ApiClient {
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
 		this.refreshTimestamp(headers);
-
-		const startTime = Date.now();
 
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
