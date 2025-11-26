@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import { ApiClient, ApiClientOptions } from '@api/client.ts';
 import { HttpError } from '@api/http-error.ts';
+import { SignatureResponse } from '@api/response/signature-response.ts';
 
 const options: ApiClientOptions = {
 	env: 'development',
@@ -105,5 +106,86 @@ describe('ApiClient', () => {
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 		expect(headers.get('X-API-Signature')).toBe('sig-1');
 		expect(headers.get('X-API-Timestamp')).not.toBeNull();
+	});
+
+	it('applies Cristian RTT compensation when latency is acceptable', () => {
+		const realClient = new ApiClient(options);
+		const now = 1_700_000_000_000;
+		const startTime = now - 200;
+		const dateHeader = new Date(now).toUTCString();
+
+		vi.spyOn(Date, 'now').mockReturnValue(now);
+
+		(realClient as any).syncClockOffset(new Response(null, { headers: { Date: dateHeader } }), startTime);
+
+		expect((realClient as any).clockOffsetMs).toBe(100);
+		expect((realClient as any).getCurrentTimestamp()).toBe(Math.floor((now + 100) / 1000));
+	});
+
+	it('ignores clock sync on high-latency responses', () => {
+		const realClient = new ApiClient(options);
+		const now = 1_700_000_000_000;
+		const startTime = now - 2_000; // RTT 2s
+		const dateHeader = new Date(now).toUTCString();
+
+		vi.spyOn(Date, 'now').mockReturnValue(now);
+
+		(realClient as any).syncClockOffset(new Response(null, { headers: { Date: dateHeader } }), startTime);
+
+		expect((realClient as any).clockOffsetMs).toBe(0);
+	});
+
+	it('ignores stale cache Date headers during sync', () => {
+		const realClient = new ApiClient(options);
+		const now = 1_700_000_000_000;
+		const startTime = now - 50;
+		const staleDate = new Date(now - 120_000).toUTCString();
+
+		vi.spyOn(Date, 'now').mockReturnValue(now);
+
+		(realClient as any).syncClockOffset(new Response(null, { headers: { Date: staleDate } }), startTime);
+
+		expect((realClient as any).clockOffsetMs).toBe(0);
+	});
+
+	it('refreshes timestamp immediately before attaching signature', async () => {
+		const realClient = new ApiClient(options);
+		const getSignatureSpy = vi.spyOn(realClient as any, 'getSignature').mockResolvedValue({ signature: 'sig-2' } as SignatureResponse);
+		const refreshSpy = vi.spyOn(realClient as any, 'refreshTimestamp');
+		const now = 9_000;
+
+		vi.spyOn(Date, 'now').mockReturnValue(now);
+
+		const headers = new Headers({ 'X-API-Timestamp': '0' });
+
+		await (realClient as any).appendSignature('nonce-2', headers, `${url}profile`);
+
+		expect(getSignatureSpy).toHaveBeenCalledTimes(1);
+		expect(refreshSpy).toHaveBeenCalledTimes(1);
+		expect(refreshSpy.mock.invocationCallOrder[0]).toBeGreaterThan(getSignatureSpy.mock.invocationCallOrder[0]);
+		expect(headers.get('X-API-Timestamp')).toBe(String(Math.floor(now / 1000)));
+		expect(headers.get('X-API-Signature')).toBe('sig-2');
+	});
+
+	it('passes request start times into syncClockOffset for POST', async () => {
+		const syncSpy = vi.spyOn(client as any, 'syncClockOffset');
+		(fetch as vi.Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
+		vi.spyOn(Date, 'now').mockReturnValue(5_000);
+
+		await client.post('test', { a: 1 });
+
+		expect(syncSpy).toHaveBeenCalledTimes(1);
+		expect(syncSpy.mock.calls[0][1]).toBe(5_000);
+	});
+
+	it('passes request start times into syncClockOffset for GET', async () => {
+		const syncSpy = vi.spyOn(client as any, 'syncClockOffset');
+		(fetch as vi.Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
+		vi.spyOn(Date, 'now').mockReturnValue(10_000);
+
+		await client.get('test');
+
+		expect(syncSpy).toHaveBeenCalledTimes(1);
+		expect(syncSpy.mock.calls[0][1]).toBe(10_000);
 	});
 });

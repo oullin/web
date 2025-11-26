@@ -3,6 +3,8 @@ import { HttpError } from '@api/http-error.ts';
 import { SignatureResponse } from '@api/response/signature-response.ts';
 
 const ENV_PROD = 'production';
+const MAX_LATENCY_FOR_SYNC_MS = 1000;
+const MAX_CACHE_AGE_MS = 60_000;
 
 export const defaultCreds: ApiClientOptions = {
 	env: import.meta.env.VITE_API_ENV as string,
@@ -32,6 +34,7 @@ export class ApiClient {
 	private readonly hostURL: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
+	// Default to 0, updated dynamically via server responses
 	private clockOffsetMs = 0;
 
 	constructor(options: ApiClientOptions) {
@@ -94,7 +97,14 @@ export class ApiClient {
 		return headers;
 	}
 
-	private syncClockOffset(response: Response): void {
+	private syncClockOffset(response: Response, requestStartTime: number): void {
+		const now = Date.now();
+		const rtt = now - requestStartTime;
+
+		if (rtt > MAX_LATENCY_FOR_SYNC_MS) {
+			return;
+		}
+
 		const dateHeader = response.headers.get('Date');
 
 		if (!dateHeader) {
@@ -106,7 +116,13 @@ export class ApiClient {
 			return;
 		}
 
-		this.clockOffsetMs = serverTime - Date.now();
+		if (Math.abs(now - serverTime) > MAX_CACHE_AGE_MS) {
+			return;
+		}
+
+		const correctedServerTime = serverTime + rtt / 2;
+
+		this.clockOffsetMs = correctedServerTime - now;
 	}
 
 	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
@@ -116,13 +132,15 @@ export class ApiClient {
 			throw new Error('Signature endpoint must be accessed over HTTPS.');
 		}
 
-		const makeRequest = () => {
+		const makeRequest = async () => {
 			const timestamp = this.getCurrentTimestamp();
 			const headers = this.createHeaders(timestamp);
 
 			headers.append('X-API-Intended-Origin', origin);
 
-			return fetch(fullUrl.href, {
+			const startTime = Date.now();
+
+			const res = await fetch(fullUrl.href, {
 				method: 'POST',
 				headers: headers,
 				body: JSON.stringify({
@@ -132,15 +150,16 @@ export class ApiClient {
 					timestamp: timestamp,
 				}),
 			});
+
+			this.syncClockOffset(res, startTime);
+
+			return res;
 		};
 
 		let response = await makeRequest();
 
-		this.syncClockOffset(response);
 		if (!response.ok && response.status === 401) {
-			// A 401 with a Date header usually means client clock skew; retry once using the updated offset.
 			response = await makeRequest();
-			this.syncClockOffset(response);
 		}
 
 		if (!response.ok) {
@@ -185,11 +204,15 @@ export class ApiClient {
 		await this.appendSignature(nonce, headers, fullUrl.href);
 		this.refreshTimestamp(headers);
 
+		const startTime = Date.now();
+
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
 			headers: headers,
 			body: JSON.stringify(data),
 		});
+
+		this.syncClockOffset(response, startTime);
 
 		if (!response.ok) {
 			throw new HttpError(response, await response.text());
@@ -211,14 +234,16 @@ export class ApiClient {
 		await this.appendSignature(nonce, headers, fullUrl.href);
 		this.refreshTimestamp(headers);
 
+		const startTime = Date.now();
+
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
 			headers: headers,
 		});
 
-		if (response.status === 304) {
-			console.log(`%c[CACHE] 304 Not Modified for "${url}". Serving from cache.`, 'color: #007acc;');
+		this.syncClockOffset(response, startTime);
 
+		if (response.status === 304) {
 			// We can safely assert cached is not null here.
 			return cached!.data;
 		}
