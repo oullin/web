@@ -15,6 +15,7 @@ let client: ApiClient;
 
 beforeEach(() => {
 	vi.stubEnv('VITE_API_URL', url);
+	vi.stubEnv('VITE_HOST_URL', url);
 	client = new ApiClient(options);
 	localStorage.clear();
 	vi.stubGlobal('fetch', vi.fn());
@@ -86,5 +87,23 @@ describe('ApiClient', () => {
 		(fetch as vi.Mock).mockResolvedValue(new Response('nope', { status: 404, statusText: 'NF' }));
 
 		await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
+	});
+
+	it('retries signature once when clock skew is detected and refreshes timestamp', async () => {
+		const serverDate = new Date('2025-01-01T00:00:00Z').toUTCString();
+		const realClient = new ApiClient(options);
+		const fetchMock = fetch as vi.Mock;
+
+		fetchMock.mockReset();
+		fetchMock.mockResolvedValueOnce(new Response('unauthorized', { status: 401, headers: { Date: serverDate } }));
+		fetchMock.mockResolvedValueOnce(new Response(JSON.stringify({ signature: 'sig-1' }), { status: 200, headers: { Date: serverDate } }));
+
+		const headers = new Headers();
+
+		await (realClient as any).appendSignature('nonce-1', headers, `${url}profile`);
+
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		expect(headers.get('X-API-Signature')).toBe('sig-1');
+		expect(headers.get('X-API-Timestamp')).not.toBeNull();
 	});
 });

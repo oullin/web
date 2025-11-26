@@ -32,6 +32,7 @@ export class ApiClient {
 	private readonly hostURL: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
+	private clockOffsetMs = 0;
 
 	constructor(options: ApiClientOptions) {
 		this.env = options.env;
@@ -72,42 +73,75 @@ export class ApiClient {
 	}
 
 	private getCurrentTimestamp(): number {
-		return Math.floor(Date.now() / 1000);
+		return Math.floor((Date.now() + this.clockOffsetMs) / 1000);
 	}
 
-	private createHeaders(): Headers {
+	private refreshTimestamp(headers: Headers): void {
+		headers.set('X-API-Timestamp', this.getCurrentTimestamp().toString());
+	}
+
+	private createHeaders(timestamp?: number): Headers {
 		const headers = new Headers();
+		const ts = timestamp ?? this.getCurrentTimestamp();
 
 		headers.append('X-API-Key', this.apiKey);
 		headers.append('X-Request-ID', uuidv4());
 		headers.append('User-Agent', 'oullin/web-app');
 		headers.append('X-API-Username', this.apiUsername);
 		headers.append('Content-Type', 'application/json');
-		headers.append('X-API-Timestamp', this.getCurrentTimestamp().toString());
+		headers.append('X-API-Timestamp', ts.toString());
 
 		return headers;
 	}
 
+	private syncClockOffset(response: Response): void {
+		const dateHeader = response.headers.get('Date');
+
+		if (!dateHeader) {
+			return;
+		}
+
+		const serverTime = Date.parse(dateHeader);
+		if (Number.isNaN(serverTime)) {
+			return;
+		}
+
+		this.clockOffsetMs = serverTime - Date.now();
+	}
+
 	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
-		const headers = this.createHeaders();
 		const fullUrl = new URL('relay/generate-signature', this.hostURL);
 
 		if (this.isProd() && fullUrl.protocol !== 'https:') {
 			throw new Error('Signature endpoint must be accessed over HTTPS.');
 		}
 
-		headers.append('X-API-Intended-Origin', origin);
+		const makeRequest = () => {
+			const timestamp = this.getCurrentTimestamp();
+			const headers = this.createHeaders(timestamp);
 
-		const response = await fetch(fullUrl.href, {
-			method: 'POST',
-			headers: headers,
-			body: JSON.stringify({
-				nonce: nonce,
-				public_key: this.apiKey,
-				username: this.apiUsername,
-				timestamp: this.getCurrentTimestamp(),
-			}),
-		});
+			headers.append('X-API-Intended-Origin', origin);
+
+			return fetch(fullUrl.href, {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify({
+					nonce: nonce,
+					public_key: this.apiKey,
+					username: this.apiUsername,
+					timestamp: timestamp,
+				}),
+			});
+		};
+
+		let response = await makeRequest();
+
+		this.syncClockOffset(response);
+		if (!response.ok && response.status === 401) {
+			// A 401 with a Date header usually means client clock skew; retry once using the updated offset.
+			response = await makeRequest();
+			this.syncClockOffset(response);
+		}
 
 		if (!response.ok) {
 			throw new HttpError(response, await response.text());
@@ -126,6 +160,7 @@ export class ApiClient {
 
 				headers.append('X-API-Nonce', nonce);
 				headers.append('X-API-Intended-Origin', origin);
+				this.refreshTimestamp(headers);
 				headers.append('X-API-Signature', sigResp.signature);
 
 				return;
@@ -148,6 +183,7 @@ export class ApiClient {
 		const fullUrl = new URL(url, this.basedURL);
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
+		this.refreshTimestamp(headers);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
@@ -173,6 +209,7 @@ export class ApiClient {
 		}
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
+		this.refreshTimestamp(headers);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
