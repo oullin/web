@@ -3,6 +3,8 @@ import { HttpError } from '@api/http-error.ts';
 import { SignatureResponse } from '@api/response/signature-response.ts';
 
 const ENV_PROD = 'production';
+const MAX_LATENCY_FOR_SYNC_MS = 1000; // Ignore sync if RTT is > 1s (unreliable)
+const MAX_CACHE_AGE_MS = 60_000; // Ignore the Date header if older than 1 min (stale cache)
 
 export const defaultCreds: ApiClientOptions = {
 	env: import.meta.env.VITE_API_ENV as string,
@@ -32,6 +34,9 @@ export class ApiClient {
 	private readonly hostURL: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
+
+	// Default to 0, updated dynamically via server responses
+	private clockOffsetMs = 0;
 
 	constructor(options: ApiClientOptions) {
 		this.env = options.env;
@@ -71,43 +76,113 @@ export class ApiClient {
 		return !this.isProd();
 	}
 
+	/**
+	 * Returns the current UNIX timestamp (seconds) adjusted by the
+	 * calculated server offset.
+	 */
 	private getCurrentTimestamp(): number {
-		return Math.floor(Date.now() / 1000);
+		return Math.floor((Date.now() + this.clockOffsetMs) / 1000);
 	}
 
-	private createHeaders(): Headers {
+	/**
+	 * Updates the X-API-Timestamp header immediately before dispatch.
+	 * Critical for minimising the gap between signing and sending.
+	 */
+	private refreshTimestamp(headers: Headers): void {
+		headers.set('X-API-Timestamp', this.getCurrentTimestamp().toString());
+	}
+
+	private createHeaders(timestamp?: number): Headers {
 		const headers = new Headers();
+		const ts = timestamp ?? this.getCurrentTimestamp();
 
 		headers.append('X-API-Key', this.apiKey);
 		headers.append('X-Request-ID', uuidv4());
 		headers.append('User-Agent', 'oullin/web-app');
 		headers.append('X-API-Username', this.apiUsername);
 		headers.append('Content-Type', 'application/json');
-		headers.append('X-API-Timestamp', this.getCurrentTimestamp().toString());
+		headers.append('X-API-Timestamp', ts.toString());
 
 		return headers;
 	}
 
+	/**
+	 * Synchronises the local clock with server time using Cristian's Algorithm.
+	 * 1. Calculates Round Trip Time (RTT).
+	 * 2. Adjusts server time by RTT/2 to account for latency.
+	 * 3. Ignores high-latency or stale responses to prevent jitter/errors.
+	 */
+	private syncClockOffset(response: Response, requestStartTime: number): void {
+		const now = Date.now();
+		const rtt = now - requestStartTime;
+		const isClockSkewResponse = response.status === 401;
+
+		// 1. Safety: If the request took too long, the latency variance is too high for accurate sync.
+		if (rtt > MAX_LATENCY_FOR_SYNC_MS) {
+			return;
+		}
+
+		const dateHeader = response.headers.get('Date');
+
+		if (!dateHeader) {
+			return;
+		}
+
+		const serverTime = Date.parse(dateHeader);
+		if (Number.isNaN(serverTime)) {
+			return;
+		}
+
+		// 2. Safety: Detect Stale Cache.
+		// If the server date is significantly in the past, we hit a cached response (e.g., CDN).
+		// Using this would break our clock.
+		if (!isClockSkewResponse && Math.abs(now - serverTime) > MAX_CACHE_AGE_MS) {
+			return;
+		}
+
+		// 3. Calculation: Corrected Time = Server Header Time + (RTT / 2)
+		const correctedServerTime = serverTime + rtt / 2;
+
+		this.clockOffsetMs = correctedServerTime - now;
+	}
+
 	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
-		const headers = this.createHeaders();
 		const fullUrl = new URL('relay/generate-signature', this.hostURL);
 
 		if (this.isProd() && fullUrl.protocol !== 'https:') {
 			throw new Error('Signature endpoint must be accessed over HTTPS.');
 		}
 
-		headers.append('X-API-Intended-Origin', origin);
+		const makeRequest = async () => {
+			const timestamp = this.getCurrentTimestamp();
+			const headers = this.createHeaders(timestamp);
 
-		const response = await fetch(fullUrl.href, {
-			method: 'POST',
-			headers: headers,
-			body: JSON.stringify({
-				nonce: nonce,
-				public_key: this.apiKey,
-				username: this.apiUsername,
-				timestamp: this.getCurrentTimestamp(),
-			}),
-		});
+			headers.append('X-API-Intended-Origin', origin);
+
+			const startTime = Date.now();
+
+			const res = await fetch(fullUrl.href, {
+				method: 'POST',
+				headers: headers,
+				body: JSON.stringify({
+					nonce: nonce,
+					public_key: this.apiKey,
+					username: this.apiUsername,
+					timestamp: timestamp,
+				}),
+			});
+
+			this.syncClockOffset(res, startTime);
+
+			return res;
+		};
+
+		let response = await makeRequest();
+
+		// Handle 401 specifically for clock skew (retry once with new offset)
+		if (!response.ok && response.status === 401) {
+			response = await makeRequest();
+		}
 
 		if (!response.ok) {
 			throw new HttpError(response, await response.text());
@@ -126,6 +201,9 @@ export class ApiClient {
 
 				headers.append('X-API-Nonce', nonce);
 				headers.append('X-API-Intended-Origin', origin);
+
+				// Critical: Update the timestamp to "now" just before sending a request
+				this.refreshTimestamp(headers);
 				headers.append('X-API-Signature', sigResp.signature);
 
 				return;
@@ -143,17 +221,21 @@ export class ApiClient {
 	}
 
 	public async post<T>(url: string, data: object): Promise<T> {
+		const startTime = Date.now();
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
+		this.refreshTimestamp(headers);
 
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
 			headers: headers,
 			body: JSON.stringify(data),
 		});
+
+		this.syncClockOffset(response, startTime);
 
 		if (!response.ok) {
 			throw new HttpError(response, await response.text());
@@ -173,15 +255,17 @@ export class ApiClient {
 		}
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
+		this.refreshTimestamp(headers);
 
+		const startTime = Date.now();
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
 			headers: headers,
 		});
 
-		if (response.status === 304) {
-			console.log(`%c[CACHE] 304 Not Modified for "${url}". Serving from cache.`, 'color: #007acc;');
+		this.syncClockOffset(response, startTime);
 
+		if (response.status === 304) {
 			// We can safely assert cached is not null here.
 			return cached!.data;
 		}
