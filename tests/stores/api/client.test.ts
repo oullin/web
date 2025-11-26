@@ -183,7 +183,7 @@ describe('ApiClient', () => {
 		await client.post('test', { a: 1 });
 
 		expect(syncSpy).toHaveBeenCalledTimes(1);
-		expect(syncSpy.mock.calls[0][1]).toBe(5_000);
+		expect(syncSpy.mock.calls[0][1]).toBe(5_100);
 	});
 
 	it('passes request start times into syncClockOffset for GET', async () => {

@@ -221,7 +221,6 @@ export class ApiClient {
 	}
 
 	public async post<T>(url: string, data: object): Promise<T> {
-		const startTime = Date.now();
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const fullUrl = new URL(url, this.basedURL);
@@ -229,6 +228,7 @@ export class ApiClient {
 		await this.appendSignature(nonce, headers, fullUrl.href);
 		this.refreshTimestamp(headers);
 
+		const startTime = Date.now();
 		const response = await fetch(fullUrl.href, {
 			method: 'POST',
 			headers: headers,
