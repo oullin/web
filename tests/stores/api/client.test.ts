@@ -21,8 +21,8 @@ beforeEach(() => {
 	vi.stubEnv('VITE_HOST_URL', url);
 	vi.stubGlobal('fetch', vi.fn());
 
-    client = new ApiClient(options);
-    vi.spyOn(client as any, 'appendSignature').mockResolvedValue(undefined);
+	client = new ApiClient(options);
+	vi.spyOn(client as any, 'appendSignature').mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -199,6 +199,7 @@ describe('ApiClient', () => {
 		await client.get('test');
 
 		expect(syncSpy).toHaveBeenCalledTimes(1);
-		expect(syncSpy.mock.calls[0][1]).toBe(10_000);
+		// Start time is captured immediately before fetch after earlier timestamp refreshes.
+		expect(syncSpy.mock.calls[0][1]).toBe(10_100);
 	});
 });

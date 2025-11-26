@@ -245,7 +245,6 @@ export class ApiClient {
 	}
 
 	public async get<T>(url: string): Promise<T> {
-		const startTime = Date.now();
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const cached = this.getFromCache<T>(url);
@@ -258,6 +257,7 @@ export class ApiClient {
 		await this.appendSignature(nonce, headers, fullUrl.href);
 		this.refreshTimestamp(headers);
 
+		const startTime = Date.now();
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
 			headers: headers,
