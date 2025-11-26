@@ -3,8 +3,8 @@ import { HttpError } from '@api/http-error.ts';
 import { SignatureResponse } from '@api/response/signature-response.ts';
 
 const ENV_PROD = 'production';
-const MAX_LATENCY_FOR_SYNC_MS = 1000;
-const MAX_CACHE_AGE_MS = 60_000;
+const MAX_LATENCY_FOR_SYNC_MS = 1000; // Ignore sync if RTT is > 1s (unreliable)
+const MAX_CACHE_AGE_MS = 60_000; // Ignore the Date header if older than 1 min (stale cache)
 
 export const defaultCreds: ApiClientOptions = {
 	env: import.meta.env.VITE_API_ENV as string,
@@ -34,6 +34,7 @@ export class ApiClient {
 	private readonly hostURL: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
+
 	// Default to 0, updated dynamically via server responses
 	private clockOffsetMs = 0;
 
@@ -75,10 +76,18 @@ export class ApiClient {
 		return !this.isProd();
 	}
 
+	/**
+	 * Returns the current UNIX timestamp (seconds) adjusted by the
+	 * calculated server offset.
+	 */
 	private getCurrentTimestamp(): number {
 		return Math.floor((Date.now() + this.clockOffsetMs) / 1000);
 	}
 
+	/**
+	 * Updates the X-API-Timestamp header immediately before dispatch.
+	 * Critical for minimising the gap between signing and sending.
+	 */
 	private refreshTimestamp(headers: Headers): void {
 		headers.set('X-API-Timestamp', this.getCurrentTimestamp().toString());
 	}
@@ -97,10 +106,17 @@ export class ApiClient {
 		return headers;
 	}
 
+	/**
+	 * Synchronises the local clock with server time using Cristian's Algorithm.
+	 * 1. Calculates Round Trip Time (RTT).
+	 * 2. Adjusts server time by RTT/2 to account for latency.
+	 * 3. Ignores high-latency or stale responses to prevent jitter/errors.
+	 */
 	private syncClockOffset(response: Response, requestStartTime: number): void {
 		const now = Date.now();
 		const rtt = now - requestStartTime;
 
+		// 1. Safety: If the request took too long, the latency variance is too high for accurate sync.
 		if (rtt > MAX_LATENCY_FOR_SYNC_MS) {
 			return;
 		}
@@ -116,10 +132,14 @@ export class ApiClient {
 			return;
 		}
 
+		// 2. Safety: Detect Stale Cache.
+		// If the server date is significantly in the past, we hit a cached response (e.g., CDN).
+		// Using this would break our clock.
 		if (Math.abs(now - serverTime) > MAX_CACHE_AGE_MS) {
 			return;
 		}
 
+		// 3. Calculation: Corrected Time = Server Header Time + (RTT / 2)
 		const correctedServerTime = serverTime + rtt / 2;
 
 		this.clockOffsetMs = correctedServerTime - now;
@@ -158,6 +178,7 @@ export class ApiClient {
 
 		let response = await makeRequest();
 
+		// Handle 401 specifically for clock skew (retry once with new offset)
 		if (!response.ok && response.status === 401) {
 			response = await makeRequest();
 		}
@@ -179,6 +200,8 @@ export class ApiClient {
 
 				headers.append('X-API-Nonce', nonce);
 				headers.append('X-API-Intended-Origin', origin);
+
+				// Critical: Update the timestamp to "now" just before sending a request
 				this.refreshTimestamp(headers);
 				headers.append('X-API-Signature', sigResp.signature);
 
