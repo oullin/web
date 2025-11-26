@@ -12,3 +12,15 @@ and reacts instantly to what you do.
 or add new features, you’re welcome to send a pull request and join the project.
 
 > This is where the mindful movement of “Ollin” truly comes alive, one request at a time.
+
+## Sentry
+
+Frontend error monitoring is available through Sentry. Set `VITE_SENTRY_DSN` in your
+environment to enable it. Optional sampling variables let you tune traffic:
+
+- `VITE_SENTRY_TRACES_SAMPLE_RATE` (default: `1.0`)
+- `VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE` (default: `0.1`)
+- `VITE_SENTRY_REPLAYS_ERROR_SAMPLE_RATE` (default: `1.0`)
+
+When a DSN is present, the app loads Sentry from the CDN, wires it to the Vue router for
+tracing, and captures replay sessions.
