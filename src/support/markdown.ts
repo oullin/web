@@ -77,6 +77,10 @@ export function renderMarkdown(markdown?: string | null): string {
 	return ensureString(marked.parse(cleanedMarkdown));
 }
 
+export function getHighlightThemePath(isDark: boolean): string {
+	return isDark ? 'highlight.js/styles/github-dark.css' : 'highlight.js/styles/github.css';
+}
+
 export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {
 	const coreObj = hljs as unknown as object;
 	if (initializedCores.has(coreObj)) {

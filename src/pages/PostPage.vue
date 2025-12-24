@@ -165,7 +165,7 @@ import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
-import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
+import { getHighlightThemePath, initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 
 // --- Component
@@ -208,7 +208,7 @@ async function sharePost(post: PostResponse) {
 }
 
 watchEffect(() => {
-	const themePath = isDark.value ? 'highlight.js/styles/github-dark.css' : 'highlight.js/styles/github.css';
+	const themePath = getHighlightThemePath(isDark.value);
 
 	// Remove previous theme stylesheet
 	if (themeLink.value) {

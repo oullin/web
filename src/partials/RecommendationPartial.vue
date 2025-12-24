@@ -40,7 +40,7 @@ import highlight from 'highlight.js/lib/core';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
-import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
+import { getHighlightThemePath, initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 
 const props = defineProps<{
@@ -66,7 +66,7 @@ const processedRecommendations = computed(() => {
 });
 
 watchEffect(() => {
-	const themePath = isDark.value ? 'highlight.js/styles/github-dark.css' : 'highlight.js/styles/github.css';
+	const themePath = getHighlightThemePath(isDark.value);
 
 	// Remove previous theme stylesheet
 	if (themeLink.value) {
