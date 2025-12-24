@@ -34,13 +34,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, watch, nextTick, onMounted, ref, watchEffect } from 'vue';
+import { computed, toRefs, watch, nextTick, onMounted, onUnmounted, ref, watchEffect } from 'vue';
 import DOMPurify from 'dompurify';
 import highlight from 'highlight.js/lib/core';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { image, date } from '@/public.ts';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
-import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
+import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 
 const props = defineProps<{
@@ -51,6 +51,7 @@ const props = defineProps<{
 const { recommendations, backToTopTarget } = toRefs(props);
 const { isDark } = useDarkMode();
 const recommendationsContainer = ref<HTMLElement | null>(null);
+const themeLink = ref<HTMLLinkElement | null>(null);
 
 const processedRecommendations = computed(() => {
 	return recommendations.value.map((item) => {
@@ -65,10 +66,13 @@ const processedRecommendations = computed(() => {
 });
 
 watchEffect(() => {
-	if (isDark.value) {
-		import('highlight.js/styles/github-dark.css');
-	} else {
-		import('highlight.js/styles/github.css');
+	loadHighlightTheme(isDark.value, themeLink);
+});
+
+onUnmounted(() => {
+	if (themeLink.value) {
+		themeLink.value.remove();
+		themeLink.value = null;
 	}
 });
 

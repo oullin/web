@@ -4,9 +4,9 @@
 			<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Work Experience</h2>
 			<BackToTopLink :target="backToTopTarget" />
 		</div>
-		<ul class="space-y-8">
+		<ul ref="experienceContainer" class="space-y-8">
 			<!-- Item -->
-			<li v-for="item in props.experience" :key="item.uuid" class="relative group">
+			<li v-for="item in processedExperience" :key="item.uuid" class="relative group">
 				<div
 					class="flex items-start before:absolute before:left-0 before:h-full before:w-px before:bg-slate-200 dark:before:bg-slate-800 before:self-start before:ml-[28px] before:-translate-x-1/2 before:translate-y-8 group-last-of-type:before:hidden"
 				>
@@ -32,7 +32,8 @@
 						<div class="text-xs text-slate-500 uppercase">{{ item.start_date }} <span class="text-slate-400 dark:text-slate-600">·</span> {{ item.end_date }}</div>
 						<div class="font-aspekta font-[650] text-slate-700 dark:text-slate-100">{{ item.position }}</div>
 						<div class="text-sm font-medium text-slate-700 dark:text-slate-100">{{ item.company }}</div>
-						<div class="text-sm text-slate-500 dark:text-slate-400">{{ item.summary }}</div>
+						<!-- eslint-disable-next-line vue/no-v-html -->
+						<div class="post-markdown !text-sm !leading-normal !text-slate-500 dark:!text-slate-400" v-html="item.html"></div>
 						<div class="text-xs mt-3 text-gray-400 dark:text-gray-500">
 							{{ item.skills }}
 						</div>
@@ -43,14 +44,55 @@
 	</section>
 </template>
 <script setup lang="ts">
-import { toRefs } from 'vue';
+import { computed, toRefs, nextTick, onUnmounted, ref, watchEffect } from 'vue';
+import DOMPurify from 'dompurify';
+import highlight from 'highlight.js/lib/core';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ExperienceResponse } from '@api/response/index.ts';
+import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
+import { useDarkMode } from '@/dark-mode.ts';
 
 const props = defineProps<{
 	experience: Array<ExperienceResponse>;
 	backToTopTarget: string;
 }>();
 
-const { backToTopTarget } = toRefs(props);
+const { experience, backToTopTarget } = toRefs(props);
+const { isDark } = useDarkMode();
+const experienceContainer = ref<HTMLElement | null>(null);
+const themeLink = ref<HTMLLinkElement | null>(null);
+
+const processedExperience = computed(() => {
+	return experience.value.map((item) => {
+		const sanitisedHtml = DOMPurify.sanitize(renderMarkdown(item.summary));
+
+		return {
+			...item,
+			html: sanitisedHtml,
+		};
+	});
+});
+
+watchEffect(() => {
+	loadHighlightTheme(isDark.value, themeLink);
+});
+
+onUnmounted(() => {
+	if (themeLink.value) {
+		themeLink.value.remove();
+		themeLink.value = null;
+	}
+});
+
+watchEffect(async () => {
+	if (experienceContainer.value && processedExperience.value.length > 0) {
+		await nextTick();
+		await initializeHighlighter(highlight);
+
+		const blocks = experienceContainer.value.querySelectorAll('pre code');
+		blocks.forEach((block) => {
+			highlight.highlightElement(block as HTMLElement);
+		});
+	}
+});
 </script>

@@ -1,5 +1,7 @@
 import type { HLJSApi, LanguageFn } from 'highlight.js';
 import { marked } from 'marked';
+import githubLightTheme from 'highlight.js/styles/github.css?url';
+import githubDarkTheme from 'highlight.js/styles/github-dark.css?url';
 
 // Match YAML front matter only at the very start (optional BOM supported)
 const FRONT_MATTER_REGEX = /^\uFEFF?---\s*[\r\n]+([\s\S]*?)\r?\n---\s*[\r\n]*/;
@@ -75,6 +77,26 @@ export function renderMarkdown(markdown?: string | null): string {
 	const cleanedMarkdown = stripFrontMatter(markdown);
 
 	return ensureString(marked.parse(cleanedMarkdown));
+}
+
+export function getHighlightThemePath(isDark: boolean): string {
+	return isDark ? githubDarkTheme : githubLightTheme;
+}
+
+export function loadHighlightTheme(isDark: boolean, themeLink: { value: HTMLLinkElement | null }): void {
+	const themeUrl = getHighlightThemePath(isDark);
+
+	// Remove previous theme stylesheet
+	if (themeLink.value) {
+		themeLink.value.remove();
+	}
+
+	// Create and append new theme stylesheet
+	const link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = themeUrl;
+	document.head.appendChild(link);
+	themeLink.value = link;
 }
 
 export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {

@@ -46,8 +46,9 @@ const setSearchTerm = vi.fn();
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getPost, setSearchTerm }) }));
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
+const loadHighlightTheme = vi.hoisted(() => vi.fn());
 
-vi.mock('@/support/markdown.ts', () => ({ renderMarkdown, initializeHighlighter }));
+vi.mock('@/support/markdown.ts', () => ({ renderMarkdown, initializeHighlighter, loadHighlightTheme }));
 vi.mock('dompurify', () => ({ default: { sanitize: vi.fn((html: string) => html) } }));
 vi.mock('highlight.js/lib/core', () => ({
 	default: {

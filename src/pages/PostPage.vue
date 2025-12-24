@@ -164,8 +164,8 @@ import { Tags } from '@/support/tags.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
-import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
-import { initializeHighlighter, renderMarkdown } from '@/support/markdown.ts';
+import { onMounted, onUnmounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
+import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 
 // --- Component
@@ -176,6 +176,7 @@ const post = ref<PostResponse>();
 const isLoading = ref(true);
 const postContainer = ref<HTMLElement | null>(null);
 const slug = ref<string>(route.params.slug as string);
+const themeLink = ref<HTMLLinkElement | null>(null);
 
 useSeoFromPost(post);
 
@@ -207,10 +208,13 @@ async function sharePost(post: PostResponse) {
 }
 
 watchEffect(() => {
-	if (isDark.value) {
-		import('highlight.js/styles/github-dark.css');
-	} else {
-		import('highlight.js/styles/github.css');
+	loadHighlightTheme(isDark.value, themeLink);
+});
+
+onUnmounted(() => {
+	if (themeLink.value) {
+		themeLink.value.remove();
+		themeLink.value = null;
 	}
 });
 
