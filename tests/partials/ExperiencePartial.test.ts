@@ -141,7 +141,7 @@ describe('ExperiencePartial', () => {
 			await flushPromises();
 
 			const codeBlocks = wrapper.findAll('pre code');
-			expect(codeBlocks.length).toBeGreaterThan(0);
+			expect(codeBlocks.length).toBe(1);
 			expect(initializeHighlighter).toHaveBeenCalled();
 		});
 

@@ -176,6 +176,7 @@ const post = ref<PostResponse>();
 const isLoading = ref(true);
 const postContainer = ref<HTMLElement | null>(null);
 const slug = ref<string>(route.params.slug as string);
+const themeLink = ref<HTMLLinkElement | null>(null);
 
 useSeoFromPost(post);
 
@@ -207,11 +208,19 @@ async function sharePost(post: PostResponse) {
 }
 
 watchEffect(() => {
-	if (isDark.value) {
-		import('highlight.js/styles/github-dark.css');
-	} else {
-		import('highlight.js/styles/github.css');
+	const themePath = isDark.value ? 'highlight.js/styles/github-dark.css' : 'highlight.js/styles/github.css';
+
+	// Remove previous theme stylesheet
+	if (themeLink.value) {
+		themeLink.value.remove();
 	}
+
+	// Create and append new theme stylesheet
+	const link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = new URL(`../../node_modules/${themePath}`, import.meta.url).href;
+	document.head.appendChild(link);
+	themeLink.value = link;
 });
 
 watch(htmlContent, async (newContent) => {

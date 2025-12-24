@@ -60,6 +60,7 @@ const props = defineProps<{
 const { experience, backToTopTarget } = toRefs(props);
 const { isDark } = useDarkMode();
 const experienceContainer = ref<HTMLElement | null>(null);
+const themeLink = ref<HTMLLinkElement | null>(null);
 
 const processedExperience = computed(() => {
 	return experience.value.map((item) => {
@@ -73,11 +74,19 @@ const processedExperience = computed(() => {
 });
 
 watchEffect(() => {
-	if (isDark.value) {
-		import('highlight.js/styles/github-dark.css');
-	} else {
-		import('highlight.js/styles/github.css');
+	const themePath = isDark.value ? 'highlight.js/styles/github-dark.css' : 'highlight.js/styles/github.css';
+
+	// Remove previous theme stylesheet
+	if (themeLink.value) {
+		themeLink.value.remove();
 	}
+
+	// Create and append new theme stylesheet
+	const link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = new URL(`../../node_modules/${themePath}`, import.meta.url).href;
+	document.head.appendChild(link);
+	themeLink.value = link;
 });
 
 watchEffect(async () => {
