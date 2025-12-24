@@ -116,7 +116,7 @@ describe('ExperiencePartial', () => {
 		});
 
 		it('does not highlight when experienceContainer is not available', async () => {
-			const wrapper = mount(ExperiencePartial, {
+			const _wrapper = mount(ExperiencePartial, {
 				props: { experience: [], backToTopTarget: '#top' },
 			});
 
@@ -158,9 +158,7 @@ describe('ExperiencePartial', () => {
 			const initialCallCount = mockHighlightElement.mock.calls.length;
 
 			// Update experience data
-			const newExperience: ExperienceResponse[] = [
-				{ ...experience[0], uuid: faker.string.uuid(), summary: 'Updated summary' },
-			];
+			const newExperience: ExperienceResponse[] = [{ ...experience[0], uuid: faker.string.uuid(), summary: 'Updated summary' }];
 
 			await wrapper.setProps({ experience: newExperience });
 			await flushPromises();
