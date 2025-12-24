@@ -6,6 +6,7 @@ import type { RecommendationsResponse } from '@api/response/index.ts';
 
 const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p><strong>great</strong></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
+const loadHighlightTheme = vi.hoisted(() => vi.fn());
 
 vi.mock('@/support/markdown.ts', async (importOriginal) => {
 	const actual = await importOriginal();
@@ -13,6 +14,7 @@ vi.mock('@/support/markdown.ts', async (importOriginal) => {
 		...actual,
 		renderMarkdown,
 		initializeHighlighter,
+		loadHighlightTheme,
 	};
 });
 vi.mock('@/public.ts', () => ({

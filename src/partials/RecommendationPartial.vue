@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs, watch, nextTick, onMounted, ref, watchEffect } from 'vue';
+import { computed, toRefs, watch, nextTick, onMounted, onUnmounted, ref, watchEffect } from 'vue';
 import DOMPurify from 'dompurify';
 import highlight from 'highlight.js/lib/core';
 import BackToTopLink from '@partials/BackToTopLink.vue';
@@ -67,6 +67,13 @@ const processedRecommendations = computed(() => {
 
 watchEffect(() => {
 	loadHighlightTheme(isDark.value, themeLink);
+});
+
+onUnmounted(() => {
+	if (themeLink.value) {
+		themeLink.value.remove();
+		themeLink.value = null;
+	}
 });
 
 watch(

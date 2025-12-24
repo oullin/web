@@ -6,6 +6,7 @@ import type { ExperienceResponse } from '@api/response/index.ts';
 
 const renderMarkdown = vi.hoisted(() => vi.fn((text: string) => `<p><strong>${text}</strong></p>`));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
+const loadHighlightTheme = vi.hoisted(() => vi.fn());
 const mockHighlightElement = vi.hoisted(() => vi.fn());
 
 vi.mock('@/support/markdown.ts', async (importOriginal) => {
@@ -14,6 +15,7 @@ vi.mock('@/support/markdown.ts', async (importOriginal) => {
 		...actual,
 		renderMarkdown,
 		initializeHighlighter,
+		loadHighlightTheme,
 	};
 });
 

@@ -164,7 +164,7 @@ import { Tags } from '@/support/tags.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
-import { onMounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
+import { onMounted, onUnmounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 
@@ -209,6 +209,13 @@ async function sharePost(post: PostResponse) {
 
 watchEffect(() => {
 	loadHighlightTheme(isDark.value, themeLink);
+});
+
+onUnmounted(() => {
+	if (themeLink.value) {
+		themeLink.value.remove();
+		themeLink.value = null;
+	}
 });
 
 watch(htmlContent, async (newContent) => {
