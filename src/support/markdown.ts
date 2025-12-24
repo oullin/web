@@ -81,6 +81,22 @@ export function getHighlightThemePath(isDark: boolean): string {
 	return isDark ? 'highlight.js/styles/github-dark.css' : 'highlight.js/styles/github.css';
 }
 
+export function loadHighlightTheme(isDark: boolean, themeLink: { value: HTMLLinkElement | null }): void {
+	const themePath = getHighlightThemePath(isDark);
+
+	// Remove previous theme stylesheet
+	if (themeLink.value) {
+		themeLink.value.remove();
+	}
+
+	// Create and append new theme stylesheet
+	const link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = new URL(`../../node_modules/${themePath}`, import.meta.url).href;
+	document.head.appendChild(link);
+	themeLink.value = link;
+}
+
 export async function initializeHighlighter(hljs: HLJSApi): Promise<void> {
 	const coreObj = hljs as unknown as object;
 	if (initializedCores.has(coreObj)) {
