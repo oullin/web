@@ -1,11 +1,12 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import type { ExperienceResponse } from '@api/response/index.ts';
 
 const renderMarkdown = vi.hoisted(() => vi.fn((text: string) => `<p><strong>${text}</strong></p>`));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
+const mockHighlightElement = vi.hoisted(() => vi.fn());
 
 vi.mock('@/support/markdown.ts', async (importOriginal) => {
 	const actual = await importOriginal();
@@ -15,6 +16,12 @@ vi.mock('@/support/markdown.ts', async (importOriginal) => {
 		initializeHighlighter,
 	};
 });
+
+vi.mock('highlight.js/lib/core', () => ({
+	default: {
+		highlightElement: mockHighlightElement,
+	},
+}));
 
 const experience: ExperienceResponse[] = [
 	{
@@ -33,6 +40,10 @@ const experience: ExperienceResponse[] = [
 ];
 
 describe('ExperiencePartial', () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
 	it('renders each experience item', () => {
 		const wrapper = mount(ExperiencePartial, { props: { experience, backToTopTarget: '#top' } });
 		const items = wrapper.findAll('li');
@@ -91,5 +102,84 @@ describe('ExperiencePartial', () => {
 		// DOMPurify should strip the script tag
 		expect(wrapper.html()).not.toContain('<script>');
 		expect(wrapper.html()).not.toContain('alert("xss")');
+	});
+
+	describe('syntax highlighting', () => {
+		it('initializes highlighter when component mounts with experience data', async () => {
+			mount(ExperiencePartial, {
+				props: { experience, backToTopTarget: '#top' },
+			});
+
+			await flushPromises();
+
+			expect(initializeHighlighter).toHaveBeenCalled();
+		});
+
+		it('does not highlight when experienceContainer is not available', async () => {
+			const wrapper = mount(ExperiencePartial, {
+				props: { experience: [], backToTopTarget: '#top' },
+			});
+
+			await flushPromises();
+
+			// Should not attempt highlighting with empty data
+			expect(mockHighlightElement).not.toHaveBeenCalled();
+		});
+
+		it('applies syntax highlighting to code blocks after mount', async () => {
+			// Mock renderMarkdown to return HTML with code blocks
+			renderMarkdown.mockReturnValue('<pre><code class="language-js">const x = 1;</code></pre>');
+
+			const wrapper = mount(ExperiencePartial, {
+				props: { experience, backToTopTarget: '#top' },
+			});
+
+			await flushPromises();
+
+			// Wait for DOM updates and watchEffect
+			await wrapper.vm.$nextTick();
+			await flushPromises();
+
+			const codeBlocks = wrapper.findAll('pre code');
+			expect(codeBlocks.length).toBeGreaterThan(0);
+			expect(initializeHighlighter).toHaveBeenCalled();
+		});
+
+		it('re-applies highlighting when experience data changes', async () => {
+			renderMarkdown.mockReturnValue('<pre><code>const x = 1;</code></pre>');
+
+			const wrapper = mount(ExperiencePartial, {
+				props: { experience, backToTopTarget: '#top' },
+			});
+
+			await flushPromises();
+			await wrapper.vm.$nextTick();
+
+			const initialCallCount = mockHighlightElement.mock.calls.length;
+
+			// Update experience data
+			const newExperience: ExperienceResponse[] = [
+				{ ...experience[0], uuid: faker.string.uuid(), summary: 'Updated summary' },
+			];
+
+			await wrapper.setProps({ experience: newExperience });
+			await flushPromises();
+			await wrapper.vm.$nextTick();
+
+			// Highlighting should be re-applied
+			expect(mockHighlightElement.mock.calls.length).toBeGreaterThan(initialCallCount);
+		});
+
+		it('handles empty experience array gracefully', async () => {
+			const wrapper = mount(ExperiencePartial, {
+				props: { experience: [], backToTopTarget: '#top' },
+			});
+
+			await flushPromises();
+
+			// Should not error and should not attempt highlighting
+			expect(wrapper.findAll('li')).toHaveLength(0);
+			expect(mockHighlightElement).not.toHaveBeenCalled();
+		});
 	});
 });

@@ -44,7 +44,7 @@
 	</section>
 </template>
 <script setup lang="ts">
-import { computed, toRefs, watch, nextTick, onMounted, ref, watchEffect } from 'vue';
+import { computed, toRefs, nextTick, ref, watchEffect } from 'vue';
 import DOMPurify from 'dompurify';
 import highlight from 'highlight.js/lib/core';
 import BackToTopLink from '@partials/BackToTopLink.vue';
@@ -80,30 +80,15 @@ watchEffect(() => {
 	}
 });
 
-watch(
-	processedExperience,
-	async (newExperience) => {
-		if (!newExperience || newExperience.length === 0) {
-			return;
-		}
-
+watchEffect(async () => {
+	if (experienceContainer.value && processedExperience.value.length > 0) {
 		await nextTick();
 		await initializeHighlighter(highlight);
 
-		const container = experienceContainer.value;
-		if (!container) {
-			return;
-		}
-
-		const blocks = container.querySelectorAll('pre code');
+		const blocks = experienceContainer.value.querySelectorAll('pre code');
 		blocks.forEach((block) => {
 			highlight.highlightElement(block as HTMLElement);
 		});
-	},
-	{ immediate: true },
-);
-
-onMounted(async () => {
-	await initializeHighlighter(highlight);
+	}
 });
 </script>
