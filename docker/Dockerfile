@@ -8,6 +8,11 @@ ARG VITE_API_URL
 ARG VITE_HOST_URL
 ARG VITE_ACCOUNT_NAME
 ARG VITE_PUBLIC_KEY
+ARG VITE_SENTRY_DSN
+ARG VITE_SENTRY_RELEASE
+ARG VITE_SENTRY_TRACES_SAMPLE_RATE
+ARG VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE
+ARG VITE_SENTRY_REPLAYS_ERROR_SAMPLE_RATE
 ARG ENV_API_LOCAL_DIR
 
 # Set the working directory inside the container
@@ -23,8 +28,8 @@ RUN npm ci
 # Copy the rest of your application source code
 COPY . .
 
-# Run the build script (e.g., for Vue, React, Angular)
-# This creates the static files in a directory like '/app/dist'.
+# Run the build script
+# VITE_SENTRY_RELEASE should be provided as a build argument
 RUN npm run build
 
 
