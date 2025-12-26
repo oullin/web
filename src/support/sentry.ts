@@ -1,9 +1,16 @@
 import type { App as VueApp } from 'vue';
 import type { Router } from 'vue-router';
 
+/**
+ * Sentry Browser SDK version loaded from CDN.
+ * Update this constant when upgrading Sentry.
+ * @see https://github.com/getsentry/sentry-javascript/releases
+ */
+export const SENTRY_VERSION = '10.32.1';
+
 const SENTRY_SCRIPT_ATTRIBUTE = 'data-sentry-loader';
 const SENTRY_INITIALIZED_FLAG = '__SENTRY_APP_INITIALIZED__';
-const SENTRY_CDN_URL = 'https://browser.sentry-cdn.com/10.32.1/bundle.tracing.replay.min.js';
+const SENTRY_CDN_URL = `https://browser.sentry-cdn.com/${SENTRY_VERSION}/bundle.tracing.replay.min.js`;
 
 type SentryBrowser = {
 	init: (options: {

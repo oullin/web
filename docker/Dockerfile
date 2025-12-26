@@ -18,9 +18,6 @@ ARG ENV_API_LOCAL_DIR
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install git to capture commit SHA for release tracking
-RUN apk add --no-cache git
-
 # Copy package.json and lock files first to leverage Docker layer caching
 COPY package*.json ./
 
@@ -31,15 +28,9 @@ RUN npm ci
 # Copy the rest of your application source code
 COPY . .
 
-# Run the build script with automatic git SHA release tracking
-# If VITE_SENTRY_RELEASE is not provided, use git SHA
-# This ensures every build has a unique release identifier
-RUN if [ -z "$VITE_SENTRY_RELEASE" ]; then \
-        GIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown"); \
-        VITE_SENTRY_RELEASE="web@$GIT_SHA" npm run build; \
-    else \
-        npm run build; \
-    fi
+# Run the build script
+# VITE_SENTRY_RELEASE should be provided as a build argument
+RUN npm run build
 
 
 # --- Artifact Stage ---

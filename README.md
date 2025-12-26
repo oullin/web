@@ -15,7 +15,8 @@ or add new features, you’re welcome to send a pull request and join the projec
 
 ## Sentry
 
-Frontend error monitoring is available through Sentry (v10.32.1). Set `VITE_SENTRY_DSN` in your
+Frontend error monitoring is available through Sentry. The current version is defined in
+`src/support/sentry.ts` (SENTRY_VERSION constant). Set `VITE_SENTRY_DSN` in your
 environment to enable it. Optional configuration variables:
 
 - `VITE_SENTRY_DSN` (required) - Your Sentry DSN
@@ -27,14 +28,23 @@ environment to enable it. Optional configuration variables:
 ### Automatic Release Tracking
 
 The release version is automatically determined in this order:
-1. `VITE_SENTRY_RELEASE` environment variable (if set)
-2. `web@${TAG}` from Docker image tag (e.g., `web@v1.2.3`)
-3. `web@{git-sha}` from current git commit (during Docker build)
-4. `web@unknown` as fallback
+1. `VITE_SENTRY_RELEASE` environment variable (if explicitly set)
+2. `web@${GIT_SHA}` from current git commit (captured on host before Docker build)
+3. `web@${TAG}` from Docker image tag (e.g., `web@v1.2.3`)
+4. `web@latest` as fallback
 
-**Example:** Build with a specific release tag:
+The git SHA is automatically captured from your repository when using the Makefile build targets. For manual builds, you can set it explicitly:
+
+**Examples:**
 ```bash
+# Using Makefile (automatically captures git SHA)
+make build-ci
+
+# Manual build with specific release tag
 TAG=v1.2.3 docker-compose build
+
+# Manual build with explicit git SHA
+GIT_SHA=$(git rev-parse --short HEAD) docker-compose build
 ```
 
 When a DSN is present, the app loads Sentry from the CDN and integrates:

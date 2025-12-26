@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { App as VueApp } from 'vue';
 import type { Router } from 'vue-router';
 
-import { initializeSentry } from '@/support/sentry.ts';
+import { initializeSentry, SENTRY_VERSION } from '@/support/sentry.ts';
 
 describe('initializeSentry', () => {
 	const app = {} as VueApp;
@@ -79,7 +79,7 @@ describe('initializeSentry', () => {
 
 		expect(script).not.toBeNull();
 		expect(script?.src).toContain('browser.sentry-cdn.com');
-		expect(script?.src).toContain('10.32.1');
+		expect(script?.src).toContain(SENTRY_VERSION);
 		expect(init).not.toHaveBeenCalled();
 
 		(window as any).Sentry = { init, vueIntegration, browserTracingIntegration, replayIntegration };
