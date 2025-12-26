@@ -15,12 +15,29 @@ or add new features, you’re welcome to send a pull request and join the projec
 
 ## Sentry
 
-Frontend error monitoring is available through Sentry. Set `VITE_SENTRY_DSN` in your
-environment to enable it. Optional sampling variables let you tune traffic:
+Frontend error monitoring is available through Sentry (v10.32.1). Set `VITE_SENTRY_DSN` in your
+environment to enable it. Optional configuration variables:
 
-- `VITE_SENTRY_TRACES_SAMPLE_RATE` (default: `1.0`)
-- `VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE` (default: `0.1`)
-- `VITE_SENTRY_REPLAYS_ERROR_SAMPLE_RATE` (default: `1.0`)
+- `VITE_SENTRY_DSN` (required) - Your Sentry DSN
+- `VITE_SENTRY_RELEASE` (optional) - Release version for tracking
+- `VITE_SENTRY_TRACES_SAMPLE_RATE` (default: `1.0`) - Performance monitoring sample rate
+- `VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE` (default: `0.1`) - Session replay sample rate
+- `VITE_SENTRY_REPLAYS_ERROR_SAMPLE_RATE` (default: `1.0`) - Error replay sample rate
 
-When a DSN is present, the app loads Sentry from the CDN, wires it to the Vue router for
-tracing, and captures replay sessions.
+### Automatic Release Tracking
+
+The release version is automatically determined in this order:
+1. `VITE_SENTRY_RELEASE` environment variable (if set)
+2. `web@${TAG}` from Docker image tag (e.g., `web@v1.2.3`)
+3. `web@{git-sha}` from current git commit (during Docker build)
+4. `web@unknown` as fallback
+
+**Example:** Build with a specific release tag:
+```bash
+TAG=v1.2.3 docker-compose build
+```
+
+When a DSN is present, the app loads Sentry from the CDN and integrates:
+- Vue error boundary for component error tracking
+- Router tracing for performance monitoring
+- Session replay for debugging

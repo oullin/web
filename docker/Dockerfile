@@ -9,6 +9,7 @@ ARG VITE_HOST_URL
 ARG VITE_ACCOUNT_NAME
 ARG VITE_PUBLIC_KEY
 ARG VITE_SENTRY_DSN
+ARG VITE_SENTRY_RELEASE
 ARG VITE_SENTRY_TRACES_SAMPLE_RATE
 ARG VITE_SENTRY_REPLAYS_SESSION_SAMPLE_RATE
 ARG VITE_SENTRY_REPLAYS_ERROR_SAMPLE_RATE
@@ -16,6 +17,9 @@ ARG ENV_API_LOCAL_DIR
 
 # Set the working directory inside the container
 WORKDIR /app
+
+# Install git to capture commit SHA for release tracking
+RUN apk add --no-cache git
 
 # Copy package.json and lock files first to leverage Docker layer caching
 COPY package*.json ./
@@ -27,9 +31,15 @@ RUN npm ci
 # Copy the rest of your application source code
 COPY . .
 
-# Run the build script (e.g., for Vue, React, Angular)
-# This creates the static files in a directory like '/app/dist'.
-RUN npm run build
+# Run the build script with automatic git SHA release tracking
+# If VITE_SENTRY_RELEASE is not provided, use git SHA
+# This ensures every build has a unique release identifier
+RUN if [ -z "$VITE_SENTRY_RELEASE" ]; then \
+        GIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown"); \
+        VITE_SENTRY_RELEASE="web@$GIT_SHA" npm run build; \
+    else \
+        npm run build; \
+    fi
 
 
 # --- Artifact Stage ---
