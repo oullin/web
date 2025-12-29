@@ -8,6 +8,10 @@ BUILD_PACKAGE_OWNER ?= oullin_web
 BUILD_UID ?= $(shell id -u)
 BUILD_GID ?= $(shell id -g)
 
+# Capture git SHA for Sentry release tracking
+GIT_SHA ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+export GIT_SHA
+
 build-ci:
 	@printf "\n$(CYAN)Building production images for CI$(NC)\n"
 	@docker compose --profile prod build
