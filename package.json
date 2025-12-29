@@ -14,6 +14,7 @@
 		"build:stats": "VITE_VISUALIZER=true vite build"
 	},
 	"dependencies": {
+		"@sentry/vue": "^10.32.1",
 		"dompurify": "^3.2.6",
 		"highlight.js": "^11.11.1",
 		"lodash": "^4.17.21",
