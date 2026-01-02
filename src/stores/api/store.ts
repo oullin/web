@@ -103,7 +103,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 			}
 		},
 		async getCategories(): Promise<CategoriesCollectionResponse> {
-			const url = 'categories?limit=5';
+			const url = 'categories?limit=10';
 
 			try {
 				return await this.client.get<CategoriesCollectionResponse>(url);
