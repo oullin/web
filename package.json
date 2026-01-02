@@ -14,6 +14,7 @@
 		"build:stats": "VITE_VISUALIZER=true vite build"
 	},
 	"dependencies": {
+		"@sentry/vue": "^10.32.1",
 		"dompurify": "^3.2.6",
 		"highlight.js": "^11.11.1",
 		"lodash": "^4.17.21",
@@ -24,7 +25,6 @@
 		"vue-router": "^4.5.0"
 	},
 	"devDependencies": {
-		"@babel/eslint-parser": "^7.27.0",
 		"@eslint/js": "^9.25.1",
 		"@faker-js/faker": "^8.4.0",
 		"@tailwindcss/forms": "^0.5.10",

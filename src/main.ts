@@ -5,7 +5,7 @@ import '@css/style.css';
 import App from '@/App.vue';
 import router from '@/router';
 import { lazyLinkDirective } from '@/support/lazy-loading.ts';
-import { initializeSentry } from '@/support/sentry.ts';
+import { initSentry } from '@/support/sentry.ts';
 
 const app: VueApp = createApp(App);
 const pinia: Pinia = createPinia();
@@ -15,6 +15,6 @@ app.use(pinia);
 
 app.directive('lazy-link', lazyLinkDirective);
 
-initializeSentry(app, router);
+initSentry(app, router);
 
 app.mount('#app');
