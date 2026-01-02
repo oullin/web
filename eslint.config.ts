@@ -81,8 +81,8 @@ export default [
 	{
 		files: ['**/*.{js,mjs,cjs,jsx}'],
 		languageOptions: {
-			ecmaVersion: 'latest',
-			sourceType: 'module',
+			ecmaVersion: 'latest' as const,
+			sourceType: 'module' as const,
 			globals: {
 				...globals.browser,
 				...globals.node,
