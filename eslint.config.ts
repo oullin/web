@@ -1,17 +1,16 @@
-// eslint.config.js
+// eslint.config.ts
 import pluginVue from 'eslint-plugin-vue';
 import parserVue from 'vue-eslint-parser';
 import parserTypeScript from '@typescript-eslint/parser';
 import pluginTypeScript from '@typescript-eslint/eslint-plugin';
-import parserBabel from '@babel/eslint-parser';
 import configPrettier from 'eslint-config-prettier';
 import globals from 'globals';
 
 const baseRecommendedConfig = {
 	files: ['**/*.{js,mjs,cjs,jsx,ts,tsx,vue}'],
 	languageOptions: {
-		ecmaVersion: 'latest',
-		sourceType: 'module',
+		ecmaVersion: 'latest' as const,
+		sourceType: 'module' as const,
 		globals: {
 			...globals.browser,
 			...globals.node,
@@ -78,16 +77,12 @@ export default [
 
 	baseRecommendedConfig,
 
-	// --- Config & Script Files (.js, .mjs, .cjs) ---
+	// --- JavaScript Files (.js, .mjs, .cjs) - Uses ESLint's default parser (espree) ---
 	{
-		files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+		files: ['**/*.{js,mjs,cjs,jsx}'],
 		languageOptions: {
-			parser: parserBabel,
-			parserOptions: {
-				ecmaVersion: 'latest',
-				sourceType: 'module',
-				requireConfigFile: false, // Recommended for babel-parser
-			},
+			ecmaVersion: 'latest',
+			sourceType: 'module',
 			globals: {
 				...globals.browser,
 				...globals.node,
