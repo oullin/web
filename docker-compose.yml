@@ -67,7 +67,7 @@ services:
             - local
         container_name: web_caddy_local
         ports:
-            - "5173:80"
+            - '5173:80'
         environment:
             - RELAY_UPSTREAM=http://host.docker.internal:18080
         volumes:
@@ -79,7 +79,7 @@ services:
         networks:
             - web_internal
         extra_hosts:
-            - "host.docker.internal:host-gateway"
+            - 'host.docker.internal:host-gateway'
 
     caddy-watcher:
         working_dir: /app

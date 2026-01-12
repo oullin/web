@@ -1,0 +1,40 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn"
+	},
+	"env": {
+		"browser": true,
+		"node": true
+	},
+	"globals": {
+		"defineProps": "readonly",
+		"defineEmits": "readonly",
+		"defineExpose": "readonly",
+		"withDefaults": "readonly",
+		"defineOptions": "readonly"
+	},
+	"plugins": ["typescript", "unicorn"],
+	"rules": {
+		"no-await-in-loop": "off",
+		"no-empty": ["error", { "allowEmptyCatch": true }],
+		"no-undef": "warn",
+		"no-unused-vars": [
+			"warn",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_"
+			}
+		],
+		"typescript/no-explicit-any": "off",
+		"typescript/no-unused-vars": [
+			"warn",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_"
+			}
+		]
+	},
+	"ignorePatterns": ["dist/", "build/", "node_modules/", ".git/", ".vscode/", ".idea/", "*.min.js", "*.css.map", "public/", "src/fonts/", "src/images/"]
+}

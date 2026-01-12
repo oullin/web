@@ -19,4 +19,4 @@ Frontend error monitoring is available through Sentry. Set `VITE_SENTRY_DSN` in 
 environment to enable it. Optional configuration variables:
 
 - `VITE_SENTRY_DSN` (required) - Your Sentry DSN
-When a DSN is present, the app initializes `@sentry/vue` in `src/main.ts` with `sendDefaultPii: true`.
+  When a DSN is present, the app initializes `@sentry/vue` in `src/main.ts` with `sendDefaultPii: true`.
