@@ -102,7 +102,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@/support/seo';
-import { Tags } from '@/support/tags.ts';
+import { formatLabel, normalizeParam, summaryFor } from '@/support/tags.ts';
 import { goBack } from '@/public.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;
@@ -116,8 +116,8 @@ const isLoading = ref(false);
 const hasError = ref(false);
 let lastRequestId = 0;
 
-const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
-const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
+const normalizedTag = computed(() => normalizeParam(route.params.tag));
+const formattedTagLabel = computed(() => formatLabel(normalizedTag.value));
 
 const handleGoBack = () => {
 	apiStore.setSearchTerm('');
@@ -130,7 +130,7 @@ const onSummaryLabelClick = (label: string) => {
 };
 
 const summaryContent = computed(() =>
-	Tags.summaryFor(
+	summaryFor(
 		normalizedTag.value,
 		{
 			isLoading: isLoading.value,
