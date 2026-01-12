@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ResumePage from '@pages/ResumePage.vue';
 import type { ProfileResponse, ProfileSkillResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
-import { Heights } from '@/support/heights';
+import { resumeSectionsTotalHeight } from '@/support/heights';
 
 const skills: ProfileSkillResponse[] = [{ uuid: faker.string.uuid(), percentage: 50, item: faker.lorem.word(), description: faker.lorem.sentence() }];
 const profile: ProfileResponse = {
@@ -122,7 +122,7 @@ describe('ResumePage', () => {
 		if (!skeletonWrapper) {
 			throw new Error('Skeleton wrapper not found');
 		}
-		const heightClasses = Heights.resumeSectionsTotalHeight().split(' ');
+		const heightClasses = resumeSectionsTotalHeight().split(' ');
 		heightClasses.forEach((className) => {
 			expect(skeletonWrapper.classList.contains(className)).toBe(true);
 		});
@@ -160,7 +160,7 @@ describe('ResumePage', () => {
 		if (!skeletonWrapper) {
 			throw new Error('Skeleton wrapper not found');
 		}
-		const heightClasses = Heights.resumeSectionsTotalHeight().split(' ');
+		const heightClasses = resumeSectionsTotalHeight().split(' ');
 		heightClasses.forEach((className) => {
 			expect(skeletonWrapper.classList.contains(className)).toBe(true);
 		});

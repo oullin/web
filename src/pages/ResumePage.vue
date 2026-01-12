@@ -88,7 +88,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
-import { Heights } from '@/support/heights';
+import { resumeSectionHeights as buildResumeSectionHeights, resumeSectionMinHeights, resumeSectionsTotalHeight as buildResumeSectionsTotalHeight } from '@/support/heights';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },
@@ -96,9 +96,9 @@ const navigationItems = [
 	{ href: '#recommendations', text: 'Recommendations' },
 ] as const;
 
-const _resumeSectionMinHeights = Heights.resumeSectionMinHeights();
-const resumeSectionHeights = Heights.resumeSectionHeights();
-const resumeSectionsTotalHeight = Heights.resumeSectionsTotalHeight();
+const _resumeSectionMinHeights = resumeSectionMinHeights();
+const resumeSectionHeights = buildResumeSectionHeights();
+const resumeSectionsTotalHeight = buildResumeSectionsTotalHeight();
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);

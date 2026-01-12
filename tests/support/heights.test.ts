@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { Heights } from '@/support/heights';
+import { resumeSectionHeights, resumeSectionHeightSafelist, resumeSectionMinHeights, resumeSectionsTotalHeight } from '@/support/heights';
 
 describe('Heights', () => {
 	it('provides immutable resume section min heights', () => {
-		const min = Heights.resumeSectionMinHeights();
+		const min = resumeSectionMinHeights();
 
 		expect(min).toEqual({
 			education: { base: 26, lg: 28 },
@@ -18,7 +18,7 @@ describe('Heights', () => {
 	});
 
 	it('builds resume section min-height classes', () => {
-		expect(Heights.resumeSectionHeights()).toEqual({
+		expect(resumeSectionHeights()).toEqual({
 			education: 'min-h-[26rem] lg:min-h-[28rem]',
 			experience: 'min-h-[34rem] lg:min-h-[36rem]',
 			recommendations: 'min-h-[30rem] lg:min-h-[32rem]',
@@ -26,11 +26,11 @@ describe('Heights', () => {
 	});
 
 	it('calculates the total resume sections min-height', () => {
-		expect(Heights.resumeSectionsTotalHeight()).toBe('min-h-[96rem] lg:min-h-[102rem]');
+		expect(resumeSectionsTotalHeight()).toBe('min-h-[96rem] lg:min-h-[102rem]');
 	});
 
 	it('exposes safelisted resume section classes for tailwind', () => {
-		expect(Heights.resumeSectionHeightSafelist()).toEqual([
+		expect(resumeSectionHeightSafelist()).toEqual([
 			'min-h-[26rem]',
 			'lg:min-h-[28rem]',
 			'min-h-[34rem]',
