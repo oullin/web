@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { formatLabel, normalizeParam, routeFor, summaryFor, type TagSummaryState } from '@/support/tags.ts';
+import { formatLabel, normalizeParam, routeFor, sanitizeTag, summaryFor, type TagSummaryState } from '@/support/tags.ts';
 
 const baseSummaryState: TagSummaryState = {
 	isLoading: false,
@@ -39,6 +39,10 @@ describe('Tags.formatLabel', () => {
 	it('formats the tag as uppercase with a leading #', () => {
 		expect(formatLabel('  vue ')).toBe('#VUE');
 	});
+
+	it('strips unsafe characters before formatting', () => {
+		expect(formatLabel('<script>alert(1)</script>')).toBe('#SCRIPTALERT(1)/SCRIPT');
+	});
 });
 
 describe('Tags.routeFor', () => {
@@ -47,6 +51,13 @@ describe('Tags.routeFor', () => {
 			name: 'TagPosts',
 			params: { tag: 'vue' },
 		});
+	});
+});
+
+describe('Tags.sanitizeTag', () => {
+	it('removes HTML-significant characters', () => {
+		expect(sanitizeTag('<script>alert("x")</script>')).toBe('scriptalert(x)/script');
+		expect(sanitizeTag('vue & react')).toBe('vue  react');
 	});
 });
 

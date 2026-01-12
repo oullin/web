@@ -14,6 +14,11 @@ export type TagSummaryDescription = {
 };
 
 const DEFAULT_LABEL = '#TAG';
+const UNSAFE_TAG_PATTERN = /[<>"'&]/g;
+
+export function sanitizeTag(tag: string): string {
+	return tag.replace(UNSAFE_TAG_PATTERN, '').trim();
+}
 
 export function normalizeParam(value: unknown): string {
 	if (typeof value === 'string') {
@@ -29,7 +34,7 @@ export function normalizeParam(value: unknown): string {
 }
 
 export function formatLabel(tag?: string | null): string {
-	const normalized = (tag ?? '').trim();
+	const normalized = sanitizeTag((tag ?? '').trim());
 	if (!normalized) {
 		return DEFAULT_LABEL;
 	}
@@ -51,11 +56,12 @@ export function routeFor(tag: string): RouteLocationRaw {
 }
 
 export function summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (label: string) => void): TagSummaryDescription {
-	if (!tag) {
+	const safeTag = sanitizeTag(tag);
+	if (!safeTag) {
 		return { text: 'Select a tag to explore related posts.' };
 	}
 
-	const label = formatLabel(tag);
+	const label = formatLabel(safeTag);
 	const handleLabelClick = onLabelClick ? () => onLabelClick(label) : undefined;
 
 	if (state.isLoading) {

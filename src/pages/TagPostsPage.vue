@@ -102,7 +102,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@/support/seo';
-import { formatLabel, normalizeParam, summaryFor } from '@/support/tags.ts';
+import { formatLabel, normalizeParam, sanitizeTag, summaryFor } from '@/support/tags.ts';
 import { goBack } from '@/public.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;
@@ -117,7 +117,8 @@ const hasError = ref(false);
 let lastRequestId = 0;
 
 const normalizedTag = computed(() => normalizeParam(route.params.tag));
-const formattedTagLabel = computed(() => formatLabel(normalizedTag.value));
+const safeTag = computed(() => sanitizeTag(normalizedTag.value));
+const formattedTagLabel = computed(() => formatLabel(safeTag.value));
 
 const handleGoBack = () => {
 	apiStore.setSearchTerm('');
@@ -131,7 +132,7 @@ const onSummaryLabelClick = (label: string) => {
 
 const summaryContent = computed(() =>
 	summaryFor(
-		normalizedTag.value,
+		safeTag.value,
 		{
 			isLoading: isLoading.value,
 			hasError: hasError.value,
@@ -142,7 +143,7 @@ const summaryContent = computed(() =>
 );
 
 const seoOptions = computed(() => {
-	const tag = normalizedTag.value;
+	const tag = safeTag.value;
 
 	if (!tag) {
 		return {
@@ -152,14 +153,13 @@ const seoOptions = computed(() => {
 		};
 	}
 
-	const encodedTag = encodeURIComponent(tag);
 	const label = formattedTagLabel.value;
 
 	return {
 		title: `Posts tagged ${label}`,
 		description: `Explore articles tagged ${label} on ${SITE_NAME}.`,
 		keywords: buildKeywords(tag, `${tag} posts`, `${tag} articles`),
-		url: siteUrlFor(`/tags/${encodedTag}`),
+		url: siteUrlFor(`/tags/${encodeURIComponent(normalizedTag.value)}`),
 	};
 });
 
