@@ -117,22 +117,21 @@ const hasError = ref(false);
 let lastRequestId = 0;
 
 const normalizedTag = computed(() => normalizeParam(route.params.tag));
-const safeTag = computed(() => sanitizeTag(normalizedTag.value));
-const formattedTagLabel = computed(() => formatLabel(safeTag.value));
+const formattedTagLabel = computed(() => formatLabel(normalizedTag.value));
 
 const handleGoBack = () => {
 	apiStore.setSearchTerm('');
 	goBack(router);
 };
 
-const onSummaryLabelClick = (label: string) => {
-	const searchTerm = label.replace(/^#/, '').toLowerCase();
+const onSummaryLabelClick = () => {
+	const searchTerm = normalizedTag.value;
 	apiStore.setSearchTerm(searchTerm);
 };
 
 const summaryContent = computed(() =>
 	summaryFor(
-		safeTag.value,
+		normalizedTag.value,
 		{
 			isLoading: isLoading.value,
 			hasError: hasError.value,
@@ -143,7 +142,7 @@ const summaryContent = computed(() =>
 );
 
 const seoOptions = computed(() => {
-	const tag = safeTag.value;
+	const tag = sanitizeTag(normalizedTag.value);
 
 	if (!tag) {
 		return {
@@ -157,7 +156,7 @@ const seoOptions = computed(() => {
 
 	return {
 		title: `Posts tagged ${label}`,
-		description: `Explore articles tagged ${label} on ${SITE_NAME}.`,
+		description: `Explore articles tagged ${tag} on ${SITE_NAME}.`,
 		keywords: buildKeywords(tag, `${tag} posts`, `${tag} articles`),
 		url: siteUrlFor(`/tags/${encodeURIComponent(normalizedTag.value)}`),
 	};

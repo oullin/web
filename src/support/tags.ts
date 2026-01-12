@@ -33,13 +33,17 @@ export function normalizeParam(value: unknown): string {
 	return '';
 }
 
-export function formatLabel(tag?: string | null): string {
-	const normalized = sanitizeTag((tag ?? '').trim());
+function formatLabelFromSanitized(tag: string): string {
+	const normalized = tag.trim();
 	if (!normalized) {
 		return DEFAULT_LABEL;
 	}
 
 	return `#${normalized.toUpperCase()}`;
+}
+
+export function formatLabel(tag?: string | null): string {
+	return formatLabelFromSanitized(sanitizeTag((tag ?? '').trim()));
 }
 
 function formatParam(tag: string): string {
@@ -61,7 +65,7 @@ export function summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (
 		return { text: 'Select a tag to explore related posts.' };
 	}
 
-	const label = formatLabel(safeTag);
+	const label = formatLabelFromSanitized(safeTag);
 	const handleLabelClick = onLabelClick ? () => onLabelClick(label) : undefined;
 
 	if (state.isLoading) {
