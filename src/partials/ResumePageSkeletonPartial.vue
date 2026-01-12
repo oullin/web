@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRef, withDefaults } from 'vue';
+import { toRef } from 'vue';
 
 const props = withDefaults(defineProps<{ showRefreshButton?: boolean }>(), {
 	showRefreshButton: false,

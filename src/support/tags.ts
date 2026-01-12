@@ -17,7 +17,7 @@ const DEFAULT_LABEL = '#TAG';
 const UNSAFE_TAG_PATTERN = /[<>"'&]/g;
 
 export function sanitizeTag(tag: string): string {
-	return tag.replace(UNSAFE_TAG_PATTERN, '').trim();
+	return tag.replace(UNSAFE_TAG_PATTERN, '');
 }
 
 export function normalizeParam(value: unknown): string {
@@ -34,12 +34,11 @@ export function normalizeParam(value: unknown): string {
 }
 
 function formatLabelFromSanitized(tag: string): string {
-	const normalized = tag.trim();
-	if (!normalized) {
+	if (!tag) {
 		return DEFAULT_LABEL;
 	}
 
-	return `#${normalized.toUpperCase()}`;
+	return `#${tag.toUpperCase()}`;
 }
 
 export function formatLabel(tag?: string | null): string {
@@ -60,7 +59,7 @@ export function routeFor(tag: string): RouteLocationRaw {
 }
 
 export function summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (label: string) => void): TagSummaryDescription {
-	const safeTag = sanitizeTag(tag);
+	const safeTag = sanitizeTag(tag.trim());
 	if (!safeTag) {
 		return { text: 'Select a tag to explore related posts.' };
 	}

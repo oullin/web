@@ -59,6 +59,10 @@ describe('Tags.sanitizeTag', () => {
 		expect(sanitizeTag('<script>alert("x")</script>')).toBe('scriptalert(x)/script');
 		expect(sanitizeTag('vue & react')).toBe('vue  react');
 	});
+
+	it('does not trim whitespace by itself', () => {
+		expect(sanitizeTag('  vue  ')).toBe('  vue  ');
+	});
 });
 
 describe('Tags.summaryFor', () => {
