@@ -102,7 +102,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@/support/seo';
-import { Tags } from '@/support/tags.ts';
+import { formatLabel, normalizeParam, sanitizeTag, summaryFor } from '@/support/tags.ts';
 import { goBack } from '@/public.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;
@@ -116,21 +116,21 @@ const isLoading = ref(false);
 const hasError = ref(false);
 let lastRequestId = 0;
 
-const normalizedTag = computed(() => Tags.normalizeParam(route.params.tag));
-const formattedTagLabel = computed(() => Tags.formatLabel(normalizedTag.value));
+const normalizedTag = computed(() => normalizeParam(route.params.tag));
+const formattedTagLabel = computed(() => formatLabel(normalizedTag.value));
 
 const handleGoBack = () => {
 	apiStore.setSearchTerm('');
 	goBack(router);
 };
 
-const onSummaryLabelClick = (label: string) => {
-	const searchTerm = label.replace(/^#/, '').toLowerCase();
+const onSummaryLabelClick = () => {
+	const searchTerm = normalizedTag.value;
 	apiStore.setSearchTerm(searchTerm);
 };
 
 const summaryContent = computed(() =>
-	Tags.summaryFor(
+	summaryFor(
 		normalizedTag.value,
 		{
 			isLoading: isLoading.value,
@@ -142,7 +142,7 @@ const summaryContent = computed(() =>
 );
 
 const seoOptions = computed(() => {
-	const tag = normalizedTag.value;
+	const tag = sanitizeTag(normalizedTag.value);
 
 	if (!tag) {
 		return {
@@ -152,14 +152,13 @@ const seoOptions = computed(() => {
 		};
 	}
 
-	const encodedTag = encodeURIComponent(tag);
 	const label = formattedTagLabel.value;
 
 	return {
 		title: `Posts tagged ${label}`,
-		description: `Explore articles tagged ${label} on ${SITE_NAME}.`,
+		description: `Explore articles tagged ${tag} on ${SITE_NAME}.`,
 		keywords: buildKeywords(tag, `${tag} posts`, `${tag} articles`),
-		url: siteUrlFor(`/tags/${encodedTag}`),
+		url: siteUrlFor(`/tags/${encodeURIComponent(normalizedTag.value)}`),
 	};
 });
 

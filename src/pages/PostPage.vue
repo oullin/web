@@ -102,8 +102,8 @@
 											>
 												<ul class="flex flex-wrap items-center gap-y-1">
 													<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
-														<RouterLink :to="Tags.routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500">
-															{{ Tags.formatLabel(tag.name) }}
+														<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500">
+															{{ formatLabel(tag.name) }}
 														</RouterLink>
 														<span v-if="index < post.tags.length - 1" class="mx-2 text-slate-400 dark:text-slate-600" aria-hidden="true" data-testid="post-tag-separator">
 															/
@@ -160,7 +160,7 @@ import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
-import { Tags } from '@/support/tags.ts';
+import { formatLabel, routeFor } from '@/support/tags.ts';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';

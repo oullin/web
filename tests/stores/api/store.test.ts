@@ -57,7 +57,7 @@ describe('useApiStore', () => {
 	it('gets categories', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getCategories();
-		expect(client.get).toHaveBeenCalledWith('categories?limit=5');
+		expect(client.get).toHaveBeenCalledWith('categories?limit=10');
 		expect(res).toEqual({ list: [] });
 	});
 
