@@ -13,65 +13,63 @@ export type TagSummaryDescription = {
 	onLabelClick?: () => void;
 };
 
-export class Tags {
-	private static readonly DEFAULT_LABEL = '#TAG';
+const DEFAULT_LABEL = '#TAG';
 
-	static normalizeParam(value: unknown): string {
-		if (typeof value === 'string') {
-			return value.trim().toLowerCase();
-		}
-
-		if (Array.isArray(value)) {
-			const [first] = value;
-			return typeof first === 'string' ? first.trim().toLowerCase() : '';
-		}
-
-		return '';
+export function normalizeParam(value: unknown): string {
+	if (typeof value === 'string') {
+		return value.trim().toLowerCase();
 	}
 
-	static formatLabel(tag?: string | null): string {
-		const normalized = (tag ?? '').trim();
-		if (!normalized) {
-			return this.DEFAULT_LABEL;
-		}
-
-		return `#${normalized.toUpperCase()}`;
+	if (Array.isArray(value)) {
+		const [first] = value;
+		return typeof first === 'string' ? first.trim().toLowerCase() : '';
 	}
 
-	private static formatParam(tag: string): string {
-		return tag.trim().toLowerCase();
+	return '';
+}
+
+export function formatLabel(tag?: string | null): string {
+	const normalized = (tag ?? '').trim();
+	if (!normalized) {
+		return DEFAULT_LABEL;
 	}
 
-	static routeFor(tag: string): RouteLocationRaw {
-		const param = this.formatParam(tag);
+	return `#${normalized.toUpperCase()}`;
+}
 
-		return {
-			name: 'TagPosts',
-			params: { tag: param },
-		};
+function formatParam(tag: string): string {
+	return tag.trim().toLowerCase();
+}
+
+export function routeFor(tag: string): RouteLocationRaw {
+	const param = formatParam(tag);
+
+	return {
+		name: 'TagPosts',
+		params: { tag: param },
+	};
+}
+
+export function summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (label: string) => void): TagSummaryDescription {
+	if (!tag) {
+		return { text: 'Select a tag to explore related posts.' };
 	}
 
-	static summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (label: string) => void): TagSummaryDescription {
-		if (!tag) {
-			return { text: 'Select a tag to explore related posts.' };
-		}
+	const label = formatLabel(tag);
+	const handleLabelClick = onLabelClick ? () => onLabelClick(label) : undefined;
 
-		const label = this.formatLabel(tag);
-		const handleLabelClick = onLabelClick ? () => onLabelClick(label) : undefined;
-
-		if (state.isLoading) {
-			return { text: 'Loading posts for', label, suffix: '…', onLabelClick: handleLabelClick };
-		}
-
-		if (state.hasError) {
-			return { text: "We couldn't load posts for", label, suffix: '.', onLabelClick: handleLabelClick };
-		}
-
-		if (state.postCount === 0) {
-			return { text: 'No posts found for', label, suffix: '.', onLabelClick: handleLabelClick };
-		}
-
-		const noun = state.postCount === 1 ? 'post' : 'posts';
-		return { text: `${state.postCount} ${noun} found for `, label, suffix: '', onLabelClick: handleLabelClick };
+	if (state.isLoading) {
+		return { text: 'Loading posts for', label, suffix: '…', onLabelClick: handleLabelClick };
 	}
+
+	if (state.hasError) {
+		return { text: "We couldn't load posts for", label, suffix: '.', onLabelClick: handleLabelClick };
+	}
+
+	if (state.postCount === 0) {
+		return { text: 'No posts found for', label, suffix: '.', onLabelClick: handleLabelClick };
+	}
+
+	const noun = state.postCount === 1 ? 'post' : 'posts';
+	return { text: `${state.postCount} ${noun} found for `, label, suffix: '', onLabelClick: handleLabelClick };
 }

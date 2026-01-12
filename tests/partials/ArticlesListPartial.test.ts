@@ -142,6 +142,22 @@ vi.mock('@partials/ArticleItemPartial.vue', () => ({
 	},
 }));
 
+const buildCategoriesResponse = (categories: CategoryResponse[]): CategoriesCollectionResponse => ({
+	page: 1,
+	total: categories.length,
+	page_size: categories.length,
+	total_pages: 1,
+	data: categories,
+});
+
+const buildPostsResponse = (posts: PostResponse[]): PostsCollectionResponse => ({
+	page: 1,
+	total: posts.length,
+	page_size: posts.length,
+	total_pages: 1,
+	data: posts,
+});
+
 describe('ArticlesListPartial', () => {
 	beforeEach(() => {
 		cancelMock.mockClear();
@@ -152,22 +168,6 @@ describe('ArticlesListPartial', () => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
 		vi.useRealTimers();
-	});
-
-	const buildCategoriesResponse = (categories: CategoryResponse[]): CategoriesCollectionResponse => ({
-		page: 1,
-		total: categories.length,
-		page_size: categories.length,
-		total_pages: 1,
-		data: categories,
-	});
-
-	const buildPostsResponse = (posts: PostResponse[]): PostsCollectionResponse => ({
-		page: 1,
-		total: posts.length,
-		page_size: posts.length,
-		total_pages: 1,
-		data: posts,
 	});
 
 	it('fetches categories and posts on mount and renders articles', async () => {
