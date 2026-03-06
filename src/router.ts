@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, Router } from 'vue-router';
+import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 
 const routerHistory = createWebHistory();
 
@@ -49,7 +50,7 @@ const router: Router = createRouter({
 		},
 
 		{
-			path: '/terms-and-conditions',
+			path: TERMS_AND_POLICIES_PATH,
 			name: 'TermsAndPolicies',
 			component: () => import('@pages/TermsAndPoliciesPage.vue'),
 		},
