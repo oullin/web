@@ -4,7 +4,9 @@ import FooterPartial from '@partials/FooterPartial.vue';
 
 describe('FooterPartial', () => {
 	it('renders copyright', () => {
-		const wrapper = mount(FooterPartial);
+		const wrapper = mount(FooterPartial, {
+			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
+		});
 		expect(wrapper.text()).toContain('All rights reserved');
 	});
 });
