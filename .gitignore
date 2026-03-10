@@ -10,6 +10,9 @@ dist/
 dist-ssr/
 node_modules/
 coverage/
+storage/*
+!storage/.gitkeep
+
 
 # --- [Caddy]: mtls
 caddy/mtls/*.*
