@@ -1,115 +1,123 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oullin | High-Performance Tools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800;900&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #000;
-            color: #d1d5db;
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Oullin | High-Performance Tools</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800;900&display=swap');
 
-        .font-mono { font-family: 'Fira Code', monospace; }
+			body {
+				font-family: 'Inter', sans-serif;
+				background-color: #000;
+				color: #d1d5db;
+			}
 
-        /* Rolldown / Oxc Minimalist Industrial Theme */
-        .industrial-grid {
-            background-image: linear-gradient(#111 1px, transparent 1px), linear-gradient(90deg, #111 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
+			.font-mono {
+				font-family: 'Fira Code', monospace;
+			}
 
-        /* The "Pulse" reinterpreted as a scanning radar/grid line */
-        .scanner {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff4d00, transparent);
-            box-shadow: 0 0 20px #ff4d00;
-            animation: scan 8s linear infinite;
-            z-index: -1;
-            opacity: 0.5;
-        }
+			/* Rolldown / Oxc Minimalist Industrial Theme */
+			.industrial-grid {
+				background-image: linear-gradient(#111 1px, transparent 1px), linear-gradient(90deg, #111 1px, transparent 1px);
+				background-size: 40px 40px;
+			}
 
-        @keyframes scan {
-            0% { transform: translateY(-100vh); }
-            100% { transform: translateY(200vh); }
-        }
+			/* The "Pulse" reinterpreted as a scanning radar/grid line */
+			.scanner {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 2px;
+				background: linear-gradient(90deg, transparent, #ff4d00, transparent);
+				box-shadow: 0 0 20px #ff4d00;
+				animation: scan 8s linear infinite;
+				z-index: -1;
+				opacity: 0.5;
+			}
 
-        .raw-card {
-            border: 1px solid #333;
-            background: #050505;
-            transition: border-color 0.2s;
-        }
-        .raw-card:hover { border-color: #ff4d00; }
-        
-        .accent-text { color: #ff4d00; }
-    </style>
-</head>
-<body class="industrial-grid antialiased min-h-screen flex flex-col">
+			@keyframes scan {
+				0% {
+					transform: translateY(-100vh);
+				}
+				100% {
+					transform: translateY(200vh);
+				}
+			}
 
-    <div class="scanner"></div>
+			.raw-card {
+				border: 1px solid #333;
+				background: #050505;
+				transition: border-color 0.2s;
+			}
+			.raw-card:hover {
+				border-color: #ff4d00;
+			}
 
-    <!-- Nav -->
-    <header class="p-6 md:p-10 flex justify-between items-center max-w-7xl mx-auto w-full">
-        <div class="text-2xl font-black tracking-tighter uppercase text-white">Oullin<span class="accent-text">.</span></div>
-        <nav class="space-x-8 text-sm font-mono text-gray-500">
-            <a href="#" class="hover:text-white transition">~/[products]</a>
-            <a href="#" class="hover:text-white transition">~/[oss]</a>
-            <a href="#" class="hover:text-white transition">~/[manifesto]</a>
-        </nav>
-    </header>
+			.accent-text {
+				color: #ff4d00;
+			}
+		</style>
+	</head>
+	<body class="industrial-grid antialiased min-h-screen flex flex-col">
+		<div class="scanner"></div>
 
-    <!-- Main -->
-    <main class="grow flex flex-col items-center justify-center text-center px-6 py-20 max-w-5xl mx-auto w-full">
-        
-        <div class="font-mono text-xs text-gray-500 mb-6 uppercase tracking-widest">[ Initialization Sequence ]</div>
-        
-        <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8">
-            ENGINEERING <br/>
-            <span class="italic font-light accent-text">MOMENTUM.</span>
-        </h1>
-        
-        <p class="max-w-2xl text-lg text-gray-400 mb-12">
-            "Just as Zen teaches us to let thoughts pass like clouds, Ollin’s energy urges us to embrace change—transforming every action into a moment of awareness."
-        </p>
+		<!-- Nav -->
+		<header class="p-6 md:p-10 flex justify-between items-center max-w-7xl mx-auto w-full">
+			<div class="text-2xl font-black tracking-tighter uppercase text-white">Oullin<span class="accent-text">.</span></div>
+			<nav class="space-x-8 text-sm font-mono text-gray-500">
+				<a href="#" class="hover:text-white transition">~/[products]</a>
+				<a href="#" class="hover:text-white transition">~/[oss]</a>
+				<a href="#" class="hover:text-white transition">~/[manifesto]</a>
+			</nav>
+		</header>
 
-        <div class="flex gap-6">
-            <a href="#" class="px-8 py-3 bg-white text-black font-bold text-sm uppercase tracking-wider hover:bg-gray-200 transition">Get Started</a>
-            <a href="#" class="px-8 py-3 raw-card text-white font-bold text-sm uppercase tracking-wider hover:text-[#ff4d00] transition">Documentation</a>
-        </div>
+		<!-- Main -->
+		<main class="grow flex flex-col items-center justify-center text-center px-6 py-20 max-w-5xl mx-auto w-full">
+			<div class="font-mono text-xs text-gray-500 mb-6 uppercase tracking-widest">[ Initialization Sequence ]</div>
 
-        <!-- CLI Output style box -->
-        <div class="w-full mt-32 text-left">
-            <h2 class="text-xl font-bold text-white mb-6 uppercase tracking-widest">>> Core Systems</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="raw-card p-6">
-                    <div class="font-mono text-xs text-gray-500 mb-4">// System 01</div>
-                    <h3 class="text-lg font-bold text-white mb-2">Oullin Fast-Path</h3>
-                    <p class="text-sm text-gray-400">High-throughput data ingestion for AI models. Written in Rust. Zero garbage collection pauses.</p>
-                </div>
-                <div class="raw-card p-6">
-                    <div class="font-mono text-xs text-gray-500 mb-4">// System 02</div>
-                    <h3 class="text-lg font-bold text-white mb-2">Mindful Middleware</h3>
-                    <p class="text-sm text-gray-400">Rate limiting, context injection, and logging for LLM wrappers. Observability by default.</p>
-                </div>
-                <div class="raw-card p-6 border-dashed">
-                    <div class="font-mono text-xs text-gray-500 mb-4">// Coming Soon</div>
-                    <h3 class="text-lg font-bold text-gray-600 mb-2">Project Motion</h3>
-                    <p class="text-sm text-gray-600">The next evolution of UI state management. Grounded in the here and now.</p>
-                </div>
-            </div>
-        </div>
+			<h1 class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8">
+				ENGINEERING <br />
+				<span class="italic font-light accent-text">MOMENTUM.</span>
+			</h1>
 
-    </main>
+			<p class="max-w-2xl text-lg text-gray-400 mb-12">
+				"Just as Zen teaches us to let thoughts pass like clouds, Ollin’s energy urges us to embrace change—transforming every action into a moment of awareness."
+			</p>
 
-    <!-- Footer -->
-    <footer class="p-6 border-t border-[#333] text-center w-full mt-auto">
-        <p class="font-mono text-xs text-gray-600">© 2026 OULLIN_CORP. ALL RIGHTS RESERVED. [ SYSTEM NORMAL ]</p>
-    </footer>
+			<div class="flex gap-6">
+				<a href="#" class="px-8 py-3 bg-white text-black font-bold text-sm uppercase tracking-wider hover:bg-gray-200 transition">Get Started</a>
+				<a href="#" class="px-8 py-3 raw-card text-white font-bold text-sm uppercase tracking-wider hover:text-[#ff4d00] transition">Documentation</a>
+			</div>
 
-</body>
+			<!-- CLI Output style box -->
+			<div class="w-full mt-32 text-left">
+				<h2 class="text-xl font-bold text-white mb-6 uppercase tracking-widest">>> Core Systems</h2>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div class="raw-card p-6">
+						<div class="font-mono text-xs text-gray-500 mb-4">// System 01</div>
+						<h3 class="text-lg font-bold text-white mb-2">Oullin Fast-Path</h3>
+						<p class="text-sm text-gray-400">High-throughput data ingestion for AI models. Written in Rust. Zero garbage collection pauses.</p>
+					</div>
+					<div class="raw-card p-6">
+						<div class="font-mono text-xs text-gray-500 mb-4">// System 02</div>
+						<h3 class="text-lg font-bold text-white mb-2">Mindful Middleware</h3>
+						<p class="text-sm text-gray-400">Rate limiting, context injection, and logging for LLM wrappers. Observability by default.</p>
+					</div>
+					<div class="raw-card p-6 border-dashed">
+						<div class="font-mono text-xs text-gray-500 mb-4">// Coming Soon</div>
+						<h3 class="text-lg font-bold text-gray-600 mb-2">Project Motion</h3>
+						<p class="text-sm text-gray-600">The next evolution of UI state management. Grounded in the here and now.</p>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer class="p-6 border-t border-[#333] text-center w-full mt-auto">
+			<p class="font-mono text-xs text-gray-600">© 2026 OULLIN_CORP. ALL RIGHTS RESERVED. [ SYSTEM NORMAL ]</p>
+		</footer>
+	</body>
 </html>

@@ -1,36 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oullin | Ethereal Heart</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;400;900&display=swap');
-        body { background: #020205; color: #fff; font-family: 'Geist', sans-serif; overflow: hidden; }
-        .heart-pulse {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 2px; height: 2px; background: #fff; border-radius: 50%;
-            box-shadow: 0 0 100px 50px rgba(255, 77, 0, 0.4);
-            animation: pulse 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        @keyframes pulse { 0% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.3; transform: translate(-50%, -50%) scale(400); } 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); } }
-        .nav-accent { position: absolute; top: 40px; right: 40px; font-weight: 900; letter-spacing: 0.5em; opacity: 0.3; }
-    </style>
-</head>
-<body class="flex flex-col items-center justify-center min-h-screen text-center px-10">
-    <div class="heart-pulse"></div>
-    <div class="nav-accent uppercase text-xs">A Wave of Presence</div>
-    <div class="relative z-10">
-        <h1 class="text-7xl md:text-[180px] font-black tracking-tighter italic leading-none mb-12">OULLIN</h1>
-        <div class="max-w-2xl mx-auto">
-            <p class="text-2xl md:text-4xl font-light text-white/40 mb-12 tracking-tight">Movement. Transformation. Heart. Life.</p>
-            <div class="flex flex-col md:flex-row justify-center gap-8">
-                <button class="text-xs font-bold uppercase tracking-[0.8em] text-orange-500 hover:text-white transition duration-500">Initialize Core</button>
-                <button class="text-xs font-bold uppercase tracking-[0.8em] text-white/20 hover:text-white transition duration-500">Our Spirit</button>
-            </div>
-        </div>
-    </div>
-    <footer class="absolute bottom-10 text-[10px] tracking-[0.5em] font-bold opacity-10 uppercase">Grounded in the here and now</footer>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Oullin | Ethereal Heart</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100;400;900&display=swap');
+			body {
+				background: #020205;
+				color: #fff;
+				font-family: 'Geist', sans-serif;
+				overflow: hidden;
+			}
+			.heart-pulse {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: 2px;
+				height: 2px;
+				background: #fff;
+				border-radius: 50%;
+				box-shadow: 0 0 100px 50px rgba(255, 77, 0, 0.4);
+				animation: pulse 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+			}
+			@keyframes pulse {
+				0% {
+					opacity: 0.1;
+					transform: translate(-50%, -50%) scale(1);
+				}
+				50% {
+					opacity: 0.3;
+					transform: translate(-50%, -50%) scale(400);
+				}
+				100% {
+					opacity: 0.1;
+					transform: translate(-50%, -50%) scale(1);
+				}
+			}
+			.nav-accent {
+				position: absolute;
+				top: 40px;
+				right: 40px;
+				font-weight: 900;
+				letter-spacing: 0.5em;
+				opacity: 0.3;
+			}
+		</style>
+	</head>
+	<body class="flex flex-col items-center justify-center min-h-screen text-center px-10">
+		<div class="heart-pulse"></div>
+		<div class="nav-accent uppercase text-xs">A Wave of Presence</div>
+		<div class="relative z-10">
+			<h1 class="text-7xl md:text-[180px] font-black tracking-tighter italic leading-none mb-12">OULLIN</h1>
+			<div class="max-w-2xl mx-auto">
+				<p class="text-2xl md:text-4xl font-light text-white/40 mb-12 tracking-tight">Movement. Transformation. Heart. Life.</p>
+				<div class="flex flex-col md:flex-row justify-center gap-8">
+					<button class="text-xs font-bold uppercase tracking-[0.8em] text-orange-500 hover:text-white transition duration-500">Initialize Core</button>
+					<button class="text-xs font-bold uppercase tracking-[0.8em] text-white/20 hover:text-white transition duration-500">Our Spirit</button>
+				</div>
+			</div>
+		</div>
+		<footer class="absolute bottom-10 text-[10px] tracking-[0.5em] font-bold opacity-10 uppercase">Grounded in the here and now</footer>
+	</body>
 </html>
