@@ -1,70 +1,138 @@
 <template>
-	<div class="max-w-7xl mx-auto">
-		<div class="min-h-screen flex">
-			<SideNavPartial />
-
-			<!-- Main content -->
-			<main class="grow overflow-hidden px-6">
-				<div id="home-top" class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
-					<HeaderPartial />
-					<HeroPartial />
-
-					<!-- Content -->
-					<div class="grow md:flex space-y-8 md:space-y-0 md:space-x-8 pb-16 md:pb-20">
-						<!-- Middle area -->
-						<div class="grow">
-							<div class="max-w-[700px]">
-								<div class="space-y-10">
-									<ArticlesListPartial />
-									<FeaturedProjectsPartial />
-									<TalksPartial />
-								</div>
-							</div>
-						</div>
-
-						<!-- Right sidebar -->
-						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
-							<div class="space-y-6">
-								<WidgetOullinPartial />
-								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
-								<WidgetSponsorPartial />
-							</div>
-						</aside>
+	<div class="v2-theme min-h-screen">
+		<!-- NAV -->
+		<nav class="v2-nav">
+			<div class="nav-inner">
+				<RouterLink to="/" class="nav-logo">OULLIN</RouterLink>
+				<ul class="nav-links">
+					<li><RouterLink to="/">writing</RouterLink></li>
+					<li><RouterLink to="/projects">projects</RouterLink></li>
+					<li><RouterLink to="/about">about</RouterLink></li>
+				</ul>
+				<div style="display: flex; align-items: center; gap: 20px">
+					<div class="nav-status">
+						<span><span class="live-dot"></span>SIGNAL: ACTIVE</span>
+						<span>BUILD: 2026.03</span>
+						<span>NODE: OULLIN_PRIME</span>
 					</div>
-
-					<div class="flex justify-end pt-10 mb-10">
-						<BackToTopLink target="#home-top" />
-					</div>
-
-					<FooterPartial />
+					<button class="nav-theme" @click="toggleDarkMode">{{ isDark ? '☀ LIGHT' : '◑ DARK' }}</button>
 				</div>
-			</main>
+			</div>
+		</nav>
+
+		<!-- HERO -->
+		<HeroPartial />
+
+		<!-- MARQUEE -->
+		<div class="marquee-wrap">
+			<div class="marquee-track">
+				<span class="marquee-item">Movement <em>///</em></span>
+				<span class="marquee-item">Transformation <em>///</em></span>
+				<span class="marquee-item">Heart <em>///</em></span>
+				<span class="marquee-item">Life <em>///</em></span>
+				<span class="marquee-item">Ollin <em>///</em></span>
+				<span class="marquee-item">Signal <em>///</em></span>
+				<span class="marquee-item">Presence <em>///</em></span>
+				<span class="marquee-item">Awareness <em>///</em></span>
+				<span class="marquee-item">Velocity <em>///</em></span>
+				<span class="marquee-item">Renewal <em>///</em></span>
+				<!-- duplicate for seamless loop -->
+				<span class="marquee-item">Movement <em>///</em></span>
+				<span class="marquee-item">Transformation <em>///</em></span>
+				<span class="marquee-item">Heart <em>///</em></span>
+				<span class="marquee-item">Life <em>///</em></span>
+				<span class="marquee-item">Ollin <em>///</em></span>
+				<span class="marquee-item">Signal <em>///</em></span>
+				<span class="marquee-item">Presence <em>///</em></span>
+				<span class="marquee-item">Awareness <em>///</em></span>
+				<span class="marquee-item">Velocity <em>///</em></span>
+				<span class="marquee-item">Renewal <em>///</em></span>
+			</div>
 		</div>
+
+		<!-- PRINCIPLES -->
+		<section class="principles">
+			<div class="principle">
+				<div class="p-num">[ 01 / PRESENCE ]</div>
+				<h2 class="p-title">Presence<br />Is Not<br />Optional.</h2>
+				<p class="p-body">Every line of code is a choice. Every decision, deliberate. Move with full attention or don't move at all.</p>
+				<div class="p-ghost">01</div>
+			</div>
+			<div class="principle">
+				<div class="p-num">[ 02 / TRANSFORMATION ]</div>
+				<h2 class="p-title">Change<br />Is The<br />Engine.</h2>
+				<p class="p-body">In Aztec cosmology, the fifth sun was born from sacrifice. Transformation is not failure — it is the source code.</p>
+				<div class="p-ghost">02</div>
+			</div>
+			<div class="principle">
+				<div class="p-num">[ 03 / CRAFT ]</div>
+				<h2 class="p-title">Build<br />Like It<br />Matters.</h2>
+				<p class="p-body">Software that people rely on. Tools that hold up. Ideas that outlast the hype cycle. Because it does.</p>
+				<div class="p-ghost">03</div>
+			</div>
+		</section>
+
+		<!-- ABOUT -->
+		<section class="about-section">
+			<div class="about-left">
+				<div class="section-tag">// about.maker</div>
+				<h2 class="about-name">GUSTAVO<br />OCANTO.</h2>
+				<p class="about-body">
+					Engineering leader. AI architect. Software engineer.<br /><br />
+					The name <strong>Oullin</strong> is a deliberate misspelling of <strong>Ollin</strong> — the Aztec sacred day-sign of movement, transformation. A daily reminder that transformation
+					isn't tidy. It's raw. It's real. It's necessary.<br /><br />
+					Building tools that move people. Writing ideas that challenge the obvious. Sharing the journey without filtering out the difficulty.
+				</p>
+			</div>
+			<div class="about-right">
+				<div class="section-tag">// current.work</div>
+				<div class="work-list">
+					<div class="work-item">
+						<span class="w-idx">[ 01 ]</span>
+						<div>
+							<div class="w-title">Engineering Leadership</div>
+							<div class="w-desc">Growing teams who build with intention and ship with confidence. Velocity that doesn't sacrifice craft.</div>
+						</div>
+					</div>
+					<div class="work-item">
+						<span class="w-idx">[ 02 ]</span>
+						<div>
+							<div class="w-title">AI Architecture</div>
+							<div class="w-desc">Designing intelligence that moves — fast, purposeful, aware. Systems built for the edge.</div>
+						</div>
+					</div>
+					<div class="work-item">
+						<span class="w-idx">[ 03 ]</span>
+						<div>
+							<div class="w-title">Open Source</div>
+							<div class="w-desc">Tools built in the open. Code returned to the community with the same energy it was taken from.</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<section class="cta-section">
+			<div class="cta-watermark">MOVE</div>
+			<h2 class="cta-head">DON'T<br />WAIT.<br /><span class="accent">MOVE.</span></h2>
+			<RouterLink to="/projects" class="btn-primary">Initialize →</RouterLink>
+		</section>
+
+		<footer class="v2-footer">
+			<span>OULLIN // GUSTAVO OCANTO</span>
+			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
+			<span>© 2026</span>
+		</footer>
 	</div>
 </template>
 
 <script setup lang="ts">
-import HeroPartial from '@partials/HeroPartial.vue';
-import TalksPartial from '@partials/TalksPartial.vue';
-import FooterPartial from '@partials/FooterPartial.vue';
-import HeaderPartial from '@partials/HeaderPartial.vue';
-import SideNavPartial from '@partials/SideNavPartial.vue';
-import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
-import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
-import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import FeaturedProjectsPartial from '@partials/FeaturedProjectsPartial.vue';
-import WidgetOullinPartial from '@partials/WidgetOullinPartial.vue';
-import BackToTopLink from '@partials/BackToTopLink.vue';
-
-import { onMounted, ref } from 'vue';
-import { useApiStore } from '@api/store.ts';
-import { debugError } from '@api/http-error.ts';
-import type { ProfileResponse } from '@api/response/index.ts';
+import HeroPartial from '@/partials/HeroPartial.vue';
+import { useDarkMode } from '@/dark-mode.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
-const apiStore = useApiStore();
-const profile = ref<ProfileResponse | null>(null);
-const isLoadingProfile = ref(true);
+const { isDark, toggleDarkMode } = useDarkMode();
 
 useSeo({
 	title: 'Home',
@@ -83,19 +151,5 @@ useSeo({
 		},
 		PERSON_JSON_LD,
 	],
-});
-
-onMounted(async () => {
-	try {
-		const userProfileResponse = await apiStore.getProfile();
-
-		if (userProfileResponse.data) {
-			profile.value = userProfileResponse.data;
-		}
-	} catch (error) {
-		debugError(error);
-	} finally {
-		isLoadingProfile.value = false;
-	}
 });
 </script>
