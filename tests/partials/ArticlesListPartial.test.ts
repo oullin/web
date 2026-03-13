@@ -54,8 +54,8 @@ const createDeferred = <T>(): DeferredPromise<T> => {
 
 const { cancelMock, debounceMock, getApiStore, setApiStore } = vi.hoisted(() => {
 	let apiStore: any;
-	const cancelMock = vi.fn();
-	const debounceMock = vi.fn((fn: (...args: unknown[]) => unknown, wait = 0, options: { leading?: boolean; trailing?: boolean } = {}) => {
+	const _cancelMock = vi.fn();
+	const _debounceMock = vi.fn((fn: (...args: unknown[]) => unknown, wait = 0, options: { leading?: boolean; trailing?: boolean } = {}) => {
 		let timeout: ReturnType<typeof setTimeout> | null = null;
 		let lastArgs: unknown[] = [];
 		let leadingInvoked = false;
@@ -102,14 +102,14 @@ const { cancelMock, debounceMock, getApiStore, setApiStore } = vi.hoisted(() => 
 			}
 			leadingInvoked = false;
 			hasPendingTrailing = false;
-			cancelMock();
+			_cancelMock();
 		};
 
 		return debounced;
 	});
 	return {
-		cancelMock,
-		debounceMock,
+		cancelMock: _cancelMock,
+		debounceMock: _debounceMock,
 		getApiStore: () => apiStore,
 		setApiStore: (store: any) => {
 			apiStore = store;

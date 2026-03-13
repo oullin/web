@@ -67,7 +67,7 @@
 		<footer class="site-footer">
 			<span>OULLIN // GUSTAVO OCANTO</span>
 			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
-			<span>© 2026</span>
+			<span>© 2026 · <RouterLink :to="TERMS_AND_POLICIES_PATH" class="hover:text-white transition-colors">Terms</RouterLink></span>
 		</footer>
 	</div>
 </template>
@@ -77,6 +77,7 @@ import { RouterLink } from 'vue-router';
 import HeroPartial from '@/partials/HeroPartial.vue';
 import NavPartial from '@/partials/NavPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';

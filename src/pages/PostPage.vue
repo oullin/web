@@ -181,17 +181,17 @@ const htmlContent = computed(() => {
 	return '';
 });
 
-const xURLFor = (post: PostResponse) => {
-	return `https://x.com/intent/tweet?url=${fullURLFor(post)}&text=${post.title}`;
+const xURLFor = (item: PostResponse) => {
+	return `https://x.com/intent/tweet?url=${fullURLFor(item)}&text=${item.title}`;
 };
 
-const fullURLFor = (post: PostResponse) => siteUrlFor(`/post/${post.slug}`);
+const fullURLFor = (item: PostResponse) => siteUrlFor(`/post/${item.slug}`);
 
-async function sharePost(post: PostResponse) {
+async function sharePost(item: PostResponse) {
 	const shareData = {
-		title: post.title,
-		text: post.excerpt,
-		url: fullURLFor(post),
+		title: item.title,
+		text: item.excerpt,
+		url: fullURLFor(item),
 	};
 	try {
 		await navigator.share(shareData);
