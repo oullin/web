@@ -32,7 +32,7 @@
 			<div class="about-left">
 				<div class="section-tag">{{ about.leftTag }}</div>
 				<h2 class="about-name">
-					<template v-for="(line, i) in about.name" :key="i">{{ line }}<br v-if="i < about.name.length - 1" /></template>
+					<template v-for="(line, i) in nameLines" :key="i">{{ line }}<br v-if="i < nameLines.length - 1" /></template>
 				</h2>
 				<p class="about-body">
 					{{ about.body.role }}<br /><br />
@@ -73,9 +73,13 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 import HeroPartial from '@/partials/HeroPartial.vue';
 import NavPartial from '@/partials/NavPartial.vue';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
+import type { ProfileResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 import marquee from '@fixtures/marquee.json';
@@ -83,7 +87,17 @@ import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';
 import cta from '@fixtures/cta.json';
 
+const apiStore = useApiStore();
+const profile = ref<ProfileResponse | null>(null);
 const marqueeItems = marquee.items;
+
+const nameLines = computed<string[]>(() => {
+	if (!profile.value?.name) {
+		return [];
+	}
+
+	return profile.value.name.toUpperCase().split(' ');
+});
 
 useSeo({
 	title: 'Home',
@@ -102,5 +116,17 @@ useSeo({
 		},
 		PERSON_JSON_LD,
 	],
+});
+
+onMounted(async () => {
+	try {
+		const userProfileResponse = await apiStore.getProfile();
+
+		if (userProfileResponse.data) {
+			profile.value = userProfileResponse.data;
+		}
+	} catch (error) {
+		debugError(error);
+	}
 });
 </script>
