@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────
-   TOKENS — OULLIN V2
+   TOKENS — OULLIN
 ───────────────────────────────────────── */
 :root {
 	/* Light Mode */
@@ -12,14 +12,14 @@
 	--muted: #8080aa;
 	--dimmed: #c4c4dc;
 	--violet: #5b45c0;
-	--v2: #6e56cf;
+	--primary: #6e56cf;
 	--cyan: #0891b2;
 	--green: #059669;
 	--nav-bg: rgba(246, 246, 253, 0.94);
 	/* Inverted section tokens */
 	--inv-bg: #08081a;
 	--inv-text: #e6eaf4;
-	--inv-v2: #9b8ce8;
+	--inv-primary: #9b8ce8;
 }
 
 .dark {
@@ -33,7 +33,7 @@
 	--muted: #48566e;
 	--dimmed: #252e40;
 	--violet: #6e56cf;
-	--v2: #9b8ce8;
+	--primary: #9b8ce8;
 	--cyan: #22d3ee;
 	--green: #10b981;
 	--nav-bg: rgba(6, 8, 13, 0.92);
@@ -46,7 +46,7 @@ html {
 	scroll-behavior: smooth;
 }
 
-body.v2-theme {
+body.theme {
 	background: var(--bg);
 	color: var(--text);
 	font-family: 'Space Grotesk', sans-serif;
@@ -54,15 +54,15 @@ body.v2-theme {
 	-webkit-font-smoothing: antialiased;
 }
 
-.v2-theme ::selection {
-	background: var(--v2);
+.theme ::selection {
+	background: var(--primary);
 	color: #fff;
 }
 
 /* ─────────────────────────────────────────
    NAV
 ───────────────────────────────────────── */
-nav.v2-nav {
+nav.site-nav {
 	position: sticky;
 	top: 0;
 	z-index: 100;
@@ -111,7 +111,7 @@ nav.v2-nav {
 }
 
 .dark .nav-links a:hover {
-	color: var(--v2);
+	color: var(--primary);
 }
 
 .nav-status {
@@ -164,8 +164,8 @@ nav.v2-nav {
 }
 
 .dark .nav-theme:hover {
-	border-color: var(--v2);
-	color: var(--v2);
+	border-color: var(--primary);
+	color: var(--primary);
 }
 
 /* ─────────────────────────────────────────
@@ -253,7 +253,7 @@ nav.v2-nav {
 .eyebrow {
 	font-family: 'JetBrains Mono', monospace;
 	font-size: 0.6rem;
-	color: var(--v2);
+	color: var(--primary);
 	letter-spacing: 0.3em;
 	text-transform: uppercase;
 	margin-bottom: 48px;
@@ -283,7 +283,7 @@ nav.v2-nav {
 }
 
 .dark .hero h1 .accent {
-	color: var(--v2);
+	color: var(--primary);
 }
 
 .hero h1 .accent2 {
@@ -387,7 +387,7 @@ nav.v2-nav {
 }
 
 .dark .data-value {
-	color: var(--v2);
+	color: var(--primary);
 }
 
 .data-value.cyan {
@@ -434,7 +434,7 @@ nav.v2-nav {
 }
 
 .dark .data-bar.v::after {
-	background: var(--v2);
+	background: var(--primary);
 }
 
 .data-bar.c::after {
@@ -471,7 +471,7 @@ nav.v2-nav {
 }
 
 .dark .data-list span::before {
-	color: var(--v2);
+	color: var(--primary);
 }
 
 .data-quote {
@@ -530,12 +530,12 @@ nav.v2-nav {
 }
 
 .marquee-item em {
-	color: var(--inv-v2);
+	color: var(--inv-primary);
 	font-style: normal;
 }
 
 .dark .marquee-item em {
-	color: var(--v2);
+	color: var(--primary);
 }
 
 /* ─────────────────────────────────────────
@@ -571,7 +571,7 @@ nav.v2-nav {
 .p-num {
 	font-family: 'JetBrains Mono', monospace;
 	font-size: 0.57rem;
-	color: var(--v2);
+	color: var(--primary);
 	letter-spacing: 0.28em;
 	margin-bottom: 32px;
 }
@@ -629,7 +629,7 @@ nav.v2-nav {
 .section-tag {
 	font-family: 'JetBrains Mono', monospace;
 	font-size: 0.58rem;
-	color: var(--v2);
+	color: var(--primary);
 	letter-spacing: 0.28em;
 	text-transform: uppercase;
 	margin-bottom: 40px;
@@ -688,7 +688,7 @@ nav.v2-nav {
 .w-idx {
 	font-family: 'JetBrains Mono', monospace;
 	font-size: 0.57rem;
-	color: var(--v2);
+	color: var(--primary);
 	min-width: 28px;
 	padding-top: 5px;
 }
@@ -761,11 +761,11 @@ nav.v2-nav {
 }
 
 .cta-head .accent {
-	color: var(--inv-v2);
+	color: var(--inv-primary);
 }
 
 .dark .cta-head .accent {
-	color: var(--v2);
+	color: var(--primary);
 }
 
 .cta-section .btn-primary {
@@ -774,25 +774,40 @@ nav.v2-nav {
 	font-size: 0.8rem;
 	padding: 16px 52px;
 	letter-spacing: 0.24em;
-	background: var(--v2);
+	background: var(--primary);
 }
 
 .cta-section .btn-primary:hover {
-	background: var(--inv-v2);
+	background: var(--inv-primary);
 	color: var(--inv-bg);
 	box-shadow: 0 0 30px rgba(155, 140, 232, 0.5);
 }
 
 .dark .cta-section .btn-primary:hover {
-	background: var(--inv-v2);
+	background: var(--inv-primary);
 	color: var(--bg);
 	box-shadow: 0 0 30px rgba(155, 140, 232, 0.5);
 }
 
 /* ─────────────────────────────────────────
-   V2 FOOTER
+   INNER PAGE CONTENT WRAPPER
 ───────────────────────────────────────── */
-footer.v2-footer {
+.page-content {
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 48px 64px 80px;
+}
+
+@media (max-width: 768px) {
+	.page-content {
+		padding: 32px 24px 64px;
+	}
+}
+
+/* ─────────────────────────────────────────
+   SITE FOOTER
+───────────────────────────────────────── */
+footer.site-footer {
 	max-width: 1440px;
 	margin: 0 auto;
 	padding: 22px 48px;
@@ -860,7 +875,7 @@ footer.v2-footer {
 	.cta-section {
 		padding: 80px 24px;
 	}
-	footer.v2-footer {
+	footer.site-footer {
 		padding: 20px 24px;
 		flex-direction: column;
 		gap: 12px;

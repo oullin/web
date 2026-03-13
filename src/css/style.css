@@ -20,7 +20,7 @@
 @import '@css/support/toggle-switch.css' layer(components);
 @import '@css/support/theme.css';
 @import '@css/support/blog.css';
-@import '@css/style-v2.css';
+@import '@css/theme.css';
 
 @plugin "@tailwindcss/forms" {
 	strategy: base;

@@ -1,5 +1,5 @@
 <template>
-	<section class="hero">
+	<section id="writing" class="hero">
 		<div class="hero-left">
 			<!-- Breathing orb — violet + cyan ambient glow, lighter touch -->
 			<div class="orb-bg" aria-hidden="true">

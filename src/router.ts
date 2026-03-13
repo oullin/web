@@ -1,24 +1,26 @@
-import { createRouter, createWebHistory, Router } from 'vue-router';
+import { createRouter, createWebHistory, Router, RouterScrollBehavior } from 'vue-router';
 import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 
 const routerHistory = createWebHistory();
 
+const scrollBehavior: RouterScrollBehavior = (to) => {
+	if (to.hash) {
+		return { el: to.hash, behavior: 'smooth' };
+	}
+
+	const el: HTMLElement | null = document.querySelector('html');
+
+	if (el === null) {
+		return;
+	}
+
+	el.style.scrollBehavior = 'auto';
+	window.scroll({ top: 0 });
+	el.style.scrollBehavior = '';
+};
+
 const router: Router = createRouter({
-	scrollBehavior(to): void {
-		if (to.hash) {
-			window.scroll({ top: 0 });
-		} else {
-			const el: HTMLElement | null = document.querySelector('html');
-
-			if (el === null) {
-				return;
-			}
-
-			el.style.scrollBehavior = 'auto';
-			window.scroll({ top: 0 });
-			el.style.scrollBehavior = '';
-		}
-	},
+	scrollBehavior,
 	history: routerHistory,
 	routes: [
 		{

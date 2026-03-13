@@ -1,99 +1,94 @@
 <template>
-	<div class="max-w-7xl mx-auto">
-		<div class="min-h-screen flex">
-			<SideNavPartial />
+	<div class="theme min-h-screen">
+		<NavPartial />
 
-			<!-- Main content -->
-			<main class="grow overflow-hidden px-6">
-				<div class="rounded-lg w-full h-full max-w-[1072px] mx-auto flex flex-col">
-					<HeaderPartial />
+		<main class="page-content">
+			<div class="md:flex space-y-8 md:space-y-0 md:space-x-8">
+				<!-- Middle area -->
+				<div class="grow">
+					<div class="max-w-[700px]">
+						<section>
+							<!-- Page title -->
+							<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
 
-					<!-- Content -->
-					<div class="grow md:flex space-y-8 md:space-y-0 md:space-x-8 pt-12 md:pt-16 pb-16 md:pb-20">
-						<!-- Middle area -->
-						<div class="grow">
-							<div class="max-w-[700px]">
-								<section>
-									<!-- Page title -->
-									<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
+							<CoverImageLoader class="mb-5 aspect-[16/9]" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" :width="4032" :height="2268" />
 
-									<CoverImageLoader class="mb-5 aspect-[16/9]" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" :width="4032" :height="2268" />
+							<!-- Page content -->
+							<div class="space-y-8 text-slate-500">
+								<div class="space-y-4">
+									<p class="block mb-3">
+										I am an engineering leader who's passionate about building reliable and smooth software that strive to make a difference. With over twenty years in software
+										development and architecture, I've worked extensively with
+										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">GO</a>,
+										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
+										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
+										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I'm also comfortable with frameworks/libraries
+										such as <a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
+										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
+										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
+										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
+									</p>
+									<p class="block mb-3">
+										I've led teams in designing and delivering scalable, high-performance systems that run efficiently even in complex environments. Beyond writing code, I focus on
+										helping teams work better together by improving workflows and encouraging innovation.
+									</p>
+									<p class="block mb-3">
+										I thrive in fast-paced settings where clear thinking and problem-solving are key, and I'm always committed to delivering high-quality results.
+									</p>
+									<p class="block mb-3">
+										For me, software has always been more than just a job—it's a way to turn ideas into real solutions. Over the years, I've enjoyed tackling challenges, learning
+										new technologies, and guiding talented teams to create tools that users and businesses rely on.
+									</p>
+									<p class="block">
+										Today, I combine deep technical skills with thoughtful leadership to help teams push boundaries and build software that grows and scales with purpose.
+									</p>
+								</div>
 
-									<!-- Page content -->
-									<div class="space-y-8 text-slate-500">
-										<div class="space-y-4">
-											<p class="block mb-3">
-												I am an engineering leader who’s passionate about building reliable and smooth software that strive to make a difference. With over twenty years in
-												software development and architecture, I’ve worked extensively with
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">GO</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I’m also comfortable with
-												frameworks/libraries such as <a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
-											</p>
-											<p class="block mb-3">
-												I’ve led teams in designing and delivering scalable, high-performance systems that run efficiently even in complex environments. Beyond writing code, I
-												focus on helping teams work better together by improving workflows and encouraging innovation.
-											</p>
-											<p class="block mb-3">
-												I thrive in fast-paced settings where clear thinking and problem-solving are key, and I’m always committed to delivering high-quality results.
-											</p>
-											<p class="block mb-3">
-												For me, software has always been more than just a job—it’s a way to turn ideas into real solutions. Over the years, I’ve enjoyed tackling challenges,
-												learning new technologies, and guiding talented teams to create tools that users and businesses rely on.
-											</p>
-											<p class="block">
-												Today, I combine deep technical skills with thoughtful leadership to help teams push boundaries and build software that grows and scales with purpose.
-											</p>
-										</div>
-
-										<div class="mt-5 space-y-5">
-											<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
-											<div class="relative min-h-[5rem]">
-												<p v-if="profile" key="connect">
-													I'm happy to connect by
-													<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
-													to discuss projects and ideas. While I'm not always available for freelance or long-term work, please don't hesitate to reach out anytime.
-												</p>
-												<AboutConnectSkeletonPartial v-else key="skeleton" />
-											</div>
-										</div>
+								<div class="mt-5 space-y-5">
+									<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
+									<div class="relative min-h-[5rem]">
+										<p v-if="profile" key="connect">
+											I'm happy to connect by
+											<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
+											to discuss projects and ideas. While I'm not always available for freelance or long-term work, please don't hesitate to reach out anytime.
+										</p>
+										<AboutConnectSkeletonPartial v-else key="skeleton" />
 									</div>
-								</section>
-								<!-- content --->
+								</div>
 							</div>
-						</div>
-
-						<!-- Right sidebar -->
-						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
-							<div class="space-y-6">
-								<WidgetSocialTransitionWrapper />
-								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
-							</div>
-						</aside>
+						</section>
 					</div>
-
-					<FooterPartial />
 				</div>
-			</main>
-		</div>
+
+				<!-- Right sidebar -->
+				<aside class="md:w-[240px] lg:w-[300px] shrink-0">
+					<div class="space-y-6">
+						<WidgetSocialTransitionWrapper />
+						<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
+					</div>
+				</aside>
+			</div>
+		</main>
+
+		<footer class="site-footer">
+			<span>OULLIN // GUSTAVO OCANTO</span>
+			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
+			<span>© 2026 · <RouterLink :to="TERMS_AND_POLICIES_PATH" class="hover:text-white transition-colors">Terms</RouterLink></span>
+		</footer>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
 import AboutPicture from '@images/profile/about.jpg';
-import FooterPartial from '@partials/FooterPartial.vue';
-import HeaderPartial from '@partials/HeaderPartial.vue';
-import SideNavPartial from '@partials/SideNavPartial.vue';
+import NavPartial from '@partials/NavPartial.vue';
 import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
@@ -120,7 +115,7 @@ useSeo({
 	url: siteUrlFor('/about'),
 	imageAlt: `${SITE_NAME} portrait`,
 	keywords: buildKeywords('engineering leadership', 'software architecture expertise', 'tech mentoring'),
-	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
+	description: `${SITE_NAME} is an engineering leader who's passionate about building reliable and smooth software.`,
 	jsonLd: [
 		{
 			name: 'About',

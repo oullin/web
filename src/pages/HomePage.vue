@@ -1,24 +1,7 @@
 <template>
-	<div class="v2-theme min-h-screen">
+	<div class="theme min-h-screen">
 		<!-- NAV -->
-		<nav class="v2-nav">
-			<div class="nav-inner">
-				<RouterLink to="/" class="nav-logo">OULLIN</RouterLink>
-				<ul class="nav-links">
-					<li><RouterLink to="/">writing</RouterLink></li>
-					<li><RouterLink to="/projects">projects</RouterLink></li>
-					<li><RouterLink to="/about">about</RouterLink></li>
-				</ul>
-				<div style="display: flex; align-items: center; gap: 20px">
-					<div class="nav-status">
-						<span><span class="live-dot"></span>SIGNAL: ACTIVE</span>
-						<span>BUILD: 2026.03</span>
-						<span>NODE: OULLIN_PRIME</span>
-					</div>
-					<button class="nav-theme" @click="toggleDarkMode">{{ isDark ? '☀ LIGHT' : '◑ DARK' }}</button>
-				</div>
-			</div>
-		</nav>
+		<NavPartial />
 
 		<!-- HERO -->
 		<HeroPartial />
@@ -51,7 +34,7 @@
 		</div>
 
 		<!-- PRINCIPLES -->
-		<section class="principles">
+		<section id="principles" class="principles">
 			<div class="principle">
 				<div class="p-num">[ 01 / PRESENCE ]</div>
 				<h2 class="p-title">Presence<br />Is Not<br />Optional.</h2>
@@ -73,7 +56,7 @@
 		</section>
 
 		<!-- ABOUT -->
-		<section class="about-section">
+		<section id="about" class="about-section">
 			<div class="about-left">
 				<div class="section-tag">// about.maker</div>
 				<h2 class="about-name">GUSTAVO<br />OCANTO.</h2>
@@ -113,13 +96,13 @@
 		</section>
 
 		<!-- CTA -->
-		<section class="cta-section">
+		<section id="projects" class="cta-section">
 			<div class="cta-watermark">MOVE</div>
 			<h2 class="cta-head">DON'T<br />WAIT.<br /><span class="accent">MOVE.</span></h2>
 			<RouterLink to="/projects" class="btn-primary">Initialize →</RouterLink>
 		</section>
 
-		<footer class="v2-footer">
+		<footer class="site-footer">
 			<span>OULLIN // GUSTAVO OCANTO</span>
 			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
 			<span>© 2026</span>
@@ -129,10 +112,8 @@
 
 <script setup lang="ts">
 import HeroPartial from '@/partials/HeroPartial.vue';
-import { useDarkMode } from '@/dark-mode.ts';
+import NavPartial from '@/partials/NavPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
-
-const { isDark, toggleDarkMode } = useDarkMode();
 
 useSeo({
 	title: 'Home',
