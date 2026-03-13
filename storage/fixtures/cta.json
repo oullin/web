@@ -1,0 +1,9 @@
+{
+	"watermark": "MOVE",
+	"headline": ["DON'T", "WAIT."],
+	"headlineAccent": "MOVE.",
+	"button": {
+		"label": "Initialize →",
+		"to": "/projects"
+	}
+}

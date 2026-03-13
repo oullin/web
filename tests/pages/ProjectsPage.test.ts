@@ -3,17 +3,8 @@ import { nextTick } from 'vue';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ProjectsPage from '@pages/ProjectsPage.vue';
-import type { ProfileResponse, ProfileSkillResponse, ProjectsResponse } from '@api/response/index.ts';
+import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
-
-const skills: ProfileSkillResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		percentage: faker.number.int({ min: 1, max: 100 }),
-		item: faker.lorem.word(),
-		description: faker.lorem.sentence(),
-	},
-];
 
 const profile: ProfileResponse = {
 	nickname: faker.person.firstName(),
@@ -21,7 +12,7 @@ const profile: ProfileResponse = {
 	name: faker.person.fullName(),
 	email: faker.internet.email(),
 	profession: faker.person.jobTitle(),
-	skills,
+	skills: [],
 };
 
 const projects: ProjectsResponse[] = [
@@ -44,7 +35,6 @@ const getProjects = vi.fn<[], Promise<{ version: string; data: ProjectsResponse[
 beforeEach(() => {
 	getProfile.mockReset();
 	getProjects.mockReset();
-
 	getProfile.mockResolvedValue({ data: profile });
 	getProjects.mockResolvedValue({ version: '1.0.0', data: projects });
 });
@@ -52,21 +42,20 @@ beforeEach(() => {
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getProjects }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
+const global = {
+	stubs: {
+		NavPartial: true,
+		BackToTopLink: true,
+		WidgetSponsorPartial: true,
+		WidgetSkillsTransitionWrapper: true,
+		RouterLink: { template: '<a><slot /></a>' },
+		ProjectCardPartial: { template: '<div class="project">{{ item.title }}</div>', props: ['item'] },
+	},
+};
+
 describe('ProjectsPage', () => {
 	it('loads profile and projects', async () => {
-		const wrapper = mount(ProjectsPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					BackToTopLink: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-					FooterPartial: true,
-					ProjectCardPartial: { template: '<div class="project">{{ item.title }}</div>', props: ['item'] },
-				},
-			},
-		});
+		const wrapper = mount(ProjectsPage, { global });
 		await flushPromises();
 		expect(getProfile).toHaveBeenCalled();
 		expect(getProjects).toHaveBeenCalled();
@@ -77,29 +66,12 @@ describe('ProjectsPage', () => {
 
 	it('renders empty state message when no projects are returned', async () => {
 		getProjects.mockResolvedValueOnce({ version: '1.0.0', data: [] });
-
-		const wrapper = mount(ProjectsPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					BackToTopLink: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-					FooterPartial: true,
-					ProjectCardPartial: true,
-				},
-			},
-		});
-
+		const wrapper = mount(ProjectsPage, { global });
 		await flushPromises();
 		await nextTick();
-
 		const skeletons = wrapper.findAllComponents(ProjectCardSkeletonPartial);
 		expect(skeletons).toHaveLength(0);
-
 		expect(wrapper.text()).toContain('Projects will be added soon. Check back later!');
-
 		const skeletonGrid = wrapper.find('[data-testid="projects-skeleton-grid"]');
 		expect(skeletonGrid.exists()).toBe(false);
 	});
@@ -107,19 +79,7 @@ describe('ProjectsPage', () => {
 	it('handles API errors', async () => {
 		const error = new Error('oops');
 		getProfile.mockRejectedValueOnce(error);
-		const _wrapper = mount(ProjectsPage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					BackToTopLink: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-					FooterPartial: true,
-					ProjectCardPartial: true,
-				},
-			},
-		});
+		mount(ProjectsPage, { global });
 		await flushPromises();
 		await nextTick();
 		const { debugError } = await import('@api/http-error.ts');

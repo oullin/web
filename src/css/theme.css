@@ -882,3 +882,102 @@ footer.site-footer {
 		text-align: center;
 	}
 }
+
+/* ─────────────────────────────────────────
+   HAMBURGER + SCROLLBAR
+───────────────────────────────────────── */
+/* Hamburger button */
+.hamburger svg > *:nth-child(1),
+.hamburger svg > *:nth-child(2),
+.hamburger svg > *:nth-child(3) {
+	transform-origin: center;
+	transform: rotate(0deg);
+}
+
+.hamburger svg > *:nth-child(1) {
+	transition:
+		y 0.1s 0.25s ease-in,
+		transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19),
+		opacity 0.1s ease-in;
+}
+
+.hamburger svg > *:nth-child(2) {
+	transition: transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.hamburger svg > *:nth-child(3) {
+	transition:
+		y 0.1s 0.25s ease-in,
+		transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19),
+		width 0.1s 0.25s ease-in;
+}
+
+.hamburger.active svg > *:nth-child(1) {
+	opacity: 0;
+	y: 11;
+	transform: rotate(225deg);
+	transition:
+		y 0.1s ease-out,
+		transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1),
+		opacity 0.1s 0.12s ease-out;
+}
+
+.hamburger.active svg > *:nth-child(2) {
+	transform: rotate(225deg);
+	transition: transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.hamburger.active svg > *:nth-child(3) {
+	y: 11;
+	transform: rotate(135deg);
+	transition:
+		y 0.1s ease-out,
+		transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1),
+		width 0.1s ease-out;
+}
+
+:root {
+	--custom-scrollbar-track: var(--color-gray-100);
+	--custom-scrollbar-thumb: var(--color-fuchsia-500);
+	--custom-scrollbar-thumb-hover: var(--color-fuchsia-400);
+}
+
+.dark {
+	--custom-scrollbar-track: var(--color-slate-800);
+	--custom-scrollbar-thumb: var(--color-teal-500);
+	--custom-scrollbar-thumb-hover: var(--color-teal-400);
+}
+
+.custom-scrollbar {
+	--scrollbar-track: var(--custom-scrollbar-track);
+	--scrollbar-thumb: var(--custom-scrollbar-thumb);
+	--scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
+}
+
+.custom-scrollbar,
+.post-markdown pre {
+	scrollbar-width: thin; /* Firefox */
+	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.custom-scrollbar::-webkit-scrollbar,
+.post-markdown pre::-webkit-scrollbar {
+	width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track,
+.post-markdown pre::-webkit-scrollbar-track {
+	background-color: var(--scrollbar-track);
+	border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb,
+.post-markdown pre::-webkit-scrollbar-thumb {
+	background-color: var(--scrollbar-thumb);
+	border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+.post-markdown pre::-webkit-scrollbar-thumb:hover {
+	background-color: var(--scrollbar-thumb-hover);
+}

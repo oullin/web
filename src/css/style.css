@@ -18,7 +18,6 @@
 @import '@css/support/utility-patterns.css' layer(components);
 @import '@css/support/range-slider.css' layer(components);
 @import '@css/support/toggle-switch.css' layer(components);
-@import '@css/support/theme.css';
 @import '@css/support/blog.css';
 @import '@css/theme.css';
 

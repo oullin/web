@@ -2,17 +2,16 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ResumePage from '@pages/ResumePage.vue';
-import type { ProfileResponse, ProfileSkillResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
+import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 import { resumeSectionsTotalHeight } from '@/support/heights';
 
-const skills: ProfileSkillResponse[] = [{ uuid: faker.string.uuid(), percentage: 50, item: faker.lorem.word(), description: faker.lorem.sentence() }];
 const profile: ProfileResponse = {
 	nickname: faker.person.firstName(),
 	handle: faker.internet.userName(),
 	name: faker.person.fullName(),
 	email: faker.internet.email(),
 	profession: faker.person.jobTitle(),
-	skills,
+	skills: [],
 };
 const education: EducationResponse[] = [
 	{
@@ -64,33 +63,32 @@ const getEducation = vi.fn<[], Promise<{ version: string; data: EducationRespons
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getExperience, getRecommendations, getEducation }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
+const global = {
+	stubs: {
+		NavPartial: true,
+		WidgetLangPartial: true,
+		WidgetSkillsTransitionWrapper: true,
+		EducationPartial: true,
+		ExperiencePartial: true,
+		RecommendationPartial: true,
+		BackToTopLink: true,
+		RouterLink: { template: '<a><slot /></a>' },
+	},
+};
+
 describe('ResumePage', () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it('fetches data on mount', async () => {
-		const wrapper = mount(ResumePage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					FooterPartial: true,
-					WidgetLangPartial: true,
-					WidgetSkillsPartial: true,
-					EducationPartial: true,
-					ExperiencePartial: true,
-					RecommendationPartial: true,
-				},
-			},
-		});
+		const wrapper = mount(ResumePage, { global });
 		await flushPromises();
 		expect(getProfile).toHaveBeenCalled();
 		expect(getExperience).toHaveBeenCalled();
 		expect(getRecommendations).toHaveBeenCalled();
 		expect(getEducation).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('My resume');
-
 		const dot = wrapper.find('nav span');
 		expect(dot.classes()).toContain('bg-fuchsia-400/70');
 		expect(dot.classes()).toContain('dark:bg-teal-500/80');
@@ -101,31 +99,18 @@ describe('ResumePage', () => {
 		getExperience.mockReturnValueOnce(new Promise(() => {}));
 		getRecommendations.mockReturnValueOnce(new Promise(() => {}));
 		getEducation.mockReturnValueOnce(new Promise(() => {}));
-
-		const wrapper = mount(ResumePage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					FooterPartial: true,
-					WidgetLangPartial: true,
-					WidgetSkillsPartial: true,
-				},
-			},
-		});
-
+		const wrapper = mount(ResumePage, { global });
 		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
 		expect(skeleton.attributes('aria-hidden')).toBe('true');
 		expect(skeleton.find('button').exists()).toBe(false);
 		const skeletonWrapper = skeleton.element.parentElement as HTMLElement | null;
-		if (!skeletonWrapper) {
-			throw new Error('Skeleton wrapper not found');
-		}
-		const heightClasses = resumeSectionsTotalHeight().split(' ');
-		heightClasses.forEach((className) => {
-			expect(skeletonWrapper.classList.contains(className)).toBe(true);
-		});
+		if (!skeletonWrapper) throw new Error('Skeleton wrapper not found');
+		resumeSectionsTotalHeight()
+			.split(' ')
+			.forEach((cls) => {
+				expect(skeletonWrapper.classList.contains(cls)).toBe(true);
+			});
 	});
 
 	it('handles fetch failures', async () => {
@@ -134,36 +119,22 @@ describe('ResumePage', () => {
 		const reloadSpy = vi.fn();
 		const locationGetSpy = vi.spyOn(window, 'location', 'get');
 		locationGetSpy.mockReturnValue({ reload: reloadSpy } as Location);
-		const _wrapper = mount(ResumePage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					FooterPartial: true,
-					WidgetLangPartial: true,
-					WidgetSkillsPartial: true,
-					EducationPartial: true,
-					ExperiencePartial: true,
-					RecommendationPartial: true,
-				},
-			},
-		});
+		const wrapper = mount(ResumePage, { global });
 		await flushPromises();
 		const { debugError } = await import('@api/http-error.ts');
 		expect(debugError).toHaveBeenCalledWith(error);
-		const skeleton = _wrapper.find('[data-testid="resume-page-skeleton"]');
+		const skeleton = wrapper.find('[data-testid="resume-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
 		expect(skeleton.attributes('aria-hidden')).toBe('false');
 		const refreshButton = skeleton.get('button');
 		expect(refreshButton.text()).toBe('Refresh page');
 		const skeletonWrapper = skeleton.element.parentElement as HTMLElement | null;
-		if (!skeletonWrapper) {
-			throw new Error('Skeleton wrapper not found');
-		}
-		const heightClasses = resumeSectionsTotalHeight().split(' ');
-		heightClasses.forEach((className) => {
-			expect(skeletonWrapper.classList.contains(className)).toBe(true);
-		});
+		if (!skeletonWrapper) throw new Error('Skeleton wrapper not found');
+		resumeSectionsTotalHeight()
+			.split(' ')
+			.forEach((cls) => {
+				expect(skeletonWrapper.classList.contains(cls)).toBe(true);
+			});
 		await refreshButton.trigger('click');
 		expect(reloadSpy).toHaveBeenCalled();
 		locationGetSpy.mockRestore();

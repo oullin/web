@@ -1,0 +1,22 @@
+{
+	"items": [
+		{
+			"number": "01",
+			"tag": "PRESENCE",
+			"title": ["Presence", "Is Not", "Optional."],
+			"body": "Every line of code is a choice. Every decision, deliberate. Move with full attention or don't move at all."
+		},
+		{
+			"number": "02",
+			"tag": "TRANSFORMATION",
+			"title": ["Change", "Is The", "Engine."],
+			"body": "In Aztec cosmology, the fifth sun was born from sacrifice. Transformation is not failure — it is the source code."
+		},
+		{
+			"number": "03",
+			"tag": "CRAFT",
+			"title": ["Build", "Like It", "Matters."],
+			"body": "Software that people rely on. Tools that hold up. Ideas that outlast the hype cycle. Because it does."
+		}
+	]
+}

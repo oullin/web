@@ -7,52 +7,54 @@
 				<div class="orb orb-secondary"></div>
 			</div>
 			<div>
-				<p class="eyebrow">OULLIN.IO // SYSTEM ONLINE // OLLIN = MOVEMENT</p>
+				<p class="eyebrow">{{ hero.eyebrow }}</p>
 				<h1>
-					EVERY<br />
-					<span class="accent">SIGNAL</span><br />
-					<span class="accent2">MATTERS.</span>
+					<template v-for="(line, i) in hero.headline" :key="i">
+						<span v-if="line.accent" class="accent">{{ line.text }}</span>
+						<span v-else-if="line.accent2" class="accent2">{{ line.text }}</span>
+						<template v-else>{{ line.text }}</template>
+						<br />
+					</template>
 				</h1>
 				<p class="hero-sub">
-					In the age of noise, clarity is the rarest resource.<br /><br />
-					<strong>Gustavo Ocanto</strong> — Engineering Leader, AI Architect.<br />
-					Building systems that think. Writing ideas that move.<br />
-					Shipping into the light from the deliberate dark.
+					{{ hero.sub.intro }}<br /><br />
+					<strong>{{ hero.sub.author }}</strong> — {{ hero.sub.role }}<br />
+					{{ hero.sub.taglines[0] }}<br />
+					{{ hero.sub.taglines[1] }}
 				</p>
 			</div>
 			<div class="cta-row">
-				<RouterLink to="/about" class="btn-primary">Enter the system →</RouterLink>
-				<RouterLink to="/post/manifesto" class="btn-ghost">Read the manifesto</RouterLink>
+				<RouterLink v-for="cta in hero.cta" :key="cta.to" :to="cta.to" :class="cta.style === 'primary' ? 'btn-primary' : 'btn-ghost'">{{ cta.label }}</RouterLink>
 			</div>
 		</div>
 
 		<div class="hero-right">
-			<div class="data-block">
-				<div class="data-label">// transformation_index</div>
-				<div class="data-value">∞<small>continuous</small></div>
-				<div class="data-bar v"></div>
-				<div class="data-note">Ollin: the sacred day-sign of movement.<br />Change is not a bug. It is the system.</div>
-			</div>
-			<div class="data-block">
-				<div class="data-label">// presence_level</div>
-				<div class="data-value cyan">HIGH<small>/ aware</small></div>
-				<div class="data-bar c"></div>
-				<div class="data-note">Presence precedes velocity.<br />Quality of motion &gt; speed of motion.</div>
-			</div>
-			<div class="data-block">
-				<div class="data-label">// current_work</div>
-				<div class="data-list">
-					<span>AI Architecture</span>
-					<span>Engineering Leadership</span>
-					<span>Open Source</span>
-				</div>
-			</div>
-			<div class="data-block">
-				<div class="data-label">// principle.core</div>
-				<div class="data-quote">"Build like it matters.<br />Because it does."</div>
+			<div v-for="block in hero.dataBlocks" :key="block.label" class="data-block">
+				<div class="data-label">{{ block.label }}</div>
+
+				<template v-if="block.type === 'metric'">
+					<div class="data-value" :class="block.valueColor ?? ''">
+						{{ block.value }}<small>{{ block.valueSuffix }}</small>
+					</div>
+					<div class="data-bar" :class="block.bar"></div>
+					<div class="data-note">{{ block.note![0] }}<br />{{ block.note![1] }}</div>
+				</template>
+
+				<template v-else-if="block.type === 'list'">
+					<div class="data-list">
+						<span v-for="item in block.items" :key="item">{{ item }}</span>
+					</div>
+				</template>
+
+				<template v-else-if="block.type === 'quote'">
+					<div class="data-quote">"{{ block.lines![0] }}<br />{{ block.lines![1] }}"</div>
+				</template>
 			</div>
 		</div>
 	</section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+import hero from '@fixtures/hero.json';
+</script>

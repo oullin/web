@@ -1,0 +1,27 @@
+{
+	"leftTag": "// about.maker",
+	"name": ["GUSTAVO", "OCANTO."],
+	"body": {
+		"role": "Engineering leader. AI architect. Software engineer.",
+		"origin": "A daily reminder that transformation isn't tidy. It's raw. It's real. It's necessary.",
+		"mission": "Building tools that move people. Writing ideas that challenge the obvious. Sharing the journey without filtering out the difficulty."
+	},
+	"rightTag": "// current.work",
+	"work": [
+		{
+			"index": "[ 01 ]",
+			"title": "Engineering Leadership",
+			"description": "Growing teams who build with intention and ship with confidence. Velocity that doesn't sacrifice craft."
+		},
+		{
+			"index": "[ 02 ]",
+			"title": "AI Architecture",
+			"description": "Designing intelligence that moves — fast, purposeful, aware. Systems built for the edge."
+		},
+		{
+			"index": "[ 03 ]",
+			"title": "Open Source",
+			"description": "Tools built in the open. Code returned to the community with the same energy it was taken from."
+		}
+	]
+}

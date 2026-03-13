@@ -27,10 +27,11 @@
 			"@fonts/*": ["./src/fonts/*"],
 			"@stores/*": ["./src/stores/*"],
 			"@api/*": ["./src/stores/api/*"],
-			"@support/*": ["./src/support/*"]
+			"@support/*": ["./src/support/*"],
+			"@fixtures/*": ["./storage/fixtures/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
-	"include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue", "./src/**/*.d.ts", "./tests/**/*.ts", "./tests/**/*.tsx", "./vite.config.ts", "./tests/**/*.json"],
+	"include": ["./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.vue", "./src/**/*.d.ts", "./tests/**/*.ts", "./tests/**/*.tsx", "./vite.config.ts", "./tests/**/*.json", "./storage/fixtures/**/*.json"],
 	"exclude": ["node_modules", "dist"]
 }

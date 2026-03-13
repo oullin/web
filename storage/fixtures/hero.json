@@ -1,0 +1,43 @@
+{
+	"eyebrow": "OULLIN.IO // SYSTEM ONLINE // OLLIN = MOVEMENT",
+	"headline": [{ "text": "EVERY" }, { "text": "SIGNAL", "accent": true }, { "text": "MATTERS.", "accent2": true }],
+	"sub": {
+		"intro": "In the age of noise, clarity is the rarest resource.",
+		"author": "Gustavo Ocanto",
+		"role": "Engineering Leader, AI Architect.",
+		"taglines": ["Building systems that think. Writing ideas that move.", "Shipping into the light from the deliberate dark."]
+	},
+	"cta": [
+		{ "label": "Enter the system →", "to": "/about", "style": "primary" },
+		{ "label": "Read the manifesto", "to": "/post/manifesto", "style": "ghost" }
+	],
+	"dataBlocks": [
+		{
+			"type": "metric",
+			"label": "// transformation_index",
+			"value": "∞",
+			"valueSuffix": "continuous",
+			"bar": "v",
+			"note": ["Ollin: the sacred day-sign of movement.", "Change is not a bug. It is the system."]
+		},
+		{
+			"type": "metric",
+			"label": "// presence_level",
+			"value": "HIGH",
+			"valueSuffix": "/ aware",
+			"valueColor": "cyan",
+			"bar": "c",
+			"note": ["Presence precedes velocity.", "Quality of motion > speed of motion."]
+		},
+		{
+			"type": "list",
+			"label": "// current_work",
+			"items": ["AI Architecture", "Engineering Leadership", "Open Source"]
+		},
+		{
+			"type": "quote",
+			"label": "// principle.core",
+			"lines": ["Build like it matters.", "Because it does."]
+		}
+	]
+}
