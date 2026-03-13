@@ -93,7 +93,7 @@ const marqueeItems = marquee.items;
 
 const nameLines = computed<string[]>(() => {
 	if (!profile.value?.name) {
-		return [];
+		return about.defaultName;
 	}
 
 	return profile.value.name.toUpperCase().split(' ');
