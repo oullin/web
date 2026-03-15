@@ -1,0 +1,109 @@
+- generic [ref=e3]:
+      - navigation [ref=e4]:
+            - generic [ref=e5]:
+                  - link "OULLIN" [ref=e6] [cursor=pointer]:
+                        - /url: /
+                  - list [ref=e7]:
+                        - listitem [ref=e8]:
+                              - link "writing" [ref=e9] [cursor=pointer]:
+                                    - /url: /#writing-feed
+                        - listitem [ref=e10]:
+                              - link "projects" [ref=e11] [cursor=pointer]:
+                                    - /url: /projects
+                        - listitem [ref=e12]:
+                              - link "about" [ref=e13] [cursor=pointer]:
+                                    - /url: /about
+                  - generic [ref=e14]:
+                        - generic [ref=e15]:
+                              - generic [ref=e16]: 'SIGNAL: ACTIVE'
+                              - generic [ref=e18]: 'BUILD: 2026.03'
+                              - generic [ref=e19]: 'NODE: OULLIN_PRIME'
+                        - button "◑ DARK" [ref=e20] [cursor=pointer]
+      - main [ref=e21]:
+            - generic [ref=e22]:
+                  - generic [ref=e23]:
+                        - paragraph [ref=e24]: ABOUT // PRESENCE // SINGAPORE
+                        - heading "I'm Gus. I build with intention." [level=1] [ref=e25]
+                        - generic [ref=e26]:
+                              - paragraph [ref=e27]: I am an engineering leader who cares about building reliable software, clear systems, and teams that move with purpose. After more than two decades across software development and architecture, I still believe the best work comes from precision, calm thinking, and strong fundamentals.
+                              - paragraph [ref=e28]:
+                                    - text: I work comfortably across
+                                    - link "Go" [ref=e29] [cursor=pointer]:
+                                          - /url: https://go.dev/
+                                    - text: ','
+                                    - link "Node.js" [ref=e30] [cursor=pointer]:
+                                          - /url: https://nodejs.org/en
+                                    - text: ','
+                                    - link "TypeScript" [ref=e31] [cursor=pointer]:
+                                          - /url: https://www.typescriptlang.org/
+                                    - text: ', and'
+                                    - link "PHP" [ref=e32] [cursor=pointer]:
+                                          - /url: https://www.php.net/
+                                    - text: ', with practical depth in'
+                                    - link "Laravel" [ref=e33] [cursor=pointer]:
+                                          - /url: https://laravel.com/
+                                    - text: ','
+                                    - link "Vue" [ref=e34] [cursor=pointer]:
+                                          - /url: https://vuejs.org/
+                                    - text: ','
+                                    - link "Symfony" [ref=e35] [cursor=pointer]:
+                                          - /url: https://symfony.com/
+                                    - text: ', and'
+                                    - link "Next.js" [ref=e36] [cursor=pointer]:
+                                          - /url: https://nextjs.org/
+                                    - text: .
+                        - generic [ref=e37]:
+                              - generic [ref=e38]: Engineering leadership
+                              - generic [ref=e39]: Software architecture
+                              - generic [ref=e40]: Systems thinking
+                  - generic [ref=e41]:
+                        - generic [ref=e42]:
+                              - generic [ref=e43]: Location
+                              - generic [ref=e44]: Singapore
+                              - generic [ref=e45]: Building from the present, staying close to the signal, and preferring clarity over noise.
+                        - 'img "Portrait of: Gus" [ref=e48]'
+            - generic [ref=e49]:
+                  - generic [ref=e50]:
+                        - generic [ref=e51]:
+                              - generic [ref=e52]: What I Optimize For
+                              - heading "Reliable systems, better teams, and software that lasts." [level=2] [ref=e53]
+                        - paragraph [ref=e54]: I’ve led teams in high-stakes environments, modernised legacy platforms, and helped organisations turn complex requirements into systems that are easier to operate, evolve, and trust.
+                  - generic [ref=e55]:
+                        - article [ref=e56]:
+                              - heading "Architecture" [level=3] [ref=e57]
+                              - paragraph [ref=e58]: I shape software around durability, observability, and maintainable boundaries instead of short-lived momentum.
+                        - article [ref=e59]:
+                              - heading "Leadership" [level=3] [ref=e60]
+                              - paragraph [ref=e61]: I focus on helping engineers work better together through clearer delivery, stronger communication, and higher standards.
+                        - article [ref=e62]:
+                              - heading "Execution" [level=3] [ref=e63]
+                              - paragraph [ref=e64]: I thrive in fast-moving environments where quality still matters and thoughtful decisions need to survive real operating pressure.
+                        - article [ref=e65]:
+                              - heading "Let's Connect" [level=3] [ref=e66]
+                        - article [ref=e72]:
+                              - generic [ref=e73]: …
+                              - generic [ref=e74]: Tracked skills in the current profile
+            - generic [ref=e75]:
+                  - list [ref=e81]:
+                        - listitem [ref=e82]
+                        - listitem [ref=e85]
+                        - listitem [ref=e88]
+                        - listitem [ref=e91]
+                  - list [ref=e97]:
+                        - listitem [ref=e98]
+                        - listitem [ref=e104]
+                        - listitem [ref=e110]
+                        - listitem [ref=e116]
+                        - listitem [ref=e122]
+                        - listitem [ref=e128]
+                  - generic [ref=e134]:
+                        - generic [ref=e135]: Operating Principle
+                        - generic [ref=e136]: Presence before velocity.
+                        - paragraph [ref=e137]: The best systems move quickly because the fundamentals are disciplined, not because the team is improvising at the edges.
+      - contentinfo [ref=e138]:
+            - generic [ref=e139]: OULLIN // GUSTAVO OCANTO
+            - generic [ref=e140]: MOVEMENT // TRANSFORMATION // HEART // LIFE
+            - generic [ref=e141]:
+                  - text: © 2026 ·
+                  - link "Terms" [ref=e142] [cursor=pointer]:
+                        - /url: /terms-and-conditions

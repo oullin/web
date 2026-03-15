@@ -2,73 +2,94 @@
 	<div class="theme min-h-screen">
 		<NavPartial />
 
-		<main class="page-content">
-			<div class="md:flex space-y-8 md:space-y-0 md:space-x-8">
-				<!-- Middle area -->
-				<div class="grow">
-					<div class="max-w-[700px]">
-						<section>
-							<!-- Page title -->
-							<h1 id="projects-top" class="h1 font-aspekta mb-12">Nice stuff I've built</h1>
+		<main class="page-shell">
+			<section class="page-hero">
+				<div class="page-hero-main">
+					<p class="page-kicker">PROJECTS // SYSTEMS // DELIVERY</p>
+					<h1 id="projects-top" class="page-title">Nice stuff I've built.</h1>
+					<div class="page-copy">
+						<p>
+							Over the years, I’ve built command-line tools, frameworks, internal platforms, and client systems for teams that needed performance, security, and maintainability at the
+							same time.
+						</p>
+						<p>These projects reflect a mix of open-source work, architecture experiments, and product delivery across banking, insurance, and SaaS.</p>
+					</div>
+				</div>
+				<div class="page-hero-side">
+					<div class="page-side-block">
+						<div class="page-stat-value">{{ isLoadingProjects ? '…' : projects.length }}</div>
+						<div class="page-stat-label">Projects currently indexed</div>
+					</div>
+					<div class="page-side-block">
+						<div class="page-section-label">Focus</div>
+						<div class="page-meta-list">
+							<span><strong>Open source:</strong> reusable engineering tools</span>
+							<span><strong>Client systems:</strong> high-trust production delivery</span>
+							<span><strong>Bias:</strong> practical architecture over demo work</span>
+						</div>
+					</div>
+				</div>
+			</section>
 
-							<!-- Page content -->
-							<div class="space-y-10">
-								<div class="mb-5">
-									<p>
-										Over the years, I've built and shared command-line tools and frameworks to tackle real engineering challenges—complete with clear docs and automated tests—and
-										partnered with banks, insurers, and fintech to deliver custom software that balances performance, security, and scalability.
-									</p>
-									<p class="mt-4">Feel free to dive into my open-source repos and client case studies to see how I turn complex requirements into reliable, maintainable systems.</p>
-								</div>
-								<section>
-									<h2 class="font-aspekta text-xl font-[650] mb-6">Open Source / Client Projects</h2>
-									<div class="relative min-h-[25rem]">
-										<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
-											<ProjectCardSkeletonPartial
-												v-for="index in skeletonCount"
-												:key="`projects-page-skeleton-${index}`"
-												:is-animated="isLoadingProjects && projects.length === 0"
-											/>
-										</div>
-										<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
-											<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-										</div>
-										<p v-else key="empty" class="text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
-									</div>
-								</section>
+			<section class="page-band">
+				<div class="page-band-intro">
+					<div>
+						<span class="page-section-label">Selected Work</span>
+						<h2 class="page-section-title">Open source and client systems shaped for real constraints.</h2>
+					</div>
+					<p class="page-lead">
+						Each project below is meant to be inspected, not just glanced at. The goal is to show systems thinking, product judgment, and the kind of execution that holds up after launch.
+					</p>
+				</div>
+
+				<div class="page-content-grid mt-8">
+					<div class="page-content-main">
+						<div class="relative min-h-[25rem]">
+							<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
+								<ProjectCardSkeletonPartial v-for="index in skeletonCount" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
 							</div>
-						</section>
+							<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
+								<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
+							</div>
+							<p v-else key="empty" class="page-empty-state">Projects will be added soon. Check back later!</p>
+						</div>
+					</div>
+
+					<div class="page-content-side">
+						<div class="page-summary-card">
+							<div class="page-section-label">Current Lens</div>
+							<div class="page-panel-title">Useful software should stay useful after the handoff.</div>
+							<p class="page-panel-copy">I care about systems that are documented, observable, and straightforward to maintain after the first release energy fades.</p>
+						</div>
+						<WidgetSponsorPartial />
 					</div>
 				</div>
 
-				<!-- Right sidebar -->
-				<aside class="md:w-[240px] lg:w-[300px] shrink-0">
-					<div class="space-y-6">
-						<WidgetSponsorPartial />
-						<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
-					</div>
-				</aside>
-			</div>
+				<div class="flex justify-end pt-10">
+					<BackToTopLink target="#projects-top" />
+				</div>
+			</section>
 
-			<div class="flex justify-end pt-10 mb-10">
-				<BackToTopLink target="#projects-top" />
-			</div>
+			<section class="page-support-grid">
+				<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
+				<div class="page-summary-card">
+					<div class="page-section-label">Build Philosophy</div>
+					<div class="page-panel-title">Complexity is allowed. Confusion is not.</div>
+					<p class="page-panel-copy">The work here tends to favor strong boundaries, boring reliability, and interfaces that make future decisions easier instead of harder.</p>
+				</div>
+			</section>
 		</main>
 
-		<footer class="site-footer">
-			<span>OULLIN // GUSTAVO OCANTO</span>
-			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
-			<span>© 2026 · <RouterLink :to="TERMS_AND_POLICIES_PATH" class="hover:text-white transition-colors">Terms</RouterLink></span>
-		</footer>
+		<FooterPartial />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { RouterLink } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import NavPartial from '@partials/NavPartial.vue';
+import FooterPartial from '@partials/FooterPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
@@ -76,7 +97,6 @@ import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
-import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 
 const apiStore = useApiStore();
 const isLoadingProjects = ref(true);

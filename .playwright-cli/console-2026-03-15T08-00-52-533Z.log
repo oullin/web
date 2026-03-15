@@ -1,0 +1,19 @@
+[     145ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0
+[     151ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0
+[    1147ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0
+[    1153ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0
+[    3150ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0
+[    3150ms] [ERROR] An unexpected error occurred: Error: An error occurred in the API. status [API request failed with status 404: Not Found] / message []
+    at http://127.0.0.1:4173/src/stores/api/http-error.ts:18:12
+    at new Promise (<anonymous>)
+    at parseError (http://127.0.0.1:4173/src/stores/api/http-error.ts:17:10)
+    at Proxy.getSocial (http://127.0.0.1:4173/src/stores/api/store.ts:65:16)
+    at async Social.fetch (http://127.0.0.1:4173/src/support/social.ts:35:24)
+    at async http://127.0.0.1:4173/src/components/WidgetSocialTransitionWrapper.vue:14:24 @ http://127.0.0.1:4173/src/stores/api/http-error.ts:25
+[    3156ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0
+[    3156ms] [ERROR] An unexpected error occurred: Error: An error occurred in the API. status [API request failed with status 404: Not Found] / message []
+    at http://127.0.0.1:4173/src/stores/api/http-error.ts:18:12
+    at new Promise (<anonymous>)
+    at parseError (http://127.0.0.1:4173/src/stores/api/http-error.ts:17:10)
+    at Proxy.getPost (http://127.0.0.1:4173/src/stores/api/store.ts:97:16)
+    at async http://127.0.0.1:4173/src/pages/PostPage.vue:90:22 @ http://127.0.0.1:4173/src/stores/api/http-error.ts:25

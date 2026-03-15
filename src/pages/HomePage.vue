@@ -64,11 +64,7 @@
 			<RouterLink :to="cta.button.to" class="btn-primary">{{ cta.button.label }}</RouterLink>
 		</section>
 
-		<footer class="site-footer">
-			<span>OULLIN // GUSTAVO OCANTO</span>
-			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
-			<span>© 2026 · <RouterLink :to="TERMS_AND_POLICIES_PATH" class="hover:text-white transition-colors">Terms</RouterLink></span>
-		</footer>
+		<FooterPartial />
 	</div>
 </template>
 
@@ -77,11 +73,11 @@ import { ref, computed, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 import HeroPartial from '@/partials/HeroPartial.vue';
 import NavPartial from '@/partials/NavPartial.vue';
+import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
-import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';

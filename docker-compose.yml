@@ -67,9 +67,9 @@ services:
             - local
         container_name: web_caddy_local
         ports:
-            - '5174:80'
+            - '${WEB_PORT:-5176}:80'
         environment:
-            - RELAY_UPSTREAM=http://host.docker.internal:18080
+            - RELAY_UPSTREAM=http://host.docker.internal:${API_PORT:-18080}
         volumes:
             - ./dist:/usr/share/caddy:ro
             - ./caddy/mtls:/etc/caddy/mtls:ro

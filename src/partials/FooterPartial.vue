@@ -1,14 +1,8 @@
 <template>
-	<footer class="border-t border-slate-200 dark:border-slate-800">
-		<div class="py-8">
-			<div class="text-center md:flex md:items-center md:justify-between">
-				<div class="text-sm text-slate-500 dark:text-slate-400">
-					<span>Copyright &copy; OULLIN - All rights reserved.</span>
-					<span class="mx-2">•</span>
-					<RouterLink v-lazy-link :to="TERMS_AND_POLICIES_PATH" class="blog-link">Terms and policies</RouterLink>
-				</div>
-			</div>
-		</div>
+	<footer class="site-footer">
+		<span>OULLIN // GUSTAVO OCANTO</span>
+		<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
+		<span>© 2026 · <RouterLink v-lazy-link :to="TERMS_AND_POLICIES_PATH" class="hover:text-white transition-colors">Terms</RouterLink></span>
 	</footer>
 </template>
 

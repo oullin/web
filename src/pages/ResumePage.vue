@@ -2,74 +2,79 @@
 	<div class="theme min-h-screen">
 		<NavPartial />
 
-		<main class="page-content">
-			<div class="md:flex space-y-8 md:space-y-0 md:space-x-8">
-				<!-- Middle area -->
-				<div class="grow">
-					<div class="max-w-[700px]">
-						<section>
-							<!-- Page title -->
-							<h1 id="resume-top" class="h1 font-aspekta mb-6">My resume</h1>
-
-							<nav aria-label="Resume sections" class="flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-12">
-								<a
-									v-for="item in navigationItems"
-									:key="item.href"
-									class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 dark:border-slate-700/80 px-4 py-2 transition-colors hover:border-fuchsia-400/70 hover:text-slate-800 dark:hover:text-slate-100"
-									:href="item.href"
-								>
-									<span class="size-2 rounded-full bg-fuchsia-400/70 dark:bg-teal-500/80"></span>
-									{{ item.text }}
-								</a>
-							</nav>
-							<!-- Page content -->
-							<div class="text-slate-500 dark:text-slate-400 relative">
-								<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
-									<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
-								</div>
-								<div v-else key="content" :class="['space-y-12', resumeSectionsTotalHeight]">
-									<div :class="resumeSectionHeights.education">
-										<span id="education" class="block h-0" aria-hidden="true"></span>
-										<EducationPartial v-if="education" :education="education" />
-									</div>
-									<div :class="resumeSectionHeights.experience">
-										<span id="experience" class="block h-0" aria-hidden="true"></span>
-										<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
-									</div>
-									<div :class="resumeSectionHeights.recommendations">
-										<span id="recommendations" class="block h-0" aria-hidden="true"></span>
-										<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
-									</div>
-								</div>
-							</div>
-							<div class="flex justify-end pt-10">
-								<BackToTopLink target="#resume-top" />
-							</div>
-						</section>
+		<main class="page-shell">
+			<section class="page-hero">
+				<div class="page-hero-main">
+					<p class="page-kicker">RESUME // EXPERIENCE // SYSTEMS</p>
+					<h1 id="resume-top" class="page-title">My resume.</h1>
+					<div class="page-copy">
+						<p>This is the structured record behind the public work: education, experience, and recommendations from the people who have seen how I operate up close.</p>
+					</div>
+					<nav aria-label="Resume sections" class="page-anchor-nav">
+						<a v-for="item in navigationItems" :key="item.href" :href="item.href">
+							{{ item.text }}
+						</a>
+					</nav>
+				</div>
+				<div class="page-hero-side">
+					<div class="page-side-block">
+						<div class="page-stat-value">{{ profile ? profile.skills.length : '…' }}</div>
+						<div class="page-stat-label">Active skills mapped from profile data</div>
+					</div>
+					<div class="page-side-block">
+						<div class="page-section-label">Operating Context</div>
+						<div class="page-meta-list">
+							<span><strong>Role:</strong> engineering leadership with hands-on depth</span>
+							<span><strong>Style:</strong> architecture, delivery, mentoring</span>
+							<span><strong>Bias:</strong> clear systems over theatrical complexity</span>
+						</div>
 					</div>
 				</div>
+			</section>
 
-				<!-- Right sidebar -->
-				<aside class="md:w-[240px] lg:w-[300px] shrink-0">
-					<div class="space-y-6">
-						<WidgetLangPartial />
-						<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
+			<section class="page-band">
+				<div class="text-slate-500 dark:text-slate-400 relative">
+					<div v-if="shouldShowSkeleton" key="skeleton" :class="['space-y-12', resumeSectionsTotalHeight]">
+						<ResumePageSkeletonPartial :show-refresh-button="hasProfileError" @retry="refreshResumePage" />
 					</div>
-				</aside>
-			</div>
+					<div v-else key="content" :class="['space-y-12', resumeSectionsTotalHeight]">
+						<div :class="['page-summary-card', resumeSectionHeights.education]">
+							<span id="education" class="block h-0" aria-hidden="true"></span>
+							<EducationPartial v-if="education" :education="education" />
+						</div>
+						<div :class="['page-summary-card', resumeSectionHeights.experience]">
+							<span id="experience" class="block h-0" aria-hidden="true"></span>
+							<ExperiencePartial v-if="experience" :experience="experience" back-to-top-target="#resume-top" />
+						</div>
+						<div :class="['page-summary-card', resumeSectionHeights.recommendations]">
+							<span id="recommendations" class="block h-0" aria-hidden="true"></span>
+							<RecommendationPartial v-if="recommendations" :recommendations="recommendations" back-to-top-target="#resume-top" />
+						</div>
+					</div>
+				</div>
+				<div class="flex justify-end pt-10">
+					<BackToTopLink target="#resume-top" />
+				</div>
+			</section>
+
+			<section class="page-support-grid">
+				<WidgetLangPartial />
+				<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
+				<div class="page-summary-card">
+					<div class="page-section-label">Why this page exists</div>
+					<div class="page-panel-title">A resume should be inspectable, not ornamental.</div>
+					<p class="page-panel-copy">This section is meant to make experience legible: what was built, under what conditions, and with what level of trust from others.</p>
+				</div>
+			</section>
 		</main>
 
-		<footer class="site-footer">
-			<span>OULLIN // GUSTAVO OCANTO</span>
-			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
-			<span>© 2026 · <RouterLink :to="TERMS_AND_POLICIES_PATH" class="hover:text-white transition-colors">Terms</RouterLink></span>
-		</footer>
+		<FooterPartial />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
 import NavPartial from '@partials/NavPartial.vue';
+import FooterPartial from '@partials/FooterPartial.vue';
 import EducationPartial from '@partials/EducationPartial.vue';
 import ExperiencePartial from '@partials/ExperiencePartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
@@ -84,7 +89,6 @@ import { debugError } from '@api/http-error.ts';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import type { ProfileResponse, EducationResponse, ExperienceResponse, RecommendationsResponse } from '@api/response/index.ts';
 import { resumeSectionHeights as buildResumeSectionHeights, resumeSectionsTotalHeight as buildResumeSectionsTotalHeight } from '@/support/heights';
-import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 
 const navigationItems = [
 	{ href: '#education', text: 'Education' },

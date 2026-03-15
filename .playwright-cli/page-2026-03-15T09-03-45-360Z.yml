@@ -1,0 +1,996 @@
+- generic [ref=e141]:
+      - navigation [ref=e142]:
+            - generic [ref=e143]:
+                  - link "OULLIN" [ref=e144] [cursor=pointer]:
+                        - /url: /
+                  - list [ref=e145]:
+                        - listitem [ref=e146]:
+                              - link "writing" [ref=e147] [cursor=pointer]:
+                                    - /url: /writing
+                        - listitem [ref=e148]:
+                              - link "projects" [ref=e149] [cursor=pointer]:
+                                    - /url: /projects
+                        - listitem [ref=e150]:
+                              - link "resume" [ref=e151] [cursor=pointer]:
+                                    - /url: /resume
+                        - listitem [ref=e152]:
+                              - link "about" [ref=e153] [cursor=pointer]:
+                                    - /url: /about
+                  - generic [ref=e154]:
+                        - generic [ref=e155]:
+                              - generic [ref=e156]: 'SIGNAL: ACTIVE'
+                              - generic [ref=e158]: 'BUILD: 2026.03'
+                              - generic [ref=e159]: 'NODE: OULLIN_PRIME'
+                        - button "◑ DARK" [ref=e160] [cursor=pointer]
+      - main [ref=e161]:
+            - generic [ref=e162]:
+                  - generic [ref=e163]:
+                        - paragraph [ref=e164]: RESUME // EXPERIENCE // SYSTEMS
+                        - heading "My resume." [level=1] [ref=e165]
+                        - paragraph [ref=e167]: 'This is the structured record behind the public work: education, experience, and recommendations from the people who have seen how I operate up close.'
+                        - navigation "Resume sections" [ref=e168]:
+                              - link "Education" [ref=e169] [cursor=pointer]:
+                                    - /url: '#education'
+                              - link "Work Experience" [ref=e170] [cursor=pointer]:
+                                    - /url: '#experience'
+                              - link "Recommendations" [ref=e171] [cursor=pointer]:
+                                    - /url: '#recommendations'
+                  - generic [ref=e172]:
+                        - generic [ref=e173]:
+                              - generic [ref=e174]: '40'
+                              - generic [ref=e175]: Active skills mapped from profile data
+                        - generic [ref=e176]:
+                              - generic [ref=e177]: Operating Context
+                              - generic [ref=e178]:
+                                    - generic [ref=e179]:
+                                          - strong [ref=e180]: 'Role:'
+                                          - text: engineering leadership with hands-on depth
+                                    - generic [ref=e181]:
+                                          - strong [ref=e182]: 'Style:'
+                                          - text: architecture, delivery, mentoring
+                                    - generic [ref=e183]:
+                                          - strong [ref=e184]: 'Bias:'
+                                          - text: clear systems over theatrical complexity
+            - generic [ref=e185]:
+                  - generic [ref=e187]:
+                        - generic [ref=e189]:
+                              - heading "Education" [level=2] [ref=e190]
+                              - list [ref=e191]:
+                                    - listitem [ref=e192]:
+                                          - generic [ref=e193]:
+                                                - img [ref=e195]
+                                                - generic [ref=e197]:
+                                                      - generic [ref=e198]: Year · 2012
+                                                      - generic [ref=e199]: Bachelor's degree
+                                                      - generic [ref=e200]: Universidad Alejandro de Humboldt
+                                                      - paragraph [ref=e202]:
+                                                            - text: As a computer scientist, I see computer science as the study of computers and computational processes, covering their underlying principles, design, real‑world applications, and even their impact on society.
+                                                            - text: My work spans both the theoretical side—think algorithms and data structures—and the hands‑on side, like building software and exploring artificial intelligence. At its core, computer science is about understanding how computers operate and using that insight to solve problems and develop new technologies.
+                                    - listitem [ref=e203]:
+                                          - generic [ref=e204]:
+                                                - img [ref=e206]
+                                                - generic [ref=e208]:
+                                                      - generic [ref=e209]: Year · 2007
+                                                      - generic [ref=e210]: Associate's degree
+                                                      - generic [ref=e211]: IUT Valencia
+                                                      - paragraph [ref=e213]:
+                                                            - text: Having completed my Associate’s in Computer Science, I’ve built a strong foundation in how computers work—learning the basics of algorithm design and data organization alongside hands‑on experience writing software and experimenting with entry‑level enterprise software.
+                                                            - text: For me, computer science means using both theory and practical skills to tackle real‑world challenges and bring new tech ideas to life.
+                        - generic [ref=e215]:
+                              - generic [ref=e216]:
+                                    - heading "Work Experience" [level=2] [ref=e217]
+                                    - link "Back to top" [ref=e218] [cursor=pointer]:
+                                          - /url: '#resume-top'
+                                          - generic [ref=e219]: ↑
+                                          - text: Back to top
+                              - list [ref=e220]:
+                                    - listitem [ref=e221]:
+                                          - generic [ref=e222]:
+                                                - img [ref=e224]
+                                                - generic [ref=e226]:
+                                                      - generic [ref=e227]: June, 2025 · November, 2025
+                                                      - generic [ref=e228]: Technical Lead
+                                                      - generic [ref=e229]: Silverlake
+                                                      - paragraph [ref=e231]:
+                                                            - text: I led a five-engineer squad modernising legacy core-banking applications into a React, TypeScript, Go, Python and Kafka stack while keeping services running, and designed real-time Kafka+Go pipelines to consolidate ATM streams, account transactions and cross-border payments with robust back-pressure and exactly-once guarantees.
+                                                            - text: I built an end-to-end monitoring console for ATM and core systems, established solid delivery practices with Docker-based zero-downtime deployments, and improved developer and CI efficiency by moving the banking dashboard to Vite.
+                                                            - text: I also secured critical integrations through a Go reverse proxy and multi-protocol ingress layer, defined the UI strategy for a Vue/TypeScript real-time data system with a tree-based exploration model and modular widget SDK, and drove healthy stakeholder cadence and team growth through clear communication, coaching and structured reviews.
+                                                      - generic [ref=e232]: Software Architecture, Leadership, GO (Programming Language), PostgreSQL, C (Programming Language), Python (Programming Language), AI, RAG, Apache Kafka.
+                                    - listitem [ref=e233]:
+                                          - generic [ref=e234]:
+                                                - img [ref=e236]
+                                                - generic [ref=e238]:
+                                                      - generic [ref=e239]: June, 2024 · April, 2025
+                                                      - generic [ref=e240]: Head of Engineering
+                                                      - generic [ref=e241]: Perx Technologies
+                                                      - paragraph [ref=e243]:
+                                                            - text: Led and integrated cross-functional engineering teams (DevOps, Infrastructure, Data, Frontend, Backend, Support) across time zones, fostering open communication and accountability.
+                                                            - text: Scaled team growth and operations from Singapore, optimized performance (database queries from 3 s to 800 ms; API calls from 2 s to 100 ms), implemented cloud cost savings, and partnered with C-level leaders to expand engineering initiatives.
+                                                      - generic [ref=e244]: Executive Leadership, Strategic Planning, Engineering Management, Cross-functional Team Leadership, Technical Architecture.
+                                    - listitem [ref=e245]:
+                                          - generic [ref=e246]:
+                                                - img [ref=e248]
+                                                - generic [ref=e250]:
+                                                      - generic [ref=e251]: January, 2022 · April, 2024
+                                                      - generic [ref=e252]: Senior Software Engineer & Manager
+                                                      - generic [ref=e253]: Aspire
+                                                      - paragraph [ref=e255]:
+                                                            - text: Led a 12-person APAC team overseeing the software development lifecycle, mentorship, technical direction, and system architecture design.
+                                                            - text: Engineered critical financial systems—prioritized payment request queues and automated credit schemas—and spearheaded SEA wallets from architecture through integration, unifying payment workflows and ledger synchronization.
+                                                            - text: Improved debit account balance queries for real-time access and boosted API response times. Resolved data inconsistencies, refactored code for reliability, designed flexible scheduled payment solutions, and directed the transition from a monolithic to microservices architecture, significantly enhancing platform scalability and maintainability.
+                                                      - generic [ref=e256]: Leadership, Strategic Planning, Engineering Management, Cross-functional Team Leadership, Technical Architecture.
+                                    - listitem [ref=e257]:
+                                          - generic [ref=e258]:
+                                                - img [ref=e260]
+                                                - generic [ref=e262]:
+                                                      - generic [ref=e263]: September, 2017 · November, 2021
+                                                      - generic [ref=e264]: Engineering Lead
+                                                      - generic [ref=e265]: BeMyGuest - Tours & Activities
+                                                      - paragraph [ref=e267]:
+                                                            - text: Developed and maintained inventory systems with availability calculations and time-slot capacity management.
+                                                            - text: Led the SaaS platform development for auto-recurring subscription payments and invoicing.
+                                                            - text: Owned integration of Adyen, Stripe, and PayPal gateways for new white-label e-commerce accounts, and implemented third-party booking supplier APIs across B2B, B2C, and white-label channels, supporting mission-critical operations in Southeast Asian markets.
+                                                      - generic [ref=e268]: Leadership, Strategic Planning, Cross-functional Team Leadership, Engineering Management, Technical Architecture.
+                                    - listitem [ref=e269]:
+                                          - generic [ref=e270]:
+                                                - img [ref=e272]
+                                                - generic [ref=e274]:
+                                                      - generic [ref=e275]: June, 2014 · September, 2017
+                                                      - generic [ref=e276]: Web Developer
+                                                      - generic [ref=e277]: Freelance
+                                                      - paragraph [ref=e279]:
+                                                            - text: Built diverse web applications for SMEs—including e-commerce, POS, medical history, and neighborhood feedback platforms—using PHP, Laravel, VueJS, and MySQL.
+                                                            - text: I also designed and delivered a multi-city drop-shipment warehouse management system, enabling real-time inventory control linked to financial reporting and distribution across multiple locations.
+                                                      - generic [ref=e280]: Leadership, Strategic Planning, Strategy Alignment, Cross-functional Team Leadership, Complexity Management
+                                    - listitem [ref=e281]:
+                                          - generic [ref=e282]:
+                                                - img [ref=e284]
+                                                - generic [ref=e286]:
+                                                      - generic [ref=e287]: February, 2011 · May, 2014
+                                                      - generic [ref=e288]: Founder & Software Engineer
+                                                      - generic [ref=e289]: Websarrollo
+                                                      - paragraph [ref=e291]:
+                                                            - text: Led a team of designers and PHP developers, managing nationwide client projects and overseeing the full app development lifecycle—including iOS/Android social networking apps.
+                                                            - text: I built CMS, shipping-tracking, e-commerce, web portfolio, college enrollment, and university survey systems, plus a City Hall Administrative System covering accounts payable, HR, payroll, treasury, and tax modules. My work leveraged PHP, jQuery (and jQuery Mobile), Cordova-JS, MySQL, HTML5, AngularJS, and Laravel 5, integrating third-party APIs and Facebook/Twitter logins within a SCRUM framework.
+                                                      - generic [ref=e292]: Leadership, Strategic Planning, Strategy Alignment, Team Development, Complexity Management.
+                                    - listitem [ref=e293]:
+                                          - generic [ref=e294]:
+                                                - img [ref=e296]
+                                                - generic [ref=e298]:
+                                                      - generic [ref=e299]: May, 2009 · February, 2011
+                                                      - generic [ref=e300]: Web Developer
+                                                      - generic [ref=e301]: Encava
+                                                      - paragraph [ref=e303]:
+                                                            - text: Maintained the company’s AS400 administrative system and spearheaded development of department-specific applications—an e-commerce inventory control for retail, web reporting for production-line quality control, an online appointment system for the medical department, and a visitor registration/management tool.
+                                                            - text: I leveraged PHP, jQuery, MySQL, HTML5, and AS400 within a SCRUM framework.
+                                                      - generic [ref=e304]: Creative Problem Solving, Analytical Skills, Strategy Alignment, Strategic Planning, Complexity Management.
+                                    - listitem [ref=e305]:
+                                          - generic [ref=e306]:
+                                                - img [ref=e308]
+                                                - generic [ref=e310]:
+                                                      - generic [ref=e311]: March, 2008 · April, 2009
+                                                      - generic [ref=e312]: Web Developer
+                                                      - generic [ref=e313]: Forja Centro
+                                                      - paragraph [ref=e315]:
+                                                            - text: Maintained a Visual Basic administrative system and built internal applications to streamline operations—mail management, mechanical design support, sales-report automation, and web-based customer invoicing.
+                                                            - text: I trained staff on these tools and provided technical support for Windows 8 and PC servers using PHP, jQuery, MySQL, HTML, and SQL Server.
+                                                      - generic [ref=e316]: Creative Problem Solving, Analytical Skills, Strategy Alignment, Strategic Planning, Complexity Management.
+                        - generic [ref=e318]:
+                              - generic [ref=e319]:
+                                    - heading "Recommendations" [level=2] [ref=e320]
+                                    - link "Back to top" [ref=e321] [cursor=pointer]:
+                                          - /url: '#resume-top'
+                                          - generic [ref=e322]: ↑
+                                          - text: Back to top
+                              - list [ref=e323]:
+                                    - listitem [ref=e324]:
+                                          - generic [ref=e325]:
+                                                - img "Shaun Chan" [ref=e327]
+                                                - generic [ref=e328]:
+                                                      - generic [ref=e329]: Shaun Chan
+                                                      - generic [ref=e330]: Silverlake
+                                                      - generic [ref=e331]: Software Engineer
+                                          - generic [ref=e332]:
+                                                - generic [ref=e333]:
+                                                      - generic [ref=e334]: Shaun Chan reported to Gus directly.
+                                                      - generic [ref=e335]: November 7, 2025
+                                                - paragraph [ref=e337]:
+                                                      - text: I had the pleasure of working with Gus, and it was an absolute joy. He’s an incredibly technical and knowledgeable developer with a natural ability to make complex topics approachable. Gus consistently maintains high standards in his work and always delivers projects on time.
+                                                      - text: What really sets him apart is his eagerness to learn new technologies and his generosity in sharing that knowledge with others. He’s been an amazing mentor and a true team player. Any team would be lucky to have someone as dedicated, skilled, and collaborative as Gus.
+                                                - link "Go back to top" [ref=e338] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e339]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e340]:
+                                          - generic [ref=e341]:
+                                                - img "Wan Ting" [ref=e343]
+                                                - generic [ref=e344]:
+                                                      - generic [ref=e345]: Wan Ting
+                                                      - generic [ref=e346]: Silverlake
+                                                      - generic [ref=e347]: Software Engineer
+                                          - generic [ref=e348]:
+                                                - generic [ref=e349]:
+                                                      - generic [ref=e350]: Wan Ting reported to Gus directly.
+                                                      - generic [ref=e351]: November 6, 2025
+                                                - paragraph [ref=e353]:
+                                                      - text: Gust is a highly skilled full-stack developer, technical lead, and architect with deep expertise in building scalable, secure solutions—critical in the fast-paced fintech landscape. Beyond his technical acumen, Gust is a generous mentor who actively shares knowledge, identifies blind spots, and encourages continuous learning.
+                                                      - text: His guidance helped our team navigate complex challenges and sharpen our strategic thinking, both in product development and career growth.
+                                                      - text: I'm grateful to have had such a thoughtful and visionary leader on our team.
+                                                - link "Go back to top" [ref=e354] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e355]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e356]:
+                                          - generic [ref=e357]:
+                                                - img "Hooi Yang Choo" [ref=e359]
+                                                - generic [ref=e360]:
+                                                      - generic [ref=e361]: Hooi Yang Choo
+                                                      - generic [ref=e362]: Silverlake
+                                                      - generic [ref=e363]: Software Engineer
+                                          - generic [ref=e364]:
+                                                - generic [ref=e365]:
+                                                      - generic [ref=e366]: Hooi Yang reported to Gus directly.
+                                                      - generic [ref=e367]: November 4, 2025
+                                                - paragraph [ref=e369]:
+                                                      - text: I’m extremely lucky to be able to work with Gus. He’s a friendly, approachable person who’s genuinely easy to be around, while also being an elite professional who knows his craft inside and out. At work he strives for excellence in everything he does and communicates with clarity and purpose.
+                                                      - text: Eager to stay the top of the game, Gus is always learning and exploring new technologies. More importantly, he shares his valuable knowledge and experience with me. As a natural leader, he inspires those around him to be self-improve and be better. I've learnt a lot from him and highly recommend him.
+                                                - link "Go back to top" [ref=e370] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e371]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e372]:
+                                          - generic [ref=e373]:
+                                                - img "Grant Riggle" [ref=e375]
+                                                - generic [ref=e376]:
+                                                      - generic [ref=e377]: Grant Riggle
+                                                      - generic [ref=e378]: Perx Technologies
+                                                      - generic [ref=e379]: Solutions Architect
+                                          - generic [ref=e380]:
+                                                - generic [ref=e381]:
+                                                      - generic [ref=e382]: Grant reported to Gus directly.
+                                                      - generic [ref=e383]: October 20, 2025
+                                                - paragraph [ref=e385]: Gus was an exceptional manager who truly valued his people. He led with empathy, clarity, and consistency - qualities that made our team stronger and more motivated. I’m grateful for his mentorship and would gladly work with him again.
+                                                - link "Go back to top" [ref=e386] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e387]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e388]:
+                                          - generic [ref=e389]:
+                                                - img "Amenallah Reghimi" [ref=e391]
+                                                - generic [ref=e392]:
+                                                      - generic [ref=e393]: Amenallah Reghimi
+                                                      - generic [ref=e394]: Perx Technologies
+                                                      - generic [ref=e395]: CTO / Board Director
+                                          - generic [ref=e396]:
+                                                - generic [ref=e397]:
+                                                      - generic [ref=e398]: Amen managed Gus directly.
+                                                      - generic [ref=e399]: May 25, 2025
+                                                - paragraph [ref=e401]:
+                                                      - text: I've had the pleasure of interacting with Gus on several occasions and have consistently been impressed by his strong technical acumen, effective leadership, and collaborative spirit. Gus adeptly manages diverse engineering teams, including DevOps, Infrastructure, Data, Frontend, Backend, and Support.
+                                                      - text: He excels at optimizing performance, streamlining operations, and fostering clear, productive communication across global teams. Gus is a true asset, and I highly recommend him for any senior engineering leadership role.
+                                                - link "Go back to top" [ref=e402] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e403]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e404]:
+                                          - generic [ref=e405]:
+                                                - img "Lakshey Singhal" [ref=e407]
+                                                - generic [ref=e408]:
+                                                      - generic [ref=e409]: Lakshey Singhal
+                                                      - generic [ref=e410]: Perx Technologies
+                                                      - generic [ref=e411]: Senior Project Manager
+                                          - generic [ref=e412]:
+                                                - generic [ref=e413]:
+                                                      - generic [ref=e414]: Lakshey worked with Gus in the same team.
+                                                      - generic [ref=e415]: April 30, 2025
+                                                - paragraph [ref=e417]:
+                                                      - text: Working with Gustavo at Perx Technologies fundamentally reshaped how I view great technical leadership. What set him apart wasn’t just technical depth, it was the way they made engineering a strategic advantage for the business. He is excellent in aligning product, engineering, and business stakeholders around a shared roadmap, which reduced cross-team friction and accelerated time-to-market.
+                                                      - text: Beyond the tech, they built a culture of ownership and psychological safety within the engineering org. Teams trusted their judgment because it was always backed by clarity, consistency, and data, not noise.
+                                                      - text: Any company looking to turn engineering into a true strategic function and not just a delivery engine, would be lucky to have him.
+                                                - link "Go back to top" [ref=e418] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e419]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e420]:
+                                          - generic [ref=e421]:
+                                                - img "Amrith G" [ref=e423]
+                                                - generic [ref=e424]:
+                                                      - generic [ref=e425]: Amrith G
+                                                      - generic [ref=e426]: Perx Technologies
+                                                      - generic [ref=e427]: Head of Marketing
+                                          - generic [ref=e428]:
+                                                - generic [ref=e429]:
+                                                      - generic [ref=e430]: Amrith worked with Gus in the same team.
+                                                      - generic [ref=e431]: March 26, 2025
+                                                - paragraph [ref=e433]:
+                                                      - text: Gus and I were peers at Perx during his tenure as Head of Engineering. He led several key initiatives, including scaling the engineering team and aligning cross-functional efforts across DevOps, backend, frontend, and data. Additionally, he drove projects focused on infrastructure modernisation, performance optimisation, and cloud cost efficiency.
+                                                      - text: He's a hands-on and technically strong leader who enjoys solving complex engineering problems. Outside of work, Gustavo is highly disciplined when it comes to health and fitness, always consistent and focused, which says a lot about his overall approach to life and work.
+                                                - link "Go back to top" [ref=e434] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e435]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e436]:
+                                          - generic [ref=e437]:
+                                                - img "Rob Roach" [ref=e439]
+                                                - generic [ref=e440]:
+                                                      - generic [ref=e441]: Rob Roach
+                                                      - generic [ref=e442]: Perx Technologies
+                                                      - generic [ref=e443]: Infrastructure Solutions Vendor
+                                          - generic [ref=e444]:
+                                                - generic [ref=e445]:
+                                                      - generic [ref=e446]: Gus was Rob's client.
+                                                      - generic [ref=e447]: March 10, 2025
+                                                - paragraph [ref=e449]:
+                                                      - text: I had the pleasure of working with Gus at Perx Technologies from June 2024 to March 2025, where I served as a consultant on platform infrastructure while he led the engineering team.
+                                                      - text: Gus's passion for the product and unwavering work ethic pushed the team forward through difficult technical challenges. His straightforward approach and commitment to getting things done, even in high-pressure situations, demonstrated his resilience as a leader.
+                                                      - text: Any organization facing tough engineering challenges would benefit from Gus's determination and technical grit.
+                                                - link "Go back to top" [ref=e450] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e451]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e452]:
+                                          - generic [ref=e453]:
+                                                - img "Guillem Roma" [ref=e455]
+                                                - generic [ref=e456]:
+                                                      - generic [ref=e457]: Guillem Roma
+                                                      - generic [ref=e458]: Perx Technologies
+                                                      - generic [ref=e459]: Tech Lead
+                                          - generic [ref=e460]:
+                                                - generic [ref=e461]:
+                                                      - generic [ref=e462]: Guillem reported to Gus directly.
+                                                      - generic [ref=e463]: March 9, 2025
+                                                - paragraph [ref=e465]:
+                                                      - text: I had the privilege of working with Gus for the past twelve months, during which he demonstrated genuine care and unwavering dedication to our team's success.
+                                                      - text: He consistently prioritised our well-being and professional growth, fostering an environment where everyone felt valued. Gus spearheaded significant improvements in our engineering processes, streamlining workflows, developing comprehensive documentation and enhancing efficiency.
+                                                - link "Go back to top" [ref=e466] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e467]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e468]:
+                                          - generic [ref=e469]:
+                                                - img "Waseem Hakeem" [ref=e471]
+                                                - generic [ref=e472]:
+                                                      - generic [ref=e473]: Waseem Hakeem
+                                                      - generic [ref=e474]: Perx Technologies
+                                                      - generic [ref=e475]: Software Engineer
+                                          - generic [ref=e476]:
+                                                - generic [ref=e477]:
+                                                      - generic [ref=e478]: Waseem reported to Gus directly.
+                                                      - generic [ref=e479]: March 6, 2025
+                                                - paragraph [ref=e481]:
+                                                      - text: I had the privilege of working under Gus’s leadership at Perx, and his impact on our team was truly remarkable. He has a strategic approach to process optimization, always focusing on long-term efficiency rather than just quick fixes. His improvements in workflows, documentation, and monitoring significantly enhanced our software quality and delivery.
+                                                      - text: What sets Gus apart is his leadership style, he provides clear direction while trusting his team to work independently. His support and guidance through regular check-ins create an environment where developers feel empowered and motivated. Additionally, his ability to bridge gaps between product and engineering strengthened cross-team collaboration, driving overall success.
+                                                      - text: Gus is a leader who not only optimizes processes but also elevates the people around him. I highly recommend him for any role where expertise, innovation, and leadership are key.
+                                                - link "Go back to top" [ref=e482] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e483]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e484]:
+                                          - generic [ref=e485]:
+                                                - img "Bhupesh Pathak" [ref=e487]
+                                                - generic [ref=e488]:
+                                                      - generic [ref=e489]: Bhupesh Pathak
+                                                      - generic [ref=e490]: Perx Technologies
+                                                      - generic [ref=e491]: Senior Software Engineer
+                                          - generic [ref=e492]:
+                                                - generic [ref=e493]:
+                                                      - generic [ref=e494]: Bhupesh reported directly to Gus.
+                                                      - generic [ref=e495]: February 26, 2025
+                                                - paragraph [ref=e497]:
+                                                      - text: I had the privilege of working under Gustavo as an Engineering Manager, and his leadership has been nothing short of inspiring. Not only does he bring exceptional technical expertise and strategic thinking, but he also leads with empathy—something that truly sets him apart.
+                                                      - text: Gustavo doesn’t just manage a team; he genuinely cares about each individual’s growth, challenges, and well-being. He understands the personal and professional struggles employees face and goes above and beyond to support them. This ability to balance technical excellence with emotional intelligence creates a culture of trust, collaboration, and high performance.
+                                                      - text: His problem-solving mindset, clear communication, and mentorship have had a lasting impact on both the team and the success of our projects. Working with him has been a learning experience, and I highly recommend him to any organization looking for a strong, people-focused engineering leader.
+                                                - link "Go back to top" [ref=e498] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e499]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e500]:
+                                          - generic [ref=e501]:
+                                                - img "Victory SOMETIME" [ref=e503]
+                                                - generic [ref=e504]:
+                                                      - generic [ref=e505]: Victory SOMETIME
+                                                      - generic [ref=e506]: Perx Technologies
+                                                      - generic [ref=e507]: Senior Software Engineer
+                                          - generic [ref=e508]:
+                                                - generic [ref=e509]:
+                                                      - generic [ref=e510]: Victory reported directly to Gus.
+                                                      - generic [ref=e511]: February 19, 2025
+                                                - paragraph [ref=e513]:
+                                                      - text: I had a chance to work with Gus at Perx for the last 9 months. He consistently guided the team with clarity and supported our professional growth.
+                                                      - text: Despite the challenges posed by an unclear structure and team dynamics, Gus has been dedicated to making processes smoother and more consistent across departments.
+                                                      - text: His efforts to foster collaboration and improve workflows have had a meaningful impact on the team. I highly recommend Gus as a capable and inspiring engineering leader.
+                                                - link "Go back to top" [ref=e514] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e515]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e516]:
+                                          - generic [ref=e517]:
+                                                - img "Damien Passavent" [ref=e519]
+                                                - generic [ref=e520]:
+                                                      - generic [ref=e521]: Damien Passavent
+                                                      - generic [ref=e522]: Aspire
+                                                      - generic [ref=e523]: Chief Product Officer
+                                          - generic [ref=e524]:
+                                                - generic [ref=e525]:
+                                                      - generic [ref=e526]: Damien was a senior to Gus, but did not manage him directly.
+                                                      - generic [ref=e527]: April 10, 2024
+                                                - paragraph [ref=e529]:
+                                                      - text: Over the past two years, Gus has shown consistently high levels of technical skill and an innovative mindset, adapting through numerous changes and growth periods within our company.
+                                                      - text: He is always eager to support the team in reaching its goals, displaying readiness to take action, and effective communication. His ability to think outside the box is a distinct strength.
+                                                      - text: In this time, he also worked intentionally on his planning and leadership abilities, which have significantly complemented his already notable contributions to the team.
+                                                - link "Go back to top" [ref=e530] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e531]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e532]:
+                                          - generic [ref=e533]:
+                                                - img "Claudio Reggiani" [ref=e535]
+                                                - generic [ref=e536]:
+                                                      - generic [ref=e537]: Claudio Reggiani
+                                                      - generic [ref=e538]: Aspire
+                                                      - generic [ref=e539]: Engineering Manger
+                                          - generic [ref=e540]:
+                                                - generic [ref=e541]:
+                                                      - generic [ref=e542]: Claudio managed Gus directly.
+                                                      - generic [ref=e543]: April 10, 2024
+                                                - paragraph [ref=e545]:
+                                                      - text: Gustavo's blend of strong technical skills, problem-solving, and warm personality make him stand out. He's not only great at leading projects but also shines in teamwork, often stepping beyond his role to help others.
+                                                      - text: As a mentor, he'd be invaluable, and his ability to communicate and innovate positions him perfectly for roles that bridge technical teams and clients.
+                                                - link "Go back to top" [ref=e546] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e547]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e548]:
+                                          - generic [ref=e549]:
+                                                - img "Yash Maheshwari" [ref=e551]
+                                                - generic [ref=e552]:
+                                                      - generic [ref=e553]: Yash Maheshwari
+                                                      - generic [ref=e554]: Aspire
+                                                      - generic [ref=e555]: Senior Product Manager
+                                          - generic [ref=e556]:
+                                                - generic [ref=e557]:
+                                                      - generic [ref=e558]: Yash worked with Gus in the same team.
+                                                      - generic [ref=e559]: November 28, 2023
+                                                - paragraph [ref=e561]:
+                                                      - text: I had the pleasure of closely collaborating with Gustavo during my tenure as a Product Manager in the Payments squad in Aspire where he was the Engineering Manager. Throughout our partnership on various high-priority and critical projects, Gustavo's leadership not only ensured that the development team was aligned with project goals but also served as a driving force for inspiring excellence.
+                                                      - text: Gustavo's dedication to the technical aspects of our work and his openness to feedback were truly commendable. He actively contributed to problem solving discussions, demonstrating a commitment to continuous improvement. These qualities had a profound impact on the success of the products and features that we built together.
+                                                - link "Go back to top" [ref=e562] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e563]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e564]:
+                                          - generic [ref=e565]:
+                                                - img "Mohin Lakdawala" [ref=e567]
+                                                - generic [ref=e568]:
+                                                      - generic [ref=e569]: Mohin Lakdawala
+                                                      - generic [ref=e570]: Aspire
+                                                      - generic [ref=e571]: Senior Software Engineer
+                                          - generic [ref=e572]:
+                                                - generic [ref=e573]:
+                                                      - generic [ref=e574]: Mohin worked with Gus in the same team.
+                                                      - generic [ref=e575]: October 19, 2023
+                                                - paragraph [ref=e577]:
+                                                      - text: Gustavo is a highly skilled web developer with special expertise in PHP, GoLang, and a bunch of other languages along with extensive experience in managing large-scale distributed systems.
+                                                      - text: During our collaboration, Gustavo showcased exceptional problem-solving abilities, ensuring the highest standards of code quality and performance. He is not only technically proficient but also a great team player, always ready to share knowledge and support colleagues and a great asset to the team.
+                                                - link "Go back to top" [ref=e578] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e579]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e580]:
+                                          - generic [ref=e581]:
+                                                - img "Jarek Tkaczyk" [ref=e583]
+                                                - generic [ref=e584]:
+                                                      - generic [ref=e585]: Jarek Tkaczyk
+                                                      - generic [ref=e586]: Aspire
+                                                      - generic [ref=e587]: Head of Engineering
+                                          - generic [ref=e588]:
+                                                - generic [ref=e589]:
+                                                      - generic [ref=e590]: Jarek managed Gus indirectly.
+                                                      - generic [ref=e591]: February 27, 2023
+                                                - paragraph [ref=e593]:
+                                                      - text: I have worked with Gustavo as a Sr Engineer in my department at Aspire. It was the second time we worked together and it has been a great pleasure to see how far Gustavo progressed in the last few years.
+                                                      - text: Gustavo has an exceptional depth of knowledge in software development and consistently expands his high-quality knowledge with new technologies to better fit scaling team and systems.
+                                                      - text: He constantly demonstrated ambition and drive to learn and improve each stage of the engineering process. With his level of knowledge and skills I can wholeheartedly recommend Gustavo for senior technical roles, as well as leadership positions where he can leverage this experience even more.
+                                                - link "Go back to top" [ref=e594] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e595]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e596]:
+                                          - generic [ref=e597]:
+                                                - img "Rajan Chaudhary" [ref=e599]
+                                                - generic [ref=e600]:
+                                                      - generic [ref=e601]: Rajan Chaudhary
+                                                      - generic [ref=e602]: Aspire
+                                                      - generic [ref=e603]: Senior QA Engineer
+                                          - generic [ref=e604]:
+                                                - generic [ref=e605]:
+                                                      - generic [ref=e606]: Rajan reported to Gus directly.
+                                                      - generic [ref=e607]: November 16, 2022
+                                                - paragraph [ref=e609]: I worked with Gustavo in the same team for Aspire. He had excellent time management skills and had a knack for keeping everyone calm and productive during intense crunch periods. His work ethics is immaculate and so easy to work together with. Also he goes out of his way when you ask for some help and guidance. Any company would be lucky to have Gustavo.
+                                                - link "Go back to top" [ref=e610] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e611]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e612]:
+                                          - generic [ref=e613]:
+                                                - img "Ross Riley" [ref=e615]
+                                                - generic [ref=e616]:
+                                                      - generic [ref=e617]: Ross Riley
+                                                      - generic [ref=e618]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e619]: CTO
+                                          - generic [ref=e620]:
+                                                - generic [ref=e621]:
+                                                      - generic [ref=e622]: Ross managed Gus directly.
+                                                      - generic [ref=e623]: November 27, 2021
+                                                - paragraph [ref=e625]:
+                                                      - text: I had the pleasure of working alongside Gustavo for more than three years during his time at BeMyGuest.
+                                                      - text: Working within a tech team at a startup can be a very challenging experience, there are competing pressures to deliver new features as quickly as possible, whilst at the same time we have to work hard to maintain stability and quality within the code we produce.
+                                                      - text: Gustavo was an excellent and enthusiastic ambassador for this approach and led many initiatives to improve our systems, testing and architecture, leading to his work having a very positive impact on the overall quality of BeMyGuest's products.
+                                                      - text: I would highly recommend Gustavo, his combination of attention to detail, with an irrepressible drive to continue learning makes him a valuable asset within any software engineering team.
+                                                - link "Go back to top" [ref=e626] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e627]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e628]:
+                                          - generic [ref=e629]:
+                                                - img "Ric Corbett" [ref=e631]
+                                                - generic [ref=e632]:
+                                                      - generic [ref=e633]: Ric Corbett
+                                                      - generic [ref=e634]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e635]: Director of Business Development
+                                          - generic [ref=e636]:
+                                                - generic [ref=e637]:
+                                                      - generic [ref=e638]: Ric worked with Gus in different teams.
+                                                      - generic [ref=e639]: November 12, 2021
+                                                - paragraph [ref=e641]:
+                                                      - text: I had the pleasure of working with Gus for 1 year at BeMyGuest in Singapore. At the time our SAAS system was undergoing a number of new developments and Gus was extremely responsive and adaptable to deliver the continually changing needs of the end user.
+                                                      - text: Gus was a huge support during this period as he would not just deliver the tech but also ensure it was usable by our consumers. Extremely pleased to see him to continue develop and enhance his skills to be an excellent asset in any business.
+                                                - link "Go back to top" [ref=e642] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e643]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e644]:
+                                          - generic [ref=e645]:
+                                                - img "Daniel Khor Chin Huat" [ref=e647]
+                                                - generic [ref=e648]:
+                                                      - generic [ref=e649]: Daniel Khor Chin Huat
+                                                      - generic [ref=e650]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e651]: Director of Business Development
+                                          - generic [ref=e652]:
+                                                - generic [ref=e653]:
+                                                      - generic [ref=e654]: Daniel worked with Gus in different teams.
+                                                      - generic [ref=e655]: October 27, 2021
+                                                - paragraph [ref=e657]:
+                                                      - text: I am extremely pleased to write this letter of recommendation for Gustavo Ocanto and I have work together in the same company for the past 2 years and I found him a conscientious and a very hardworking individual.
+                                                      - text: Even though we are from different department, GUS have supported my side(BD) heaps on tech issue and troubleshoot instantly. In his role as an Engineering Lead he has gone beyond his Job Scope and will normally reach out to other in his own department to assist. Having GUS around in the company was fun and with his "slang" it makes us laugh hard at times.
+                                                      - text: During the years that I have cross path with GUS. I had the opportunity to observe his interpersonal style-he is pleasant and a positive motivator to his fellow team mates and colleagues.
+                                                - link "Go back to top" [ref=e658] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e659]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e660]:
+                                          - generic [ref=e661]:
+                                                - img "Kong KW" [ref=e663]
+                                                - generic [ref=e664]:
+                                                      - generic [ref=e665]: Kong KW
+                                                      - generic [ref=e666]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e667]: Senior Software Engineer
+                                          - generic [ref=e668]:
+                                                - generic [ref=e669]:
+                                                      - generic [ref=e670]: Kong worked with Gus in the same team.
+                                                      - generic [ref=e671]: October 20, 2021
+                                                - paragraph [ref=e673]:
+                                                      - text: I have worked with Gus as a fellow Software Engineer since 2017. He is a highly adaptable, encouraging and supportive colleague and an effective team lead.
+                                                      - text: His software development skill, whether its backend, full stack, is of exceptional high quality. During our stint in the company, he took the time to spearhead some of the initiatives to improve and updating the software development process and applications.
+                                                      - text: He always has a positive attitude and a desire to produce quality work. Gus is as great a person as he was a colleague, a team lead and his next employer will be lucky to have him.
+                                                - link "Go back to top" [ref=e674] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e675]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e676]:
+                                          - generic [ref=e677]:
+                                                - img "Wai Min Ho" [ref=e679]
+                                                - generic [ref=e680]:
+                                                      - generic [ref=e681]: Wai Min Ho
+                                                      - generic [ref=e682]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e683]: Distribution Partnerships Manager
+                                          - generic [ref=e684]:
+                                                - generic [ref=e685]:
+                                                      - generic [ref=e686]: Wai Min worked with Gus in different teams.
+                                                      - generic [ref=e687]: October 16, 2020
+                                                - paragraph [ref=e689]: I've had the opportunity of knowing Gus for the past. He is always capable of adapting to new working environments. Very positive attitude towards work I definitely would recommend him as full stack web developer.
+                                                - link "Go back to top" [ref=e690] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e691]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e692]:
+                                          - generic [ref=e693]:
+                                                - img "Daryle Dale De Silva" [ref=e695]
+                                                - generic [ref=e696]:
+                                                      - generic [ref=e697]: Daryle Dale De Silva
+                                                      - generic [ref=e698]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e699]: Senior Full Stack Developer
+                                          - generic [ref=e700]:
+                                                - generic [ref=e701]:
+                                                      - generic [ref=e702]: Daryle worked with Gus in the same team.
+                                                      - generic [ref=e703]: January 19, 2020
+                                                - paragraph [ref=e705]: I've had the opportunity of knowing Gus for the past. He is always capable of adapting to new working environments. Very positive attitude towards work I definitely would recommend him as full stack web developer.
+                                                - link "Go back to top" [ref=e706] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e707]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e708]:
+                                          - generic [ref=e709]:
+                                                - img "Dawid Makowski" [ref=e711]
+                                                - generic [ref=e712]:
+                                                      - generic [ref=e713]: Dawid Makowski
+                                                      - generic [ref=e714]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e715]: CTO
+                                          - generic [ref=e716]:
+                                                - generic [ref=e717]:
+                                                      - generic [ref=e718]: Dawid managed Gus directly.
+                                                      - generic [ref=e719]: July 16, 2019
+                                                - paragraph [ref=e721]:
+                                                      - text: It was a pleasure to have an opportunity to work with Gustavo. He's a brilliant developer and analyst, with a head full of new ideas. He's not afraid of approaching the most complex problems and testing new waters to find the best solutions.
+                                                      - text: He's got a great personality and always fun to have around in your team. Always keen to share his knowledge thru training or giving public presentations. He's got that deep internal drive to learn every day and test new ideas in real life, which I always find very valuable.
+                                                - link "Go back to top" [ref=e722] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e723]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e724]:
+                                          - generic [ref=e725]:
+                                                - img "Jarek Tkaczyk" [ref=e727]
+                                                - generic [ref=e728]:
+                                                      - generic [ref=e729]: Jarek Tkaczyk
+                                                      - generic [ref=e730]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e731]: Tech Lead
+                                          - generic [ref=e732]:
+                                                - generic [ref=e733]:
+                                                      - generic [ref=e734]: Jarek managed Gus indirectly
+                                                      - generic [ref=e735]: July 11, 2019
+                                                - paragraph [ref=e737]:
+                                                      - text: Gus has been always committed and eager to learn on professional level plus an exceptional personality when it comes to socializing, which made him a great and valuable team member during our time together at BeMyGuest in Singapore.
+                                                      - text: Can't recommend enough!
+                                                - link "Go back to top" [ref=e738] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e739]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e740]:
+                                          - generic [ref=e741]:
+                                                - img "Clement Wong" [ref=e743]
+                                                - generic [ref=e744]:
+                                                      - generic [ref=e745]: Clement Wong
+                                                      - generic [ref=e746]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e747]: CEO
+                                          - generic [ref=e748]:
+                                                - generic [ref=e749]:
+                                                      - generic [ref=e750]: Clement managed Gus indirectly
+                                                      - generic [ref=e751]: June 15, 2019
+                                                - paragraph [ref=e753]: Very driven and out of the box thinker, coming up with innovative solutions to complex tech problems! Totally enjoyed having him on the team!
+                                                - link "Go back to top" [ref=e754] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e755]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e756]:
+                                          - generic [ref=e757]:
+                                                - img "Rudolf Ratusiński" [ref=e759]
+                                                - generic [ref=e760]:
+                                                      - generic [ref=e761]: Rudolf Ratusiński
+                                                      - generic [ref=e762]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e763]: Senior DevOps Engineer
+                                          - generic [ref=e764]:
+                                                - generic [ref=e765]:
+                                                      - generic [ref=e766]: Rudolf worked with Gus in the same team.
+                                                      - generic [ref=e767]: June 14, 2019
+                                                - paragraph [ref=e769]:
+                                                      - text: It is been a real pleasure working together with Gustavo. He's motivated, filled with knowledge, great at public speaking, especially about PHP, Unit Testing or Laravel itself. He worked on biggest projects, properly taking care of the job.
+                                                      - text: Hard working, responsible and ambitious. Definitely worth recommending.
+                                                - link "Go back to top" [ref=e770] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e771]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e772]:
+                                          - generic [ref=e773]:
+                                                - img "Nabil Elshafaey" [ref=e775]
+                                                - generic [ref=e776]:
+                                                      - generic [ref=e777]: Nabil Elshafaey
+                                                      - generic [ref=e778]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e779]: Head of Distribution
+                                          - generic [ref=e780]:
+                                                - generic [ref=e781]:
+                                                      - generic [ref=e782]: Nabil worked with Gus in different teams.
+                                                      - generic [ref=e783]: June 13, 2019
+                                                - paragraph [ref=e785]: Gustavo is a team player, tech enthusiast with very positive energy.gustavo is one of those colleagues that makes you enjoy working more at the office, he is creative, fast learner and hard worker.
+                                                - link "Go back to top" [ref=e786] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e787]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e788]:
+                                          - generic [ref=e789]:
+                                                - img "Sophie Ha" [ref=e791]
+                                                - generic [ref=e792]:
+                                                      - generic [ref=e793]: Sophie Ha
+                                                      - generic [ref=e794]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e795]: Software Engineer
+                                          - generic [ref=e796]:
+                                                - generic [ref=e797]:
+                                                      - generic [ref=e798]: Sophie reported directly to Gus.
+                                                      - generic [ref=e799]: May 31, 2019
+                                                - paragraph [ref=e801]:
+                                                      - text: Gus is the one who's really enthusiastic about tech regardless of back-end or front-end. With the pursuit of code quality, he keeps polishing tech skills as well as being very active for code review.
+                                                      - text: Meanwhile, he enjoys sharing his findings in public and we all benefited a lot from it.
+                                                - link "Go back to top" [ref=e802] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e803]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e804]:
+                                          - generic [ref=e805]:
+                                                - img "Sohail Salehi" [ref=e807]
+                                                - generic [ref=e808]:
+                                                      - generic [ref=e809]: Sohail Salehi
+                                                      - generic [ref=e810]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e811]: Senior Software Engineer
+                                          - generic [ref=e812]:
+                                                - generic [ref=e813]:
+                                                      - generic [ref=e814]: Sohail worked with Gus in the same team.
+                                                      - generic [ref=e815]: September 26, 2018
+                                                - paragraph [ref=e817]:
+                                                      - text: I'm enjoying a pleasure of working alongside Gustavo for a year now. He has high work ethics and great experience in web technologies to the level that BeMyGuest entrusted him in handling challenging problems (i.e. payment gateways in fragmented South East Asia, API integration, Test Driven Development, Continuous Integration, and Continuous Delivery).
+                                                      - text: But that is not all, Gustavo regardless of deadline pressure always delivers with a smile. His sense of humor always softens the toughest stressful situations for the rest of the team.
+                                                      - text: Long story short he is a true asset to our team.
+                                                - link "Go back to top" [ref=e818] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e819]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e820]:
+                                          - generic [ref=e821]:
+                                                - img "Michal Szymaniak" [ref=e823]
+                                                - generic [ref=e824]:
+                                                      - generic [ref=e825]: Michal Szymaniak
+                                                      - generic [ref=e826]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e827]: Senior Software Engineer
+                                          - generic [ref=e828]:
+                                                - generic [ref=e829]:
+                                                      - generic [ref=e830]: Michal worked with Gus in the same team.
+                                                      - generic [ref=e831]: September 26, 2018
+                                                - paragraph [ref=e833]:
+                                                      - text: I had a chance to collaborate with Gustavo for one year, working at one team. He impressed me with his openness and willingness to learn. He dig deeper and deeper in subjects he already knew.
+                                                      - text: He was also great in sharing that knowledge. Best social skills across all developers I’ve ever meet. Perfect fit to 10xTeam.
+                                                - link "Go back to top" [ref=e834] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e835]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e836]:
+                                          - generic [ref=e837]:
+                                                - img "Fernando Rivas" [ref=e839]
+                                                - generic [ref=e840]:
+                                                      - generic [ref=e841]: Fernando Rivas
+                                                      - generic [ref=e842]: Websarrollo - Digital Agency
+                                                      - generic [ref=e843]: Senior Software Engineer
+                                          - generic [ref=e844]:
+                                                - generic [ref=e845]:
+                                                      - generic [ref=e846]: Fernando worked with Gus but they were at different companies.
+                                                      - generic [ref=e847]: August 30, 2018
+                                                - paragraph [ref=e849]:
+                                                      - text: I have had the opportunity to work with Gustavo closely and he has demonstrated to be a skilled person. Focus on detail and solid principles. He is a learner by definition and strives for improvement on every step.
+                                                      - text: Our two projects turned out to be more productive than we forecasted at the beginning of them and I personally can recommend Gustavo as a reliable professional to work with.
+                                                - link "Go back to top" [ref=e850] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e851]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e852]:
+                                          - generic [ref=e853]:
+                                                - img "Jonathan Ivan Trejo Zerpa" [ref=e855]
+                                                - generic [ref=e856]:
+                                                      - generic [ref=e857]: Jonathan Ivan Trejo Zerpa
+                                                      - generic [ref=e858]: Websarrollo - Digital Agency
+                                                      - generic [ref=e859]: Senior Software Engineer
+                                          - generic [ref=e860]:
+                                                - generic [ref=e861]:
+                                                      - generic [ref=e862]: Jonathan worked with Gus but they were at different companies.
+                                                      - generic [ref=e863]: August 28, 2018
+                                                - paragraph [ref=e865]: Excellent programmer and good project manager with good creative ideas. A good experience to have worked with him.
+                                                - link "Go back to top" [ref=e866] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e867]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e868]:
+                                          - generic [ref=e869]:
+                                                - img "Carlos Matute" [ref=e871]
+                                                - generic [ref=e872]:
+                                                      - generic [ref=e873]: Carlos Matute
+                                                      - generic [ref=e874]: Websarrollo - Digital Agency
+                                                      - generic [ref=e875]: Senior Software Engineer
+                                          - generic [ref=e876]:
+                                                - generic [ref=e877]:
+                                                      - generic [ref=e878]: Carlos Matute worked with Gus but they were at different companies.
+                                                      - generic [ref=e879]: August 27, 2018
+                                                - paragraph [ref=e881]: I can say that Gustavo had a professional level raising even since we studied at the University. Dedicated, spontaneous, with a very wide resolution of problems and with determination in the solutions due to his high knowledge in the workplace.
+                                                - link "Go back to top" [ref=e882] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e883]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e884]:
+                                          - generic [ref=e885]:
+                                                - img "Julio Cesar Hernandez" [ref=e887]
+                                                - generic [ref=e888]:
+                                                      - generic [ref=e889]: Julio Cesar Hernandez
+                                                      - generic [ref=e890]: Websarrollo - Digital Agency
+                                                      - generic [ref=e891]: Senior Software Engineer
+                                          - generic [ref=e892]:
+                                                - generic [ref=e893]:
+                                                      - generic [ref=e894]: Julio Cesar reported directly to Gus.
+                                                      - generic [ref=e895]: August 27, 2018
+                                                - paragraph [ref=e897]: I recommend Gustavo for large projects. He is a professional in the development area very proactive and efficient. It makes use of all the tools available for project management. It is organized and possesses determination and mastery over the development team.
+                                                - link "Go back to top" [ref=e898] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e899]: ↑
+                                                      - text: Go back to top
+                                    - listitem [ref=e900]:
+                                          - generic [ref=e901]:
+                                                - img "Marco Gava" [ref=e903]
+                                                - generic [ref=e904]:
+                                                      - generic [ref=e905]: Marco Gava
+                                                      - generic [ref=e906]: BeMyGuest - Tours & Activities
+                                                      - generic [ref=e907]: Senior Software Engineer
+                                          - generic [ref=e908]:
+                                                - generic [ref=e909]:
+                                                      - generic [ref=e910]: Marco work with Gus in the same team.
+                                                      - generic [ref=e911]: August 27, 2018
+                                                - paragraph [ref=e913]: Professional worker, fast learner, enjoyable to work with. Highly analyzer of low level code, always approaching methodology with security first.
+                                                - link "Go back to top" [ref=e914] [cursor=pointer]:
+                                                      - /url: '#resume-top'
+                                                      - generic [ref=e915]: ↑
+                                                      - text: Go back to top
+                  - link "Back to top" [ref=e917] [cursor=pointer]:
+                        - /url: '#resume-top'
+                        - generic [ref=e918]: ↑
+                        - text: Back to top
+            - generic [ref=e919]:
+                  - generic [ref=e920]:
+                        - generic [ref=e921]: Languages
+                        - list [ref=e922]:
+                              - listitem [ref=e923]:
+                                    - generic [ref=e924]:
+                                          - generic [ref=e925]: 🇬🇧
+                                          - generic [ref=e926]: English
+                                    - progressbar [ref=e927]
+                              - listitem [ref=e928]:
+                                    - generic [ref=e929]:
+                                          - generic [ref=e930]: 🇪🇸
+                                          - generic [ref=e931]: Spanish
+                                    - progressbar [ref=e932]
+                  - generic [ref=e934]:
+                        - generic [ref=e935]: Technical/Personal Skills
+                        - list [ref=e936]:
+                              - listitem [ref=e937]:
+                                    - generic [ref=e938] [cursor=pointer]: —Leadership
+                                    - progressbar [ref=e939]
+                              - listitem [ref=e941]:
+                                    - generic [ref=e942] [cursor=pointer]: —Management
+                                    - progressbar [ref=e943]
+                              - listitem [ref=e945]:
+                                    - generic [ref=e946] [cursor=pointer]: —Strategic Planning
+                                    - progressbar [ref=e947]
+                              - listitem [ref=e949]:
+                                    - generic [ref=e950] [cursor=pointer]: —Communication
+                                    - progressbar [ref=e951]
+                              - listitem [ref=e953]:
+                                    - generic [ref=e954] [cursor=pointer]: —Go (Programming Language)
+                                    - progressbar [ref=e955]
+                              - listitem [ref=e957]:
+                                    - generic [ref=e958] [cursor=pointer]: —PHP
+                                    - progressbar [ref=e959]
+                              - listitem [ref=e961]:
+                                    - generic [ref=e962] [cursor=pointer]: —Cloud Cost Optimization
+                                    - progressbar [ref=e963]
+                              - listitem [ref=e965]:
+                                    - generic [ref=e966] [cursor=pointer]: —System Design
+                                    - progressbar [ref=e967]
+                              - listitem [ref=e969]:
+                                    - generic [ref=e970] [cursor=pointer]: —E-commerce Architecture
+                                    - progressbar [ref=e971]
+                              - listitem [ref=e973]:
+                                    - generic [ref=e974] [cursor=pointer]: —Complex 3rd Party System Integrations
+                                    - progressbar [ref=e975]
+                              - listitem [ref=e977]:
+                                    - generic [ref=e978] [cursor=pointer]: —Scale Engineering Efforts
+                                    - progressbar [ref=e979]
+                              - listitem [ref=e981]:
+                                    - generic [ref=e982] [cursor=pointer]: —SQL Performance Optimisation
+                                    - progressbar [ref=e983]
+                              - listitem [ref=e985]:
+                                    - generic [ref=e986] [cursor=pointer]: —Mentorship
+                                    - progressbar [ref=e987]
+                              - listitem [ref=e989]:
+                                    - generic [ref=e990] [cursor=pointer]: —TypeScript
+                                    - progressbar [ref=e991]
+                              - listitem [ref=e993]:
+                                    - generic [ref=e994] [cursor=pointer]: —Vue.js
+                                    - progressbar [ref=e995]
+                              - listitem [ref=e997]:
+                                    - generic [ref=e998] [cursor=pointer]: —Node.js
+                                    - progressbar [ref=e999]
+                              - listitem [ref=e1001]:
+                                    - generic [ref=e1002] [cursor=pointer]: —PostgreSQL
+                                    - progressbar [ref=e1003]
+                              - listitem [ref=e1005]:
+                                    - generic [ref=e1006] [cursor=pointer]: —MySQL
+                                    - progressbar [ref=e1007]
+                              - listitem [ref=e1009]:
+                                    - generic [ref=e1010] [cursor=pointer]: —Apache Kafka
+                                    - progressbar [ref=e1011]
+                              - listitem [ref=e1013]:
+                                    - generic [ref=e1014] [cursor=pointer]: —Docker
+                                    - progressbar [ref=e1015]
+                              - listitem [ref=e1017]:
+                                    - generic [ref=e1018] [cursor=pointer]: —Next.JS
+                                    - progressbar [ref=e1019]
+                              - listitem [ref=e1021]:
+                                    - generic [ref=e1022] [cursor=pointer]: —Nuxt.JS
+                                    - progressbar [ref=e1023]
+                              - listitem [ref=e1025]:
+                                    - generic [ref=e1026] [cursor=pointer]: —Laravel
+                                    - progressbar [ref=e1027]
+                              - listitem [ref=e1029]:
+                                    - generic [ref=e1030] [cursor=pointer]: —Python
+                                    - progressbar [ref=e1031]
+                              - listitem [ref=e1033]:
+                                    - generic [ref=e1034] [cursor=pointer]: —FastAPI
+                                    - progressbar [ref=e1035]
+                              - listitem [ref=e1037]:
+                                    - generic [ref=e1038] [cursor=pointer]: —CI/CD
+                                    - progressbar [ref=e1039]
+                              - listitem [ref=e1041]:
+                                    - generic [ref=e1042] [cursor=pointer]: —ETL
+                                    - progressbar [ref=e1043]
+                              - listitem [ref=e1045]:
+                                    - generic [ref=e1046] [cursor=pointer]: —Go Redis Streams
+                                    - progressbar [ref=e1047]
+                              - listitem [ref=e1049]:
+                                    - generic [ref=e1050] [cursor=pointer]: —Recruiting
+                                    - progressbar [ref=e1051]
+                              - listitem [ref=e1053]:
+                                    - generic [ref=e1054] [cursor=pointer]: —Training
+                                    - progressbar [ref=e1055]
+                              - listitem [ref=e1057]:
+                                    - generic [ref=e1058] [cursor=pointer]: —RabbitMQ
+                                    - progressbar [ref=e1059]
+                              - listitem [ref=e1061]:
+                                    - generic [ref=e1062] [cursor=pointer]: —AI (Artificial Intelligence)
+                                    - progressbar [ref=e1063]
+                              - listitem [ref=e1065]:
+                                    - generic [ref=e1066] [cursor=pointer]: —Ruby on Rails
+                                    - progressbar [ref=e1067]
+                              - listitem [ref=e1069]:
+                                    - generic [ref=e1070] [cursor=pointer]: —Symfony PHP
+                                    - progressbar [ref=e1071]
+                              - listitem [ref=e1073]:
+                                    - generic [ref=e1074] [cursor=pointer]: —SvelteJS
+                                    - progressbar [ref=e1075]
+                              - listitem [ref=e1077]:
+                                    - generic [ref=e1078] [cursor=pointer]: —C/C++
+                                    - progressbar [ref=e1079]
+                              - listitem [ref=e1081]:
+                                    - generic [ref=e1082] [cursor=pointer]: —AS400
+                                    - progressbar [ref=e1083]
+                              - listitem [ref=e1085]:
+                                    - generic [ref=e1086] [cursor=pointer]: —Software Engineers
+                                    - progressbar [ref=e1087]
+                              - listitem [ref=e1089]:
+                                    - generic [ref=e1090] [cursor=pointer]: —MCP (Model Context Protocol)
+                                    - progressbar [ref=e1091]
+                              - listitem [ref=e1093]:
+                                    - generic [ref=e1094] [cursor=pointer]: —360 Communication
+                                    - progressbar [ref=e1095]
+                  - generic [ref=e1097]:
+                        - generic [ref=e1098]: Why this page exists
+                        - generic [ref=e1099]: A resume should be inspectable, not ornamental.
+                        - paragraph [ref=e1100]: 'This section is meant to make experience legible: what was built, under what conditions, and with what level of trust from others.'
+      - contentinfo [ref=e1101]:
+            - generic [ref=e1102]: OULLIN // GUSTAVO OCANTO
+            - generic [ref=e1103]: MOVEMENT // TRANSFORMATION // HEART // LIFE
+            - generic [ref=e1104]:
+                  - text: © 2026 ·
+                  - link "Terms" [ref=e1105] [cursor=pointer]:
+                        - /url: /terms-and-conditions

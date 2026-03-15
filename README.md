@@ -20,3 +20,19 @@ environment to enable it. Optional configuration variables:
 
 - `VITE_SENTRY_DSN` (required) - Your Sentry DSN
   When a DSN is present, the app initializes `@sentry/vue` in `src/main.ts` with `sendDefaultPii: true`.
+
+## Local Relay Setup
+
+The browser-facing signature endpoint remains `relay/generate-signature`.
+
+- Web Caddy serves the local site on `http://localhost:$WEB_PORT` (default `5176`)
+- The local relay forwards `/relay/*` to the API proxy on `http://localhost:$API_PORT` (default `18080`)
+- Direct Vite development also proxies `/relay/*` to the same API origin
+
+Recommended local values:
+
+- `WEB_PORT=5176`
+- `API_PORT=18080`
+- `VITE_HOST_URL=http://localhost:5176/`
+- `VITE_SITE_URL=http://localhost:5176`
+- `VITE_API_URL=http://localhost:18080/api/`

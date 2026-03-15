@@ -1,0 +1,5 @@
+Total messages: 5 (Errors: 2, Warnings: 0)
+Returning 2 messages for level "error"
+
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/relay/generate-signature:0

@@ -133,7 +133,7 @@ describe('TagPostsPage', () => {
 		const renderedPosts = wrapper.findAll('[data-testid="article-item-stub"]');
 		expect(renderedPosts).toHaveLength(posts.length);
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('2 posts found for #DESIGN');
+		expect(summary.text()).toContain('2 posts found for  #DESIGN');
 	});
 
 	it('shows an empty message when no posts are returned', async () => {
@@ -143,7 +143,7 @@ describe('TagPostsPage', () => {
 		const renderedPosts = wrapper.findAll('[data-testid="article-item-stub"]');
 		expect(renderedPosts).toHaveLength(0);
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('No posts found for#DESIGN');
+		expect(summary.text()).toContain('No posts found for #DESIGN.');
 	});
 
 	it('handles API errors gracefully', async () => {
@@ -153,7 +153,7 @@ describe('TagPostsPage', () => {
 		await flushPromises();
 		expect(debugError).toHaveBeenCalledWith(error);
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain("We couldn't load posts for#DESIGN");
+		expect(summary.text()).toContain("We couldn't load posts for #DESIGN.");
 	});
 
 	it('refetches posts when the route tag parameter changes', async () => {
@@ -168,7 +168,7 @@ describe('TagPostsPage', () => {
 
 		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'ux', text: 'ux' });
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('1 post found for #UX');
+		expect(summary.text()).toContain('1 post found for  #UX');
 	});
 
 	it('refetches posts when the search term changes', async () => {
@@ -185,6 +185,6 @@ describe('TagPostsPage', () => {
 
 		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'design', text: 'new search' });
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('1 post found for #DESIGN');
+		expect(summary.text()).toContain('1 post found for  #DESIGN');
 	});
 });

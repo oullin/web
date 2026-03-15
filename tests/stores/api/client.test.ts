@@ -92,6 +92,23 @@ describe('ApiClient', () => {
 		await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
 	});
 
+	it('requests signatures through the relay path on the configured host', async () => {
+		const realClient = new ApiClient(options);
+		const fetchMock = fetch as Mock;
+
+		fetchMock.mockReset();
+		fetchMock.mockResolvedValue(new Response(JSON.stringify({ signature: 'sig-relay' }), { status: 200 }));
+
+		await (realClient as any).getSignature('nonce-relay', `${url}profile`);
+
+		expect(fetchMock).toHaveBeenCalledWith(
+			`${url}relay/generate-signature`,
+			expect.objectContaining({
+				method: 'POST',
+			}),
+		);
+	});
+
 	it('retries signature once when clock skew is detected and refreshes timestamp', async () => {
 		const serverDate = new Date('2025-01-01T00:00:00Z').toUTCString();
 		const realClient = new ApiClient(options);

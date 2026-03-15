@@ -7,6 +7,7 @@ describe('FooterPartial', () => {
 		const wrapper = mount(FooterPartial, {
 			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
 		});
-		expect(wrapper.text()).toContain('All rights reserved');
+		expect(wrapper.text()).toContain('OULLIN // GUSTAVO OCANTO');
+		expect(wrapper.text()).toContain('Terms');
 	});
 });

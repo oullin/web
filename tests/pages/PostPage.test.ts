@@ -173,21 +173,17 @@ describe('PostPage', () => {
 		expect(wrapper.text()).toContain("We couldn't load this post.");
 	});
 
-	it('renders the follow widget above the sponsor widget', async () => {
+	it('renders the follow widget before the sponsor widget in the support section', async () => {
 		const wrapper = await mountComponent();
 
 		await flushPromises();
 
-		const aside = wrapper.find('aside');
-		expect(aside.exists()).toBe(true);
-
-		const container = aside.find('div');
-		expect(container.exists()).toBe(true);
-
-		const children = container.element.children;
-		expect(children.length).toBeGreaterThanOrEqual(2);
-		expect(children[0].tagName).toBe('WIDGET-SOCIAL-TRANSITION-WRAPPER-STUB');
-		expect(children[1].tagName).toBe('WIDGET-SPONSOR-PARTIAL-STUB');
+		const html = wrapper.html();
+		const socialIndex = html.indexOf('widget-social-transition-wrapper-stub');
+		const sponsorIndex = html.indexOf('widget-sponsor-partial-stub');
+		expect(socialIndex).toBeGreaterThan(-1);
+		expect(sponsorIndex).toBeGreaterThan(-1);
+		expect(socialIndex).toBeLessThan(sponsorIndex);
 	});
 
 	it('renders a back to top link targeting the post header', async () => {

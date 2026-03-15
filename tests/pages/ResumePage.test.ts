@@ -89,9 +89,9 @@ describe('ResumePage', () => {
 		expect(getRecommendations).toHaveBeenCalled();
 		expect(getEducation).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('My resume');
-		const dot = wrapper.find('nav span');
-		expect(dot.classes()).toContain('bg-fuchsia-400/70');
-		expect(dot.classes()).toContain('dark:bg-teal-500/80');
+		const links = wrapper.findAll('nav a');
+		expect(links).toHaveLength(3);
+		expect(links.map((link) => link.text())).toEqual(['Education', 'Work Experience', 'Recommendations']);
 	});
 
 	it('renders skeleton while the resume data is loading', () => {

@@ -9,6 +9,16 @@ import { visualizer } from 'rollup-plugin-visualizer';
 // Get the directory name equivalent to __dirname in ESM
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = path.dirname(__filename);
+const defaultApiPort = process.env.API_PORT ?? '18080';
+const relayTarget = (() => {
+	try {
+		const apiUrl = process.env.VITE_API_URL;
+
+		return apiUrl ? new URL(apiUrl).origin : `http://localhost:${defaultApiPort}`;
+	} catch {
+		return `http://localhost:${defaultApiPort}`;
+	}
+})();
 
 export default defineConfig({
 	define: {
@@ -17,5 +27,14 @@ export default defineConfig({
 	plugins: [vue(), tailwindcss(), ...(process.env.VITE_VISUALIZER === 'true' ? [visualizer({ open: true })] : [])],
 	resolve: {
 		alias: aliases,
+	},
+	server: {
+		proxy: {
+			'/relay': {
+				target: relayTarget,
+				changeOrigin: true,
+				rewrite: (pathname: string) => pathname.replace(/^\/relay/, '/api'),
+			},
+		},
 	},
 });

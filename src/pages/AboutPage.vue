@@ -2,93 +2,115 @@
 	<div class="theme min-h-screen">
 		<NavPartial />
 
-		<main class="page-content">
-			<div class="md:flex space-y-8 md:space-y-0 md:space-x-8">
-				<!-- Middle area -->
-				<div class="grow">
-					<div class="max-w-[700px]">
-						<section>
-							<!-- Page title -->
-							<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
-
-							<CoverImageLoader class="mb-5 aspect-[16/9]" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" :width="4032" :height="2268" />
-
-							<!-- Page content -->
-							<div class="space-y-8 text-slate-500">
-								<div class="space-y-4">
-									<p class="block mb-3">
-										I am an engineering leader who's passionate about building reliable and smooth software that strive to make a difference. With over twenty years in software
-										development and architecture, I've worked extensively with
-										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">GO</a>,
-										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
-										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
-										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I'm also comfortable with frameworks/libraries
-										such as <a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
-										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
-										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
-										<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
-									</p>
-									<p class="block mb-3">
-										I've led teams in designing and delivering scalable, high-performance systems that run efficiently even in complex environments. Beyond writing code, I focus on
-										helping teams work better together by improving workflows and encouraging innovation.
-									</p>
-									<p class="block mb-3">
-										I thrive in fast-paced settings where clear thinking and problem-solving are key, and I'm always committed to delivering high-quality results.
-									</p>
-									<p class="block mb-3">
-										For me, software has always been more than just a job—it's a way to turn ideas into real solutions. Over the years, I've enjoyed tackling challenges, learning
-										new technologies, and guiding talented teams to create tools that users and businesses rely on.
-									</p>
-									<p class="block">
-										Today, I combine deep technical skills with thoughtful leadership to help teams push boundaries and build software that grows and scales with purpose.
-									</p>
-								</div>
-
-								<div class="mt-5 space-y-5">
-									<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
-									<div class="relative min-h-[5rem]">
-										<p v-if="profile" key="connect">
-											I'm happy to connect by
-											<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
-											to discuss projects and ideas. While I'm not always available for freelance or long-term work, please don't hesitate to reach out anytime.
-										</p>
-										<AboutConnectSkeletonPartial v-else key="skeleton" />
-									</div>
-								</div>
-							</div>
-						</section>
+		<main class="page-shell">
+			<section class="page-hero">
+				<div class="page-hero-main">
+					<p class="page-kicker">ABOUT // PRESENCE // SINGAPORE</p>
+					<h1 class="page-title">I'm {{ formattedNickname }}. I build with intention.</h1>
+					<div class="page-copy">
+						<p>
+							I am an engineering leader who cares about building reliable software, clear systems, and teams that move with purpose. After more than two decades across software
+							development and architecture, I still believe the best work comes from precision, calm thinking, and strong fundamentals.
+						</p>
+						<p>
+							I work comfortably across
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">Go</a>,
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>, with practical depth in
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
+							<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
+						</p>
+					</div>
+					<div class="page-pill-row">
+						<span class="page-pill">Engineering leadership</span>
+						<span class="page-pill">Software architecture</span>
+						<span class="page-pill">Systems thinking</span>
 					</div>
 				</div>
 
-				<!-- Right sidebar -->
-				<aside class="md:w-[240px] lg:w-[300px] shrink-0">
-					<div class="space-y-6">
-						<WidgetSocialTransitionWrapper />
-						<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
+				<div class="page-hero-side">
+					<div class="page-side-block">
+						<div class="page-section-label">Location</div>
+						<div class="page-panel-title">Singapore</div>
+						<div class="page-panel-copy">Building from the present, staying close to the signal, and preferring clarity over noise.</div>
 					</div>
-				</aside>
-			</div>
+					<div class="page-cover-frame">
+						<CoverImageLoader class="aspect-[4/5] w-full" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" :width="4032" :height="2268" />
+					</div>
+				</div>
+			</section>
+
+			<section class="page-band">
+				<div class="page-band-intro">
+					<div>
+						<span class="page-section-label">What I Optimize For</span>
+						<h2 class="page-section-title">Reliable systems, better teams, and software that lasts.</h2>
+					</div>
+					<p class="page-lead">
+						I’ve led teams in high-stakes environments, modernised legacy platforms, and helped organisations turn complex requirements into systems that are easier to operate, evolve, and
+						trust.
+					</p>
+				</div>
+
+				<div class="page-panel-grid">
+					<article class="page-panel">
+						<h3 class="page-panel-title">Architecture</h3>
+						<p class="page-panel-copy">I shape software around durability, observability, and maintainable boundaries instead of short-lived momentum.</p>
+					</article>
+					<article class="page-panel">
+						<h3 class="page-panel-title">Leadership</h3>
+						<p class="page-panel-copy">I focus on helping engineers work better together through clearer delivery, stronger communication, and higher standards.</p>
+					</article>
+					<article class="page-panel">
+						<h3 class="page-panel-title">Execution</h3>
+						<p class="page-panel-copy">I thrive in fast-moving environments where quality still matters and thoughtful decisions need to survive real operating pressure.</p>
+					</article>
+					<article class="page-panel wide">
+						<h3 class="page-panel-title">Let's Connect</h3>
+						<div class="relative min-h-[5rem]">
+							<p v-if="profile" key="connect" class="page-panel-copy">
+								I'm happy to connect by
+								<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`">email</a>
+								to discuss projects, architecture, and product ideas. If there is an interesting system to design or improve, I’m open to the conversation.
+							</p>
+							<AboutConnectSkeletonPartial v-else key="skeleton" />
+						</div>
+					</article>
+					<article class="page-panel">
+						<div class="page-stat-value">{{ profile ? profile.skills.length : '…' }}</div>
+						<div class="page-stat-label">Tracked skills in the current profile</div>
+					</article>
+				</div>
+			</section>
+
+			<section class="page-support-grid">
+				<WidgetSocialTransitionWrapper />
+				<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
+				<div class="page-summary-card">
+					<div class="page-section-label">Operating Principle</div>
+					<div class="page-panel-title">Presence before velocity.</div>
+					<p class="page-panel-copy">The best systems move quickly because the fundamentals are disciplined, not because the team is improvising at the edges.</p>
+				</div>
+			</section>
 		</main>
 
-		<footer class="site-footer">
-			<span>OULLIN // GUSTAVO OCANTO</span>
-			<span>MOVEMENT // TRANSFORMATION // HEART // LIFE</span>
-			<span>© 2026 · <RouterLink :to="TERMS_AND_POLICIES_PATH" class="hover:text-white transition-colors">Terms</RouterLink></span>
-		</footer>
+		<FooterPartial />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
-import { RouterLink } from 'vue-router';
 import AboutPicture from '@images/profile/about.jpg';
 import NavPartial from '@partials/NavPartial.vue';
+import FooterPartial from '@partials/FooterPartial.vue';
 import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
-import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';

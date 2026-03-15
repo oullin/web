@@ -1,0 +1,10 @@
+[     192ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5175/relay/generate-signature:0
+[    1200ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5175/relay/generate-signature:0
+[    3208ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5175/relay/generate-signature:0
+[    3208ms] [ERROR] An unexpected error occurred: Error: An error occurred in the API. status [API request failed with status 500: Internal Server Error] / message [{"error":"Internal server error: the given username [gocanto] was not found","status":500,"data":null}
+]
+    at http://localhost:5175/assets/index-BXV0TmL5.js:2:71437
+    at new Promise (<anonymous>)
+    at Ge (http://localhost:5175/assets/index-BXV0TmL5.js:2:71415)
+    at Proxy.getProfile (http://localhost:5175/assets/index-BXV0TmL5.js:2:76115)
+    at async http://localhost:5175/assets/HomePage-Cy5ZOctc.js:1:6319 @ http://localhost:5175/assets/index-BXV0TmL5.js:1
