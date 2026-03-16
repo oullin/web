@@ -832,6 +832,25 @@ footer.site-footer {
 	border-top: 1px solid var(--border);
 }
 
+.footer-right {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.footer-social-link {
+	color: var(--sub);
+	transition: color 0.15s;
+}
+
+.footer-social-link:hover {
+	color: var(--primary);
+}
+
+.footer-sep {
+	color: var(--dimmed);
+}
+
 /* ─────────────────────────────────────────
    INNER PAGE DESIGN SYSTEM
 ───────────────────────────────────────── */
@@ -1164,6 +1183,28 @@ footer.site-footer {
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 24px;
 	padding: 48px 64px 64px;
+}
+
+.page-support-grid--single {
+	grid-template-columns: minmax(0, 1fr);
+	max-width: 420px;
+}
+
+.skills-band {
+	overflow: hidden;
+	padding: 14px 0;
+	background: var(--bg);
+	border-top: 1px solid var(--border);
+	border-bottom: 1px solid var(--border);
+}
+
+.skills-band .marquee-item {
+	color: var(--sub);
+}
+
+.skills-band .marquee-item em {
+	color: var(--primary);
+	font-style: normal;
 }
 
 .page-support-grid > * {

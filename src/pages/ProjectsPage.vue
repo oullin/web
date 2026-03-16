@@ -56,15 +56,6 @@
 					<BackToTopLink target="#projects-top" />
 				</div>
 			</section>
-
-			<section class="page-support-grid">
-				<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
-				<div class="page-summary-card">
-					<div class="page-section-label">Build Philosophy</div>
-					<div class="page-panel-title">Complexity is allowed. Confusion is not.</div>
-					<p class="page-panel-copy">The work here tends to favor strong boundaries, boring reliability, and interfaces that make future decisions easier instead of harder.</p>
-				</div>
-			</section>
 		</main>
 
 		<FooterPartial />
@@ -79,16 +70,13 @@ import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
-import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
+import type { ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
-import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
 
 const apiStore = useApiStore();
 const isLoadingProjects = ref(true);
 const projects = ref<ProjectsResponse[]>([]);
-const profile = ref<ProfileResponse | null>(null);
-const isLoadingProfile = ref(true);
 
 const skeletonCount = computed(() => {
 	return projects.value.length > 0 ? projects.value.length : 4;
@@ -113,20 +101,6 @@ useSeo({
 	],
 });
 
-const loadProfile = async () => {
-	try {
-		const response = await apiStore.getProfile();
-
-		if (response.data) {
-			profile.value = response.data;
-		}
-	} catch (error) {
-		debugError(error);
-	} finally {
-		isLoadingProfile.value = false;
-	}
-};
-
 const loadProjects = async () => {
 	try {
 		const response = await apiStore.getProjects();
@@ -142,6 +116,6 @@ const loadProjects = async () => {
 };
 
 onMounted(async () => {
-	await Promise.all([loadProfile(), loadProjects()]);
+	await loadProjects();
 });
 </script>

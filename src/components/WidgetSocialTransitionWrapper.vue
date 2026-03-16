@@ -17,7 +17,7 @@ const isLoading = ref(true);
 
 onMounted(async () => {
 	const response = await socialService.fetch();
-	social.value = socialService.buildNavLinks(response);
+	social.value = socialService.buildNavLinks(response, ['linkedin', 'x']);
 	isLoading.value = false;
 });
 </script>
