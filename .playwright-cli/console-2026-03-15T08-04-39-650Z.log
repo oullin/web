@@ -1,7 +1,0 @@
-Total messages: 7 (Errors: 4, Warnings: 0)
-Returning 4 messages for level "error"
-
-[ERROR] Access to fetch at 'http://localhost:18080/relay/generate-signature' from origin 'http://127.0.0.1:4175' has been blocked by CORS policy: The 'Access-Control-Allow-Origin' header has a value 'http://localhost:5174' that is not equal to the supplied origin. Have the server send the header with a valid value. @ http://127.0.0.1:4175/projects:0
-[ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:18080/relay/generate-signature:0
-[ERROR] Access to fetch at 'http://localhost:18080/relay/generate-signature' from origin 'http://127.0.0.1:4175' has been blocked by CORS policy: The 'Access-Control-Allow-Origin' header has a value 'http://localhost:5174' that is not equal to the supplied origin. Have the server send the header with a valid value. @ http://127.0.0.1:4175/projects:0
-[ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:18080/relay/generate-signature:0

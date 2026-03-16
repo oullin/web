@@ -32,7 +32,7 @@
 						<div class="text-xs text-slate-500 uppercase">{{ item.start_date }} <span class="text-slate-400 dark:text-slate-600">·</span> {{ item.end_date }}</div>
 						<div class="font-aspekta font-[650] text-slate-700 dark:text-slate-100">{{ item.position }}</div>
 						<div class="text-sm font-medium text-slate-700 dark:text-slate-100">{{ item.company }}</div>
-						<!-- eslint-disable-next-line vue/no-v-html -->
+						<!-- Sanitized markdown output -->
 						<div class="post-markdown !text-sm !leading-normal !text-slate-500 dark:!text-slate-400" v-html="item.html"></div>
 						<div class="text-xs mt-3 text-gray-400 dark:text-gray-500">
 							{{ item.skills }}

@@ -43,8 +43,5 @@ Makefile
 *.md
 
 # Config files not needed for build
-.prettierrc.json
-.prettierignore
-eslint.config.js
+.oxlintrc.json
 vitest.config.ts
-

@@ -24,7 +24,7 @@
 						<div>{{ item.relation }}</div>
 						<div>{{ item.formattedDate }}</div>
 					</div>
-					<!-- eslint-disable-next-line vue/no-v-html -->
+					<!-- Sanitized markdown output -->
 					<div class="post-markdown !text-sm !leading-normal !text-slate-500 dark:!text-slate-400" v-html="item.html"></div>
 					<BackToTopLink variant="link" label="Go back to top" :target="backToTopTarget" />
 				</div>

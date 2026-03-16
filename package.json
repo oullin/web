@@ -10,6 +10,7 @@
 		"test": "vitest run --coverage",
 		"build:stats": "VITE_VISUALIZER=true vite build",
 		"lint": "oxlint",
+		"lint:fix": "oxlint --fix",
 		"format": "oxfmt --write .",
 		"format:check": "oxfmt ."
 	},
@@ -39,10 +40,10 @@
 		"rollup-plugin-visualizer": "^6.0.3",
 		"tailwindcss": "^4.2.1",
 		"typescript": "^5.8.3",
-		"vite": "^7.3.1",
+		"vite": "^8.0.0",
 		"vitest": "^4.1.0"
 	},
 	"engines": {
-		"node": ">=22.12.0"
+		"node": ">=24 <25"
 	}
 }

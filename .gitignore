@@ -1,7 +1,7 @@
 .env
 stats.html
 .env.production
-
+.playwright-cli/
 .DS_Store
 
 dist/

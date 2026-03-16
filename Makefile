@@ -30,4 +30,4 @@ env-fresh:
 	npm install
 
 lint-fix:
-	npm run lint
+	npm run lint:fix
