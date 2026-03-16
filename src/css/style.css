@@ -20,10 +20,7 @@
 @import '@css/support/toggle-switch.css' layer(components);
 @import '@css/support/blog.css';
 @import '@css/theme.css';
-
-@plugin "@tailwindcss/forms" {
-	strategy: base;
-}
+@import '@css/support/shadcn-bridge.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -73,15 +70,16 @@
 	--tracking-wider: 0.02em;
 	--tracking-widest: 0.4em;
 
-	--color-fuchsia-50: oklch(0.977 0.017 320.058);
-	--color-fuchsia-100: oklch(0.952 0.037 318.852);
-	--color-fuchsia-200: oklch(0.903 0.076 319.62);
-	--color-fuchsia-300: oklch(0.833 0.145 321.434);
-	--color-fuchsia-400: oklch(0.74 0.238 322.16);
-	--color-fuchsia-500: oklch(0.667 0.295 322.15);
-	--color-fuchsia-600: oklch(0.591 0.293 322.896);
-	--color-fuchsia-700: oklch(0.518 0.253 323.949);
-	--color-fuchsia-800: oklch(0.452 0.211 324.591);
-	--color-fuchsia-900: oklch(0.401 0.17 325.612);
-	--color-fuchsia-950: oklch(0.293 0.136 325.661);
+	/* fuchsia remapped to #0b91b2 (≈ cyan-600) as the 500 anchor */
+	--color-fuchsia-50: oklch(0.984 0.019 200.873);
+	--color-fuchsia-100: oklch(0.956 0.045 203.388);
+	--color-fuchsia-200: oklch(0.917 0.08 205.041);
+	--color-fuchsia-300: oklch(0.865 0.127 207.078);
+	--color-fuchsia-400: oklch(0.715 0.143 215.221);
+	--color-fuchsia-500: oklch(0.609 0.126 221.723);
+	--color-fuchsia-600: oklch(0.52 0.105 223.128);
+	--color-fuchsia-700: oklch(0.45 0.085 224.283);
+	--color-fuchsia-800: oklch(0.398 0.07 227.392);
+	--color-fuchsia-900: oklch(0.302 0.056 229.695);
+	--color-fuchsia-950: oklch(0.22 0.042 230);
 }

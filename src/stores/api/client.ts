@@ -76,6 +76,14 @@ export class ApiClient {
 		return !this.isProd();
 	}
 
+	private getSignatureUrl(): URL {
+		if (typeof window !== 'undefined' && window.location.origin && window.location.origin !== 'null') {
+			return new URL('/relay/generate-signature', window.location.origin);
+		}
+
+		return new URL('relay/generate-signature', this.hostURL);
+	}
+
 	/**
 	 * Returns the current UNIX timestamp (seconds) adjusted by the
 	 * calculated server offset.
@@ -147,7 +155,7 @@ export class ApiClient {
 	}
 
 	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
-		const fullUrl = new URL('relay/generate-signature', this.hostURL);
+		const fullUrl = this.getSignatureUrl();
 
 		if (this.isProd() && fullUrl.protocol !== 'https:') {
 			throw new Error('Signature endpoint must be accessed over HTTPS.');

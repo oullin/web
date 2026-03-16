@@ -1,5 +1,5 @@
 <template>
-	<div data-testid="resume-page-skeleton" class="space-y-12 animate-pulse" :aria-hidden="showRefreshButton ? 'false' : 'true'">
+	<div data-testid="resume-page-skeleton" class="space-y-12" :aria-hidden="showRefreshButton ? 'false' : 'true'">
 		<section class="space-y-8">
 			<h2 class="h3 font-aspekta text-slate-800 dark:text-slate-100">Education</h2>
 			<ul class="space-y-8">
@@ -10,15 +10,15 @@
 						<div
 							class="absolute left-0 h-14 w-14 flex items-center justify-center border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
 						>
-							<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+							<Skeleton class="size-8 rounded-full" />
 						</div>
 						<div class="pl-20 space-y-3 w-full">
-							<div class="h-3 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
-							<div class="h-4 w-3/4 max-w-[320px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-							<div class="h-4 w-1/2 max-w-[220px] bg-slate-200 dark:bg-slate-700 rounded"></div>
+							<Skeleton class="h-3 w-32" />
+							<Skeleton class="h-4 w-3/4 max-w-[320px]" />
+							<Skeleton class="h-4 w-1/2 max-w-[220px]" />
 							<div class="space-y-2 pt-1">
-								<div class="h-3 w-full max-w-[520px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-								<div class="h-3 w-5/6 max-w-[440px] bg-slate-200 dark:bg-slate-700 rounded"></div>
+								<Skeleton class="h-3 w-full max-w-[520px]" />
+								<Skeleton class="h-3 w-5/6 max-w-[440px]" />
 							</div>
 						</div>
 					</div>
@@ -35,14 +35,14 @@
 						<div
 							class="absolute left-0 h-14 w-14 flex items-center justify-center border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
 						>
-							<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+							<Skeleton class="size-8 rounded-full" />
 						</div>
 						<div class="pl-20 space-y-3 w-full">
-							<div class="h-3 w-40 bg-slate-200 dark:bg-slate-700 rounded"></div>
-							<div class="h-4 w-3/4 max-w-[360px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-							<div class="h-4 w-1/2 max-w-[240px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-							<div class="h-3 w-full max-w-[520px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-							<div class="h-2.5 w-2/3 max-w-[320px] bg-slate-200 dark:bg-slate-700 rounded"></div>
+							<Skeleton class="h-3 w-40" />
+							<Skeleton class="h-4 w-3/4 max-w-[360px]" />
+							<Skeleton class="h-4 w-1/2 max-w-[240px]" />
+							<Skeleton class="h-3 w-full max-w-[520px]" />
+							<Skeleton class="h-2.5 w-2/3 max-w-[320px]" />
 						</div>
 					</div>
 				</li>
@@ -56,19 +56,19 @@
 						<div
 							class="absolute left-0 h-14 w-14 flex items-center justify-center border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30 bg-white dark:bg-slate-900 rounded-full"
 						>
-							<div class="h-14 w-14 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+							<Skeleton class="h-14 w-14 rounded-full" />
 						</div>
 						<div class="pl-20 space-y-3 w-full">
-							<div class="h-4 w-2/3 max-w-[320px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-							<div class="h-4 w-1/2 max-w-[220px] bg-slate-200 dark:bg-slate-700 rounded"></div>
+							<Skeleton class="h-4 w-2/3 max-w-[320px]" />
+							<Skeleton class="h-4 w-1/2 max-w-[220px]" />
 							<div class="flex justify-between text-xs text-slate-400 dark:text-slate-500 pb-2">
-								<div class="h-3 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
-								<div class="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
+								<Skeleton class="h-3 w-24" />
+								<Skeleton class="h-3 w-20" />
 							</div>
 							<div class="space-y-2">
-								<div class="h-3 w-full max-w-[520px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-								<div class="h-3 w-5/6 max-w-[440px] bg-slate-200 dark:bg-slate-700 rounded"></div>
-								<div class="h-3 w-2/3 max-w-[360px] bg-slate-200 dark:bg-slate-700 rounded"></div>
+								<Skeleton class="h-3 w-full max-w-[520px]" />
+								<Skeleton class="h-3 w-5/6 max-w-[440px]" />
+								<Skeleton class="h-3 w-2/3 max-w-[360px]" />
 							</div>
 						</div>
 					</div>
@@ -83,6 +83,7 @@
 
 <script setup lang="ts">
 import { toRef } from 'vue';
+import { Skeleton } from '@components/ui/skeleton';
 
 const props = withDefaults(defineProps<{ showRefreshButton?: boolean }>(), {
 	showRefreshButton: false,

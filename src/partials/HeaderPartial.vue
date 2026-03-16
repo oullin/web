@@ -8,7 +8,14 @@
 						<div class="w-full">
 							<label class="block text-sm sr-only" for="search">Search</label>
 							<div class="relative flex items-center">
-								<input id="search" v-model="searchQuery" type="search" class="form-input py-1 w-full pl-10" :class="{ 'border-red-500': validationError }" @keyup="onSearchInput" />
+								<Input
+									id="search"
+									v-model="searchQuery"
+									type="search"
+									class="py-1 w-full pl-10"
+									:class="{ 'border-destructive ring-destructive/20': validationError }"
+									@keyup="onSearchInput"
+								/>
 								<div class="absolute inset-0 right-auto flex items-center justify-center">
 									<svg v-if="validationError" class="w-4 h-4 shrink-0 mx-3" viewBox="0 0 16 16" @click="clearSearchAndError">
 										<path class="stroke-current text-red-500 cursor-pointer" stroke-width="2" stroke-linecap="round" d="M4 4l8 8m0-8l-8 8" />
@@ -60,6 +67,7 @@ import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 import { useDarkMode } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
+import { Input } from '@components/ui/input';
 
 const { toggleDarkMode } = useDarkMode();
 const apiStore = useApiStore();

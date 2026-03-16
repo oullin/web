@@ -7,7 +7,7 @@ BUILD_PACKAGE_OWNER ?= oullin_web
 
 BUILD_UID ?= $(shell id -u)
 BUILD_GID ?= $(shell id -g)
-LOCAL_WEB_PORT ?= 5176
+LOCAL_WEB_PORT ?= 5179
 LOCAL_API_PORT ?= 18080
 
 # Capture git SHA for Sentry release tracking

@@ -92,7 +92,7 @@ describe('ApiClient', () => {
 		await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
 	});
 
-	it('requests signatures through the relay path on the configured host', async () => {
+	it('requests signatures through the same origin relay path in the browser', async () => {
 		const realClient = new ApiClient(options);
 		const fetchMock = fetch as Mock;
 
@@ -102,7 +102,7 @@ describe('ApiClient', () => {
 		await (realClient as any).getSignature('nonce-relay', `${url}profile`);
 
 		expect(fetchMock).toHaveBeenCalledWith(
-			`${url}relay/generate-signature`,
+			`${window.location.origin}/relay/generate-signature`,
 			expect.objectContaining({
 				method: 'POST',
 			}),

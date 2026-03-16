@@ -67,7 +67,7 @@ services:
             - local
         container_name: web_caddy_local
         ports:
-            - '${LOCAL_WEB_PORT:-5176}:80'
+            - '${LOCAL_WEB_PORT:-5179}:80'
         environment:
             - RELAY_UPSTREAM=http://host.docker.internal:${LOCAL_API_PORT:-18080}
         volumes:
@@ -83,7 +83,9 @@ services:
 
     caddy-watcher:
         working_dir: /app
-        image: node:25.8.1-alpine
+        build:
+            context: .
+            dockerfile: docker/Dockerfile.caddy-watcher
         environment:
             - CHOKIDAR_USEPOLLING=1
         volumes:
@@ -95,9 +97,8 @@ services:
             - caddy-local
         command: >
             sh -lc "
-              corepack enable &&
               pnpm install --frozen-lockfile &&
-              mkdir -p dist &&
+              rm -rf dist/assets dist/index.html &&
               pnpm run build --watch --emptyOutDir=false
             "
 

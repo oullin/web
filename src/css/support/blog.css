@@ -172,6 +172,25 @@
 	@apply border-slate-200 dark:border-slate-700;
 }
 
+.project-card-link {
+	display: block;
+	border: 1px solid var(--border);
+	background: var(--bg);
+	padding: 24px 28px;
+	transition:
+		border-color 0.2s,
+		background 0.2s;
+}
+
+.project-card-link:hover {
+	border-color: var(--violet);
+	background: var(--surface);
+}
+
+.dark .project-card-link:hover {
+	border-color: var(--cyan);
+}
+
 .project-card-content {
 	@apply flex flex-col h-full min-h-[220px];
 }

@@ -1,0 +1,90 @@
+/* ─────────────────────────────────────────
+   SHADCN-VUE → OULLIN TOKEN BRIDGE
+   Maps every CSS variable that shadcn components
+   reference to the corresponding Oullin design token.
+   theme.css must be imported before this file.
+───────────────────────────────────────── */
+
+:root {
+	/* Surfaces */
+	--background: var(--bg);
+	--foreground: var(--text);
+	--card: var(--surface);
+	--card-foreground: var(--text);
+	--popover: var(--surface);
+	--popover-foreground: var(--text);
+
+	/* Brand / interactive
+	   NOTE: --shadcn-primary avoids collision with Oullin's --primary token
+	   which is used in layout CSS (data-value, page-kicker, etc.) */
+	--shadcn-primary: var(--primary);
+	--primary-foreground: #ffffff;
+
+	/* Secondary / neutral actions */
+	--secondary: var(--surface2);
+	--secondary-foreground: var(--sub);
+
+	/* Muted surfaces and text
+	   NOTE: --shadcn-muted avoids collision with Oullin's --muted which is a
+	   text color (subdued text), while shadcn uses --muted as a surface color */
+	--shadcn-muted: var(--surface);
+	--muted-foreground: var(--muted);
+
+	/* Accent (hover highlights) */
+	--accent: var(--surface2);
+	--accent-foreground: var(--text);
+
+	/* Destructive */
+	--destructive: oklch(0.577 0.245 27.325);
+	--destructive-foreground: #ffffff;
+
+	/* Borders, inputs and rings
+	   NOTE: --shadcn-border avoids collision with Oullin's --border token */
+	--shadcn-border: var(--border);
+	--input: var(--surface);
+	--ring: var(--primary);
+
+	/* Radius — minimal to match Oullin's sharp aesthetic */
+	--radius: 0.25rem;
+}
+
+.dark {
+	--shadcn-primary: var(--primary);
+	--primary-foreground: var(--bg);
+	--secondary: var(--surface2);
+	--secondary-foreground: var(--sub);
+	--shadcn-muted: var(--surface2);
+	--muted-foreground: var(--muted);
+	--destructive: oklch(0.704 0.191 22.216);
+	--shadcn-border: var(--border);
+	--input: var(--surface2);
+	--ring: var(--primary);
+}
+
+/* ─────────────────────────────────────────
+   TAILWIND V4 THEME REGISTRATION
+   Registers shadcn-expected CSS vars as Tailwind
+   color utilities (bg-primary, text-foreground, etc.)
+   Uses @theme inline so values resolve dynamically
+   at runtime (required for dark mode CSS var switching).
+───────────────────────────────────────── */
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--shadcn-primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--shadcn-muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--shadcn-border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+}

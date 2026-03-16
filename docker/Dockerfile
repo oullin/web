@@ -3,6 +3,7 @@
 # This stage compiles your source code into static assets.
 FROM node:25.8.1-alpine AS builder
 
+ARG PNPM_VERSION=10.31.0
 ARG VITE_API_ENV
 ARG VITE_API_URL
 ARG VITE_HOST_URL
@@ -21,9 +22,8 @@ WORKDIR /app
 # Copy package.json and lock files first to leverage Docker layer caching
 COPY package.json pnpm-lock.yaml ./
 
-# Install project dependencies
-# Use a frozen pnpm lockfile for reproducible builds
-RUN corepack enable && pnpm install --frozen-lockfile
+# Install a pinned pnpm via corepack for reproducible Docker builds.
+RUN npm install -g corepack@latest --force &&     corepack enable &&     corepack prepare pnpm@${PNPM_VERSION} --activate &&     pnpm install --frozen-lockfile
 
 # Copy the rest of your application source code
 COPY . .

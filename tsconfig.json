@@ -29,7 +29,8 @@
 			"@stores/*": ["./src/stores/*"],
 			"@api/*": ["./src/stores/api/*"],
 			"@support/*": ["./src/support/*"],
-			"@fixtures/*": ["./storage/fixtures/*"]
+			"@fixtures/*": ["./storage/fixtures/*"],
+			"@/lib/*": ["./src/lib/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},
