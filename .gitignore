@@ -1,7 +1,6 @@
 .env
 stats.html
 .env.production
-.playwright-cli/
 .DS_Store
 
 dist/
@@ -10,6 +9,7 @@ dist/
 dist-ssr/
 coverage/
 node_modules/
+.playwright-cli/
 
 # --- Storage
 !storage/.gitkeep
@@ -23,7 +23,6 @@ storage/oullin/html/*
 storage/oullin/logos/*
 !storage/oullin/logos/.gitkeep
 
-
 # --- [Caddy]: mtls
 caddy/mtls/*.*
 !caddy/mtls/.gitkeep
@@ -36,5 +35,3 @@ public/seo/*.*
 public/seo/posts/*.*
 !public/seo/.gitkeep
 !public/seo/posts/.gitkeep
-
-

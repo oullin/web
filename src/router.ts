@@ -1,23 +1,7 @@
-import { createRouter, createWebHistory, Router, RouterScrollBehavior } from 'vue-router';
-import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
+import { createRouter, createWebHistory, Router } from 'vue-router';
+import { scrollBehavior } from '@/support/scrolls';
 
 const routerHistory = createWebHistory();
-
-const scrollBehavior: RouterScrollBehavior = (to) => {
-	if (to.hash) {
-		return { el: to.hash, behavior: 'smooth' };
-	}
-
-	const el: HTMLElement | null = document.querySelector('html');
-
-	if (el === null) {
-		return;
-	}
-
-	el.style.scrollBehavior = 'auto';
-	window.scroll({ top: 0 });
-	el.style.scrollBehavior = '';
-};
 
 const router: Router = createRouter({
 	scrollBehavior,
@@ -57,7 +41,7 @@ const router: Router = createRouter({
 		},
 
 		{
-			path: TERMS_AND_POLICIES_PATH,
+			path: '/terms-and-conditions',
 			name: 'TermsAndPolicies',
 			component: () => import('@pages/TermsAndPoliciesPage.vue'),
 		},

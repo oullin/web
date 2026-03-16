@@ -108,18 +108,17 @@
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, siteUrlFor, buildKeywords } from '@/support/seo';
-import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
 
 useSeo({
 	title: 'Terms and Policies',
-	url: siteUrlFor(TERMS_AND_POLICIES_PATH),
+	url: siteUrlFor('/terms-and-conditions'),
 	description: 'Corporate terms and policies for our SaaS platforms and software consultancy services, including acceptable use, billing, and account responsibilities.',
 	keywords: buildKeywords('terms of service', 'acceptable use policy', 'software consultancy terms'),
 	jsonLd: {
 		'@context': 'https://schema.org',
 		'@type': 'WebPage',
 		name: 'Terms and Policies',
-		url: siteUrlFor(TERMS_AND_POLICIES_PATH),
+		url: siteUrlFor('/terms-and-conditions'),
 		description: 'Corporate terms and policies for SaaS products and technical consulting services.',
 	},
 });

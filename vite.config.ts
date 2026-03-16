@@ -9,7 +9,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 // Get the directory name equivalent to __dirname in ESM
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = path.dirname(__filename);
-const defaultApiPort = process.env.API_PORT ?? '18080';
+const defaultApiPort = process.env.LOCAL_API_PORT ?? '18080';
 const relayTarget = (() => {
 	try {
 		const apiUrl = process.env.VITE_API_URL;
