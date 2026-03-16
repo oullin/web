@@ -9,7 +9,7 @@
 	},
 	"cta": [
 		{ "label": "Enter the system →", "to": "/about", "style": "primary" },
-		{ "label": "Read the manifesto", "to": "/post/manifesto", "style": "ghost" }
+		{ "label": "Read the writing", "to": "/writing", "style": "ghost" }
 	],
 	"dataBlocks": [
 		{

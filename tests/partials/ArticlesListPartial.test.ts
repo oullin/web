@@ -191,7 +191,7 @@ describe('ArticlesListPartial', () => {
 
 		const categoryLinks = wrapper.findAll('ul li a');
 		expect(categoryLinks).toHaveLength(categories.length);
-		expect(categoryLinks[0].classes()).toContain('text-slate-800');
+		expect(categoryLinks[0].classes()).toContain('text-[var(--text)]');
 
 		const articleItems = wrapper.findAll('[data-testid="article-item"]');
 		expect(articleItems).toHaveLength(posts.length);

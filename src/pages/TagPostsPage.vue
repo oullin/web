@@ -21,7 +21,7 @@
 						<p class="page-panel-copy" data-testid="tag-posts-summary">
 							<template v-if="summaryContent.label">
 								{{ summaryContent.text }}
-								<a href="#" class="font-semibold transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500" @click.prevent="summaryContent.onLabelClick?.()">
+								<a href="#" class="font-semibold transition-colors hover:text-[var(--violet)]" @click.prevent="summaryContent.onLabelClick?.()">
 									{{ summaryContent.label }}
 								</a>
 								<span v-if="summaryContent.suffix">{{ summaryContent.suffix }}</span>

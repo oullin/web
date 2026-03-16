@@ -1,19 +1,15 @@
 <template>
 	<section>
-		<h2 class="mb-5 font-aspekta text-slate-700 dark:text-slate-300 text-xl font-[650]">Latest Articles</h2>
+		<span class="page-section-label">// latest_articles</span>
 
 		<!-- Filters -->
-		<ul class="flex flex-wrap text-sm border-b border-slate-100 dark:border-slate-800">
+		<ul class="flex flex-wrap text-sm border-b border-[var(--border)]">
 			<li v-for="category in categories" :key="category.uuid" class="px-3 -mb-px">
 				<a
 					v-lazy-link
 					href="#"
-					:class="
-						filters.category === category.slug
-							? 'text-slate-800 border-fuchsia-500 dark:text-slate-200 dark:border-teal-500'
-							: 'text-slate-500 border-transparent hover:border-slate-300 dark:text-slate-300 dark:hover:border-slate-700'
-					"
-					class="block py-3 font-medium border-b-2"
+					:class="filters.category === category.slug ? 'text-[var(--text)] border-[var(--violet)]' : 'text-[var(--muted)] border-transparent hover:border-[var(--border)]'"
+					class="block py-3 font-medium border-b-2 transition-colors"
 					@click.prevent="selectCategory(category.slug)"
 					>{{ category.name }}</a
 				>
@@ -28,7 +24,7 @@
 			<div v-else-if="items.length > 0" key="list" class="min-h-[24rem]">
 				<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
 			</div>
-			<p v-else key="empty" class="text-slate-500 dark:text-slate-400 py-8 min-h-[24rem]">No articles found.</p>
+			<p v-else key="empty" class="page-empty-state py-8 min-h-[24rem]">No articles found.</p>
 		</div>
 	</section>
 </template>

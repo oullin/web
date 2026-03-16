@@ -27,9 +27,7 @@
 			</section>
 
 			<section class="page-band">
-				<div class="page-panel">
-					<ArticlesListPartial />
-				</div>
+				<ArticlesListPartial />
 			</section>
 		</main>
 

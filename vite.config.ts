@@ -9,6 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 const __filename: string = fileURLToPath(import.meta.url);
 const __dirname: string = path.dirname(__filename);
 const defaultApiPort = process.env.LOCAL_API_PORT ?? '18080';
+const defaultWebPort = process.env.LOCAL_WEB_PORT ? parseInt(process.env.LOCAL_WEB_PORT) : undefined;
 const relayTarget = (() => {
 	try {
 		const apiUrl = process.env.VITE_API_URL;
@@ -28,6 +29,7 @@ export default defineConfig({
 		alias: aliases,
 	},
 	server: {
+		port: defaultWebPort,
 		proxy: {
 			'/relay': {
 				target: relayTarget,

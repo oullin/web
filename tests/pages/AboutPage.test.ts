@@ -25,8 +25,9 @@ const profile: ProfileResponse = {
 };
 
 const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
+const getSocial = vi.fn(() => Promise.resolve({ data: [] }));
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile }) }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getSocial }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 const App = defineComponent({
@@ -63,12 +64,11 @@ describe('AboutPage', () => {
 		vi.clearAllMocks();
 	});
 
-	it('shows formatted nickname', async () => {
+	it('renders the Oullin brand page title', async () => {
 		const wrapper = await mountComponent();
 		await flushPromises();
-		const formatted = profile.nickname.charAt(0).toUpperCase() + profile.nickname.slice(1);
 		expect(getProfile).toHaveBeenCalled();
-		expect(wrapper.find('h1').text()).toContain(formatted);
+		expect(wrapper.find('h1').text()).toContain('Oullin.');
 	});
 
 	it('renders skeleton while loading the profile', async () => {

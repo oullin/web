@@ -7,13 +7,13 @@
 				<div class="mb-6">
 					<RouterLink
 						v-lazy-link
-						class="inline-flex text-fuchsia-500 dark:text-slate-500 dark:hover:text-teal-600 rounded-full border border-slate-200 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30"
+						class="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--violet)] transition-all px-3 py-1.5 text-xs font-mono tracking-wider uppercase"
 						to="/"
 					>
-						<span class="sr-only">Back</span>
-						<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">
-							<path class="fill-current" d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+							<path d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
 						</svg>
+						Back
 					</RouterLink>
 				</div>
 
@@ -25,25 +25,20 @@
 							<div class="page-hero-main">
 								<p class="page-kicker">POST // WRITING // SIGNAL</p>
 								<div class="page-copy !mt-0 mb-4">
-									<span class="text-fuchsia-500 dark:text-teal-500">—</span> {{ date().format(new Date(post.published_at)) }}
-									<span class="text-slate-400 dark:text-slate-600">·</span>
+									<span class="text-[var(--violet)]">—</span> {{ date().format(new Date(post.published_at)) }}
+									<span class="text-[var(--muted)]">·</span>
 									{{ getReadingTime(post.content) }}
 								</div>
 								<h1 id="post-top" class="page-title !max-w-[12ch]">{{ post.title }}</h1>
 								<p class="page-copy">{{ post.excerpt }}</p>
 
-								<nav
-									v-if="post.tags?.length"
-									class="mt-6 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300"
-									aria-label="Post tags"
-									data-testid="post-tags"
-								>
+								<nav v-if="post.tags?.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]" aria-label="Post tags" data-testid="post-tags">
 									<ul class="flex flex-wrap items-center gap-y-1">
 										<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
-											<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500">
+											<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-[var(--violet)]">
 												{{ formatLabel(tag.name) }}
 											</RouterLink>
-											<span v-if="index < post.tags.length - 1" class="mx-2 text-slate-400 dark:text-slate-600" aria-hidden="true" data-testid="post-tag-separator"> / </span>
+											<span v-if="index < post.tags.length - 1" class="mx-2 text-[var(--muted)]" aria-hidden="true" data-testid="post-tag-separator"> / </span>
 										</li>
 									</ul>
 								</nav>
@@ -56,7 +51,7 @@
 										<li>
 											<a
 												v-lazy-link
-												class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
+												class="flex justify-center items-center text-[var(--muted)] hover:text-[var(--violet)] transition duration-150 ease-in-out"
 												:href="xURLFor(post)"
 												aria-label="Twitter"
 												target="_blank"
@@ -72,7 +67,7 @@
 										<li>
 											<a
 												v-lazy-link
-												class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
+												class="flex justify-center items-center text-[var(--muted)] hover:text-[var(--violet)] transition duration-150 ease-in-out"
 												:href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
 												aria-label="LinkedIn"
 												target="_blank"
@@ -88,7 +83,7 @@
 										<li>
 											<a
 												v-lazy-link
-												class="flex justify-center items-center text-slate-400 dark:text-slate-500 hover:text-fuchsia-500 dark:hover:text-teal-600 transition duration-150 ease-in-out"
+												class="flex justify-center items-center text-[var(--muted)] hover:text-[var(--violet)] transition duration-150 ease-in-out"
 												href="#"
 												aria-label="Share"
 												@click.prevent="sharePost(post)"

@@ -36,11 +36,6 @@ const router: Router = createRouter({
 			component: () => import('@pages/ProjectsPage.vue'),
 		},
 		{
-			path: '/resume',
-			component: () => import('@pages/ResumePage.vue'),
-		},
-
-		{
 			path: '/terms-and-conditions',
 			name: 'TermsAndPolicies',
 			component: () => import('@pages/TermsAndPoliciesPage.vue'),
