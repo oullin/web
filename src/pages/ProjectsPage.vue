@@ -46,6 +46,7 @@
 					<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
 						<ProjectCardSkeletonPartial v-for="index in skeletonCount" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
 					</div>
+					<p v-else-if="hasError" key="error" class="page-empty-state">Something went wrong loading projects. Please try again later.</p>
 					<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
 						<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
 					</div>
@@ -76,6 +77,7 @@ import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_
 
 const apiStore = useApiStore();
 const isLoadingProjects = ref(true);
+const hasError = ref(false);
 const projects = ref<ProjectsResponse[]>([]);
 
 const skeletonCount = computed(() => {
@@ -110,6 +112,7 @@ const loadProjects = async () => {
 		}
 	} catch (error) {
 		debugError(error);
+		hasError.value = true;
 	} finally {
 		isLoadingProjects.value = false;
 	}

@@ -83,7 +83,7 @@ services:
 
     caddy-watcher:
         working_dir: /app
-        image: node:25-alpine
+        image: node:25.8.1-alpine
         environment:
             - CHOKIDAR_USEPOLLING=1
         volumes:
@@ -96,7 +96,7 @@ services:
         command: >
             sh -lc "
               corepack enable &&
-              pnpm install &&
+              pnpm install --frozen-lockfile &&
               mkdir -p dist &&
               pnpm run build --watch --emptyOutDir=false
             "

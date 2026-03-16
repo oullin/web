@@ -18,10 +18,10 @@
 
 		<!-- Articles list -->
 		<div class="relative min-h-[24rem]">
-			<div v-if="isLoading && items.length === 0" key="skeleton" aria-busy="true" class="min-h-[24rem]">
+			<div v-if="isLoading" key="skeleton" aria-busy="true" class="min-h-[24rem]">
 				<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
 			</div>
-			<div v-else-if="items.length > 0" key="list" class="min-h-[24rem] transition-opacity duration-150" :class="{ 'opacity-50': isLoading }">
+			<div v-else-if="items.length > 0" key="list" class="min-h-[24rem]">
 				<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
 			</div>
 			<p v-else key="empty" class="page-empty-state py-8 min-h-[24rem]">No articles found.</p>

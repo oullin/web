@@ -5,16 +5,16 @@
 		<main class="page-shell">
 			<section class="page-band !pt-6">
 				<div class="mb-6">
-					<RouterLink
-						v-lazy-link
-						class="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--violet)] transition-all px-3 py-1.5 text-xs font-mono tracking-wider uppercase"
-						to="/"
+					<button
+						type="button"
+						class="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--violet)] transition-all px-3 py-1.5 text-xs font-mono tracking-wider uppercase cursor-pointer"
+						@click="handleGoBack"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
 							<path d="m16.414 17 3.293 3.293-1.414 1.414L13.586 17l4.707-4.707 1.414 1.414z" />
 						</svg>
 						Back
-					</RouterLink>
+					</button>
 				</div>
 
 				<div class="relative min-h-[25rem]">
@@ -77,12 +77,12 @@
 
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { RouterLink, useRoute } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 import highlight from 'highlight.js/lib/core';
 import { debugError } from '@api/http-error.ts';
-import { date, getReadingTime } from '@/public.ts';
+import { date, getReadingTime, goBack } from '@/public.ts';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
@@ -97,6 +97,8 @@ import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/sup
 
 // --- Component
 const route = useRoute();
+const router = useRouter();
+const handleGoBack = () => goBack(router);
 const apiStore = useApiStore();
 const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
@@ -116,7 +118,8 @@ const htmlContent = computed(() => {
 });
 
 const xURLFor = (item: PostResponse) => {
-	return `https://x.com/intent/tweet?url=${fullURLFor(item)}&text=${item.title}`;
+	const params = new URLSearchParams({ url: fullURLFor(item), text: item.title });
+	return `https://x.com/intent/tweet?${params.toString()}`;
 };
 
 const fullURLFor = (item: PostResponse) => siteUrlFor(`/post/${item.slug}`);

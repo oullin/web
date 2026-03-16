@@ -37,7 +37,9 @@
 						{{ block.value }}<small>{{ block.valueSuffix }}</small>
 					</div>
 					<div class="data-bar" :class="block.bar"></div>
-					<div class="data-note">{{ block.note![0] }}<br />{{ block.note![1] }}</div>
+					<div v-if="block.note?.length" class="data-note">
+						<template v-for="(line, i) in block.note" :key="i"> <br v-if="i > 0" />{{ line }} </template>
+					</div>
 				</template>
 
 				<template v-else-if="block.type === 'list'">
@@ -47,7 +49,10 @@
 				</template>
 
 				<template v-else-if="block.type === 'quote'">
-					<div class="data-quote">"{{ block.lines![0] }}<br />{{ block.lines![1] }}"</div>
+					<div v-if="block.lines?.length" class="data-quote">
+						"<template v-for="(line, i) in block.lines" :key="i"><br v-if="i > 0" />{{ line }}</template
+						>"
+					</div>
 				</template>
 			</div>
 		</div>

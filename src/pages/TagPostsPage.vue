@@ -39,16 +39,19 @@
 			</section>
 
 			<section class="page-band">
-				<section role="status">
+				<section>
 					<span class="page-section-label">Articles</span>
 					<h2 class="page-section-title">Browse the posts tied to this signal.</h2>
 					<div class="relative min-h-[20rem] mt-8">
 						<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
+							<p role="status" class="sr-only">Loading articles…</p>
 							<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
 						</div>
-						<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
+						<p v-else-if="hasError" key="error" role="status" class="page-empty-state" data-testid="tag-posts-error">Something went wrong loading posts. Please try again later.</p>
+						<div v-else-if="posts.length > 0" key="list" class="space-y-5" data-testid="tag-posts-list">
 							<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
 						</div>
+						<p v-else key="empty" class="page-empty-state" data-testid="tag-posts-empty">No posts found for this tag.</p>
 					</div>
 				</section>
 

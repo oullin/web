@@ -13,3 +13,19 @@
 	font-display: fallback;
 	src: url('@fonts/Aspekta-650.woff2') format('woff2');
 }
+
+@font-face {
+	font-family: 'Space Grotesk';
+	font-weight: 300 700;
+	font-style: normal;
+	font-display: swap;
+	src: url('@fonts/SpaceGrotesk.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'JetBrains Mono';
+	font-weight: 300 700;
+	font-style: normal;
+	font-display: swap;
+	src: url('@fonts/JetBrainsMono.woff2') format('woff2');
+}

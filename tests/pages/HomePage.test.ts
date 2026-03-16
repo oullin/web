@@ -61,7 +61,9 @@ describe('HomePage', () => {
 		profile.name
 			.toUpperCase()
 			.split(' ')
-			.forEach((part) => expect(wrapper.text()).toContain(part));
+			.forEach((part) => {
+				expect(wrapper.text()).toContain(part);
+			});
 		expect(wrapper.text()).toContain(about.body.role);
 		about.work.forEach((item) => {
 			expect(wrapper.text()).toContain(item.title);

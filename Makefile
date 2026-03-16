@@ -25,9 +25,8 @@ format:
 
 env-fresh:
 	rm -rf $(ROOT_PATH)/node_modules
-	rm -f $(ROOT_PATH)/pnpm-lock.yaml
 	pnpm store prune
-	pnpm install
+	pnpm install --frozen-lockfile
 
 lint-fix:
 	pnpm run lint:fix

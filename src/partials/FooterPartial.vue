@@ -7,19 +7,20 @@
 				<a v-for="link in socialLinks" :key="link.label" :href="link.href" target="_blank" rel="noopener noreferrer" class="footer-social-link">{{ link.label }}</a>
 				<span class="footer-sep">·</span>
 			</template>
-			<span>© 2026 · <RouterLink v-lazy-link to="/terms-and-conditions" class="hover:text-white transition-colors">Terms</RouterLink></span>
+			<span>© {{ currentYear }} · <RouterLink v-lazy-link to="/terms-and-conditions" class="hover:text-white transition-colors">Terms</RouterLink></span>
 		</div>
 	</footer>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { SocialResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
+const currentYear = computed(() => new Date().getFullYear());
 
 interface FooterSocialLink {
 	label: string;

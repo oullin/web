@@ -17,7 +17,7 @@
 				<div class="page-hero-side">
 					<div class="page-side-block">
 						<div class="page-section-label">Effective Date</div>
-						<div class="page-panel-title">December 2025</div>
+						<div class="page-panel-title">1 December 2025</div>
 						<p class="page-panel-copy">The current published version applies unless a later date is stated on this page.</p>
 					</div>
 					<div class="page-side-block">

@@ -6,7 +6,7 @@ const global = {
 	stubs: {
 		NavPartial: true,
 		FooterPartial: true,
-		ArticlesListPartial: true,
+		ArticlesListPartial: { template: '<div data-testid="articles-list"></div>' },
 		RouterLink: { template: '<a><slot /></a>' },
 	},
 };
@@ -16,6 +16,6 @@ describe('WritingPage', () => {
 		const wrapper = mount(WritingPage, { global });
 		expect(wrapper.text()).toContain('Writing archive.');
 		expect(wrapper.text()).toContain('This page holds the article feed');
-		expect(wrapper.findComponent({ name: 'ArticlesListPartial' }).exists()).toBe(true);
+		expect(wrapper.find('[data-testid="articles-list"]').exists()).toBe(true);
 	});
 });

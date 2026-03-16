@@ -80,5 +80,5 @@ export function summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (
 	}
 
 	const noun = state.postCount === 1 ? 'post' : 'posts';
-	return { text: `${state.postCount} ${noun} found for `, label, suffix: '', onLabelClick: handleLabelClick };
+	return { text: `${state.postCount} ${noun} found for`, label, suffix: '', onLabelClick: handleLabelClick };
 }

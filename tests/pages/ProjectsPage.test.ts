@@ -3,17 +3,8 @@ import { nextTick } from 'vue';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ProjectsPage from '@pages/ProjectsPage.vue';
-import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
+import type { ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
-
-const profile: ProfileResponse = {
-	nickname: faker.person.firstName(),
-	handle: faker.internet.username(),
-	name: faker.person.fullName(),
-	email: faker.internet.email(),
-	profession: faker.person.jobTitle(),
-	skills: [],
-};
 
 const projects: ProjectsResponse[] = [
 	{
@@ -29,22 +20,20 @@ const projects: ProjectsResponse[] = [
 	},
 ];
 
-const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>();
 const getProjects = vi.fn<[], Promise<{ version: string; data: ProjectsResponse[] }>>();
 
 beforeEach(() => {
-	getProfile.mockReset();
 	getProjects.mockReset();
-	getProfile.mockResolvedValue({ data: profile });
 	getProjects.mockResolvedValue({ version: '1.0.0', data: projects });
 });
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getProjects }) }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProjects }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 const global = {
 	stubs: {
 		NavPartial: true,
+		FooterPartial: true,
 		BackToTopLink: true,
 		WidgetSponsorPartial: true,
 		WidgetSkillsTransitionWrapper: true,
@@ -54,10 +43,9 @@ const global = {
 };
 
 describe('ProjectsPage', () => {
-	it('loads profile and projects', async () => {
+	it('loads projects', async () => {
 		const wrapper = mount(ProjectsPage, { global });
 		await flushPromises();
-		expect(getProfile).toHaveBeenCalled();
 		expect(getProjects).toHaveBeenCalled();
 		const items = wrapper.findAll('.project');
 		expect(items).toHaveLength(projects.length);
@@ -78,7 +66,7 @@ describe('ProjectsPage', () => {
 
 	it('handles API errors', async () => {
 		const error = new Error('oops');
-		getProfile.mockRejectedValueOnce(error);
+		getProjects.mockRejectedValueOnce(error);
 		mount(ProjectsPage, { global });
 		await flushPromises();
 		await nextTick();

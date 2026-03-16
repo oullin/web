@@ -102,14 +102,14 @@ describe('Tags.summaryFor', () => {
 				...baseSummaryState,
 				postCount: 1,
 			}),
-		).toEqual({ text: '1 post found for ', label: '#VUE', suffix: '', onLabelClick: undefined });
+		).toEqual({ text: '1 post found for', label: '#VUE', suffix: '', onLabelClick: undefined });
 
 		expect(
 			summaryFor('vue', {
 				...baseSummaryState,
 				postCount: 3,
 			}),
-		).toEqual({ text: '3 posts found for ', label: '#VUE', suffix: '', onLabelClick: undefined });
+		).toEqual({ text: '3 posts found for', label: '#VUE', suffix: '', onLabelClick: undefined });
 	});
 
 	it('uses the callback for label clicks', () => {

@@ -133,7 +133,7 @@ describe('TagPostsPage', () => {
 		const renderedPosts = wrapper.findAll('[data-testid="article-item-stub"]');
 		expect(renderedPosts).toHaveLength(posts.length);
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('2 posts found for  #DESIGN');
+		expect(summary.text()).toContain('2 posts found for #DESIGN');
 	});
 
 	it('shows an empty message when no posts are returned', async () => {
@@ -168,7 +168,7 @@ describe('TagPostsPage', () => {
 
 		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'ux', text: 'ux' });
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('1 post found for  #UX');
+		expect(summary.text()).toContain('1 post found for #UX');
 	});
 
 	it('refetches posts when the search term changes', async () => {
@@ -185,6 +185,6 @@ describe('TagPostsPage', () => {
 
 		expect(getPosts).toHaveBeenLastCalledWith({ tag: 'design', text: 'new search' });
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('1 post found for  #DESIGN');
+		expect(summary.text()).toContain('1 post found for #DESIGN');
 	});
 });

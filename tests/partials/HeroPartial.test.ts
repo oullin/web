@@ -11,7 +11,9 @@ describe('HeroPartial', () => {
 	it('renders the hero title', () => {
 		const wrapper = mount(HeroPartial, { global });
 		const h1 = wrapper.find('h1').text();
-		hero.headline.forEach(({ text }) => expect(h1).toContain(text));
+		hero.headline.forEach(({ text }) => {
+			expect(h1).toContain(text);
+		});
 	});
 
 	it('renders the eyebrow text', () => {
