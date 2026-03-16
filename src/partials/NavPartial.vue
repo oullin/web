@@ -4,7 +4,7 @@
 			<RouterLink to="/" class="nav-logo">OULLIN</RouterLink>
 			<ul class="nav-links">
 				<li><RouterLink to="/writing">writing</RouterLink></li>
-				<li><RouterLink to="/projects">projects</RouterLink></li>
+				<li><RouterLink to="/projects">open source</RouterLink></li>
 				<li><RouterLink to="/about">about</RouterLink></li>
 			</ul>
 			<div style="display: flex; align-items: center; gap: 20px">

@@ -48,55 +48,53 @@
 					</p>
 				</div>
 
-				<div class="page-panel-grid">
-					<article class="page-panel">
-						<h3 class="page-panel-title">The Name</h3>
+				<div class="page-editorial">
+					<div class="page-editorial-row">
+						<span class="page-section-label">The Name</span>
 						<p class="page-panel-copy">
 							Ollin is the 17th day-sign of the Aztec calendar — the symbol of movement and earthquake, of things that shake and shift the world. Oullin is that energy, deliberately
 							respelled, brought into the present.
 						</p>
-					</article>
-					<article class="page-panel">
-						<h3 class="page-panel-title">The Platform</h3>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">The Platform</span>
 						<p class="page-panel-copy">
 							Engineering leadership, AI architecture, and open source tools — built in the open and returned to the community with the same energy they were taken from.
 						</p>
-					</article>
-					<article class="page-panel">
-						<h3 class="page-panel-title">The Philosophy</h3>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">The Philosophy</span>
 						<p class="page-panel-copy">Every line of code is a choice. Every decision, deliberate. Build like it matters — because it does. Complexity is allowed. Confusion is not.</p>
-					</article>
-					<article class="page-panel wide">
-						<h3 class="page-panel-title">Gustavo Ocanto — Co-founder</h3>
-						<div class="relative min-h-[5rem]">
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-feature">
+						<span class="page-section-label">Co-Founder</span>
+						<h3 class="page-editorial-name">Gustavo Ocanto</h3>
+						<div class="page-editorial-bio">
 							<p class="page-panel-copy">
-								Gustavo is a full-stack software engineer and engineering leader with over two decades of experience building complex web systems, AI-powered platforms, and high-trust
-								client products across banking, insurance, and SaaS. He works across Go, Node.js, TypeScript, and PHP, with practical depth in Laravel, Vue, Symfony, and Next.js.
+								Full-stack software engineer and engineering leader with over two decades of experience building complex web systems, AI-powered platforms, and high-trust client
+								products across banking, insurance, and SaaS. Works across Go, Node.js, TypeScript, and PHP, with practical depth in Laravel, Vue, Symfony, and Next.js.
 							</p>
-							<p class="page-panel-copy mt-4">
-								He leads with precision, calm thinking, and a bias for strong fundamentals over short-lived momentum. Follow his work and connect on LinkedIn.
-							</p>
+							<p class="page-panel-copy mt-4">Leads with precision, calm thinking, and a bias for strong fundamentals over short-lived momentum.</p>
 							<div class="mt-6">
 								<a v-if="linkedinUrl !== '#'" v-lazy-link :href="linkedinUrl" target="_blank" rel="noopener noreferrer" class="btn-primary"> View LinkedIn Profile → </a>
-								<p v-else-if="profile" class="page-panel-copy">
-									Reach out by
-									<a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">email</a>
-									to connect directly.
-								</p>
+								<p v-else-if="profile" class="page-panel-copy">Reach out by <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">email</a> to connect directly.</p>
 							</div>
 						</div>
-					</article>
-					<article class="page-panel">
-						<h3 class="page-panel-title">Connect</h3>
-						<div class="relative min-h-[5rem]">
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">Connect</span>
+						<div>
 							<p v-if="profile" key="connect" class="page-panel-copy">
-								Reach out by
-								<a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">email</a>
-								to discuss projects, architecture, or ideas. If there is an interesting system to design or improve, the conversation is open.
+								Reach out by <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">email</a> to discuss projects, architecture, or ideas. If there is an interesting system
+								to design or improve, the conversation is open.
 							</p>
 							<AboutConnectSkeletonPartial v-else key="skeleton" />
 						</div>
-					</article>
+					</div>
 				</div>
 			</section>
 

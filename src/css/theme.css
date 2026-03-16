@@ -206,7 +206,7 @@ nav.site-nav {
 	width: 640px;
 	height: 640px;
 	left: -120px;
-	bottom: -120px;
+	top: -80px;
 	background: rgba(91, 69, 192, 0.22);
 	filter: blur(120px);
 	animation: orb-breathe 8.5s ease-in-out infinite alternate;
@@ -220,8 +220,8 @@ nav.site-nav {
 .orb-secondary {
 	width: 380px;
 	height: 380px;
-	left: 280px;
-	bottom: 60px;
+	left: 80px;
+	top: 60px;
 	background: rgba(8, 145, 178, 0.18);
 	filter: blur(90px);
 	animation: orb-breathe 11s ease-in-out infinite alternate-reverse;
@@ -493,12 +493,16 @@ nav.site-nav {
 	background: var(--inv-bg);
 	overflow: hidden;
 	padding: 14px 0;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 99;
 }
 
 .dark .marquee-wrap {
-	background: var(--surface2);
-	border-top: 1px solid var(--border);
-	border-bottom: 1px solid var(--border);
+	background: #0b1425;
+	border-top: 1px solid var(--primary);
 }
 
 .marquee-track {
@@ -522,7 +526,7 @@ nav.site-nav {
 	font-size: 0.62rem;
 	letter-spacing: 0.28em;
 	text-transform: uppercase;
-	color: rgba(230, 234, 244, 0.35);
+	color: rgba(230, 234, 244, 0.9);
 }
 
 .dark .marquee-item {
@@ -536,6 +540,10 @@ nav.site-nav {
 
 .dark .marquee-item em {
 	color: var(--primary);
+}
+
+.home-wrap {
+	padding-bottom: 44px;
 }
 
 /* ─────────────────────────────────────────
@@ -595,12 +603,13 @@ nav.site-nav {
 
 .p-ghost {
 	position: absolute;
-	bottom: 16px;
-	right: 24px;
+	bottom: 8px;
+	right: 20px;
 	font-family: 'Space Grotesk', sans-serif;
-	font-size: 5.5rem;
+	font-size: 3.75rem;
 	font-weight: 700;
 	color: var(--border);
+	opacity: 0.6;
 	line-height: 1;
 	pointer-events: none;
 	user-select: none;
@@ -1036,6 +1045,44 @@ footer.site-footer {
 	grid-column: 1 / -1;
 }
 
+/* ─────────────────────────────────────────
+   ABOUT EDITORIAL LAYOUT
+───────────────────────────────────────── */
+.page-editorial {
+	margin-top: 2.5rem;
+}
+
+.page-editorial-row {
+	display: grid;
+	grid-template-columns: 160px 1fr;
+	gap: 40px;
+	padding: 28px 0;
+	align-items: start;
+}
+
+.page-editorial-sep {
+	height: 1px;
+	background: var(--border);
+}
+
+.page-editorial-feature {
+	padding: 48px 0;
+}
+
+.page-editorial-name {
+	font-family: 'Space Grotesk', sans-serif;
+	font-size: clamp(2rem, 4vw, 3.5rem);
+	font-weight: 700;
+	line-height: 0.95;
+	letter-spacing: -0.04em;
+	color: var(--text);
+	margin: 16px 0 24px;
+}
+
+.page-editorial-bio {
+	max-width: 640px;
+}
+
 .page-panel-title,
 .page-stat-value {
 	font-family: 'Space Grotesk', sans-serif;
@@ -1268,6 +1315,11 @@ footer.site-footer {
 	.page-mini-grid,
 	.page-signal-card {
 		grid-template-columns: 1fr;
+	}
+	.page-editorial-row {
+		grid-template-columns: 1fr;
+		gap: 8px;
+		padding: 20px 0;
 	}
 	.page-panel,
 	.page-panel.wide,

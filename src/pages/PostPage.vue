@@ -44,77 +44,21 @@
 								</nav>
 							</div>
 
-							<div class="page-hero-side">
-								<div class="page-side-block">
-									<div class="page-section-label">Share</div>
-									<ul class="inline-flex gap-2">
-										<li>
-											<a
-												v-lazy-link
-												class="flex justify-center items-center text-[var(--muted)] hover:text-[var(--violet)] transition duration-150 ease-in-out"
-												:href="xURLFor(post)"
-												aria-label="Twitter"
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-													<path
-														d="m13.063 9 3.495 4.475L20.601 9h2.454l-5.359 5.931L24 23h-4.938l-3.866-4.893L10.771 23H8.316l5.735-6.342L8 9h5.063Zm-.74 1.347h-1.457l8.875 11.232h1.36l-8.778-11.232Z"
-													></path>
-												</svg>
-											</a>
-										</li>
-										<li>
-											<a
-												v-lazy-link
-												class="flex justify-center items-center text-[var(--muted)] hover:text-[var(--violet)] transition duration-150 ease-in-out"
-												:href="`https://www.linkedin.com/sharing/share-offsite/?url=${fullURLFor(post)}`"
-												aria-label="LinkedIn"
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-													<path
-														d="M24,24H20V18.33c0-1.41-.5-2.37-1.75-2.37a1.9,1.9,0,0,0-1.75,1.25c-.06.44-.08,1.06-.08,1.69V24H12V12h4v1.73a3.86,3.86,0,0,1,3.47-1.93c2.52,0,4.53,1.65,4.53,5.15V24ZM8,10a2,2,0,1,1,2-2A2,2,0,0,1,8,10ZM6,24H10V12H6Z"
-													/>
-												</svg>
-											</a>
-										</li>
-										<li>
-											<a
-												v-lazy-link
-												class="flex justify-center items-center text-[var(--muted)] hover:text-[var(--violet)] transition duration-150 ease-in-out"
-												href="#"
-												aria-label="Share"
-												@click.prevent="sharePost(post)"
-											>
-												<svg class="w-8 h-8 fill-current" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-													<path
-														d="M20 14c1.654 0 3-1.346 3-3s-1.346-3-3-3-3 1.346-3 3c0 .223.029.439.075.649l-3.22 2.012A2.97 2.97 0 0 0 12 13c-1.654 0-3 1.346-3 3s1.346 3 3 3a2.97 2.97 0 0 0 1.855-.661l3.22 2.012c-.046.21-.075.426-.075.649 0 1.654 1.346 3 3 3s3-1.346 3-3-1.346-3-3-3a2.97 2.97 0 0 0-1.855.661l-3.22-2.012c.046-.21.075-.426.075-.649 0-.223-.029-.439-.075-.649l3.22-2.012A2.97 2.97 0 0 0 20 14Z"
-													></path>
-												</svg>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<div class="page-cover-frame">
-									<CoverImageLoader class="w-full aspect-[4/3]" :src="post.cover_image_url || ''" :alt="post.title" :width="692" :height="390" />
+							<div class="page-hero-side overflow-y-auto">
+								<div class="flex flex-col gap-4 p-6">
+									<WidgetSocialTransitionWrapper />
+									<WidgetSponsorPartial />
+									<div class="page-summary-card">
+										<div class="page-section-label">Reading Mode</div>
+										<div class="page-panel-title">Slow down enough to notice the structure.</div>
+										<p class="page-panel-copy">The point of this writing is not volume. It is signal that survives rereading.</p>
+									</div>
 								</div>
 							</div>
 						</header>
 
 						<section class="page-article">
 							<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
-						</section>
-
-						<section class="page-support-grid !pt-0">
-							<WidgetSocialTransitionWrapper />
-							<WidgetSponsorPartial />
-							<div class="page-summary-card">
-								<div class="page-section-label">Reading Mode</div>
-								<div class="page-panel-title">Slow down enough to notice the structure.</div>
-								<p class="page-panel-copy">The point of this writing is not volume. It is signal that survives rereading.</p>
-							</div>
 						</section>
 					</article>
 
@@ -150,7 +94,6 @@ import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWra
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { onMounted, onUnmounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
-import CoverImageLoader from '@components/CoverImageLoader.vue';
 
 // --- Component
 const route = useRoute();

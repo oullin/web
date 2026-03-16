@@ -1,5 +1,5 @@
 <template>
-	<div class="theme min-h-screen">
+	<div class="theme min-h-screen home-wrap">
 		<!-- NAV -->
 		<NavPartial />
 

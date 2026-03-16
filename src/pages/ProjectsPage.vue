@@ -5,7 +5,7 @@
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">PROJECTS // SYSTEMS // DELIVERY</p>
+					<p class="page-kicker">OPEN SOURCE // SYSTEMS // DELIVERY</p>
 					<h1 id="projects-top" class="page-title">Nice stuff I've built.</h1>
 					<div class="page-copy">
 						<p>
@@ -42,27 +42,14 @@
 					</p>
 				</div>
 
-				<div class="page-content-grid mt-8">
-					<div class="page-content-main">
-						<div class="relative min-h-[25rem]">
-							<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
-								<ProjectCardSkeletonPartial v-for="index in skeletonCount" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
-							</div>
-							<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
-								<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
-							</div>
-							<p v-else key="empty" class="page-empty-state">Projects will be added soon. Check back later!</p>
-						</div>
+				<div class="relative min-h-[25rem] mt-8">
+					<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
+						<ProjectCardSkeletonPartial v-for="index in skeletonCount" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
 					</div>
-
-					<div class="page-content-side">
-						<div class="page-summary-card">
-							<div class="page-section-label">Current Lens</div>
-							<div class="page-panel-title">Useful software should stay useful after the handoff.</div>
-							<p class="page-panel-copy">I care about systems that are documented, observable, and straightforward to maintain after the first release energy fades.</p>
-						</div>
-						<WidgetSponsorPartial />
+					<div v-else-if="projects.length > 0" key="projects" class="blog-projects-grid">
+						<ProjectCardPartial v-for="project in projects" :key="project.uuid" :item="project" />
 					</div>
+					<p v-else key="empty" class="page-empty-state">Projects will be added soon. Check back later!</p>
 				</div>
 
 				<div class="flex justify-end pt-10">
@@ -91,7 +78,6 @@ import { debugError } from '@api/http-error.ts';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
-import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ProfileResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';

@@ -28,6 +28,11 @@ export default defineConfig({
 	resolve: {
 		alias: aliases,
 	},
+	build: {
+		watch: {
+			usePolling: true,
+		},
+	},
 	server: {
 		port: defaultWebPort,
 		proxy: {
