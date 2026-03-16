@@ -10,6 +10,9 @@ dist-ssr/
 coverage/
 node_modules/
 .playwright-cli/
+.pnpm-store/
+pnpm-debug.log
+package-lock.json
 
 # --- Storage
 !storage/.gitkeep

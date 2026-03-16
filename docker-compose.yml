@@ -93,9 +93,10 @@ services:
             - caddy-local
         command: >
             sh -lc "
-              npm ci &&
+              corepack enable &&
+              pnpm install &&
               mkdir -p dist &&
-              npm run build -- --watch --emptyOutDir=false
+              pnpm run build --watch --emptyOutDir=false
             "
 
 networks:

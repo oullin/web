@@ -8,7 +8,7 @@ import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue
 
 const profile: ProfileResponse = {
 	nickname: faker.person.firstName(),
-	handle: faker.internet.userName(),
+	handle: faker.internet.username(),
 	name: faker.person.fullName(),
 	email: faker.internet.email(),
 	profession: faker.person.jobTitle(),

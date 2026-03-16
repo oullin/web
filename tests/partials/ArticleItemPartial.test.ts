@@ -35,7 +35,7 @@ describe('ArticleItemPartial', () => {
 			uuid: faker.string.uuid(),
 			first_name: faker.person.firstName(),
 			last_name: faker.person.lastName(),
-			username: faker.internet.userName(),
+			username: faker.internet.username(),
 			display_name: faker.person.fullName(),
 			bio: faker.lorem.sentence(),
 			picture_file_name: faker.system.fileName(),

@@ -19,18 +19,18 @@ ARG ENV_API_LOCAL_DIR
 WORKDIR /app
 
 # Copy package.json and lock files first to leverage Docker layer caching
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install project dependencies
-# Use 'npm ci' for cleaner, more reliable builds in CI/CD environments
-RUN npm ci
+# Use a frozen pnpm lockfile for reproducible builds
+RUN corepack enable && pnpm install --frozen-lockfile
 
 # Copy the rest of your application source code
 COPY . .
 
 # Run the build script
 # VITE_SENTRY_RELEASE should be provided as a build argument
-RUN npm run build
+RUN pnpm run build
 
 
 # --- Artifact Stage ---

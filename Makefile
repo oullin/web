@@ -20,14 +20,14 @@ include $(ROOT_PATH)/build/makefiles/build.mk
 # ---------
 
 format:
-	npm run format
+	pnpm run format
 	make lint-fix
 
 env-fresh:
 	rm -rf $(ROOT_PATH)/node_modules
-	rm $(ROOT_PATH)/package-lock.json
-	npm cache clean --force
-	npm install
+	rm -f $(ROOT_PATH)/pnpm-lock.yaml
+	pnpm store prune
+	pnpm install
 
 lint-fix:
-	npm run lint:fix
+	pnpm run lint:fix

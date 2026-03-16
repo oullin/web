@@ -17,7 +17,7 @@ const skills: ProfileSkillResponse[] = [
 
 const profile: ProfileResponse = {
 	nickname: faker.word.words(1).toLowerCase(),
-	handle: faker.internet.userName(),
+	handle: faker.internet.username(),
 	name: faker.person.fullName(),
 	email: faker.internet.email(),
 	profession: faker.person.jobTitle(),

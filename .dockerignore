@@ -10,8 +10,9 @@ docker/
 
 # Node
 node_modules
-npm-debug.log
-.npmrc
+pnpm-debug.log
+.pnpm-store
+package-lock.json
 .nvmrc
 
 # Editor/IDE
