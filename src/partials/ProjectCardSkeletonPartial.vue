@@ -24,8 +24,11 @@
 <script setup lang="ts">
 import { Skeleton } from '@components/ui/skeleton';
 
-const props = defineProps<{
-	wrapperClass?: string;
-	isAnimated?: boolean;
-}>();
+const props = withDefaults(
+	defineProps<{
+		wrapperClass?: string;
+		isAnimated?: boolean;
+	}>(),
+	{ isAnimated: true },
+);
 </script>

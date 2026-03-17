@@ -4,7 +4,7 @@
 		<span>MOVEMENT IS NOT OPTIONAL.</span>
 		<div class="footer-right">
 			<template v-if="socialLinks.length > 0">
-				<a v-for="link in socialLinks" :key="link.label" :href="link.href" target="_blank" rel="noopener noreferrer" class="footer-social-link">{{ link.label }}</a>
+				<a v-for="link in socialLinks" :key="link.href" :href="link.href" target="_blank" rel="noopener noreferrer" class="footer-social-link">{{ link.label }}</a>
 				<span class="footer-sep">·</span>
 			</template>
 			<span>© {{ currentYear }} · <RouterLink v-lazy-link to="/terms-and-conditions" class="hover:text-white transition-colors">Terms</RouterLink></span>
@@ -38,7 +38,7 @@ onMounted(async () => {
 	try {
 		const response = await apiStore.getSocial();
 		const data: SocialResponse[] = response.data ?? [];
-		socialLinks.value = data.filter((s) => s.name === 'x' || s.name === 'linkedin').map((s) => ({ label: shortLabels[s.name] ?? s.name.toUpperCase(), href: s.url }));
+		socialLinks.value = data.map((s) => ({ label: shortLabels[s.name] ?? s.name.toUpperCase(), href: s.url }));
 	} catch (error) {
 		debugError(error);
 	}

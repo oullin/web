@@ -56,11 +56,14 @@ describe('WidgetOullinPartial', () => {
 		await wrapper.get('[data-testid="oullin-dialog-trigger"]').trigger('click');
 		await nextTick();
 
-		const dialogWrapper = new DOMWrapper(document.body);
-		const title = dialogWrapper.find('#oullin-dialog-title');
+		const dialog = new DOMWrapper(document.body).find('[role="dialog"]');
+		expect(dialog.exists()).toBe(true);
+		expect(dialog.attributes('aria-labelledby')).toBeTruthy();
+
+		const title = new DOMWrapper(document.body).find('#oullin-dialog-title');
 		expect(title.exists()).toBe(true);
 		expect(title.text()).toContain("What's Oullin?");
-		expect(dialogWrapper.find('[data-testid="oullin-dialog-oss-link"]').attributes('href')).toBe('https://github.com/oullin');
+		expect(new DOMWrapper(document.body).find('[data-testid="oullin-dialog-oss-link"]').attributes('href')).toBe('https://github.com/oullin');
 
 		wrapper.unmount();
 	});
@@ -72,8 +75,14 @@ describe('WidgetOullinPartial', () => {
 		await nextTick();
 
 		const dialogWrapper = new DOMWrapper(document.body);
-		expect(dialogWrapper.find('[data-testid="oullin-dialog-close-button"]').exists()).toBe(true);
-		expect(dialogWrapper.find('[data-testid="oullin-dialog-oss-link"]').exists()).toBe(true);
+		const closeButton = dialogWrapper.find('[data-testid="oullin-dialog-close-button"]');
+		const ossLink = dialogWrapper.find('[data-testid="oullin-dialog-oss-link"]');
+		expect(closeButton.exists()).toBe(true);
+		expect(ossLink.exists()).toBe(true);
+
+		// Verify focusable elements are keyboard-reachable
+		expect((closeButton.element as HTMLElement).tabIndex).not.toBe(-1);
+		expect((ossLink.element as HTMLElement).tabIndex).not.toBe(-1);
 
 		wrapper.unmount();
 	});

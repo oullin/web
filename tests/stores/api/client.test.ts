@@ -117,6 +117,9 @@ describe('ApiClient', () => {
 	});
 
 	it('requests signatures through the same origin relay path in the browser', async () => {
+		const testOrigin = 'http://localhost:5179';
+		vi.stubGlobal('location', { ...window.location, origin: testOrigin });
+
 		const realClient = new ApiClient(options);
 		const fetchMock = fetch as Mock;
 
@@ -126,7 +129,7 @@ describe('ApiClient', () => {
 		await (realClient as any).getSignature('nonce-relay', `${url}profile`);
 
 		expect(fetchMock).toHaveBeenCalledWith(
-			`${window.location.origin}/relay/generate-signature`,
+			`${testOrigin}/relay/generate-signature`,
 			expect.objectContaining({
 				method: 'POST',
 			}),

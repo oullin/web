@@ -23,7 +23,7 @@ environment to enable it. Optional configuration variables:
 
 ## Local Relay Setup
 
-The browser-facing signature endpoint remains `relay/generate-signature`.
+The browser-facing signature endpoint remains `/relay/generate-signature`.
 
 - Run the local web stack with `make local-watch`
 - Web Caddy serves the local site on `http://localhost:$LOCAL_WEB_PORT` (default `5179`)

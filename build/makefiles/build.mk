@@ -9,6 +9,8 @@ BUILD_UID ?= $(shell id -u)
 BUILD_GID ?= $(shell id -g)
 LOCAL_WEB_PORT ?= 5179
 LOCAL_API_PORT ?= 18080
+export LOCAL_WEB_PORT
+export LOCAL_API_PORT
 
 # Capture git SHA for Sentry release tracking
 GIT_SHA ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")

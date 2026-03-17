@@ -89,6 +89,7 @@ describe('AboutPage', () => {
 		const wrapper = await mountComponent();
 		await flushPromises();
 		expect(getProfile).toHaveBeenCalled();
+		expect(getSocial).toHaveBeenCalled();
 		expect(getRecommendations).toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('Oullin.');
 		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('1');

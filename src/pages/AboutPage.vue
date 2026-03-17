@@ -92,7 +92,8 @@
 								Reach out by <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">email</a> to discuss projects, architecture, or ideas. If there is an interesting system
 								to design or improve, the conversation is open.
 							</p>
-							<AboutConnectSkeletonPartial v-else key="skeleton" />
+							<AboutConnectSkeletonPartial v-else-if="isLoadingProfile" key="skeleton" />
+							<p v-else key="fallback" class="page-panel-copy">We are currently unable to load contact details. Please try again later.</p>
 						</div>
 					</div>
 				</div>

@@ -1,10 +1,18 @@
 :80 {
 	@spa {
-		not path /relay/*
+		not path /relay /relay/*
 	}
 
-	# --- CORS (dev-friendly) ---
-	@preflight method OPTIONS
+	# --- CORS (dev-friendly, localhost only) ---
+	@localhost_origin {
+		header_regexp origin Origin ^https?://(localhost|127\.0\.0\.1)(:\d+)?$
+	}
+
+	@preflight {
+		method OPTIONS
+		header_regexp origin Origin ^https?://(localhost|127\.0\.0\.1)(:\d+)?$
+	}
+
 	handle @preflight {
 		header Access-Control-Max-Age "600"
 		header Access-Control-Allow-Credentials "true"
@@ -23,7 +31,7 @@
 		Referrer-Policy "strict-origin-when-cross-origin"
 	}
 
-	header @spa {
+	header @localhost_origin {
 		Access-Control-Allow-Credentials "true"
 		Access-Control-Expose-Headers "ETag, X-Request-ID"
 		Access-Control-Allow-Origin "{http.request.header.Origin}"

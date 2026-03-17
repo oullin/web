@@ -13,7 +13,7 @@
 					<span>BUILT: 2026.03</span>
 					<span>NODE: OULLIN_PRIME</span>
 				</div>
-				<button class="nav-theme" @click="toggleDarkMode">{{ isDark ? '☀ LIGHT' : '◑ DARK' }}</button>
+				<button type="button" class="nav-theme" :aria-pressed="isDark" @click="toggleDarkMode">{{ isDark ? '☀ LIGHT' : '◑ DARK' }}</button>
 			</div>
 		</div>
 	</nav>

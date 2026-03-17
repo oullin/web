@@ -9,7 +9,7 @@
 				: 'rounded-full border-slate-200/70 text-slate-600 hover:border-fuchsia-400/70 hover:bg-transparent hover:text-slate-800 dark:border-slate-700/80 dark:text-slate-300 dark:hover:text-slate-100 dark:hover:bg-transparent',
 		]"
 		:href="props.target"
-		@click.prevent="handleClick"
+		@click="handleClick"
 	>
 		<span aria-hidden="true">{{ props.icon }}</span>
 		{{ props.label }}
@@ -33,17 +33,24 @@ const props = withDefaults(
 	},
 );
 
-const handleClick = () => {
+const handleClick = (event: Event) => {
 	if (typeof window === 'undefined') {
 		return;
 	}
 
-	const targetElement = document.querySelector<HTMLElement>(props.target);
+	let targetElement: HTMLElement | null = null;
+
+	try {
+		targetElement = document.querySelector<HTMLElement>(props.target);
+	} catch {
+		return;
+	}
 
 	if (!targetElement) {
 		return;
 	}
 
+	event.preventDefault();
 	targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 </script>

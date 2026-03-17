@@ -1,15 +1,17 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import aliases from './aliases';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 
-// Get the directory name equivalent to __dirname in ESM
-const __filename: string = fileURLToPath(import.meta.url);
-const __dirname: string = path.dirname(__filename);
 const defaultApiPort = process.env.LOCAL_API_PORT ?? '18080';
-const defaultWebPort = process.env.LOCAL_WEB_PORT ? parseInt(process.env.LOCAL_WEB_PORT) : undefined;
+
+const defaultWebPort = (() => {
+	const raw = process.env.LOCAL_WEB_PORT;
+	if (!raw) return undefined;
+	const parsed = parseInt(raw, 10);
+	return Number.isNaN(parsed) ? undefined : parsed;
+})();
+
 const relayTarget = (() => {
 	try {
 		const apiUrl = process.env.VITE_API_URL;
@@ -27,11 +29,6 @@ export default defineConfig({
 	plugins: [vue(), tailwindcss()],
 	resolve: {
 		alias: aliases,
-	},
-	build: {
-		watch: {
-			usePolling: true,
-		},
 	},
 	server: {
 		port: defaultWebPort,

@@ -19,5 +19,5 @@
 <script setup lang="ts">
 import { Skeleton } from '@components/ui/skeleton';
 
-const props = defineProps<{ isAnimated?: boolean }>();
+const props = withDefaults(defineProps<{ isAnimated?: boolean }>(), { isAnimated: true });
 </script>

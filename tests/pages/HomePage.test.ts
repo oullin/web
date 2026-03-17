@@ -76,4 +76,13 @@ describe('HomePage', () => {
 		expect(wrapper.text()).toContain(cta.headlineAccent);
 		expect(wrapper.text()).toContain(cta.button.label);
 	});
+
+	it('handles profile fetch errors gracefully', async () => {
+		const error = new Error('network failure');
+		getProfile.mockRejectedValueOnce(error);
+		mount(HomePage, { global });
+		await flushPromises();
+		const { debugError } = await import('@api/http-error.ts');
+		expect(debugError).toHaveBeenCalledWith(error);
+	});
 });
