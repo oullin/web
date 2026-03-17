@@ -1,8 +1,8 @@
 <template>
 	<Dialog>
-		<div class="rounded-lg border border-slate-200 p-5 dark:border-slate-800 dark:bg-linear-to-t dark:from-slate-800 dark:to-slate-800/30">
+		<div class="border p-5" style="border-color: var(--border); background: var(--surface)">
 			<div class="mb-4 flex gap-3">
-				<div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-fuchsia-500 dark:bg-slate-700/50 dark:text-teal-400">
+				<div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-fuchsia-500 dark:bg-slate-700/50 dark:text-fuchsia-400">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7" aria-hidden="true">
 						<path
 							stroke-linecap="round"
@@ -23,7 +23,7 @@
 			<DialogTrigger as-child>
 				<button
 					type="button"
-					class="mt-4 inline-flex cursor-pointer items-center text-sm font-medium text-fuchsia-600 transition hover:text-fuchsia-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 dark:text-teal-400 dark:hover:text-teal-300 dark:focus-visible:ring-teal-500"
+					class="mt-4 inline-flex cursor-pointer items-center text-sm font-medium text-fuchsia-600 transition hover:text-fuchsia-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 dark:text-fuchsia-400 dark:hover:text-fuchsia-300 dark:focus-visible:ring-fuchsia-500"
 					data-testid="oullin-dialog-trigger"
 				>
 					Read more
@@ -37,7 +37,7 @@
 				<DialogClose as-child>
 					<button
 						type="button"
-						class="ml-4 cursor-pointer text-slate-400 transition hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 dark:text-slate-500 dark:hover:text-slate-300 dark:focus-visible:ring-teal-500"
+						class="ml-4 cursor-pointer text-slate-400 transition hover:text-slate-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500 focus-visible:ring-offset-2 dark:text-slate-500 dark:hover:text-slate-300 dark:focus-visible:ring-fuchsia-500"
 						data-testid="oullin-dialog-close-button"
 					>
 						<span class="sr-only">Close</span>
@@ -70,11 +70,11 @@
 					flow right into my identity. That little twist in spelling isn't just for show; it's a daily nudge to stay present, move with purpose, and welcome every change as part of my shared
 					journey.
 				</p>
-				<p class="rounded-lg border border-fuchsia-200/70 bg-fuchsia-50/90 p-4 text-[0.95rem] text-slate-700 dark:border-teal-500/40 dark:bg-teal-900/40 dark:text-teal-100">
+				<p class="rounded-lg border border-fuchsia-200/70 bg-fuchsia-50/90 p-4 text-[0.95rem] text-slate-700 dark:border-fuchsia-500/40 dark:bg-fuchsia-900/40 dark:text-fuchsia-100">
 					Explore the
 					<a
 						href="https://github.com/oullin"
-						class="text-fuchsia-600 decoration-2 decoration-fuchsia-400 transition hover:text-fuchsia-500 hover:decoration-fuchsia-500 dark:text-teal-300 dark:decoration-teal-400 dark:hover:text-teal-200 dark:hover:decoration-teal-200"
+						class="text-fuchsia-600 decoration-2 decoration-fuchsia-400 transition hover:text-fuchsia-500 hover:decoration-fuchsia-500 dark:text-fuchsia-300 dark:decoration-fuchsia-400 dark:hover:text-fuchsia-200 dark:hover:decoration-fuchsia-200"
 						target="_blank"
 						rel="noopener noreferrer"
 						data-testid="oullin-dialog-oss-link"

@@ -192,7 +192,7 @@
 }
 
 .project-card-content {
-	@apply flex flex-col h-full min-h-[220px];
+	@apply flex flex-col h-full;
 }
 
 .post-markdown table {
