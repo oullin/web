@@ -195,6 +195,38 @@
 	@apply flex flex-col h-full;
 }
 
+.project-card-icon {
+	color: var(--cyan);
+}
+
+.project-card-language {
+	color: var(--muted);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	font-family: 'JetBrains Mono', monospace;
+	font-size: 0.6rem;
+}
+
+.project-card-title {
+	color: var(--text);
+}
+
+.project-card-timestamp {
+	color: var(--cyan);
+	font-family: 'JetBrains Mono', monospace;
+}
+
+.project-card-excerpt {
+	color: var(--muted);
+	font-family: 'JetBrains Mono', monospace;
+	font-size: 0.72rem;
+	line-height: 1.9;
+}
+
+.project-card-arrow {
+	color: var(--cyan);
+}
+
 .post-markdown table {
 	@apply w-full text-sm border border-slate-200 dark:border-slate-700;
 	border-collapse: collapse;

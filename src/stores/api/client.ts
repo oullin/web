@@ -93,7 +93,7 @@ export class ApiClient {
 			return new URL('/relay/generate-signature', window.location.origin);
 		}
 
-		return new URL('relay/generate-signature', this.hostURL);
+		return new URL('/relay/generate-signature', this.hostURL);
 	}
 
 	/**

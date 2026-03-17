@@ -16,7 +16,7 @@ const skills: ProfileSkillResponse[] = [
 describe('WidgetSkillsPartial', () => {
 	it('renders skill name in trigger', () => {
 		const wrapper = mount(WidgetSkillsPartial, { props: { skills } });
-		const trigger = wrapper.find('[data-testid="skill-name-trigger"]');
+		const trigger = wrapper.find(`[data-testid="skill-name-trigger-${skills[0].uuid}"]`);
 		expect(trigger.exists()).toBe(true);
 		expect(trigger.text()).toContain(skills[0].item);
 	});

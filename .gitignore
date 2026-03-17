@@ -3,7 +3,9 @@ stats.html
 .env.production
 .DS_Store
 
+# --- Build output
 dist/
+# ad-hoc build output for verifying production builds without overwriting dist/
 dist-verify/
 .vite/
 .idea/

@@ -8,7 +8,7 @@ import { cn } from '@components/lib/utils';
 
 const props = defineProps<AccordionTriggerProps & { class?: HTMLAttributes['class']; hideIcon?: boolean }>();
 
-const delegatedProps = reactiveOmit(props, 'class');
+const delegatedProps = reactiveOmit(props, 'class', 'hideIcon');
 const forwardedProps = useForwardProps(delegatedProps);
 </script>
 

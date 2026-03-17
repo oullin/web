@@ -51,7 +51,8 @@
 						<div v-else-if="posts.length > 0" key="list" class="space-y-5" data-testid="tag-posts-list">
 							<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
 						</div>
-						<p v-else key="empty" class="page-empty-state" data-testid="tag-posts-empty">No posts found for this tag.</p>
+						<p v-else-if="normalizedTag" key="empty" class="page-empty-state" data-testid="tag-posts-empty">No posts found for this tag.</p>
+						<p v-else key="landing" class="page-empty-state" data-testid="tag-posts-landing">Select a tag to browse related articles.</p>
 					</div>
 				</section>
 

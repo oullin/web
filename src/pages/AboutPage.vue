@@ -101,7 +101,7 @@
 
 			<section v-if="profile && profile.skills.length > 0" class="skills-band">
 				<div class="marquee-track">
-					<span v-for="skill in profile.skills" :key="skill.uuid" class="marquee-item">{{ skill.item }} <em>///</em></span>
+					<span v-for="skill in profile.skills" :key="skill.uuid" class="marquee-item">{{ skill.item }} <em aria-hidden="true">///</em></span>
 					<span v-for="skill in profile.skills" :key="`dup-${skill.uuid}`" class="marquee-item" aria-hidden="true">{{ skill.item }} <em>///</em></span>
 				</div>
 			</section>
@@ -166,28 +166,28 @@ useSeo({
 	],
 });
 
-const loadAboutPageData = async () => {
-	const [profileResponse, socialResponse, recommendationsResponse] = await Promise.allSettled([apiStore.getProfile(), apiStore.getSocial(), apiStore.getRecommendations()]);
+const loadAboutPageData = () => {
+	apiStore
+		.getProfile()
+		.then((res) => {
+			if (res.data) profile.value = res.data;
+		})
+		.catch(debugError)
+		.finally(() => (isLoadingProfile.value = false));
 
-	if (profileResponse.status === 'fulfilled' && profileResponse.value.data) {
-		profile.value = profileResponse.value.data;
-	} else if (profileResponse.status === 'rejected') {
-		debugError(profileResponse.reason);
-	}
+	apiStore
+		.getSocial()
+		.then((res) => {
+			if (res.data) socialLinks.value = res.data;
+		})
+		.catch(debugError);
 
-	if (socialResponse.status === 'fulfilled' && socialResponse.value.data) {
-		socialLinks.value = socialResponse.value.data;
-	} else if (socialResponse.status === 'rejected') {
-		debugError(socialResponse.reason);
-	}
-
-	if (recommendationsResponse.status === 'fulfilled' && recommendationsResponse.value.data) {
-		recommendations.value = recommendationsResponse.value.data;
-	} else if (recommendationsResponse.status === 'rejected') {
-		debugError(recommendationsResponse.reason);
-	}
-
-	isLoadingProfile.value = false;
+	apiStore
+		.getRecommendations()
+		.then((res) => {
+			if (res.data) recommendations.value = res.data;
+		})
+		.catch(debugError);
 };
 
 onMounted(loadAboutPageData);

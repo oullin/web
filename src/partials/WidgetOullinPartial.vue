@@ -1,6 +1,6 @@
 <template>
 	<Dialog>
-		<div class="border p-5" style="border-color: var(--border); background: var(--surface)">
+		<div class="border border-[var(--border)] bg-[var(--surface)] p-5">
 			<div class="mb-4 flex gap-3">
 				<div class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-fuchsia-500 dark:bg-slate-700/50 dark:text-fuchsia-400">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7" aria-hidden="true">

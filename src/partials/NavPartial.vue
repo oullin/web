@@ -7,7 +7,7 @@
 				<li><RouterLink to="/projects">projects</RouterLink></li>
 				<li><RouterLink to="/about">about</RouterLink></li>
 			</ul>
-			<div style="display: flex; align-items: center; gap: 20px">
+			<div class="flex items-center gap-5">
 				<div class="nav-status">
 					<span><span class="live-dot"></span>SIGNAL: ACTIVE</span>
 					<span>BUILT: 2026.03</span>
