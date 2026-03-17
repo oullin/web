@@ -21,43 +21,40 @@
 					<PostPageSkeletonPartial v-if="isLoading" key="skeleton" />
 
 					<article v-else-if="post" key="post">
-						<header class="page-hero border border-[var(--border)]">
+						<header class="page-hero page-hero--single border border-[var(--border)]">
 							<div class="page-hero-main">
-								<p class="page-kicker">POST // WRITING // SIGNAL</p>
-								<div class="page-copy !mt-0 mb-4">
-									<span class="text-[var(--violet)]">—</span> {{ date().format(new Date(post.published_at)) }}
-									<span class="text-[var(--muted)]">·</span>
-									{{ getReadingTime(post.content) }}
-								</div>
-								<h1 id="post-top" class="page-title !max-w-[12ch]">{{ post.title }}</h1>
-								<p class="page-copy">{{ post.excerpt }}</p>
+								<div class="post-hero-layout" :class="{ 'post-hero-layout--with-cover': Boolean(post.cover_image_url) }">
+									<div class="post-hero-copy">
+										<p class="page-kicker">POST // WRITING // SIGNAL</p>
+										<div class="page-copy !mt-0 mb-4">
+											<span class="text-[var(--violet)]">—</span> {{ date().format(new Date(post.published_at)) }}
+											<span class="text-[var(--muted)]">·</span>
+											{{ getReadingTime(post.content) }}
+										</div>
+										<h1 id="post-top" class="page-title !max-w-[12ch]">{{ post.title }}</h1>
+										<p class="page-copy">{{ post.excerpt }}</p>
+										<p class="page-copy">&nbsp;</p>
 
-								<nav v-if="post.tags?.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]" aria-label="Post tags" data-testid="post-tags">
-									<ul class="flex flex-wrap items-center gap-y-1">
-										<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
-											<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-[var(--violet)]">
-												{{ formatLabel(tag.name) }}
-											</RouterLink>
-											<span v-if="index < post.tags.length - 1" class="mx-2 text-[var(--muted)]" aria-hidden="true" data-testid="post-tag-separator"> / </span>
-										</li>
-									</ul>
-								</nav>
-							</div>
+										<nav v-if="post.tags?.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]" aria-label="Post tags" data-testid="post-tags">
+											<ul class="flex flex-wrap items-center gap-y-1">
+												<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
+													<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-[var(--violet)]">
+														{{ formatLabel(tag.name) }}
+													</RouterLink>
+													<span v-if="index < post.tags.length - 1" class="mx-2 text-[var(--muted)]" aria-hidden="true" data-testid="post-tag-separator"> / </span>
+												</li>
+											</ul>
+										</nav>
+									</div>
 
-							<div class="page-hero-side overflow-y-auto">
-								<div class="flex flex-col gap-4 p-6">
-									<WidgetSocialTransitionWrapper />
-									<WidgetSponsorPartial />
-									<div class="page-summary-card">
-										<div class="page-section-label">Reading Mode</div>
-										<div class="page-panel-title">Slow down enough to notice the structure.</div>
-										<p class="page-panel-copy">The point of this writing is not volume. It is signal that survives rereading.</p>
+									<div v-if="post.cover_image_url" class="post-hero-media" data-testid="post-cover">
+										<CoverImageLoader class="post-hero-cover" :src="post.cover_image_url" :alt="post.title" :width="420" :height="520" loading="eager" fetchpriority="high" />
 									</div>
 								</div>
 							</div>
 						</header>
 
-						<section class="page-article">
+						<section class="page-article page-article--wide">
 							<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
 						</section>
 					</article>
@@ -89,9 +86,8 @@ import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@/support/seo';
 import { formatLabel, routeFor } from '@/support/tags.ts';
-import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
+import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { onMounted, onUnmounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
 

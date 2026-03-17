@@ -38,7 +38,7 @@
 					</div>
 				</a>
 			</div>
-			<p v-else key="empty" class="col-span-full text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Check back later!</p>
+			<p v-else key="empty" class="col-span-full text-sm text-slate-500 dark:text-slate-400">Projects will be added soon. Please check again later.</p>
 		</div>
 	</section>
 </template>

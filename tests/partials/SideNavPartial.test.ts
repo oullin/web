@@ -6,9 +6,9 @@ import { setActivePinia, createPinia } from 'pinia';
 import { faker } from '@faker-js/faker';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import SideNavPartial from '@partials/SideNavPartial.vue';
-import type { SocialResponse, ApiResponse } from '@api/response/index.ts';
+import type { LinksResponse, ApiResponse } from '@api/response/index.ts';
 
-const social: SocialResponse[] = [
+const links: LinksResponse[] = [
 	{
 		uuid: faker.string.uuid(),
 		name: 'github',
@@ -32,8 +32,8 @@ const social: SocialResponse[] = [
 	},
 ];
 
-const getSocial = vi.fn<[], Promise<ApiResponse<SocialResponse[]>>>(() => Promise.resolve({ version: '1.0.0', data: social }));
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getSocial }) }));
+const getLinks = vi.fn<[], Promise<ApiResponse<LinksResponse[]>>>(() => Promise.resolve({ version: '1.0.0', data: links }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getLinks }) }));
 
 const routes = [
 	{ path: '/', name: 'home', component: { template: '<div />' } },

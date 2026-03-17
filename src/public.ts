@@ -7,12 +7,13 @@ export function image(filename: string): string {
 }
 
 export function date(language?: string, options?: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
-	const lang = language || 'en-US';
+	const lang = language || 'en-GB';
 
 	const ops = options || {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric',
+		timeZone: 'UTC',
 	};
 
 	return new Intl.DateTimeFormat(lang, ops);
@@ -56,6 +57,7 @@ export function getRandomInt(min: number, max: number): number {
 export function safeHref(url: string, fallback = '#'): string {
 	try {
 		const protocol = new URL(url, 'https://placeholder.invalid').protocol;
+
 		if (protocol === 'https:' || protocol === 'http:' || protocol === 'mailto:') {
 			return url;
 		}

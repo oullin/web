@@ -1,27 +1,27 @@
 {
-	"leftTag": "// about.maker",
-	"defaultName": ["GUSTAVO", "OCANTO."],
+	"leftTag": "// about.oullin",
+	"defaultName": ["OULLIN."],
 	"body": {
-		"role": "Engineering leader. AI architect. Software engineer.",
-		"origin": "A daily reminder that transformation isn't tidy. It's raw. It's real. It's necessary.",
-		"mission": "Building tools that move people. Writing ideas that challenge the obvious. Sharing the journey without filtering out the difficulty."
+		"role": "Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, modernisation, and digital transformation in the AI era.",
+		"origin": "The name still points to movement and transformation, but the work is grounded in senior engineering judgement and systems that have to keep running.",
+		"mission": "Led by Gustavo Ocanto, with 20+ years across software, consulting, software architecture, AI-first products and companies, and technical management, including 10+ years in banking."
 	},
-	"rightTag": "// current.work",
+	"rightTag": "// strategic.focus",
 	"work": [
 		{
 			"index": "[ 01 ]",
-			"title": "Engineering Leadership",
-			"description": "Growing teams who build with intention and ship with confidence. Velocity that doesn't sacrifice craft."
+			"title": "Regulated & High-Trust Systems",
+			"description": "Software for banking and other environments where reliability, risk, and operational discipline are not optional."
 		},
 		{
 			"index": "[ 02 ]",
-			"title": "AI Architecture",
-			"description": "Designing intelligence that moves — fast, purposeful, aware. Systems built for the edge."
+			"title": "Modernization In The AI Era",
+			"description": "Practical digital transformation that connects legacy reality, platform evolution, and AI capability without hype."
 		},
 		{
 			"index": "[ 03 ]",
-			"title": "Open Source",
-			"description": "Tools built in the open. Code returned to the community with the same energy it was taken from."
+			"title": "Architecture & Technical Leadership",
+			"description": "Hands-on guidance across software architecture, delivery, and technical management when the systems are complex and the stakes are real."
 		}
 	]
 }

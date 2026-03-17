@@ -1,9 +1,9 @@
 {
-	"watermark": "MOVE",
-	"headline": ["DON'T", "WAIT."],
-	"headlineAccent": "MOVE.",
+	"watermark": "BUILD",
+	"headline": ["COMPLEX", "SYSTEM?"],
+	"headlineAccent": "LET'S TALK.",
 	"button": {
-		"label": "Initialize →",
-		"to": "/projects"
+		"label": "Start a conversation →",
+		"to": "/contact"
 	}
 }

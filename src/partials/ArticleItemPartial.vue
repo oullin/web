@@ -1,5 +1,5 @@
 <template>
-	<article v-if="item" class="py-5 border-b border-slate-100 dark:border-slate-800 group">
+	<article v-if="item" class="py-5 border-b border-slate-100 last:border-b-0 dark:border-slate-800 group">
 		<div class="flex items-start">
 			<RouterLink
 				v-lazy-link

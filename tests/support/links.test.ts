@@ -1,15 +1,15 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest';
-import { Social } from '@/support/social.ts';
-import type { SocialResponse } from '@api/response';
+import { Links } from '@/support/links.ts';
+import type { LinksResponse } from '@api/response';
 
-const { getSocialMock, debugErrorMock } = vi.hoisted(() => ({
-	getSocialMock: vi.fn(),
+const { getLinksMock, debugErrorMock } = vi.hoisted(() => ({
+	getLinksMock: vi.fn(),
 	debugErrorMock: vi.fn(),
 }));
 
 vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({
-		getSocial: getSocialMock,
+		getLinks: getLinksMock,
 	}),
 }));
 
@@ -21,32 +21,32 @@ vi.mock('@api/http-error.ts', async () => {
 	};
 });
 
-const sampleSocialResponse: SocialResponse[] = [
+const sampleLinksResponse: LinksResponse[] = [
 	{ uuid: '1', name: 'x', handle: '@user', url: 'https://x.com/user', description: 'micro posts' },
 	{ uuid: '2', name: 'github', handle: 'user', url: 'https://github.com/user', description: 'repos' },
 ];
 
-describe('Social.fetch', () => {
+describe('Links.fetch', () => {
 	beforeEach(() => {
-		getSocialMock.mockReset();
+		getLinksMock.mockReset();
 		debugErrorMock.mockReset();
 	});
 
 	it('returns API data when available', async () => {
-		getSocialMock.mockResolvedValueOnce({ data: sampleSocialResponse });
+		getLinksMock.mockResolvedValueOnce({ data: sampleLinksResponse });
 
-		const social = new Social();
-		const result = await social.fetch();
+		const links = new Links();
+		const result = await links.fetch();
 
-		expect(getSocialMock).toHaveBeenCalledTimes(1);
-		expect(result).toEqual(sampleSocialResponse);
+		expect(getLinksMock).toHaveBeenCalledTimes(1);
+		expect(result).toEqual(sampleLinksResponse);
 	});
 
 	it('falls back to an empty list when the response lacks data', async () => {
-		getSocialMock.mockResolvedValueOnce({ data: undefined });
+		getLinksMock.mockResolvedValueOnce({ data: undefined });
 
-		const social = new Social();
-		const result = await social.fetch();
+		const links = new Links();
+		const result = await links.fetch();
 
 		expect(result).toEqual([]);
 		expect(debugErrorMock).not.toHaveBeenCalled();
@@ -54,44 +54,44 @@ describe('Social.fetch', () => {
 
 	it('logs errors and returns an empty list when the request fails', async () => {
 		const error = new Error('network failed');
-		getSocialMock.mockRejectedValueOnce(error);
+		getLinksMock.mockRejectedValueOnce(error);
 
-		const social = new Social();
-		const result = await social.fetch();
+		const links = new Links();
+		const result = await links.fetch();
 
 		expect(result).toEqual([]);
 		expect(debugErrorMock).toHaveBeenCalledWith(error);
 	});
 });
 
-describe('Social.buildNavLinks', () => {
+describe('Links.buildNavLinks', () => {
 	it('ignores unknown platforms and uses provided allowlist', () => {
-		const socialEntries: SocialResponse[] = [
+		const linksResponse: LinksResponse[] = [
 			{ uuid: '1', name: 'x', handle: '@user', url: 'https://x.com/user', description: 'micro posts' },
 			{ uuid: '2', name: 'github', handle: 'user', url: 'https://github.com/user', description: 'repos' },
 			{ uuid: '3', name: 'facebook', handle: 'user', url: 'https://fb.com/user', description: 'legacy' },
 		];
 
-		const social = new Social();
-		const links = social.buildNavLinks(socialEntries, ['github']);
+		const links = new Links();
+		const navLinks = links.buildNavLinks(linksResponse, ['github']);
 
-		expect(links).toHaveLength(1);
-		expect(links[0]).toMatchObject({
+		expect(navLinks).toHaveLength(1);
+		expect(navLinks[0]).toMatchObject({
 			href: 'https://github.com/user',
 			label: 'Code & Projects',
 		});
-		expect(links[0].icon).toBeTruthy();
+		expect(navLinks[0].icon).toBeTruthy();
 	});
 
 	it('defaults to all configured platforms when allowlist is omitted', () => {
-		const socialEntries: SocialResponse[] = [
+		const linksResponse: LinksResponse[] = [
 			{ uuid: '1', name: 'x', handle: '@user', url: 'https://x.com/user', description: 'micro posts' },
 			{ uuid: '2', name: 'linkedin', handle: 'user', url: 'https://linkedin.com/in/user', description: 'work' },
 		];
 
-		const social = new Social();
-		const links = social.buildNavLinks(socialEntries);
+		const links = new Links();
+		const navLinks = links.buildNavLinks(linksResponse);
 
-		expect(links.map((link) => link.label)).toEqual(['Latest Updates', 'Professional Profile']);
+		expect(navLinks.map((link) => link.label)).toEqual(['Latest Updates', 'Professional Profile']);
 	});
 });

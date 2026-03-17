@@ -36,8 +36,8 @@
 				</h2>
 				<p class="about-body">
 					{{ about.body.role }}<br /><br />
-					The name <strong>Oullin</strong> is a deliberate misspelling of <strong>Ollin</strong> — the Aztec sacred day-sign of movement, transformation. {{ about.body.origin }}<br /><br />
-					{{ about.body.mission }}
+					{{ about.body.mission }}<br /><br />
+					The name <strong>Oullin</strong> is a deliberate misspelling of <strong>Ollin</strong>, the Aztec sacred day-sign of movement and transformation. {{ about.body.origin }}
 				</p>
 			</div>
 			<div class="about-right">
@@ -55,7 +55,7 @@
 		</section>
 
 		<!-- CTA -->
-		<section id="projects" class="cta-section">
+		<section id="contact" class="cta-section">
 			<div class="cta-watermark">{{ cta.watermark }}</div>
 			<h2 class="cta-head">
 				<template v-for="(line, i) in cta.headline" :key="i">{{ line }}<br /></template>
@@ -69,69 +69,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 import HeroPartial from '@/partials/HeroPartial.vue';
 import NavPartial from '@/partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
-import { useApiStore } from '@api/store.ts';
-import { debugError } from '@api/http-error.ts';
-import type { ProfileResponse } from '@api/response/index.ts';
-import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@/support/seo';
 import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';
 import cta from '@fixtures/cta.json';
 
-const apiStore = useApiStore();
-const profile = ref<ProfileResponse | null>(null);
 const marqueeItems = marquee.items;
-
-const nameLines = computed<string[]>(() => {
-	if (!profile.value?.name) {
-		return about.defaultName;
-	}
-
-	return profile.value.name.toUpperCase().split(' ');
-});
+const nameLines = about.defaultName;
 
 useSeo({
-	title: 'Oullin',
 	image: SEO_IMAGE,
 	url: siteUrlFor('/'),
-	imageAlt: `${SITE_NAME} and Oullin brand preview`,
-	keywords: buildKeywords(
-		'Oullin',
-		'movement and transformation',
-		'engineering leadership',
-		'AI architecture',
-		'software architect/engineering',
-		'technical management',
-		'digital transformation',
-		'AI orchestration',
-	),
-	description: `Oullin is ${SITE_NAME}'s platform for engineering leadership, AI architecture, open source systems, and writing built around movement, transformation, and signal.`,
+	imageAlt: `${SITE_NAME} brand preview`,
+	keywords: buildKeywords('highly available software', 'software architecture', 'technical management', 'digital transformation', 'AI transformation', 'banking technology', 'consulting'),
+	description:
+		'Oullin is a boutique software engineering and architecture consultancy with 20+ years across software, consulting, architecture, AI-first products and companies, and technical management, including 10+ years in banking.',
 	jsonLd: [
 		{
-			name: 'Oullin',
+			name: SITE_NAME,
 			'@type': 'WebPage',
 			url: siteUrlFor('/'),
 			'@context': 'https://schema.org',
-			description: `Landing page for Oullin, where ${SITE_NAME} shares engineering leadership, AI architecture, open source work, and writing.`,
+			description: 'Landing page for Oullin, covering highly available software, banking-domain delivery, architecture leadership, and digital transformation in the AI era.',
 		},
-		PERSON_JSON_LD,
+		WEBSITE_JSON_LD,
+		ORGANIZATION_JSON_LD,
 	],
-});
-
-onMounted(async () => {
-	try {
-		const userProfileResponse = await apiStore.getProfile();
-
-		if (userProfileResponse.data) {
-			profile.value = userProfileResponse.data;
-		}
-	} catch (error) {
-		debugError(error);
-	}
 });
 </script>

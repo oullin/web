@@ -1,13 +1,13 @@
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import type { SocialResponse } from '@api/response';
+import type { LinksResponse } from '@api/response';
 
 export interface PlatformConfig {
 	icon: string;
 	text: string;
 }
 
-export interface SocialNavLink {
+export interface LinksNavLink {
 	href: string;
 	label: string;
 	icon: string;
@@ -15,7 +15,7 @@ export interface SocialNavLink {
 
 type PlatformName = 'x' | 'youtube' | 'instagram' | 'linkedin' | 'github';
 
-export class Social {
+export class Links {
 	private readonly apiStore = useApiStore();
 
 	private static readonly platformConfigs: Record<PlatformName, PlatformConfig> = {
@@ -42,16 +42,16 @@ export class Social {
 	};
 
 	private static isPlatformName(name: string): name is PlatformName {
-		return Object.prototype.hasOwnProperty.call(Social.platformConfigs, name);
+		return Object.prototype.hasOwnProperty.call(Links.platformConfigs, name);
 	}
 
 	get platforms(): Record<PlatformName, PlatformConfig> {
-		return Social.platformConfigs;
+		return Links.platformConfigs;
 	}
 
-	async fetch(): Promise<SocialResponse[]> {
+	async fetch(): Promise<LinksResponse[]> {
 		try {
-			const response = await this.apiStore.getSocial();
+			const response = await this.apiStore.getLinks();
 			return response.data ?? [];
 		} catch (error) {
 			debugError(error);
@@ -59,16 +59,16 @@ export class Social {
 		}
 	}
 
-	buildNavLinks(social: SocialResponse[], allowedPlatforms?: PlatformName[]): SocialNavLink[] {
-		const allowed = allowedPlatforms ?? (Object.keys(Social.platformConfigs) as PlatformName[]);
+	buildNavLinks(links: LinksResponse[], allowedPlatforms?: PlatformName[]): LinksNavLink[] {
+		const allowed = allowedPlatforms ?? (Object.keys(Links.platformConfigs) as PlatformName[]);
 		const allowedSet = new Set<PlatformName>(allowed);
 
-		return social
-			.filter((item): item is SocialResponse & { name: PlatformName } => {
-				return Social.isPlatformName(item.name) && allowedSet.has(item.name);
+		return links
+			.filter((item): item is LinksResponse & { name: PlatformName } => {
+				return Links.isPlatformName(item.name) && allowedSet.has(item.name);
 			})
 			.map((item) => {
-				const platform = Social.platformConfigs[item.name];
+				const platform = Links.platformConfigs[item.name];
 				return {
 					href: item.url,
 					label: platform?.text ?? item.name,

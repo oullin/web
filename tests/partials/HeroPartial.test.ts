@@ -21,11 +21,26 @@ describe('HeroPartial', () => {
 		expect(wrapper.find('.eyebrow').text()).toBe(hero.eyebrow);
 	});
 
+	it('renders the Oullin subcopy lines', () => {
+		const wrapper = mount(HeroPartial, { global });
+		hero.sub.lines.forEach((line) => {
+			expect(wrapper.text()).toContain(line);
+		});
+	});
+
 	it('renders all data block labels', () => {
 		const wrapper = mount(HeroPartial, { global });
 		hero.dataBlocks.forEach((block) => {
 			expect(wrapper.text()).toContain(block.label);
 		});
+	});
+
+	it('renders the proof-led expertise blocks', () => {
+		const wrapper = mount(HeroPartial, { global });
+		expect(wrapper.text()).toContain('20+');
+		expect(wrapper.text()).toContain('10+');
+		expect(wrapper.text()).toContain('Highly Available Software');
+		expect(wrapper.text()).toContain('AI-first companies under real constraints.');
 	});
 
 	it('renders cta buttons', () => {

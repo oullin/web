@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 	width: 'w-20',
 	height: 'h-20',
 	avatar: photo,
-	alt: 'gocanto',
+	alt: 'Oullin',
 	loading: 'eager',
 	decoding: 'async',
 	fetchpriority: 'high',

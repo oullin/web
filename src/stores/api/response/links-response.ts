@@ -1,4 +1,4 @@
-export interface SocialResponse {
+export interface LinksResponse {
 	uuid: string;
 	handle: string;
 	url: string;

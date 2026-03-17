@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import aliases from './aliases';
+import aliasEntries from './aliases';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -28,7 +28,7 @@ export default defineConfig({
 	},
 	plugins: [vue(), tailwindcss()],
 	resolve: {
-		alias: aliases,
+		alias: aliasEntries,
 	},
 	server: {
 		port: defaultWebPort,

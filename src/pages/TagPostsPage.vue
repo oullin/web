@@ -60,16 +60,6 @@
 					<BackToTopLink target="#tag-posts-top" />
 				</div>
 			</section>
-
-			<section class="page-support-grid">
-				<WidgetSocialTransitionWrapper />
-				<WidgetSponsorPartial />
-				<div class="page-summary-card">
-					<div class="page-section-label">Reading Strategy</div>
-					<div class="page-panel-title">Follow a theme until the pattern becomes obvious.</div>
-					<p class="page-panel-copy">Tags are a better way to read when you want depth instead of chronology.</p>
-				</div>
-			</section>
 		</main>
 
 		<FooterPartial />
@@ -83,8 +73,6 @@ import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
-import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';

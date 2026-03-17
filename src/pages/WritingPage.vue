@@ -8,10 +8,7 @@
 					<p class="page-kicker">WRITING // ESSAYS // SIGNAL</p>
 					<h1 class="page-title">Writing archive.</h1>
 					<div class="page-copy">
-						<p>
-							This page holds the article feed that used to be implied on the homepage. It is now a dedicated place to browse categories, open essays, and follow the writing without
-							burying it inside the landing page.
-						</p>
+						<p>This page holds Oullin's article archive. It is a dedicated place to browse categories, open essays, and follow the writing without burying it inside the landing page.</p>
 					</div>
 				</div>
 				<div class="page-hero-side">
@@ -39,10 +36,10 @@
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
-import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@/support/seo';
 
 useSeo({
-	title: 'Writing Archive',
+	title: 'Writing',
 	image: SEO_IMAGE,
 	url: siteUrlFor('/writing'),
 	imageAlt: `${SITE_NAME} writing archive preview`,
@@ -65,7 +62,7 @@ useSeo({
 			'@context': 'https://schema.org',
 			description: `${SITE_NAME}'s archive of essays, notes, and articles on software engineering, AI, and architecture.`,
 		},
-		PERSON_JSON_LD,
+		ORGANIZATION_JSON_LD,
 	],
 });
 </script>

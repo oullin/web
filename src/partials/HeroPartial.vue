@@ -17,10 +17,10 @@
 					</template>
 				</h1>
 				<p class="hero-sub">
-					{{ hero.sub.intro }}<br /><br />
-					<strong>{{ hero.sub.author }}</strong> — {{ hero.sub.role }}<br />
-					{{ hero.sub.taglines[0] }}<br />
-					{{ hero.sub.taglines[1] }}
+					<template v-for="(line, index) in hero.sub.lines" :key="line">
+						<template v-if="index > 0"><br /><br /></template>
+						{{ line }}
+					</template>
 				</p>
 			</div>
 			<div class="cta-row">

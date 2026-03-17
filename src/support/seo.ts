@@ -1,37 +1,45 @@
 import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } from 'vue';
 import type { PostResponse } from '@api/response/posts-response.ts';
 
-export const SITE_NAME = 'Gustavo Ocanto';
+export const SITE_NAME = 'Oullin';
 export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const ABOUT_IMAGE = '/images/profile/about.jpg';
 export const SEO_IMAGE = '/images/profile/about-seo.png';
-export const DEFAULT_TWITTER_HANDLE = '@gocanto';
+export const SITE_LOGO = '/brand/logo-touch.png';
+export const DEFAULT_TWITTER_HANDLE = '@oullin';
 export const DEFAULT_DESCRIPTION =
-	"Oullin is Gustavo Ocanto's platform for engineering leadership, AI architecture, open source systems, and writing built around movement, transformation, and signal.";
+	'Oullin is a boutique software engineering and architecture consultancy focused on highly available software, digital transformation in the AI era, and complex systems in regulated and high-trust environments.';
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
 export const DEFAULT_KEYWORDS = [
 	SITE_NAME,
-	'Oullin',
-	'Software Engineer',
-	'Engineering Leader',
-	'AI Architect',
+	'Transformation',
+	'Software Engineering',
 	'Software Architecture',
-	'Open Source Systems',
-	'Software Architect/Engineering',
+	'Highly Available Software',
+	'AI Transformation',
+	'Banking Technology',
 	'Technical Management',
 	'Digital Transformation',
-	'AI Orchestration',
-	'Systems Thinking',
+	'Consulting',
+	'Regulated Systems',
+	'AI-First Products',
 ].join(',');
-export const PERSON_JSON_LD = {
+export const WEBSITE_JSON_LD = {
 	'@context': 'https://schema.org',
-	'@type': 'Person',
+	'@type': 'WebSite',
 	name: SITE_NAME,
 	url: SITE_URL,
-	image: siteUrlFor(SEO_IMAGE),
-	jobTitle: 'Engineering Leader, AI Architect, Software Engineer',
 	description: DEFAULT_DESCRIPTION,
-	sameAs: ['https://x.com/gocanto', 'https://www.linkedin.com/in/gocanto/', 'https://github.com/gocanto'],
+};
+export const ORGANIZATION_JSON_LD = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: SITE_NAME,
+	url: SITE_URL,
+	logo: siteUrlFor(SITE_LOGO),
+	image: siteUrlFor(SITE_LOGO),
+	description: DEFAULT_DESCRIPTION,
+	sameAs: ['https://github.com/oullin'],
 };
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
@@ -61,8 +69,8 @@ interface SeoOptions {
 		  };
 	twitter?: {
 		card?: TwitterCard;
-		site?: string; // e.g. @gocanto
-		creator?: string; // e.g. @gocanto
+		site?: string; // e.g. @oullin
+		creator?: string; // e.g. @oullin
 	};
 	jsonLd?: JsonLd;
 }
@@ -79,8 +87,8 @@ export class Seo {
 		const image = new URL(options.image ?? SEO_IMAGE, SITE_URL).toString();
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
 		const description = options.description ?? DEFAULT_DESCRIPTION;
-		const language = options.siteLanguage ?? 'en';
-		const locale = options.locale ?? 'en_US';
+		const language = options.siteLanguage ?? 'en-GB';
+		const locale = options.locale ?? 'en_GB';
 		const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
 
 		document.title = title;
@@ -313,9 +321,10 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 					name: value.author.display_name || SITE_NAME,
 				},
 				publisher: {
-					'@type': 'Person',
+					'@type': 'Organization',
 					name: SITE_NAME,
 					url: SITE_URL,
+					logo: siteUrlFor(SITE_LOGO),
 				},
 			},
 		} satisfies SeoOptions;

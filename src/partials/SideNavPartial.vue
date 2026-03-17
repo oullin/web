@@ -76,11 +76,11 @@
 import { RouteLocationNormalizedLoaded, RouterLink, useRoute } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import { computed, onMounted, ref } from 'vue';
-import { Social, type SocialNavLink } from '../support/social.ts';
+import { Links, type LinksNavLink } from '../support/links.ts';
 
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
-const socialService = new Social();
-const socialNavLinks = ref<SocialNavLink[]>([]);
+const linksService = new Links();
+const linksNavLinks = ref<LinksNavLink[]>([]);
 const isLoadingSocialLinks = ref(true);
 
 const isHome = computed<boolean>(() => {
@@ -97,8 +97,8 @@ onMounted(async () => {
 	isLoadingSocialLinks.value = true;
 
 	try {
-		const social = await socialService.fetch();
-		socialNavLinks.value = socialService.buildNavLinks(social, ['github', 'linkedin']);
+		const links = await linksService.fetch();
+		linksNavLinks.value = linksService.buildNavLinks(links, ['github', 'linkedin']);
 	} finally {
 		isLoadingSocialLinks.value = false;
 	}

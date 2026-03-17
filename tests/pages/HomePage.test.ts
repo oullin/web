@@ -5,26 +5,12 @@ import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';
 import cta from '@fixtures/cta.json';
-import type { ProfileResponse } from '@api/response/index.ts';
-
-const profile: ProfileResponse = {
-	nickname: 'Gus',
-	handle: 'gocanto',
-	name: 'Gustavo Ocanto',
-	email: 'gus@oullin.io',
-	profession: 'Engineering Leader',
-	skills: [],
-};
-
-const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
-
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile }) }));
-vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 const global = {
 	stubs: {
 		NavPartial: true,
 		HeroPartial: true,
+		FooterPartial: true,
 		RouterLink: { template: '<a><slot /></a>' },
 	},
 };
@@ -32,12 +18,6 @@ const global = {
 describe('HomePage', () => {
 	afterEach(() => {
 		vi.clearAllMocks();
-	});
-
-	it('fetches the profile on mount', async () => {
-		mount(HomePage, { global });
-		await flushPromises();
-		expect(getProfile).toHaveBeenCalledOnce();
 	});
 
 	it('renders all marquee items', () => {
@@ -55,16 +35,15 @@ describe('HomePage', () => {
 		});
 	});
 
-	it('renders the about section with the profile name', async () => {
+	it('renders the about section with the Oullin brand copy', async () => {
 		const wrapper = mount(HomePage, { global });
 		await flushPromises();
-		profile.name
-			.toUpperCase()
-			.split(' ')
-			.forEach((part) => {
-				expect(wrapper.text()).toContain(part);
-			});
+		about.defaultName.forEach((part) => {
+			expect(wrapper.text()).toContain(part);
+		});
 		expect(wrapper.text()).toContain(about.body.role);
+		expect(wrapper.text()).toContain('20+ years across software');
+		expect(wrapper.text()).toContain('Aztec sacred day-sign of movement and transformation');
 		about.work.forEach((item) => {
 			expect(wrapper.text()).toContain(item.title);
 		});
@@ -75,14 +54,6 @@ describe('HomePage', () => {
 		expect(wrapper.text()).toContain(cta.watermark);
 		expect(wrapper.text()).toContain(cta.headlineAccent);
 		expect(wrapper.text()).toContain(cta.button.label);
-	});
-
-	it('handles profile fetch errors gracefully', async () => {
-		const error = new Error('network failure');
-		getProfile.mockRejectedValueOnce(error);
-		mount(HomePage, { global });
-		await flushPromises();
-		const { debugError } = await import('@api/http-error.ts');
-		expect(debugError).toHaveBeenCalledWith(error);
+		expect(wrapper.text()).toContain('COMPLEX');
 	});
 });

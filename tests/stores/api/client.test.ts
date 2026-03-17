@@ -137,7 +137,7 @@ describe('ApiClient', () => {
 		);
 	});
 
-	it('retries signature once when clock skew is detected and refreshes timestamp', async () => {
+	it('retries signature when clock skew is detected and keeps the signed timestamp aligned', async () => {
 		const serverDate = new Date('2025-01-01T00:00:00Z').toUTCString();
 		const realClient = new ApiClient(options);
 		const fetchMock = fetch as Mock;
@@ -152,7 +152,7 @@ describe('ApiClient', () => {
 
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 		expect(headers.get('X-API-Signature')).toBe('sig-1');
-		expect(headers.get('X-API-Timestamp')).not.toBeNull();
+		expect(headers.get('X-API-Timestamp')).toBe(String((realClient as any).getCurrentTimestamp()));
 		expect((realClient as any).clockOffsetMs).not.toBe(0);
 	});
 
@@ -196,10 +196,9 @@ describe('ApiClient', () => {
 		expect((realClient as any).clockOffsetMs).toBe(0);
 	});
 
-	it('refreshes timestamp immediately before attaching signature', async () => {
+	it('uses one stable timestamp for signature generation and the final request headers', async () => {
 		const realClient = new ApiClient(options);
 		const getSignatureSpy = vi.spyOn(realClient as any, 'getSignature').mockResolvedValue({ signature: 'sig-2' } as SignatureResponse);
-		const refreshSpy = vi.spyOn(realClient as any, 'refreshTimestamp');
 		const now = 9_000;
 
 		vi.spyOn(Date, 'now').mockReturnValue(now);
@@ -209,8 +208,7 @@ describe('ApiClient', () => {
 		await (realClient as any).appendSignature('nonce-2', headers, `${url}profile`);
 
 		expect(getSignatureSpy).toHaveBeenCalledTimes(1);
-		expect(refreshSpy).toHaveBeenCalledTimes(1);
-		expect(refreshSpy.mock.invocationCallOrder[0]).toBeGreaterThan(getSignatureSpy.mock.invocationCallOrder[0]);
+		expect(getSignatureSpy).toHaveBeenCalledWith('nonce-2', `${url}profile`, Math.floor(now / 1000));
 		expect(headers.get('X-API-Timestamp')).toBe(String(Math.floor(now / 1000)));
 		expect(headers.get('X-API-Signature')).toBe('sig-2');
 	});

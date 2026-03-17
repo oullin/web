@@ -2,11 +2,11 @@ import { mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect } from 'vitest';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
-import type { SocialNavLink } from '@support/social.ts';
+import type { LinksNavLink } from '@support/links.ts';
 
 describe('WidgetSocialPartial', () => {
 	it('renders social links from props', () => {
-		const socialLinks: SocialNavLink[] = [
+		const links: LinksNavLink[] = [
 			{
 				href: faker.internet.url(),
 				label: 'Code & Projects',
@@ -14,11 +14,11 @@ describe('WidgetSocialPartial', () => {
 			},
 		];
 		const wrapper = mount(WidgetSocialPartial, {
-			props: { social: socialLinks },
+			props: { links },
 		});
 		const anchors = wrapper.findAll('a');
 		expect(anchors).toHaveLength(1);
-		expect(anchors[0].attributes('href')).toBe(socialLinks[0].href);
+		expect(anchors[0].attributes('href')).toBe(links[0].href);
 		expect(anchors[0].text()).toContain('Code & Projects');
 	});
 });

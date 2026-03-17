@@ -12,7 +12,7 @@
 		</div>
 
 		<ul role="list" class="mt-5 space-y-2">
-			<li v-for="item in props.social" :key="item.href">
+			<li v-for="item in props.links" :key="item.href">
 				<a v-lazy-link target="_blank" rel="noopener noreferrer" :href="item.href" :title="item.label" class="group blog-widgets-social-links">
 					<svg viewBox="0 0 24 24" aria-hidden="true" class="blog-widgets-social-svg">
 						<path :d="item.icon" />
@@ -25,9 +25,9 @@
 </template>
 
 <script setup lang="ts">
-import type { SocialNavLink } from '@support/social.ts';
+import type { LinksNavLink } from '@support/links.ts';
 
 const props = defineProps<{
-	social: SocialNavLink[];
+	links: LinksNavLink[];
 }>();
 </script>

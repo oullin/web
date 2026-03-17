@@ -1,3 +1,14 @@
+export interface ProjectsCollectionResponse {
+	version: string;
+	page: number;
+	total: number;
+	page_size: number;
+	total_pages: number;
+	next_page?: number | null;
+	previous_page?: number | null;
+	data: ProjectsResponse[];
+}
+
 export interface ProjectsResponse {
 	uuid: string;
 	language: string;

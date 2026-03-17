@@ -94,7 +94,10 @@
 
 					<section class="space-y-4">
 						<h2 class="page-panel-title">8. Contact</h2>
-						<p>For legal, billing, or policy-related inquiries, please contact us through the communication channels listed on the About page.</p>
+						<p>
+							For legal, billing, or policy-related enquiries, please contact us through the communication channels listed on the
+							<RouterLink v-lazy-link to="/contact" class="blog-link">Contact page</RouterLink>.
+						</p>
 					</section>
 				</div>
 			</section>
@@ -105,6 +108,7 @@
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, siteUrlFor, buildKeywords } from '@/support/seo';

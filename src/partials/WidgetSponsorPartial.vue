@@ -26,7 +26,7 @@ const sponsor: Sponsor = {
 };
 
 const sendEmail = () => {
-	const recipient = 'otnacog@gmail.com';
+	const recipient = 'info@oullin.io';
 	const subject = `Inquiry about: ${sponsor.title}`;
 	const body = `Hello,\n\nI'm interested in learning more about your services.\n\n"${sponsor.description}"\n\nThanks,`;
 

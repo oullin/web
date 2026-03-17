@@ -2,7 +2,7 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import AboutPage from '@pages/AboutPage.vue';
-import type { ProfileResponse, ProfileSkillResponse, RecommendationsResponse } from '@api/response/index.ts';
+import type { ProfileResponse, ProfileSkillResponse } from '@api/response/index.ts';
 import { createRouter, createMemoryHistory, RouterView, type Router } from 'vue-router';
 import { defineComponent } from 'vue';
 
@@ -25,24 +25,9 @@ const profile: ProfileResponse = {
 };
 
 const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
-const getSocial = vi.fn(() => Promise.resolve({ data: [] }));
-const recommendations: RecommendationsResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		relation: faker.lorem.word(),
-		text: faker.lorem.paragraph(),
-		created_at: faker.date.past().toISOString(),
-		person: {
-			full_name: faker.person.fullName(),
-			company: faker.company.name(),
-			avatar: faker.image.avatar(),
-			designation: faker.person.jobTitle(),
-		},
-	},
-];
-const getRecommendations = vi.fn<[], Promise<{ data: RecommendationsResponse[] }>>(() => Promise.resolve({ data: recommendations }));
+const getRecommendations = vi.fn();
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getSocial, getRecommendations }) }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getRecommendations }) }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 const App = defineComponent({
@@ -67,13 +52,9 @@ const mountComponent = async () => {
 				SideNavPartial: true,
 				HeaderPartial: true,
 				WidgetSocialTransitionWrapper: true,
-				WidgetSkillsPartial: true,
 				FooterPartial: true,
 				RecommendationPartial: defineComponent({
-					props: {
-						recommendations: { type: Array, required: true },
-					},
-					template: '<div data-testid="recommendation-partial">{{ recommendations.length }}</div>',
+					template: '<div data-testid="recommendation-partial">Recommendations partial</div>',
 				}),
 			},
 		},
@@ -89,10 +70,28 @@ describe('AboutPage', () => {
 		const wrapper = await mountComponent();
 		await flushPromises();
 		expect(getProfile).toHaveBeenCalled();
-		expect(getSocial).toHaveBeenCalled();
-		expect(getRecommendations).toHaveBeenCalled();
+		expect(getRecommendations).not.toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('Oullin.');
-		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('1');
+		expect(wrapper.text()).toContain('boutique software engineering and architecture consultancy');
+		expect(wrapper.text()).toContain('20+ years across software, consulting, architecture');
+		expect(wrapper.text()).toContain('10+ years in banking');
+		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('Recommendations partial');
+		expect(wrapper.html()).toContain('https://www.linkedin.com/in/gocanto/');
+	});
+
+	it('renders the footer before the floating skills marquee', async () => {
+		const wrapper = await mountComponent();
+		await flushPromises();
+
+		const html = wrapper.html();
+		const footerIndex = html.indexOf('<footer-partial-stub');
+		const skillsBandIndex = html.indexOf('skills-band skills-band--about');
+
+		expect(footerIndex).toBeGreaterThan(-1);
+		expect(skillsBandIndex).toBeGreaterThan(-1);
+		expect(footerIndex).toBeLessThan(skillsBandIndex);
+		expect(html).toContain('site-footer--about');
+		expect(wrapper.findAll('.skills-band--about .marquee-item')).toHaveLength(skills.length * 2);
 	});
 
 	it('renders skeleton while loading the profile', async () => {

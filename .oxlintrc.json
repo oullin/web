@@ -15,7 +15,7 @@
 		"withDefaults": "readonly",
 		"defineOptions": "readonly"
 	},
-	"plugins": ["typescript", "unicorn"],
+	"plugins": ["import", "typescript", "unicorn"],
 	"rules": {
 		"no-await-in-loop": "off",
 		"no-empty": ["error", { "allowEmptyCatch": true }],
@@ -36,5 +36,29 @@
 			}
 		]
 	},
+	"overrides": [
+		{
+			"files": ["src/**/*.{ts,tsx,js,jsx,vue}"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"paths": [
+							{
+								"name": "reka-ui",
+								"message": "Import reka-ui only from src/components/ui/**. App code must use local shadcn-vue wrappers from @components/ui/*."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": ["src/components/ui/**/*.{ts,tsx,js,jsx,vue}"],
+			"rules": {
+				"no-restricted-imports": "off"
+			}
+		}
+	],
 	"ignorePatterns": ["dist/", "build/", "node_modules/", ".git/", ".vscode/", ".idea/", "*.min.js", "*.css.map", "public/", "src/fonts/", "src/images/"]
 }

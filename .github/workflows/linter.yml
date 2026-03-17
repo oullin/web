@@ -5,6 +5,25 @@ on:
         types: [opened, reopened, ready_for_review, synchronize, labeled]
 
 jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10.31.0
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 25.8.1
+                  cache: 'pnpm'
+                  cache-dependency-path: pnpm-lock.yaml
+
+            - run: pnpm install --frozen-lockfile
+
+            - run: pnpm lint
+
     format:
         runs-on: ubuntu-latest
         steps:

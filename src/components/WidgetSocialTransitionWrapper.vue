@@ -1,7 +1,7 @@
 <template>
 	<div class="relative min-h-[200px]">
 		<WidgetSocialSkeletonPartial v-if="isLoading" key="skeleton" />
-		<WidgetSocialPartial v-else key="social" :social="social" />
+		<WidgetSocialPartial v-else key="social" :links="links" />
 	</div>
 </template>
 
@@ -9,15 +9,15 @@
 import { ref, onMounted } from 'vue';
 import WidgetSocialPartial from '@partials/WidgetSocialPartial.vue';
 import WidgetSocialSkeletonPartial from '@partials/WidgetSocialSkeletonPartial.vue';
-import { Social, type SocialNavLink } from '@support/social.ts';
+import { Links, type LinksNavLink } from '@support/links.ts';
 
-const socialService = new Social();
-const social = ref<SocialNavLink[]>([]);
+const linksService = new Links();
+const links = ref<LinksNavLink[]>([]);
 const isLoading = ref(true);
 
 onMounted(async () => {
-	const response = await socialService.fetch();
-	social.value = socialService.buildNavLinks(response, ['linkedin', 'x']);
+	const response = await linksService.fetch();
+	links.value = linksService.buildNavLinks(response, ['linkedin', 'x']);
 	isLoading.value = false;
 });
 </script>

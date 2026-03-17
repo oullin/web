@@ -29,7 +29,13 @@ const router: Router = createRouter({
 		},
 		{
 			path: '/about',
+			name: 'About',
 			component: () => import('@pages/AboutPage.vue'),
+		},
+		{
+			path: '/contact',
+			name: 'Contact',
+			component: () => import('@pages/ContactPage.vue'),
 		},
 		{
 			path: '/projects',

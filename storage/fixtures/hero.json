@@ -1,43 +1,43 @@
 {
-	"eyebrow": "OULLIN.IO // SYSTEM ONLINE // OULLIN = MOVEMENT",
-	"headline": [{ "text": "EVERY" }, { "text": "SIGNAL", "accent": true }, { "text": "MATTERS.", "accent2": true }],
+	"eyebrow": "OULLIN // SOFTWARE ENGINEERING // ARCHITECTURE // TRANSFORMATION",
+	"headline": [{ "text": "SYSTEMS" }, { "text": "THAT", "accent": true }, { "text": "HOLD.", "accent2": true }],
 	"sub": {
-		"intro": "In the age of noise, clarity is the rarest resource.",
-		"author": "Gustavo Ocanto",
-		"role": "Engineering Leader, AI Architect.",
-		"taglines": ["Building systems that think. Writing ideas that move.", "Shipping into the light from the deliberate dark."]
+		"lines": [
+			"Oullin is a boutique software engineering and architecture consultancy for high-availability software, digital transformation in the AI era, and complex systems in regulated and high-trust environments.",
+			"20+ years across software, consulting, architecture, AI-first products and companies, and technical management. 10+ years in banking. Movement and transformation still matter here, but they are carried by engineering depth."
+		]
 	},
 	"cta": [
-		{ "label": "Enter the system →", "to": "/about", "style": "primary" },
-		{ "label": "Read the writing", "to": "/writing", "style": "ghost" }
+		{ "label": "Start a conversation →", "to": "/contact", "style": "primary" },
+		{ "label": "Explore projects", "to": "/projects", "style": "ghost" }
 	],
 	"dataBlocks": [
 		{
 			"type": "metric",
-			"label": "// transformation_index",
-			"value": "∞",
-			"valueSuffix": "continuous",
+			"label": "// experience.depth",
+			"value": "20+",
+			"valueSuffix": " years",
 			"bar": "v",
-			"note": ["Ollin: the sacred day-sign of movement.", "Change is not a bug. It is the system."]
+			"note": ["Software, consulting, architecture,", "and technical management."]
 		},
 		{
 			"type": "metric",
-			"label": "// presence_level",
-			"value": "HIGH",
-			"valueSuffix": "/ aware",
+			"label": "// banking.depth",
+			"value": "10+",
+			"valueSuffix": " years in banking",
 			"valueColor": "cyan",
 			"bar": "c",
-			"note": ["Presence precedes velocity.", "Quality of motion > speed of motion."]
+			"note": ["Built for regulated, high-trust,", "and operationally demanding environments."]
 		},
 		{
 			"type": "list",
-			"label": "// current_work",
-			"items": ["AI Architecture", "Engineering Leadership", "Open Source"]
+			"label": "// strategic.themes",
+			"items": ["Highly Available Software", "AI-Era Transformation", "Architecture & Leadership"]
 		},
 		{
 			"type": "quote",
-			"label": "// principle.core",
-			"lines": ["Build like it matters.", "Because it does."]
+			"label": "// operating.range",
+			"lines": ["Banking, consulting, product, and", "AI-first companies under real constraints."]
 		}
 	]
 }
