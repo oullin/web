@@ -39,22 +39,31 @@
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 useSeo({
-	title: 'Writing',
-	image: ABOUT_IMAGE,
+	title: 'Writing Archive',
+	image: SEO_IMAGE,
 	url: siteUrlFor('/writing'),
-	imageAlt: `${SITE_NAME} writing archive`,
-	description: `Browse the writing archive of ${SITE_NAME}, including technical essays, architecture notes, and category-based article navigation.`,
-	keywords: buildKeywords('writing archive', 'technical articles', 'software engineering essays'),
+	imageAlt: `${SITE_NAME} writing archive preview`,
+	description: `Browse ${SITE_NAME}'s writing archive for technical essays, architecture notes, and category-based reading across software, AI, and systems thinking.`,
+	keywords: buildKeywords(
+		'writing archive',
+		'technical essays',
+		'architecture notes',
+		'systems thinking',
+		'software architect/engineering',
+		'technical management',
+		'digital transformation',
+		'AI orchestration',
+	),
 	jsonLd: [
 		{
-			name: 'Writing',
+			name: 'Writing Archive',
 			'@type': 'CollectionPage',
 			url: siteUrlFor('/writing'),
 			'@context': 'https://schema.org',
-			description: `${SITE_NAME} writing archive and article collection.`,
+			description: `${SITE_NAME}'s archive of essays, notes, and articles on software engineering, AI, and architecture.`,
 		},
 		PERSON_JSON_LD,
 	],

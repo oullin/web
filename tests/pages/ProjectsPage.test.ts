@@ -15,6 +15,7 @@ const projects: ProjectsResponse[] = [
 		language: faker.lorem.word(),
 		icon: faker.image.avatarGitHub(),
 		is_open_source: true,
+		published_at: faker.date.past().toISOString(),
 		created_at: faker.date.past().toISOString(),
 		updated_at: faker.date.recent().toISOString(),
 	},

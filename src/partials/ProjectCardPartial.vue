@@ -13,6 +13,9 @@
 					{{ item.language }}
 				</div>
 				<div class="text-lg font-aspekta font-[650] mb-2" style="color: var(--text)">{{ item.title }}</div>
+				<div v-if="projectTimestamp" class="mb-3 text-[0.64rem] uppercase tracking-[0.12em]" style="color: var(--cyan); font-family: 'JetBrains Mono', monospace">
+					{{ projectTimestamp.label }} {{ projectTimestamp.value }}
+				</div>
 				<p class="text-sm leading-relaxed" style="color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; line-height: 1.9">{{ item.excerpt }}</p>
 			</div>
 			<div class="flex justify-end mt-4" style="color: var(--cyan)">
@@ -27,9 +30,32 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
 import { computed } from 'vue';
-import { ArrowLeftRight, Box, Briefcase, FileText, GitBranch, GitPullRequest, Globe, MapPin, Network, RefreshCw, Server, Sparkles, Users, Zap, Code2 } from 'lucide-vue-next';
-import { ProjectsResponse } from '@api/response/index.ts';
+import {
+	ArrowLeftRight,
+	Bot,
+	Box,
+	Briefcase,
+	Code2,
+	Coins,
+	FileCode2,
+	FileText,
+	GitBranch,
+	GitPullRequest,
+	Globe,
+	Map,
+	MapPin,
+	Network,
+	RefreshCw,
+	Server,
+	Sheet,
+	Sparkles,
+	Users,
+	Wand2,
+	Zap,
+} from 'lucide-vue-next';
+import type { ProjectsResponse } from '@api/response/index.ts';
 import { Badge } from '@components/ui/badge';
+import { date } from '@/public.ts';
 
 const { item } = defineProps<{
 	item: ProjectsResponse;
@@ -37,20 +63,59 @@ const { item } = defineProps<{
 
 const iconMap: Record<string, Component> = {
 	ArrowLeftRight,
+	Bot,
 	Box,
 	Briefcase,
+	Coins,
+	FileCode2,
 	FileText,
 	GitBranch,
 	GitPullRequest,
 	Globe,
+	Map,
 	MapPin,
 	Network,
 	RefreshCw,
 	Server,
+	Sheet,
 	Sparkles,
 	Users,
+	Wand2,
 	Zap,
 };
 
 const projectIcon = computed(() => iconMap[item.icon] ?? Code2);
+
+const formatProjectDate = (value?: string): string | null => {
+	if (!value) {
+		return null;
+	}
+
+	const parsed = new Date(value);
+
+	if (Number.isNaN(parsed.getTime())) {
+		return null;
+	}
+
+	return date().format(parsed);
+};
+
+const projectTimestamp = computed(() => {
+	const publishedAt = formatProjectDate(item.published_at);
+	if (publishedAt) {
+		return { label: 'Published', value: publishedAt };
+	}
+
+	const updatedAt = formatProjectDate(item.updated_at);
+	if (updatedAt) {
+		return { label: 'Updated', value: updatedAt };
+	}
+
+	const createdAt = formatProjectDate(item.created_at);
+	if (createdAt) {
+		return { label: 'Created', value: createdAt };
+	}
+
+	return null;
+});
 </script>

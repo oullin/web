@@ -104,6 +104,10 @@
 					<span v-for="skill in profile.skills" :key="`dup-${skill.uuid}`" class="marquee-item" aria-hidden="true">{{ skill.item }} <em>///</em></span>
 				</div>
 			</section>
+
+			<section v-if="recommendations.length > 0" class="page-band !pt-10">
+				<RecommendationPartial :recommendations="recommendations" />
+			</section>
 		</main>
 
 		<FooterPartial />
@@ -115,14 +119,16 @@ import { computed, ref, onMounted } from 'vue';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import RecommendationPartial from '@partials/RecommendationPartial.vue';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import type { ProfileResponse, SocialResponse } from '@api/response/index.ts';
+import type { ProfileResponse, RecommendationsResponse, SocialResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
+const recommendations = ref<RecommendationsResponse[]>([]);
 const socialLinks = ref<SocialResponse[]>([]);
 const isLoadingProfile = ref(true);
 
@@ -131,39 +137,57 @@ const linkedinUrl = computed<string>(() => {
 });
 
 useSeo({
-	title: 'About',
-	image: ABOUT_IMAGE,
+	title: 'About Oullin',
+	image: SEO_IMAGE,
 	url: siteUrlFor('/about'),
-	imageAlt: `${SITE_NAME} portrait`,
-	keywords: buildKeywords('oullin brand', 'gustavo ocanto co-founder', 'engineering leadership ai architecture'),
-	description: `Oullin is a platform built on movement and transformation. Meet Gustavo Ocanto, co-founder and engineering leader with 20+ years building reliable software and AI systems.`,
+	imageAlt: `${SITE_NAME} and Oullin brand story`,
+	keywords: buildKeywords(
+		'about Oullin',
+		'Gustavo Ocanto',
+		'movement and transformation',
+		'engineering leadership',
+		'software architect/engineering',
+		'technical management',
+		'digital transformation',
+		'AI orchestration',
+		'open source philosophy',
+	),
+	description: `Learn why Oullin is built around movement and transformation, and meet ${SITE_NAME}, the co-founder and engineering leader behind the platform.`,
 	jsonLd: [
 		{
-			name: 'About',
+			name: 'About Oullin',
 			'@type': 'AboutPage',
 			url: siteUrlFor('/about'),
 			'@context': 'https://schema.org',
-			description: `Oullin is a platform for engineering, AI architecture, and open source — co-founded by Gustavo Ocanto.`,
+			description: `About Oullin, its movement-first philosophy, and ${SITE_NAME}'s work across engineering leadership, AI architecture, and open source.`,
 		},
 		PERSON_JSON_LD,
 	],
 });
 
-onMounted(async () => {
-	try {
-		const [profileResponse, socialResponse] = await Promise.all([apiStore.getProfile(), apiStore.getSocial()]);
+const loadAboutPageData = async () => {
+	const [profileResponse, socialResponse, recommendationsResponse] = await Promise.allSettled([apiStore.getProfile(), apiStore.getSocial(), apiStore.getRecommendations()]);
 
-		if (profileResponse.data) {
-			profile.value = profileResponse.data;
-		}
-
-		if (socialResponse.data) {
-			socialLinks.value = socialResponse.data;
-		}
-	} catch (error) {
-		debugError(error);
-	} finally {
-		isLoadingProfile.value = false;
+	if (profileResponse.status === 'fulfilled' && profileResponse.value.data) {
+		profile.value = profileResponse.value.data;
+	} else if (profileResponse.status === 'rejected') {
+		debugError(profileResponse.reason);
 	}
-});
+
+	if (socialResponse.status === 'fulfilled' && socialResponse.value.data) {
+		socialLinks.value = socialResponse.value.data;
+	} else if (socialResponse.status === 'rejected') {
+		debugError(socialResponse.reason);
+	}
+
+	if (recommendationsResponse.status === 'fulfilled' && recommendationsResponse.value.data) {
+		recommendations.value = recommendationsResponse.value.data;
+	} else if (recommendationsResponse.status === 'rejected') {
+		debugError(recommendationsResponse.reason);
+	}
+
+	isLoadingProfile.value = false;
+};
+
+onMounted(loadAboutPageData);
 </script>

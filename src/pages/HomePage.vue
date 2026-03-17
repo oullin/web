@@ -77,7 +77,7 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';
@@ -96,19 +96,28 @@ const nameLines = computed<string[]>(() => {
 });
 
 useSeo({
-	title: 'Home',
-	image: ABOUT_IMAGE,
+	title: 'Oullin',
+	image: SEO_IMAGE,
 	url: siteUrlFor('/'),
-	imageAlt: `${SITE_NAME} profile portrait`,
-	keywords: buildKeywords('software engineering leadership', 'technology articles', 'engineering management insights'),
-	description: `${SITE_NAME} is a full-stack Software Engineer leader & architect with over two decades of experience in building complex web systems and products.`,
+	imageAlt: `${SITE_NAME} and Oullin brand preview`,
+	keywords: buildKeywords(
+		'Oullin',
+		'movement and transformation',
+		'engineering leadership',
+		'AI architecture',
+		'software architect/engineering',
+		'technical management',
+		'digital transformation',
+		'AI orchestration',
+	),
+	description: `Oullin is ${SITE_NAME}'s platform for engineering leadership, AI architecture, open source systems, and writing built around movement, transformation, and signal.`,
 	jsonLd: [
 		{
-			name: 'Home',
+			name: 'Oullin',
 			'@type': 'WebPage',
 			url: siteUrlFor('/'),
 			'@context': 'https://schema.org',
-			description: `${SITE_NAME} shares articles about software engineering, leadership, AI, and architecture.`,
+			description: `Landing page for Oullin, where ${SITE_NAME} shares engineering leadership, AI architecture, open source work, and writing.`,
 		},
 		PERSON_JSON_LD,
 	],

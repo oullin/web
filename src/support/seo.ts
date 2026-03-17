@@ -4,15 +4,31 @@ import type { PostResponse } from '@api/response/posts-response.ts';
 export const SITE_NAME = 'Gustavo Ocanto';
 export const DEFAULT_SITE_URL = 'https://oullin.io';
 export const ABOUT_IMAGE = '/images/profile/about.jpg';
-export const DEFAULT_DESCRIPTION = 'Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer.';
+export const SEO_IMAGE = '/images/profile/about-seo.png';
+export const DEFAULT_TWITTER_HANDLE = '@gocanto';
+export const DEFAULT_DESCRIPTION =
+	"Oullin is Gustavo Ocanto's platform for engineering leadership, AI architecture, open source systems, and writing built around movement, transformation, and signal.";
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
-export const DEFAULT_KEYWORDS = [SITE_NAME, 'Software Engineer', 'Engineering Leader', 'AI Architect', 'Tech Speaker', 'Technical Blog', 'Leadership in Technology', 'Vue.js', 'TypeScript'].join(',');
+export const DEFAULT_KEYWORDS = [
+	SITE_NAME,
+	'Oullin',
+	'Software Engineer',
+	'Engineering Leader',
+	'AI Architect',
+	'Software Architecture',
+	'Open Source Systems',
+	'Software Architect/Engineering',
+	'Technical Management',
+	'Digital Transformation',
+	'AI Orchestration',
+	'Systems Thinking',
+].join(',');
 export const PERSON_JSON_LD = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
 	name: SITE_NAME,
 	url: SITE_URL,
-	image: ABOUT_IMAGE,
+	image: siteUrlFor(SEO_IMAGE),
 	jobTitle: 'Engineering Leader, AI Architect, Software Engineer',
 	description: DEFAULT_DESCRIPTION,
 	sameAs: ['https://x.com/gocanto', 'https://www.linkedin.com/in/gocanto/', 'https://github.com/gocanto'],
@@ -60,7 +76,7 @@ export class Seo {
 
 		const currentPath = window.location.pathname + window.location.search;
 		const url = options.url ?? siteUrlFor(currentPath || '/');
-		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
+		const image = new URL(options.image ?? SEO_IMAGE, SITE_URL).toString();
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
 		const description = options.description ?? DEFAULT_DESCRIPTION;
 		const language = options.siteLanguage ?? 'en';
@@ -93,31 +109,20 @@ export class Seo {
 		this.setMetaByProperty('og:description', description);
 		this.setMetaByProperty('og:type', options.type ?? 'website');
 		this.setMetaByProperty('og:url', url);
-		if (image) {
-			this.setMetaByProperty('og:image', image);
-			this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
-		} else {
-			// ensure previous values don't leak
-			this.setMetaByProperty('og:image', undefined);
-			this.setMetaByProperty('og:image:alt', undefined);
-		}
+		this.setMetaByProperty('og:image', image);
+		this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
 		this.setMetaByProperty('og:site_name', options.siteName ?? SITE_NAME);
 		this.setMetaByProperty('og:locale', locale);
 
 		// Twitter
 		const twitter = options.twitter ?? {};
 		this.setMetaByName('twitter:card', twitter.card ?? 'summary_large_image');
-		this.setMetaByName('twitter:site', twitter.site);
-		this.setMetaByName('twitter:creator', twitter.creator);
+		this.setMetaByName('twitter:site', twitter.site ?? DEFAULT_TWITTER_HANDLE);
+		this.setMetaByName('twitter:creator', twitter.creator ?? DEFAULT_TWITTER_HANDLE);
 		this.setMetaByName('twitter:title', title);
 		this.setMetaByName('twitter:description', description);
-		if (image) {
-			this.setMetaByName('twitter:image', image);
-			this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
-		} else {
-			this.setMetaByName('twitter:image', undefined);
-			this.setMetaByName('twitter:image:alt', undefined);
-		}
+		this.setMetaByName('twitter:image', image);
+		this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
 
 		// Structured data for AI and crawlers
 		this.setJsonLd(options.jsonLd);
@@ -127,40 +132,40 @@ export class Seo {
 		if (!hasDocument) return;
 
 		const selector = `meta[name="${name}"]`;
-		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ?? document.head.querySelector<HTMLMetaElement>(selector);
 
 		if (!content) {
-			if (element) element.remove();
+			if (element?.dataset.seo === '1') element.remove();
 			return;
 		}
 
 		if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('name', name);
-			element.dataset.seo = '1';
 			document.head.appendChild(element);
 		}
 
+		element.dataset.seo = '1';
 		element.setAttribute('content', content);
 	}
 
 	private setMetaByProperty(property: string, content?: string): void {
 		if (!hasDocument) return;
 		const selector = `meta[property="${property}"]`;
-		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ?? document.head.querySelector<HTMLMetaElement>(selector);
 
 		if (!content) {
-			if (element) element.remove();
+			if (element?.dataset.seo === '1') element.remove();
 			return;
 		}
 
 		if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('property', property);
-			element.dataset.seo = '1';
 			document.head.appendChild(element);
 		}
 
+		element.dataset.seo = '1';
 		element.setAttribute('content', content);
 	}
 
@@ -278,10 +283,18 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 
 		if (!value) return undefined;
 
+		const keywords = buildKeywords(
+			value.categories.map((category) => category.name),
+			value.tags.map((tag) => tag.name),
+			'article',
+		);
+
 		return {
 			title: value.title,
 			description: value.excerpt,
 			image: value.cover_image_url,
+			imageAlt: `${value.title} cover image`,
+			keywords,
 			type: 'article',
 			url: siteUrlFor(`/post/${value.slug}`),
 			jsonLd: {
@@ -290,10 +303,19 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 				headline: value.title,
 				description: value.excerpt,
 				image: value.cover_image_url,
+				mainEntityOfPage: siteUrlFor(`/post/${value.slug}`),
 				datePublished: value.published_at,
+				dateModified: value.updated_at,
+				keywords,
+				articleSection: value.categories.map((category) => category.name),
 				author: {
 					'@type': 'Person',
+					name: value.author.display_name || SITE_NAME,
+				},
+				publisher: {
+					'@type': 'Person',
 					name: SITE_NAME,
+					url: SITE_URL,
 				},
 			},
 		} satisfies SeoOptions;

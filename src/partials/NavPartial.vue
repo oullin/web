@@ -4,13 +4,13 @@
 			<RouterLink to="/" class="nav-logo">OULLIN</RouterLink>
 			<ul class="nav-links">
 				<li><RouterLink to="/writing">writing</RouterLink></li>
-				<li><RouterLink to="/projects">open source</RouterLink></li>
+				<li><RouterLink to="/projects">projects</RouterLink></li>
 				<li><RouterLink to="/about">about</RouterLink></li>
 			</ul>
 			<div style="display: flex; align-items: center; gap: 20px">
 				<div class="nav-status">
 					<span><span class="live-dot"></span>SIGNAL: ACTIVE</span>
-					<span>BUILD: 2026.03</span>
+					<span>BUILT: 2026.03</span>
 					<span>NODE: OULLIN_PRIME</span>
 				</div>
 				<button class="nav-theme" @click="toggleDarkMode">{{ isDark ? '☀ LIGHT' : '◑ DARK' }}</button>

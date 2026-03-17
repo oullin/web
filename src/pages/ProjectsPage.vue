@@ -73,7 +73,7 @@ import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
 
 const apiStore = useApiStore();
 const isLoadingProjects = ref(true);
@@ -86,18 +86,28 @@ const skeletonCount = computed(() => {
 
 useSeo({
 	title: 'Projects',
-	image: ABOUT_IMAGE,
+	image: SEO_IMAGE,
 	url: siteUrlFor('/projects'),
-	imageAlt: `${SITE_NAME} presenting a project`,
-	keywords: buildKeywords('open source projects', 'software engineering portfolio', 'client project case studies'),
-	description: `Explore some of ${SITE_NAME} open source and client projects built to solve real engineering challenges.`,
+	imageAlt: `${SITE_NAME} project collection preview`,
+	keywords: buildKeywords(
+		'open source tools',
+		'client systems',
+		'software delivery',
+		'platform architecture',
+		'software architect/engineering',
+		'technical management',
+		'digital transformation',
+		'AI orchestration',
+		'banking insurance SaaS',
+	),
+	description: `Explore open source tools, internal platforms, and client systems by ${SITE_NAME}, built for performance, security, maintainability, and real operating constraints.`,
 	jsonLd: [
 		{
 			name: 'Projects',
 			'@type': 'CollectionPage',
 			url: siteUrlFor('/projects'),
 			'@context': 'https://schema.org',
-			description: `A curated list of ${SITE_NAME} projects that highlight engineering leadership and architecture skills.`,
+			description: `Selected open source and client projects from ${SITE_NAME} across engineering tooling, platform delivery, and production systems.`,
 		},
 		PERSON_JSON_LD,
 	],

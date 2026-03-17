@@ -54,7 +54,15 @@ export class ApiClient {
 		return `api-cache-${url}`;
 	}
 
+	private usesPersistentCache(): boolean {
+		return this.isProd();
+	}
+
 	private getFromCache<T>(url: string): CacheEntry<T> | null {
+		if (!this.usesPersistentCache()) {
+			return null;
+		}
+
 		const key = this.getCacheKey(url);
 		const item = localStorage.getItem(key);
 
@@ -62,6 +70,10 @@ export class ApiClient {
 	}
 
 	private setToCache<T>(url: string, etag: string, data: T): void {
+		if (!this.usesPersistentCache()) {
+			return;
+		}
+
 		const key = this.getCacheKey(url);
 		const item: CacheEntry<T> = { etag, data };
 
@@ -258,7 +270,7 @@ export class ApiClient {
 		const cached = this.getFromCache<T>(url);
 		const fullUrl = new URL(url, this.basedURL);
 
-		if (cached) {
+		if (cached && this.usesPersistentCache()) {
 			headers.append('If-None-Match', cached.etag);
 		}
 
@@ -269,6 +281,7 @@ export class ApiClient {
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
 			headers: headers,
+			cache: this.isDev() ? 'no-store' : undefined,
 		});
 
 		this.syncClockOffset(response, startTime);
@@ -285,7 +298,7 @@ export class ApiClient {
 		const eTag = response.headers.get('ETag');
 		const payload = await response.json();
 
-		if (eTag) {
+		if (eTag && this.usesPersistentCache()) {
 			this.setToCache(url, eTag, payload);
 		}
 

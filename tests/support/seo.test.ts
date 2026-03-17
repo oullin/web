@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { Seo, SITE_NAME, SITE_URL, seo, siteUrlFor, useSeo, useSeoFromPost } from '@/support/seo.ts';
+import { DEFAULT_TWITTER_HANDLE, SEO_IMAGE, Seo, SITE_NAME, SITE_URL, seo, siteUrlFor, useSeo, useSeoFromPost } from '@/support/seo.ts';
 import { defineComponent, nextTick, ref } from 'vue';
 import { mount } from '@vue/test-utils';
 import type { PostResponse } from '@api/response/posts-response.ts';
@@ -114,7 +114,27 @@ describe('Seo.apply', () => {
 		expect(serializeLink('link[rel="canonical"]')).toBe(siteUrlFor(fallbackPath));
 		expect(serializeMeta('meta[name="robots"]')).toBe('index,follow');
 		expect(serializeMeta('meta[name="theme-color"]')).toBe('#ffffff');
+		expect(serializeMeta('meta[property="og:image"]')).toBe(new URL(SEO_IMAGE, SITE_URL).toString());
+		expect(serializeMeta('meta[name="twitter:site"]')).toBe(DEFAULT_TWITTER_HANDLE);
+		expect(serializeMeta('meta[name="twitter:creator"]')).toBe(DEFAULT_TWITTER_HANDLE);
 		expect(getJsonLd()).toBeNull();
+	});
+
+	it('reuses existing head tags instead of appending duplicate metadata', () => {
+		document.head.innerHTML = `
+			<meta name="description" content="Static description" />
+			<meta property="og:title" content="Static title" />
+		`;
+
+		instance.apply({
+			title: 'Fresh page',
+			description: 'Updated description',
+		});
+
+		expect(document.head.querySelectorAll('meta[name="description"]')).toHaveLength(1);
+		expect(document.head.querySelectorAll('meta[property="og:title"]')).toHaveLength(1);
+		expect(serializeMeta('meta[name="description"]')).toBe('Updated description');
+		expect(serializeMeta('meta[property="og:title"]')).toBe(`Fresh page - ${SITE_NAME}`);
 	});
 });
 
@@ -205,6 +225,9 @@ describe('SEO composition utilities', () => {
 			title: samplePost.title,
 			description: samplePost.excerpt,
 			image: samplePost.cover_image_url,
+			imageAlt: `${samplePost.title} cover image`,
+			keywords:
+				'Gustavo Ocanto,Oullin,Software Engineer,Engineering Leader,AI Architect,Software Architecture,Open Source Systems,Software Architect/Engineering,Technical Management,Digital Transformation,AI Orchestration,Systems Thinking,article',
 			type: 'article',
 			url: siteUrlFor(`/post/${samplePost.slug}`),
 			jsonLd: {
@@ -213,10 +236,20 @@ describe('SEO composition utilities', () => {
 				headline: samplePost.title,
 				description: samplePost.excerpt,
 				image: samplePost.cover_image_url,
+				mainEntityOfPage: siteUrlFor(`/post/${samplePost.slug}`),
 				datePublished: samplePost.published_at,
+				dateModified: samplePost.updated_at,
+				keywords:
+					'Gustavo Ocanto,Oullin,Software Engineer,Engineering Leader,AI Architect,Software Architecture,Open Source Systems,Software Architect/Engineering,Technical Management,Digital Transformation,AI Orchestration,Systems Thinking,article',
+				articleSection: [],
 				author: {
 					'@type': 'Person',
+					name: samplePost.author.display_name,
+				},
+				publisher: {
+					'@type': 'Person',
 					name: SITE_NAME,
+					url: SITE_URL,
 				},
 			},
 		});

@@ -4,6 +4,7 @@ stats.html
 .DS_Store
 
 dist/
+dist-verify/
 .vite/
 .idea/
 dist-ssr/
@@ -16,6 +17,10 @@ package-lock.json
 
 # --- Storage
 !storage/.gitkeep
+
+storage/coverage/
+storage/.playwright-cli/
+storage/.pnpm-store/
 
 storage/oullin/*
 !storage/oullin/.gitkeep

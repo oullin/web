@@ -112,14 +112,14 @@ import { useSeo, siteUrlFor, buildKeywords } from '@/support/seo';
 useSeo({
 	title: 'Terms and Policies',
 	url: siteUrlFor('/terms-and-conditions'),
-	description: 'Corporate terms and policies for our SaaS platforms and software consultancy services, including acceptable use, billing, and account responsibilities.',
-	keywords: buildKeywords('terms of service', 'acceptable use policy', 'software consultancy terms'),
+	description: "Review Oullin's terms and policies for software products, consulting, technical architecture, billing, acceptable use, and service responsibilities.",
+	keywords: buildKeywords('terms of service', 'acceptable use policy', 'software consulting terms', 'billing and refunds', 'service availability', 'technical management', 'digital transformation'),
 	jsonLd: {
 		'@context': 'https://schema.org',
 		'@type': 'WebPage',
 		name: 'Terms and Policies',
 		url: siteUrlFor('/terms-and-conditions'),
-		description: 'Corporate terms and policies for SaaS products and technical consulting services.',
+		description: "Terms and policies covering Oullin's SaaS, consulting, technical architecture, billing, and account responsibilities.",
 	},
 });
 </script>

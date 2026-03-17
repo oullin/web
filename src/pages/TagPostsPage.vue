@@ -133,8 +133,9 @@ const seoOptions = computed(() => {
 
 	if (!tag) {
 		return {
-			title: 'Tagged posts',
-			description: `Explore tagged articles on ${SITE_NAME}.`,
+			title: 'Topics and Tags',
+			description: `Explore topics and tags across ${SITE_NAME}'s writing archive to follow themes, tools, and recurring ideas.`,
+			keywords: buildKeywords('topics explorer', 'writing tags', 'article navigation', 'software architect/engineering', 'technical management', 'digital transformation', 'AI orchestration'),
 			url: siteUrlFor('/tags'),
 		};
 	}
@@ -142,9 +143,9 @@ const seoOptions = computed(() => {
 	const label = formattedTagLabel.value;
 
 	return {
-		title: `Posts tagged ${label}`,
-		description: `Explore articles tagged ${tag} on ${SITE_NAME}.`,
-		keywords: buildKeywords(tag, `${tag} posts`, `${tag} articles`),
+		title: `${label} Articles`,
+		description: `Browse ${label} posts from ${SITE_NAME}'s writing archive, including essays and notes connected by the same theme.`,
+		keywords: buildKeywords(tag, `${tag} topic`, `${tag} articles`, `${tag} essays`, 'software architect/engineering', 'technical management', 'digital transformation', 'AI orchestration'),
 		url: siteUrlFor(`/tags/${encodeURIComponent(normalizedTag.value)}`),
 	};
 });

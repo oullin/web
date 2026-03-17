@@ -13,6 +13,7 @@ export default defineConfig({
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'html'],
+			reportsDirectory: './storage/coverage',
 			lines: 90,
 			functions: 90,
 			branches: 85,

@@ -62,17 +62,22 @@ describe('ApiClient', () => {
 	});
 
 	it('caches get requests and serves from cache', async () => {
+		const prodClient = new ApiClient({ ...options, env: 'production' });
+		vi.spyOn(prodClient as any, 'appendSignature').mockResolvedValue(undefined);
+
 		// prefill cache
 		const cacheKey = 'api-cache-test';
 		localStorage.setItem(cacheKey, JSON.stringify({ etag: 'x', data: { cached: true } }));
 
 		(fetch as Mock).mockResolvedValue(new Response(null, { status: 304 }));
 
-		const result = await client.get('test');
+		const result = await prodClient.get('test');
 		expect(result).toEqual({ cached: true });
 	});
 
 	it('stores response with etag in cache', async () => {
+		const prodClient = new ApiClient({ ...options, env: 'production' });
+		vi.spyOn(prodClient as any, 'appendSignature').mockResolvedValue(undefined);
 		const data = { foo: 'bar' };
 		(fetch as Mock).mockResolvedValue(
 			new Response(JSON.stringify(data), {
@@ -81,9 +86,28 @@ describe('ApiClient', () => {
 			}),
 		);
 
-		const result = await client.get('test');
+		const result = await prodClient.get('test');
 		expect(result).toEqual(data);
 		expect(localStorage.getItem('api-cache-test')).not.toBeNull();
+	});
+
+	it('skips persisted cache and forces no-store in non-production', async () => {
+		localStorage.setItem('api-cache-test', JSON.stringify({ etag: 'stale', data: { cached: true } }));
+		(fetch as Mock).mockResolvedValue(
+			new Response(JSON.stringify({ fresh: true }), {
+				status: 200,
+				headers: { ETag: 'abc' },
+			}),
+		);
+
+		const result = await client.get('test');
+		const [, requestInit] = (fetch as Mock).mock.calls[0] as [string, RequestInit];
+		const headers = requestInit.headers as Headers;
+
+		expect(result).toEqual({ fresh: true });
+		expect(requestInit.cache).toBe('no-store');
+		expect(headers.get('If-None-Match')).toBeNull();
+		expect(localStorage.getItem('api-cache-test')).toBe(JSON.stringify({ etag: 'stale', data: { cached: true } }));
 	});
 
 	it('throws HttpError on failed get', async () => {
