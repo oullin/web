@@ -48,9 +48,6 @@ const mountComponent = async () => {
 		global: {
 			plugins: [router],
 			stubs: {
-				SideNavPartial: true,
-				HeaderPartial: true,
-				WidgetSocialTransitionWrapper: true,
 				FooterPartial: true,
 				RecommendationPartial: defineComponent({
 					template: '<div data-testid="recommendation-partial">Recommendations partial</div>',

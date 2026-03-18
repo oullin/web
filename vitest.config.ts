@@ -1,11 +1,11 @@
 import { defineConfig } from 'vitest/config';
-import aliasEntries from './aliases';
+import { aliases } from './aliases';
 import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
 	plugins: [vue()],
 	resolve: {
-		alias: aliasEntries,
+		alias: aliases,
 	},
 	test: {
 		environment: 'jsdom',

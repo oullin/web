@@ -2,8 +2,7 @@ import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } 
 import type { PostResponse } from '@api/response/posts-response.ts';
 
 export const SITE_NAME = 'Oullin';
-export const DEFAULT_SITE_URL = 'https://oullin.io';
-export const ABOUT_IMAGE = '/images/profile/about.jpg';
+const DEFAULT_SITE_URL = 'https://oullin.io';
 export const SEO_IMAGE = '/images/profile/about-seo.png';
 export const SITE_LOGO = '/brand/logo-touch.png';
 export const DEFAULT_TWITTER_HANDLE = '@oullin';

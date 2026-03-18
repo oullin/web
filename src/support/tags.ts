@@ -6,7 +6,7 @@ export type TagSummaryState = {
 	postCount: number;
 };
 
-export type TagSummaryDescription = {
+type TagSummaryDescription = {
 	text: string;
 	label?: string;
 	suffix?: string;

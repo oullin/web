@@ -18,7 +18,7 @@ import type {
 
 const STORE_KEY = 'api-client-store';
 
-export interface ApiStoreState {
+interface ApiStoreState {
 	client: ApiClient;
 	searchTerm: string;
 }

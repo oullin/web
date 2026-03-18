@@ -113,25 +113,7 @@ const htmlContent = computed(() => {
 	return '';
 });
 
-const xURLFor = (item: PostResponse) => {
-	const params = new URLSearchParams({ url: fullURLFor(item), text: item.title });
-	return `https://x.com/intent/tweet?${params.toString()}`;
-};
-
 const fullURLFor = (item: PostResponse) => siteUrlFor(`/post/${item.slug}`);
-
-async function sharePost(item: PostResponse) {
-	const shareData = {
-		title: item.title,
-		text: item.excerpt,
-		url: fullURLFor(item),
-	};
-	try {
-		await navigator.share(shareData);
-	} catch (err) {
-		console.error("Couldn't share the post:", err);
-	}
-}
 
 watchEffect(() => {
 	loadHighlightTheme(isDark.value, themeLink);

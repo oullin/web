@@ -22,5 +22,3 @@ export const aliases: AliasOptions = [
 	{ find: '@fixtures', replacement: path.resolve(__dirname, './storage/fixtures') },
 	{ find: '@/lib', replacement: path.resolve(__dirname, './src/lib') },
 ];
-
-export default aliases;

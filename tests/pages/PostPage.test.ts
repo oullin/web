@@ -97,11 +97,7 @@ const mountComponent = async () => {
 		global: {
 			plugins: [router],
 			stubs: {
-				SideNavPartial: true,
-				HeaderPartial: true,
 				FooterPartial: true,
-				WidgetSponsorPartial: true,
-				WidgetSocialTransitionWrapper: true,
 				RouterLink: RouterLinkStub,
 			},
 		},

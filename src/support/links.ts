@@ -2,12 +2,12 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { LinksResponse } from '@api/response';
 
-export interface PlatformConfig {
+interface PlatformConfig {
 	icon: string;
 	text: string;
 }
 
-export interface LinksNavLink {
+interface LinksNavLink {
 	href: string;
 	label: string;
 	icon: string;

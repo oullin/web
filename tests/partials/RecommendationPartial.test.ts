@@ -1,7 +1,7 @@
 import { DOMWrapper, flushPromises, mount } from '@vue/test-utils';
 import { faker } from '@faker-js/faker';
 import { nextTick } from 'vue';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import type { RecommendationsResponse } from '@api/response/index.ts';
 
@@ -42,9 +42,15 @@ const buildRecommendation = (index: number): RecommendationsResponse => ({
 });
 
 describe('RecommendationPartial', () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
 	afterEach(() => {
 		document.body.innerHTML = '';
 		document.body.style.overflow = '';
+		vi.runOnlyPendingTimers();
+		vi.useRealTimers();
 		vi.clearAllMocks();
 	});
 
@@ -65,6 +71,7 @@ describe('RecommendationPartial', () => {
 		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
 
 		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.advanceTimersByTimeAsync(151);
 		await nextTick();
 
 		expect(getRecommendations).toHaveBeenCalledTimes(1);
@@ -82,21 +89,23 @@ describe('RecommendationPartial', () => {
 		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
 
 		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
 		await flushPromises();
 		await nextTick();
 
+		const dialogBody = new DOMWrapper(document.body);
 		expect(renderMarkdown).toHaveBeenCalledWith('great-1');
-		expect(new DOMWrapper(document.body).text()).toContain('Person 1');
-		expect(new DOMWrapper(document.body).text()).toContain('Company 1');
-		expect(new DOMWrapper(document.body).text()).toContain('Role 1');
-		expect(new DOMWrapper(document.body).text()).toContain('now');
-		expect(new DOMWrapper(document.body).find('[data-testid="recommendation-accordion-content"]').exists()).toBe(false);
+		expect(dialogBody.text()).toContain('Person 1');
+		expect(dialogBody.text()).toContain('Company 1');
+		expect(dialogBody.text()).toContain('Role 1');
+		expect(dialogBody.text()).toContain('now');
+		expect(dialogBody.find('[data-testid="recommendation-accordion-content"]').exists()).toBe(false);
 
-		await new DOMWrapper(document.body).get('[data-slot="accordion-trigger"]').trigger('click');
+		await dialogBody.get('[data-slot="accordion-trigger"]').trigger('click');
 		await flushPromises();
 		await nextTick();
 
-		expect(new DOMWrapper(document.body).html()).toContain('<p>great-1</p>');
+		expect(dialogBody.html()).toContain('<p>great-1</p>');
 
 		wrapper.unmount();
 	});
@@ -107,6 +116,7 @@ describe('RecommendationPartial', () => {
 		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
 
 		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
 		await flushPromises();
 		await nextTick();
 
@@ -134,6 +144,7 @@ describe('RecommendationPartial', () => {
 		await dialogBody.get('[data-testid="recommendations-dialog-close-button"]').trigger('click');
 		await nextTick();
 		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
 		await flushPromises();
 		await nextTick();
 
@@ -152,6 +163,7 @@ describe('RecommendationPartial', () => {
 		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
 
 		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
 		await flushPromises();
 		await nextTick();
 
@@ -178,15 +190,18 @@ describe('RecommendationPartial', () => {
 		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
 
 		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
 		await flushPromises();
 		await nextTick();
 
-		expect(new DOMWrapper(document.body).find('[data-testid="recommendations-dialog-error"]').exists()).toBe(true);
+		const dialogBody = new DOMWrapper(document.body);
+		expect(dialogBody.find('[data-testid="recommendations-dialog-error"]').exists()).toBe(true);
 		expect(getRecommendations).toHaveBeenCalledTimes(1);
 
-		await new DOMWrapper(document.body).get('[data-testid="recommendations-dialog-close-button"]').trigger('click');
+		await dialogBody.get('[data-testid="recommendations-dialog-close-button"]').trigger('click');
 		await nextTick();
 		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
 		await flushPromises();
 		await nextTick();
 

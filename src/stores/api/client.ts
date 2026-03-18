@@ -18,7 +18,7 @@ export interface ApiClientOptions {
 	apiUsername: string;
 }
 
-export interface CacheEntry<T> {
+interface CacheEntry<T> {
 	etag: string;
 	data: T;
 }

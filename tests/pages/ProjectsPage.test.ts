@@ -63,7 +63,6 @@ const global = {
 		NavPartial: true,
 		FooterPartial: true,
 		BackToTopLink: true,
-		WidgetSponsorPartial: true,
 		RouterLink: { template: '<a><slot /></a>' },
 		ProjectCardPartial: { template: '<div class="project">{{ item.title }}</div>', props: ['item'] },
 	},

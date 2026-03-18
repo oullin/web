@@ -13,8 +13,8 @@ export type { ProfileResponse };
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 export type { RecommendationsResponse };
 
-import { PostsCollectionResponse, PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsFilters } from '@api/response/posts-response.ts';
-export type { PostsCollectionResponse, PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsFilters };
+import type { PostsCollectionResponse, PostResponse, PostsFilters } from '@api/response/posts-response.ts';
+export type { PostsCollectionResponse, PostResponse, PostsFilters };
 
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/projects-response.ts';
 export type { ProjectsCollectionResponse, ProjectsResponse };
