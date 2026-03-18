@@ -10,7 +10,7 @@
 					{{ item.language }}
 				</div>
 				<div class="project-card-title text-lg font-aspekta font-[650] mb-2">{{ item.title }}</div>
-				<div v-if="projectTimestamp" class="project-card-timestamp mb-3 text-[0.64rem] uppercase tracking-[0.12em]">{{ projectTimestamp.label }} {{ projectTimestamp.value }}</div>
+				<div v-if="projectTimestamp" class="project-card-timestamp mb-3 text-xs uppercase tracking-[0.12em]">{{ projectTimestamp.label }} {{ projectTimestamp.value }}</div>
 				<p class="project-card-excerpt text-sm leading-relaxed">{{ item.excerpt }}</p>
 			</div>
 			<div class="project-card-arrow flex justify-end mt-4">

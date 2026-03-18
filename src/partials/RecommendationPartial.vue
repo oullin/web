@@ -22,7 +22,7 @@
 								<div class="space-y-2 pr-4">
 									<div class="page-section-label !mb-0">People</div>
 									<DialogTitle id="recommendations-dialog-title" class="page-panel-title !text-xl">Recommendations</DialogTitle>
-									<p class="page-panel-copy !text-[0.7rem] !text-[var(--muted)]">People who have worked with Gustavo across architecture, delivery, and leadership.</p>
+									<p class="page-panel-copy !text-[var(--muted)]">People who have worked with Gustavo across architecture, delivery, and leadership.</p>
 								</div>
 								<DialogClose as-child>
 									<button
@@ -76,14 +76,14 @@
 															/>
 														</div>
 														<div class="min-w-0 flex-1">
-															<div class="page-panel-copy !text-[0.72rem] !text-[var(--text)]">
+															<div class="page-panel-copy !text-[var(--text)]">
 																<strong>{{ item.person.full_name }}</strong>
 																<span class="text-[var(--muted)]"> / {{ item.person.company }}</span>
 															</div>
-															<div v-if="item.person.designation" class="page-panel-copy mt-1 !text-[0.66rem] !text-[var(--primary)]">
+															<div v-if="item.person.designation" class="page-panel-copy mt-1 text-sm !text-[var(--primary)]">
 																{{ item.person.designation }}
 															</div>
-															<div class="mt-3 flex flex-wrap gap-x-3 gap-y-1 page-panel-copy !text-[0.62rem] uppercase tracking-[0.16em]">
+															<div class="mt-3 flex flex-wrap gap-x-3 gap-y-1 page-panel-copy text-xs uppercase tracking-[0.14em]">
 																<span>{{ item.relation }}</span>
 																<span aria-hidden="true">/</span>
 																<span>{{ item.formattedDate }}</span>
@@ -93,10 +93,7 @@
 												</AccordionTrigger>
 												<AccordionContent class="pb-0">
 													<div class="pl-16" data-testid="recommendation-accordion-content">
-														<div
-															class="post-markdown prose prose-sm dark:prose-invert page-panel-copy !text-[0.7rem] !leading-[2] !text-[var(--muted)]"
-															v-html="item.html"
-														></div>
+														<div class="post-markdown prose dark:prose-invert page-panel-copy !text-[var(--muted)]" v-html="item.html"></div>
 													</div>
 												</AccordionContent>
 											</AccordionItem>
@@ -111,11 +108,11 @@
 								class="flex flex-col gap-4 border-t border-[var(--border)] px-8 py-4 md:flex-row md:items-center md:justify-between lg:px-10"
 								data-testid="recommendations-dialog-pagination"
 							>
-								<div class="page-panel-copy !text-[0.62rem] uppercase tracking-[0.16em]">Page {{ currentPage }} / {{ totalPages }}</div>
+								<div class="page-panel-copy text-xs uppercase tracking-[0.14em]">Page {{ currentPage }} / {{ totalPages }}</div>
 								<div class="flex flex-wrap items-center gap-2" data-testid="recommendations-dialog-pagination-controls">
 									<button
 										type="button"
-										class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 uppercase tracking-[0.16em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
+										class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
 										:disabled="currentPage === 1"
 										aria-label="Go to previous recommendations page"
 										@click="goToPreviousPage"
@@ -127,7 +124,7 @@
 											v-for="pageNumber in totalPages"
 											:key="pageNumber"
 											type="button"
-											class="page-panel-copy cursor-pointer border px-3 py-2 uppercase tracking-[0.16em] transition-colors hover:text-[var(--text)]"
+											class="page-panel-copy cursor-pointer border px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:text-[var(--text)]"
 											:class="pageNumber === currentPage ? 'border-[var(--primary)] text-[var(--primary)]' : 'border-[var(--border)]'"
 											:aria-label="`Go to recommendations page ${pageNumber}`"
 											@click="goToPage(pageNumber)"
@@ -137,7 +134,7 @@
 									</div>
 									<button
 										type="button"
-										class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 uppercase tracking-[0.16em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
+										class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
 										:disabled="currentPage === totalPages"
 										aria-label="Go to next recommendations page"
 										@click="goToNextPage"

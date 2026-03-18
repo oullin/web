@@ -7,7 +7,7 @@
 				<div class="mb-6">
 					<button
 						type="button"
-						class="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] hover:border-[var(--violet)] transition-all px-3 py-1.5 text-xs font-mono tracking-wider uppercase cursor-pointer"
+						class="inline-flex items-center gap-2 border border-[var(--border)] px-3 py-1.5 font-mono text-xs uppercase tracking-[0.14em] text-[var(--muted)] transition-all hover:border-[var(--violet)] hover:text-[var(--text)] cursor-pointer"
 						@click="handleGoBack"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
@@ -35,7 +35,7 @@
 										<p class="page-copy">{{ post.excerpt }}</p>
 										<p class="page-copy">&nbsp;</p>
 
-										<nav v-if="post.tags?.length" class="mt-6 text-xs font-semibold uppercase tracking-wide text-[var(--muted)]" aria-label="Post tags" data-testid="post-tags">
+										<nav v-if="post.tags?.length" class="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]" aria-label="Post tags" data-testid="post-tags">
 											<ul class="flex flex-wrap items-center gap-y-1">
 												<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
 													<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-[var(--violet)]">
@@ -54,7 +54,7 @@
 							</div>
 						</header>
 
-						<section class="page-article page-article--wide">
+						<section class="page-article">
 							<div ref="postContainer" class="post-markdown prose dark:prose-invert" v-html="htmlContent"></div>
 						</section>
 					</article>

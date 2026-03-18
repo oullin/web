@@ -94,7 +94,7 @@
 			</section>
 		</main>
 
-		<FooterPartial />
+		<FooterPartial class="site-footer--about" />
 	</div>
 </template>
 

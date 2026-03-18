@@ -166,10 +166,10 @@ nav.site-nav {
 
 .nav-links a {
 	font-family: var(--font-mono);
-	font-size: 0.67rem;
+	font-size: 0.8125rem;
 	color: var(--muted);
 	text-decoration: none;
-	letter-spacing: 0.06em;
+	letter-spacing: 0.04em;
 	transition: color 0.2s;
 }
 
@@ -183,11 +183,12 @@ nav.site-nav {
 
 .nav-status {
 	font-family: var(--font-mono);
-	font-size: 0.6rem;
+	font-size: 0.75rem;
 	color: var(--muted);
 	display: flex;
 	gap: 28px;
 	align-items: center;
+	letter-spacing: 0.08em;
 }
 
 .live-dot {
@@ -215,12 +216,12 @@ nav.site-nav {
 
 .nav-theme {
 	font-family: var(--font-mono);
-	font-size: 0.6rem;
+	font-size: 0.75rem;
 	color: var(--muted);
 	text-decoration: none;
-	letter-spacing: 0.12em;
+	letter-spacing: 0.1em;
 	border: 1px solid var(--border);
-	padding: 4px 10px;
+	padding: 6px 12px;
 	transition: all 0.2s;
 	cursor: pointer;
 }
@@ -319,9 +320,9 @@ nav.site-nav {
 
 .eyebrow {
 	font-family: var(--font-mono);
-	font-size: 0.6rem;
+	font-size: 0.75rem;
 	color: var(--primary);
-	letter-spacing: 0.3em;
+	letter-spacing: 0.18em;
 	text-transform: uppercase;
 	margin-bottom: 48px;
 }
@@ -359,10 +360,10 @@ nav.site-nav {
 
 .hero-sub {
 	font-family: var(--font-sans);
-	font-size: 0.77rem;
+	font-size: 1rem;
 	line-height: 1.9;
 	color: var(--muted);
-	max-width: 500px;
+	max-width: 56ch;
 	margin-top: 48px;
 }
 
@@ -382,9 +383,9 @@ nav.site-nav {
 	background: var(--violet);
 	color: #fff;
 	font-family: var(--font-sans);
-	font-size: 0.72rem;
+	font-size: 0.8125rem;
 	font-weight: 700;
-	letter-spacing: 0.2em;
+	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	padding: 13px 32px;
 	text-decoration: none;
@@ -404,7 +405,7 @@ nav.site-nav {
 
 .btn-ghost {
 	font-family: var(--font-mono);
-	font-size: 0.67rem;
+	font-size: 0.8125rem;
 	color: var(--muted);
 	text-decoration: none;
 	border-bottom: 1px solid var(--dimmed);
@@ -438,9 +439,9 @@ nav.site-nav {
 
 .data-label {
 	font-family: var(--font-mono);
-	font-size: 0.57rem;
+	font-size: 0.75rem;
 	color: var(--muted);
-	letter-spacing: 0.28em;
+	letter-spacing: 0.16em;
 	text-transform: uppercase;
 	margin-bottom: 12px;
 }
@@ -466,7 +467,7 @@ nav.site-nav {
 }
 
 .data-value small {
-	font-size: 0.58rem;
+	font-size: 0.75rem;
 	font-weight: 400;
 	color: var(--muted);
 	margin-left: 8px;
@@ -516,20 +517,20 @@ nav.site-nav {
 
 .data-note {
 	font-family: var(--font-sans);
-	font-size: 0.62rem;
+	font-size: 0.875rem;
 	color: var(--muted);
-	line-height: 1.75;
+	line-height: 1.8;
 	margin-top: 10px;
 }
 
 .data-list {
 	font-family: var(--font-sans);
-	font-size: 0.72rem;
+	font-size: 0.9375rem;
 	color: var(--sub);
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	line-height: 1;
+	line-height: 1.6;
 }
 
 .data-list span::before {
@@ -543,10 +544,10 @@ nav.site-nav {
 
 .data-quote {
 	font-family: var(--font-sans);
-	font-size: 0.84rem;
+	font-size: 1rem;
 	font-weight: 500;
 	color: var(--sub);
-	line-height: 1.65;
+	line-height: 1.8;
 	border-left: 2px solid var(--violet);
 	padding-left: 16px;
 	margin-top: 12px;
@@ -600,8 +601,8 @@ nav.site-nav {
 
 .marquee-item {
 	font-family: var(--font-mono);
-	font-size: 0.62rem;
-	letter-spacing: 0.28em;
+	font-size: 0.75rem;
+	letter-spacing: 0.16em;
 	text-transform: uppercase;
 	color: rgba(230, 234, 244, 0.9);
 }
@@ -664,9 +665,9 @@ nav.site-nav {
 
 .p-num {
 	font-family: var(--font-mono);
-	font-size: 0.57rem;
+	font-size: 0.75rem;
 	color: var(--primary);
-	letter-spacing: 0.28em;
+	letter-spacing: 0.16em;
 	margin-bottom: 32px;
 }
 
@@ -682,7 +683,7 @@ nav.site-nav {
 
 .p-body {
 	font-family: var(--font-sans);
-	font-size: 0.71rem;
+	font-size: 0.9375rem;
 	color: var(--muted);
 	line-height: 1.85;
 }
@@ -723,9 +724,9 @@ nav.site-nav {
 
 .section-tag {
 	font-family: var(--font-mono);
-	font-size: 0.58rem;
+	font-size: 0.75rem;
 	color: var(--primary);
-	letter-spacing: 0.28em;
+	letter-spacing: 0.16em;
 	text-transform: uppercase;
 	margin-bottom: 40px;
 	display: flex;
@@ -752,10 +753,10 @@ nav.site-nav {
 
 .about-body {
 	font-family: var(--font-sans);
-	font-size: 0.75rem;
+	font-size: 1rem;
 	color: var(--muted);
 	line-height: 1.95;
-	max-width: 460px;
+	max-width: 54ch;
 }
 
 .about-body strong {
@@ -782,7 +783,7 @@ nav.site-nav {
 
 .w-idx {
 	font-family: var(--font-mono);
-	font-size: 0.57rem;
+	font-size: 0.75rem;
 	color: var(--primary);
 	min-width: 28px;
 	padding-top: 5px;
@@ -790,7 +791,7 @@ nav.site-nav {
 
 .w-title {
 	font-family: var(--font-display);
-	font-size: 0.95rem;
+	font-size: 1rem;
 	font-weight: 700;
 	margin-bottom: 6px;
 	color: var(--text);
@@ -798,9 +799,9 @@ nav.site-nav {
 
 .w-desc {
 	font-family: var(--font-sans);
-	font-size: 0.68rem;
+	font-size: 0.9375rem;
 	color: var(--muted);
-	line-height: 1.7;
+	line-height: 1.8;
 }
 
 /* ─────────────────────────────────────────
@@ -914,9 +915,9 @@ footer.site-footer {
 	justify-content: space-between;
 	align-items: center;
 	font-family: var(--font-mono);
-	font-size: 0.58rem;
+	font-size: 0.75rem;
 	color: var(--footer-text);
-	letter-spacing: 0.2em;
+	letter-spacing: 0.14em;
 	text-transform: uppercase;
 	background: var(--footer-bg);
 	box-shadow: 0 0 0 100vmax var(--footer-bg);
@@ -1035,8 +1036,8 @@ footer.site-footer::before {
 
 .page-kicker {
 	font-family: var(--font-mono);
-	font-size: 0.6rem;
-	letter-spacing: 0.3em;
+	font-size: 0.75rem;
+	letter-spacing: 0.18em;
 	text-transform: uppercase;
 	color: var(--primary);
 	margin-bottom: 28px;
@@ -1054,10 +1055,10 @@ footer.site-footer::before {
 
 .page-copy {
 	font-family: var(--font-sans);
-	font-size: 0.76rem;
-	line-height: 1.95;
+	font-size: 1rem;
+	line-height: 1.9;
 	color: var(--muted);
-	max-width: 680px;
+	max-width: 62ch;
 	margin-top: 28px;
 }
 
@@ -1083,8 +1084,8 @@ footer.site-footer::before {
 	border: 1px solid var(--border);
 	background: rgba(255, 255, 255, 0.38);
 	font-family: var(--font-mono);
-	font-size: 0.64rem;
-	letter-spacing: 0.16em;
+	font-size: 0.8125rem;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: var(--sub);
 	text-decoration: none;
@@ -1184,9 +1185,9 @@ footer.site-footer::before {
 
 .page-section-label {
 	font-family: var(--font-mono);
-	font-size: 0.58rem;
+	font-size: 0.75rem;
 	color: var(--primary);
-	letter-spacing: 0.28em;
+	letter-spacing: 0.16em;
 	text-transform: uppercase;
 	margin-bottom: 18px;
 	display: block;
@@ -1203,10 +1204,10 @@ footer.site-footer::before {
 
 .page-lead {
 	font-family: var(--font-sans);
-	font-size: 0.74rem;
-	line-height: 1.95;
+	font-size: 1rem;
+	line-height: 1.9;
 	color: var(--muted);
-	max-width: 760px;
+	max-width: 60ch;
 }
 
 .page-panel-grid {
@@ -1278,24 +1279,24 @@ footer.site-footer::before {
 }
 
 .page-panel-title {
-	font-size: 1.15rem;
-	line-height: 1.1;
+	font-size: 1.25rem;
+	line-height: 1.2;
 	margin-bottom: 10px;
 }
 
 .page-panel-copy,
 .page-empty-state {
 	font-family: var(--font-sans);
-	font-size: 0.68rem;
-	line-height: 1.8;
+	font-size: 0.9375rem;
+	line-height: 1.85;
 	color: var(--muted);
 }
 
 .page-stat-label,
 .page-meta-list {
 	font-family: var(--font-mono);
-	font-size: 0.68rem;
-	line-height: 1.8;
+	font-size: 0.8125rem;
+	line-height: 1.75;
 	color: var(--muted);
 }
 
@@ -1311,8 +1312,8 @@ footer.site-footer::before {
 	align-items: center;
 	gap: 0.45rem;
 	font-family: var(--font-mono);
-	font-size: 0.68rem;
-	line-height: 1.8;
+	font-size: 0.8125rem;
+	line-height: 1.75;
 	color: var(--muted);
 }
 
@@ -1333,7 +1334,7 @@ footer.site-footer::before {
 
 .page-stat-label {
 	text-transform: uppercase;
-	letter-spacing: 0.18em;
+	letter-spacing: 0.14em;
 }
 
 .page-signal-card {
@@ -1409,7 +1410,7 @@ footer.site-footer::before {
 }
 
 .page-article {
-	max-width: 840px;
+	max-width: 860px;
 	padding: 56px 64px 72px;
 }
 
@@ -1418,7 +1419,7 @@ footer.site-footer::before {
 }
 
 .page-article .post-markdown {
-	margin-top: 36px;
+	margin: 36px auto 0;
 }
 
 .page-summary-card {
@@ -1531,6 +1532,14 @@ footer.site-footer::before {
 @media (max-width: 768px) {
 	.nav-inner {
 		padding: 0 24px;
+		gap: 14px;
+	}
+	.nav-links {
+		gap: 14px;
+	}
+	.nav-links a {
+		font-size: 0.75rem;
+		letter-spacing: 0.02em;
 	}
 	.nav-status,
 	.nav-theme {

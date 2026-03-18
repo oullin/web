@@ -53,11 +53,11 @@
 				</div>
 
 				<div v-if="!isLoadingProjects && !hasError && totalPages > 1" class="page-editorial-row pt-7" data-testid="projects-pagination">
-					<div class="page-panel-copy !text-[0.62rem] uppercase tracking-[0.16em]">Page {{ currentPage }} / {{ totalPages }}</div>
+					<div class="page-panel-copy text-xs uppercase tracking-[0.14em]">Page {{ currentPage }} / {{ totalPages }}</div>
 					<div class="flex flex-wrap items-center gap-2">
 						<button
 							type="button"
-							class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 uppercase tracking-[0.16em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
+							class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
 							:disabled="currentPage === 1 || isLoadingProjects"
 							aria-label="Go to previous projects page"
 							@click="goToPreviousPage"
@@ -68,7 +68,7 @@
 							v-for="pageNumber in pageNumbers"
 							:key="pageNumber"
 							type="button"
-							class="page-panel-copy cursor-pointer border px-3 py-2 uppercase tracking-[0.16em] transition-colors hover:text-[var(--text)]"
+							class="page-panel-copy cursor-pointer border px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:text-[var(--text)]"
 							:class="pageNumber === currentPage ? 'border-[var(--primary)] text-[var(--primary)]' : 'border-[var(--border)]'"
 							:aria-label="`Go to projects page ${pageNumber}`"
 							@click="goToPage(pageNumber)"
@@ -77,7 +77,7 @@
 						</button>
 						<button
 							type="button"
-							class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 uppercase tracking-[0.16em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
+							class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
 							:disabled="currentPage === totalPages || isLoadingProjects"
 							aria-label="Go to next projects page"
 							@click="goToNextPage"

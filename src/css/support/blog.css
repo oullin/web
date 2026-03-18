@@ -81,7 +81,10 @@
 /* --- markdown content --- */
 
 .post-markdown {
-	max-width: 72ch;
+	max-width: 68ch;
+	margin-inline: auto;
+	font-size: 1rem;
+	line-height: 1.875;
 
 	/* light mode — map prose color tokens to design system */
 	--tw-prose-body: var(--sub);
@@ -120,37 +123,61 @@
 	--tw-prose-invert-td-borders: var(--border);
 }
 
-/* h2 — left accent bar */
-.post-markdown h2 {
-	padding-left: 0.875rem;
-	border-left: 3px solid var(--violet);
+.post-markdown :where(p, ul, ol, blockquote, dl, table) {
+	font-size: 1rem;
+	line-height: 1.875;
 }
 
-.dark .post-markdown h2 {
-	border-left-color: var(--cyan);
+.post-markdown :where(h2, h3, h4) {
+	scroll-margin-top: 5rem;
+}
+
+/* h2 — left accent bar */
+.post-markdown h2 {
+	margin-top: 3.5rem;
+	margin-bottom: 1.5rem;
+	font-size: 1.5rem;
+	line-height: 1.25;
 }
 
 /* h6 — mono section label */
 .post-markdown h6 {
 	font-family: var(--font-mono);
+	font-size: 0.8125rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.post-markdown h3 {
+	margin-top: 2.75rem;
+	margin-bottom: 1rem;
+	font-size: 1.25rem;
+	line-height: 1.35;
+}
+
+.post-markdown h4 {
+	margin-top: 2rem;
+	margin-bottom: 0.875rem;
+	font-size: 1.125rem;
+	line-height: 1.45;
 }
 
 /* HR — ornamental separator */
 .post-markdown hr {
 	border: none;
-	text-align: center;
+	border-top: 1px solid var(--border);
+	margin: 3.5rem 0;
 }
 
 .post-markdown hr::before {
-	content: '· · ·';
-	letter-spacing: 0.5em;
-	color: var(--muted);
-	font-size: 0.875rem;
+	content: none;
 }
 
 /* blockquote — surface background from design tokens */
 .post-markdown blockquote {
 	background: var(--surface);
+	padding: 1.25rem 1.5rem;
 	border-radius: 0 0.375rem 0.375rem 0;
 }
 
@@ -162,6 +189,9 @@
 .post-markdown :not(pre) > code {
 	background: var(--surface2) !important;
 	color: var(--text) !important;
+	font-size: 0.9375rem;
+	padding: 0.18rem 0.45rem;
+	border-radius: 0.35rem;
 }
 
 .project-card-link {
@@ -193,10 +223,10 @@
 
 .project-card-language {
 	color: var(--muted);
-	letter-spacing: 0.06em;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	font-family: var(--font-mono);
-	font-size: 0.6rem;
+	font-size: 0.75rem;
 }
 
 .project-card-title {
@@ -211,8 +241,8 @@
 .project-card-excerpt {
 	color: var(--muted);
 	font-family: var(--font-sans);
-	font-size: 0.72rem;
-	line-height: 1.9;
+	font-size: 0.9375rem;
+	line-height: 1.85;
 }
 
 .project-card-arrow {
@@ -231,7 +261,9 @@
 }
 
 .post-markdown pre code {
-	padding: 0.6rem 1rem;
+	padding: 1rem 1.25rem;
+	font-size: 0.875rem;
+	line-height: 1.75;
 }
 
 @media (max-width: 768px) {
