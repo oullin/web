@@ -55,10 +55,6 @@
 						<p v-else key="landing" class="page-empty-state" data-testid="tag-posts-landing">Select a tag to browse related articles.</p>
 					</div>
 				</section>
-
-				<div class="flex justify-end pt-10">
-					<BackToTopLink target="#tag-posts-top" />
-				</div>
 			</section>
 		</main>
 
@@ -73,7 +69,6 @@ import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
-import BackToTopLink from '@partials/BackToTopLink.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';

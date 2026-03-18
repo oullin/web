@@ -6,15 +6,6 @@
 		<!-- HERO -->
 		<HeroPartial />
 
-		<!-- MARQUEE -->
-		<div class="marquee-wrap">
-			<div class="marquee-track">
-				<span v-for="item in marqueeItems" :key="item" class="marquee-item">{{ item }} <em>///</em></span>
-				<!-- duplicate for seamless loop -->
-				<span v-for="item in marqueeItems" :key="`dup-${item}`" class="marquee-item" aria-hidden="true">{{ item }} <em>///</em></span>
-			</div>
-		</div>
-
 		<!-- PRINCIPLES -->
 		<section id="principles" class="principles">
 			<div v-for="principle in principles.items" :key="principle.number" class="principle">
@@ -55,7 +46,7 @@
 		</section>
 
 		<!-- CTA -->
-		<section id="contact" class="cta-section">
+		<section id="contact" class="cta-section" style="border-top: 0">
 			<div class="cta-watermark">{{ cta.watermark }}</div>
 			<h2 class="cta-head">
 				<template v-for="(line, i) in cta.headline" :key="i">{{ line }}<br /></template>
@@ -64,7 +55,7 @@
 			<RouterLink :to="cta.button.to" class="btn-primary">{{ cta.button.label }}</RouterLink>
 		</section>
 
-		<FooterPartial />
+		<FooterPartial :show-marquee="true" />
 	</div>
 </template>
 
@@ -74,12 +65,10 @@ import HeroPartial from '@partials/HeroPartial.vue';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@support/seo';
-import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';
 import cta from '@fixtures/cta.json';
 
-const marqueeItems = marquee.items;
 const nameLines = about.defaultName;
 
 useSeo({

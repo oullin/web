@@ -62,7 +62,6 @@ const global = {
 	stubs: {
 		NavPartial: true,
 		FooterPartial: true,
-		BackToTopLink: true,
 		RouterLink: { template: '<a><slot /></a>' },
 		ProjectCardPartial: { template: '<div class="project">{{ item.title }}</div>', props: ['item'] },
 	},
@@ -111,6 +110,8 @@ describe('ProjectsPage', () => {
 		await flushPromises();
 
 		expect(wrapper.get('[data-testid="projects-pagination"]').text()).toContain('Page 1 / 2');
+		expect(wrapper.get('button[aria-label="Go to previous projects page"]').attributes('disabled')).toBeDefined();
+		expect(wrapper.get('button[aria-label="Go to next projects page"]').attributes('disabled')).toBeUndefined();
 
 		await wrapper.get('button[aria-label="Go to projects page 2"]').trigger('click');
 		await flushPromises();
@@ -118,6 +119,8 @@ describe('ProjectsPage', () => {
 
 		expect(getProjects).toHaveBeenLastCalledWith(2);
 		expect(wrapper.get('[data-testid="projects-pagination"]').text()).toContain('Page 2 / 2');
+		expect(wrapper.get('button[aria-label="Go to previous projects page"]').attributes('disabled')).toBeUndefined();
+		expect(wrapper.get('button[aria-label="Go to next projects page"]').attributes('disabled')).toBeDefined();
 		expect(wrapper.text()).toContain(projectsPageTwo[0].title);
 	});
 });

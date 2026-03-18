@@ -61,10 +61,6 @@
 
 					<p v-else key="error" class="page-empty-state">We couldn't load this post.</p>
 				</div>
-
-				<div class="flex justify-end pt-10">
-					<BackToTopLink target="#post-top" />
-				</div>
 			</section>
 		</main>
 
@@ -86,7 +82,6 @@ import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import { siteUrlFor, useSeoFromPost } from '@support/seo';
 import { formatLabel, routeFor } from '@support/tags.ts';
-import BackToTopLink from '@partials/BackToTopLink.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { onMounted, onUnmounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
 import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@support/markdown.ts';

@@ -40,6 +40,5 @@ local-build:
 
 local-watch:
 	@printf "\n$(YELLOW)Using LOCAL_WEB_PORT=$(LOCAL_WEB_PORT) LOCAL_API_PORT=$(LOCAL_API_PORT) UID=$(BUILD_UID) GID=$(BUILD_GID).$(NC)\n"
-	docker compose --profile local down --volumes --rmi all --remove-orphans
-	docker compose --profile local build --no-cache
-	docker compose --profile local up caddy-watcher caddy-local
+	docker compose --profile local down --remove-orphans
+	docker compose --profile local up --build caddy-watcher caddy-local

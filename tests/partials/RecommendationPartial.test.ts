@@ -99,6 +99,7 @@ describe('RecommendationPartial', () => {
 		expect(dialogBody.text()).toContain('Company 1');
 		expect(dialogBody.text()).toContain('Role 1');
 		expect(dialogBody.text()).toContain('now');
+		expect(dialogBody.get('[data-testid="recommendation-accordion-item"]').classes()).toContain('bg-transparent');
 		expect(dialogBody.find('[data-testid="recommendation-accordion-content"]').exists()).toBe(false);
 
 		await dialogBody.get('[data-slot="accordion-trigger"]').trigger('click');
@@ -126,8 +127,9 @@ describe('RecommendationPartial', () => {
 		expect(dialogBody.text()).not.toContain('Person 9');
 		expect(dialogBody.findAll('[data-testid="recommendation-accordion-item"]')).toHaveLength(8);
 		expect(dialogBody.get('[data-testid="recommendations-dialog-pagination"]').classes()).not.toContain('page-editorial-row');
-		expect(dialogBody.get('[data-testid="recommendations-dialog-pagination-controls"]').exists()).toBe(true);
-		expect(dialogBody.get('[data-testid="recommendations-dialog-pagination-pages"]').exists()).toBe(true);
+		expect(dialogBody.find('[data-testid="recommendations-dialog-pagination-controls"]').exists()).toBe(true);
+		expect(dialogBody.find('[data-testid="recommendations-dialog-pagination-pages"]').exists()).toBe(true);
+		expect(dialogBody.get('button[aria-label="Go to previous recommendations page"]').attributes('disabled')).toBeDefined();
 
 		await dialogBody.findAll('[data-slot="accordion-trigger"]')[0].trigger('click');
 		await nextTick();
@@ -140,6 +142,7 @@ describe('RecommendationPartial', () => {
 		expect(dialogBody.text()).toContain('Person 9');
 		expect(dialogBody.findAll('[data-testid="recommendation-accordion-item"]')).toHaveLength(1);
 		expect(dialogBody.find('[data-testid="recommendation-accordion-content"]').exists()).toBe(false);
+		expect(dialogBody.get('button[aria-label="Go to next recommendations page"]').attributes('disabled')).toBeDefined();
 
 		await dialogBody.get('[data-testid="recommendations-dialog-close-button"]').trigger('click');
 		await nextTick();

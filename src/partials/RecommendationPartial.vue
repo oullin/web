@@ -58,7 +58,7 @@
 												v-for="item in paginatedRecommendations"
 												:key="item.uuid"
 												:value="item.uuid"
-												class="bg-[color-mix(in_srgb,var(--surface)_62%,transparent)] px-5"
+												class="bg-transparent px-5"
 												data-testid="recommendation-accordion-item"
 											>
 												<AccordionTrigger class="py-5 hover:no-underline">
@@ -109,39 +109,25 @@
 								data-testid="recommendations-dialog-pagination"
 							>
 								<div class="page-panel-copy text-xs uppercase tracking-[0.14em]">Page {{ currentPage }} / {{ totalPages }}</div>
-								<div class="flex flex-wrap items-center gap-2" data-testid="recommendations-dialog-pagination-controls">
-									<button
-										type="button"
-										class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
-										:disabled="currentPage === 1"
-										aria-label="Go to previous recommendations page"
-										@click="goToPreviousPage"
-									>
-										Prev
-									</button>
-									<div class="flex flex-wrap items-center gap-2" data-testid="recommendations-dialog-pagination-pages">
-										<button
-											v-for="pageNumber in totalPages"
-											:key="pageNumber"
-											type="button"
-											class="page-panel-copy cursor-pointer border px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:text-[var(--text)]"
-											:class="pageNumber === currentPage ? 'border-[var(--primary)] text-[var(--primary)]' : 'border-[var(--border)]'"
-											:aria-label="`Go to recommendations page ${pageNumber}`"
-											@click="goToPage(pageNumber)"
-										>
-											{{ pageNumber }}
-										</button>
-									</div>
-									<button
-										type="button"
-										class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
-										:disabled="currentPage === totalPages"
-										aria-label="Go to next recommendations page"
-										@click="goToNextPage"
-									>
-										Next
-									</button>
-								</div>
+								<Pagination :page="currentPage" :total="totalPages" :items-per-page="1" class="w-auto justify-end" @update:page="goToPage">
+									<PaginationContent v-slot="{ items }" data-testid="recommendations-dialog-pagination-controls">
+										<PaginationPrevious aria-label="Go to previous recommendations page" />
+										<div class="flex flex-wrap items-center gap-2" data-testid="recommendations-dialog-pagination-pages">
+											<template v-for="item in items" :key="item.type === 'page' ? `recommendation-page-${item.value}` : `recommendation-ellipsis-${item.key}`">
+												<PaginationItem
+													v-if="item.type === 'page'"
+													:value="item.value"
+													:is-active="item.value === currentPage"
+													:aria-label="`Go to recommendations page ${item.value}`"
+												>
+													{{ item.value }}
+												</PaginationItem>
+												<PaginationEllipsis v-else />
+											</template>
+										</div>
+										<PaginationNext aria-label="Go to next recommendations page" />
+									</PaginationContent>
+								</Pagination>
 							</div>
 						</DialogContent>
 					</Dialog>
@@ -157,6 +143,7 @@ import DOMPurify from 'dompurify';
 import highlight from 'highlight.js/lib/core';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@components/ui/accordion';
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@components/ui/dialog';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { useApiStore } from '@api/store.ts';
 import RecommendationDialogSkeletonPartial from '@partials/RecommendationDialogSkeletonPartial.vue';
@@ -232,14 +219,6 @@ const handleDialogOpen = () => {
 const goToPage = (pageNumber: number) => {
 	currentPage.value = Math.min(Math.max(1, pageNumber), totalPages.value);
 	openRecommendation.value = '';
-};
-
-const goToPreviousPage = () => {
-	goToPage(currentPage.value - 1);
-};
-
-const goToNextPage = () => {
-	goToPage(currentPage.value + 1);
 };
 
 watch(totalPages, (pageCount) => {

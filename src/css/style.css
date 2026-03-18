@@ -1,26 +1,20 @@
-/* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------------------- customised ----------------------------------------------- */
-/* ------------------------------------------------------------------------------------------------------------------ */
+@import '@css/fonts.css' layer(base);
 
-@import '@css/support/custom-fonts.css' layer(base);
-
-/* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------------------- tailwindcss ---------------------------------------------- */
-/* ------------------------------------------------------------------------------------------------------------------ */
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
-/* ------------------------------------------------------------------------------------------------------------------ */
-/* ------------------------------------------------------- customised ----------------------------------------------- */
-/* ------------------------------------------------------------------------------------------------------------------ */
-@import '@css/support/utility-patterns.css' layer(components);
-@import '@css/support/range-slider.css' layer(components);
-@import '@css/support/toggle-switch.css' layer(components);
-@import '@css/support/blog.css';
+/* ------------------------------------------------------- app ------------------------------------------------------ */
+@import '@css/utils.css' layer(components);
+@import '@css/range-slider.css' layer(components);
+@import '@css/toggle-switch.css' layer(components);
+@import '@css/app.css';
+@import '@css/circuit.css';
 @import '@css/theme.css';
-@import '@css/support/shadcn-bridge.css';
+@import '@css/shadcn-bridge.css';
 
 @plugin '@tailwindcss/typography';
 

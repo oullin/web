@@ -33,5 +33,8 @@ describe('NavPartial', () => {
 
 		const contactLink = wrapper.findAll('a').find((link) => link.text().includes('contact'));
 		expect(contactLink?.attributes('to')).toBe('/contact');
+		expect(wrapper.text()).toContain('BUILT: 2026.03');
+		expect(wrapper.text()).toContain('NODE: OULLIN_PRIME');
+		expect(wrapper.text()).not.toContain('SIGNAL: ACTIVE');
 	});
 });

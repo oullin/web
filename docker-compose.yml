@@ -63,6 +63,7 @@ services:
 
     caddy-local:
         image: caddy:2.10.0-alpine
+        pull_policy: missing
         profiles:
             - local
         container_name: web_caddy_local

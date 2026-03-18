@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import HeroPartial from '@partials/HeroPartial.vue';
+import HeroCircuitPartial from '@partials/HeroCircuitPartial.vue';
 import hero from '@fixtures/hero.json';
 
 const global = {
@@ -19,6 +20,11 @@ describe('HeroPartial', () => {
 	it('renders the eyebrow text', () => {
 		const wrapper = mount(HeroPartial, { global });
 		expect(wrapper.find('.eyebrow').text()).toBe(hero.eyebrow);
+	});
+
+	it('renders the extracted circuit partial', () => {
+		const wrapper = mount(HeroPartial, { global });
+		expect(wrapper.findComponent(HeroCircuitPartial).exists()).toBe(true);
 	});
 
 	it('renders the Oullin subcopy lines', () => {

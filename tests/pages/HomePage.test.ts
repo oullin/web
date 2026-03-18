@@ -1,16 +1,24 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import HomePage from '@pages/HomePage.vue';
-import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';
 import cta from '@fixtures/cta.json';
+import { defineComponent } from 'vue';
 
 const global = {
 	stubs: {
 		NavPartial: true,
 		HeroPartial: true,
-		FooterPartial: true,
+		FooterPartial: defineComponent({
+			props: {
+				showMarquee: {
+					type: Boolean,
+					default: false,
+				},
+			},
+			template: '<footer data-testid="footer-partial" :data-show-marquee="showMarquee"></footer>',
+		}),
 		RouterLink: { template: '<a><slot /></a>' },
 	},
 };
@@ -20,11 +28,9 @@ describe('HomePage', () => {
 		vi.clearAllMocks();
 	});
 
-	it('renders all marquee items', () => {
+	it('enables the footer marquee on the home page', () => {
 		const wrapper = mount(HomePage, { global });
-		marquee.items.forEach((item) => {
-			expect(wrapper.text()).toContain(item);
-		});
+		expect(wrapper.get('[data-testid="footer-partial"]').attributes('data-show-marquee')).toBe('true');
 	});
 
 	it('renders all principles', () => {

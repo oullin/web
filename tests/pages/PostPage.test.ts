@@ -178,15 +178,6 @@ describe('PostPage', () => {
 		expect(wrapper.text()).not.toContain('Reading Mode');
 	});
 
-	it('renders a back to top link targeting the post header', async () => {
-		const wrapper = await mountComponent();
-
-		await flushPromises();
-
-		const backToTopLink = wrapper.find('a[href="#post-top"]');
-		expect(backToTopLink.exists()).toBe(true);
-	});
-
 	it('renders the post cover inside the hero when a cover image is available', async () => {
 		const wrapper = await mountComponent();
 

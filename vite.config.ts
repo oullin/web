@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 const defaultApiPort = process.env.LOCAL_API_PORT ?? '18080';
 
 const defaultWebPort = (() => {
-	const raw = process.env.LOCAL_WEB_PORT;
+	const raw = process.env.LOCAL_WEB_PORT ?? process.env.PORT;
 	if (!raw) return undefined;
 	const parsed = parseInt(raw, 10);
 	return Number.isNaN(parsed) ? undefined : parsed;

@@ -54,41 +54,18 @@
 
 				<div v-if="!isLoadingProjects && !hasError && totalPages > 1" class="page-editorial-row pt-7" data-testid="projects-pagination">
 					<div class="page-panel-copy text-xs uppercase tracking-[0.14em]">Page {{ currentPage }} / {{ totalPages }}</div>
-					<div class="flex flex-wrap items-center gap-2">
-						<button
-							type="button"
-							class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
-							:disabled="currentPage === 1 || isLoadingProjects"
-							aria-label="Go to previous projects page"
-							@click="goToPreviousPage"
-						>
-							Prev
-						</button>
-						<button
-							v-for="pageNumber in pageNumbers"
-							:key="pageNumber"
-							type="button"
-							class="page-panel-copy cursor-pointer border px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:text-[var(--text)]"
-							:class="pageNumber === currentPage ? 'border-[var(--primary)] text-[var(--primary)]' : 'border-[var(--border)]'"
-							:aria-label="`Go to projects page ${pageNumber}`"
-							@click="goToPage(pageNumber)"
-						>
-							{{ pageNumber }}
-						</button>
-						<button
-							type="button"
-							class="page-panel-copy cursor-pointer border border-[var(--border)] px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors hover:border-[var(--primary)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-40"
-							:disabled="currentPage === totalPages || isLoadingProjects"
-							aria-label="Go to next projects page"
-							@click="goToNextPage"
-						>
-							Next
-						</button>
-					</div>
-				</div>
-
-				<div class="flex justify-end pt-10">
-					<BackToTopLink target="#projects-top" />
+					<Pagination :page="currentPage" :total="totalPages" :items-per-page="1" :disabled="isLoadingProjects" class="w-auto justify-end" @update:page="goToPage">
+						<PaginationContent v-slot="{ items }">
+							<PaginationPrevious aria-label="Go to previous projects page" />
+							<template v-for="item in items" :key="item.type === 'page' ? `projects-page-${item.value}` : `projects-ellipsis-${item.key}`">
+								<PaginationItem v-if="item.type === 'page'" :value="item.value" :is-active="item.value === currentPage" :aria-label="`Go to projects page ${item.value}`">
+									{{ item.value }}
+								</PaginationItem>
+								<PaginationEllipsis v-else />
+							</template>
+							<PaginationNext aria-label="Go to next projects page" />
+						</PaginationContent>
+					</Pagination>
 				</div>
 			</section>
 		</main>
@@ -104,9 +81,9 @@ import { debugError } from '@api/http-error.ts';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
-import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 
 const DEFAULT_SKELETON_COUNT = 4;
@@ -124,8 +101,6 @@ let lastRequestId = 0;
 const skeletonCount = computed(() => {
 	return projects.value.length > 0 ? projects.value.length : pageSize.value;
 });
-
-const pageNumbers = computed(() => Array.from({ length: totalPages.value }, (_, index) => index + 1));
 
 useSeo({
 	title: 'Projects',
@@ -207,14 +182,6 @@ const goToPage = async (pageNumber: number) => {
 	isLoadingProjects.value = true;
 	await loadProjects(nextPage);
 	await scrollToProjectsStart();
-};
-
-const goToPreviousPage = async () => {
-	await goToPage(currentPage.value - 1);
-};
-
-const goToNextPage = async () => {
-	await goToPage(currentPage.value + 1);
 };
 
 onMounted(async () => {

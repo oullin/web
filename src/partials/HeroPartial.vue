@@ -1,5 +1,7 @@
 <template>
 	<section id="writing" class="hero">
+		<HeroCircuitPartial />
+
 		<div class="hero-left">
 			<!-- Breathing orb — violet + cyan ambient glow, lighter touch -->
 			<div class="orb-bg" aria-hidden="true">
@@ -61,5 +63,6 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import HeroCircuitPartial from '@partials/HeroCircuitPartial.vue';
 import hero from '@fixtures/hero.json';
 </script>

@@ -97,7 +97,6 @@ const mountComponent = async () => {
 			plugins: [router],
 			stubs: {
 				FooterPartial: true,
-				BackToTopLink: true,
 				RouterLink: true,
 				ArticleItemPartial: ArticleItemPartialStub,
 				ArticleItemSkeletonPartial: ArticleItemSkeletonPartialStub,
