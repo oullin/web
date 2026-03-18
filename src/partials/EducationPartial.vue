@@ -42,7 +42,7 @@
 import { computed } from 'vue';
 import DOMPurify from 'dompurify';
 import { EducationResponse } from '@api/response/index.ts';
-import { renderMarkdown } from '@/support/markdown.ts';
+import { renderMarkdown } from '@support/markdown.ts';
 
 const { education } = defineProps<{
 	education: Array<EducationResponse>;

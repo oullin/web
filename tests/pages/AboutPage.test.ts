@@ -28,7 +28,6 @@ const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.r
 const getRecommendations = vi.fn();
 
 vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getRecommendations }) }));
-vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 const App = defineComponent({
 	template: '<router-view />',
@@ -105,11 +104,9 @@ describe('AboutPage', () => {
 	});
 
 	it('handles profile errors gracefully', async () => {
-		const error = new Error('fail');
-		getProfile.mockRejectedValueOnce(error);
-		await mountComponent();
+		getProfile.mockRejectedValueOnce(new Error('fail'));
+		const wrapper = await mountComponent();
 		await flushPromises();
-		const { debugError } = await import('@api/http-error.ts');
-		expect(debugError).toHaveBeenCalledWith(error);
+		expect(wrapper.text()).toContain('We are currently unable to load contact details');
 	});
 });

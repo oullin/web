@@ -5,8 +5,8 @@ import { createPinia, Pinia } from 'pinia';
 import '@css/style.css';
 import App from '@/App.vue';
 import router from '@/router';
-import { lazyLinkDirective } from '@/support/lazy-loading.ts';
-import { initSentry } from '@/support/sentry.ts';
+import { lazyLinkDirective } from '@support/lazy-loading.ts';
+import { initSentry } from '@support/sentry.ts';
 
 const root = document.documentElement;
 const markFontsReady = () => root.classList.add('fonts-ready');

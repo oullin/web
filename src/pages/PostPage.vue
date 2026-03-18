@@ -84,12 +84,12 @@ import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
-import { siteUrlFor, useSeoFromPost } from '@/support/seo';
-import { formatLabel, routeFor } from '@/support/tags.ts';
+import { siteUrlFor, useSeoFromPost } from '@support/seo';
+import { formatLabel, routeFor } from '@support/tags.ts';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
 import { onMounted, onUnmounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
-import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
+import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@support/markdown.ts';
 
 // --- Component
 const route = useRoute();

@@ -76,7 +76,7 @@
 import { RouteLocationNormalizedLoaded, RouterLink, useRoute } from 'vue-router';
 import AvatarPartial from '@partials/AvatarPartial.vue';
 import { computed, onMounted, ref } from 'vue';
-import { Links, type LinksNavLink } from '../support/links.ts';
+import { Links, type LinksNavLink } from '@support/links.ts';
 
 const currentRoute: RouteLocationNormalizedLoaded = useRoute();
 const linksService = new Links();

@@ -97,13 +97,14 @@ import { computed, onMounted, ref } from 'vue';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
-import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
-import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const links = ref<LinksResponse[]>([]);
+const hasProfileError = ref(false);
+const hasLinksError = ref(false);
 const fallbackLinks: LinksResponse[] = [
 	{
 		uuid: 'fallback-linkedin',
@@ -151,24 +152,20 @@ useSeo({
 	],
 });
 
-const loadContactData = () => {
-	apiStore
-		.getProfile()
-		.then((response) => {
-			if (response.data) {
-				profile.value = response.data;
-			}
-		})
-		.catch(debugError);
+const loadContactData = async () => {
+	try {
+		const profileResponse = await apiStore.getProfile();
+		if (profileResponse.data) profile.value = profileResponse.data;
+	} catch {
+		hasProfileError.value = true;
+	}
 
-	apiStore
-		.getLinks()
-		.then((response) => {
-			if (response.data) {
-				links.value = response.data;
-			}
-		})
-		.catch(debugError);
+	try {
+		const linksResponse = await apiStore.getLinks();
+		if (linksResponse.data) links.value = linksResponse.data;
+	} catch {
+		hasLinksError.value = true;
+	}
 };
 
 onMounted(loadContactData);

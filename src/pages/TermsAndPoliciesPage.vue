@@ -111,7 +111,7 @@
 import { RouterLink } from 'vue-router';
 import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
-import { useSeo, siteUrlFor, buildKeywords } from '@/support/seo';
+import { useSeo, siteUrlFor, buildKeywords } from '@support/seo';
 
 useSeo({
 	title: 'Terms and Policies',

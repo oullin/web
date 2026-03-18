@@ -39,8 +39,6 @@ vi.mock('@api/store.ts', () => ({
 	}),
 }));
 
-vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
-
 const global = {
 	stubs: {
 		NavPartial: true,
@@ -81,13 +79,14 @@ describe('ContactPage', () => {
 	});
 
 	it('handles API errors gracefully', async () => {
-		const error = new Error('network failure');
-		getProfile.mockRejectedValueOnce(error);
+		getProfile.mockRejectedValueOnce(new Error('network failure'));
+		getLinks.mockRejectedValueOnce(new Error('network failure'));
 
-		mount(ContactPage, { global });
+		const wrapper = mount(ContactPage, { global });
 		await flushPromises();
 
-		const { debugError } = await import('@api/http-error.ts');
-		expect(debugError).toHaveBeenCalledWith(error);
+		expect(wrapper.text()).toContain('Direct email');
+		expect(wrapper.text()).toContain('LINKEDIN');
+		expect(wrapper.text()).toContain('GITHUB');
 	});
 });

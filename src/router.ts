@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, Router } from 'vue-router';
-import { scrollBehavior } from '@/support/scrolls';
+import { scrollBehavior } from '@support/scrolls';
 
 const routerHistory = createWebHistory();
 

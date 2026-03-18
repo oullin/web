@@ -77,8 +77,8 @@ import BackToTopLink from '@partials/BackToTopLink.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
-import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@/support/seo';
-import { formatLabel, normalizeParam, sanitizeTag, summaryFor } from '@/support/tags.ts';
+import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@support/seo';
+import { formatLabel, normalizeParam, sanitizeTag, summaryFor } from '@support/tags.ts';
 import { goBack } from '@/public.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;

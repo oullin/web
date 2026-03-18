@@ -153,7 +153,7 @@ import { useApiStore } from '@api/store.ts';
 import RecommendationDialogSkeletonPartial from '@partials/RecommendationDialogSkeletonPartial.vue';
 import { useDarkMode } from '@/dark-mode.ts';
 import { image, date } from '@/public.ts';
-import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
+import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@support/markdown.ts';
 
 const PAGE_SIZE = 8;
 

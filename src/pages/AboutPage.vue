@@ -111,15 +111,15 @@ import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
-import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 
 import { useApiStore } from '@api/store.ts';
-import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const isLoadingProfile = ref(true);
+const hasProfileError = ref(false);
 
 useSeo({
 	title: 'About',
@@ -159,14 +159,15 @@ useSeo({
 	],
 });
 
-const loadAboutPageData = () => {
-	apiStore
-		.getProfile()
-		.then((res) => {
-			if (res.data) profile.value = res.data;
-		})
-		.catch(debugError)
-		.finally(() => (isLoadingProfile.value = false));
+const loadAboutPageData = async () => {
+	try {
+		const res = await apiStore.getProfile();
+		if (res.data) profile.value = res.data;
+	} catch {
+		hasProfileError.value = true;
+	} finally {
+		isLoadingProfile.value = false;
+	}
 };
 
 onMounted(loadAboutPageData);

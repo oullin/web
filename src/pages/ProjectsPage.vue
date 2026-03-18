@@ -107,7 +107,7 @@ import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
-import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 
 const DEFAULT_SKELETON_COUNT = 4;
 const apiStore = useApiStore();

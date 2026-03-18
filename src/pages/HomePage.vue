@@ -70,10 +70,10 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import HeroPartial from '@/partials/HeroPartial.vue';
-import NavPartial from '@/partials/NavPartial.vue';
+import HeroPartial from '@partials/HeroPartial.vue';
+import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
-import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@/support/seo';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@support/seo';
 import marquee from '@fixtures/marquee.json';
 import principles from '@fixtures/principles.json';
 import about from '@fixtures/about.json';

@@ -49,7 +49,7 @@ import DOMPurify from 'dompurify';
 import highlight from 'highlight.js/lib/core';
 import BackToTopLink from '@partials/BackToTopLink.vue';
 import type { ExperienceResponse } from '@api/response/index.ts';
-import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@/support/markdown.ts';
+import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@support/markdown.ts';
 import { useDarkMode } from '@/dark-mode.ts';
 
 const props = defineProps<{
