@@ -6,8 +6,9 @@ describe('ArticleItemSkeletonPartial', () => {
 	it('renders with animation enabled by default', async () => {
 		const wrapper = mount(ArticleItemSkeletonPartial);
 		await wrapper.vm.$nextTick();
-		const article = wrapper.get('[data-testid="article-skeleton"]');
-		expect(article.classes()).toContain('animate-pulse');
+		const skeleton = wrapper.find('[data-slot="skeleton"]');
+		expect(skeleton.classes()).toContain('animate-pulse');
+		expect(skeleton.classes()).not.toContain('animate-none');
 	});
 
 	it('disables animation when isAnimated is false', async () => {
@@ -15,7 +16,8 @@ describe('ArticleItemSkeletonPartial', () => {
 			props: { isAnimated: false },
 		});
 		await wrapper.vm.$nextTick();
-		const article = wrapper.get('[data-testid="article-skeleton"]');
-		expect(article.classes()).not.toContain('animate-pulse');
+		const skeleton = wrapper.find('[data-slot="skeleton"]');
+		expect(skeleton.classes()).toContain('animate-none');
+		expect(skeleton.classes()).not.toContain('animate-pulse');
 	});
 });

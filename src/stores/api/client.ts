@@ -18,7 +18,7 @@ export interface ApiClientOptions {
 	apiUsername: string;
 }
 
-export interface CacheEntry<T> {
+interface CacheEntry<T> {
 	etag: string;
 	data: T;
 }
@@ -54,7 +54,15 @@ export class ApiClient {
 		return `api-cache-${url}`;
 	}
 
+	private usesPersistentCache(): boolean {
+		return this.isProd();
+	}
+
 	private getFromCache<T>(url: string): CacheEntry<T> | null {
+		if (!this.usesPersistentCache()) {
+			return null;
+		}
+
 		const key = this.getCacheKey(url);
 		const item = localStorage.getItem(key);
 
@@ -62,6 +70,10 @@ export class ApiClient {
 	}
 
 	private setToCache<T>(url: string, etag: string, data: T): void {
+		if (!this.usesPersistentCache()) {
+			return;
+		}
+
 		const key = this.getCacheKey(url);
 		const item: CacheEntry<T> = { etag, data };
 
@@ -76,6 +88,14 @@ export class ApiClient {
 		return !this.isProd();
 	}
 
+	private getSignatureUrl(): URL {
+		if (typeof window !== 'undefined' && window.location.origin && window.location.origin !== 'null') {
+			return new URL('/relay/generate-signature', window.location.origin);
+		}
+
+		return new URL('/relay/generate-signature', this.hostURL);
+	}
+
 	/**
 	 * Returns the current UNIX timestamp (seconds) adjusted by the
 	 * calculated server offset.
@@ -84,21 +104,12 @@ export class ApiClient {
 		return Math.floor((Date.now() + this.clockOffsetMs) / 1000);
 	}
 
-	/**
-	 * Updates the X-API-Timestamp header immediately before dispatch.
-	 * Critical for minimising the gap between signing and sending.
-	 */
-	private refreshTimestamp(headers: Headers): void {
-		headers.set('X-API-Timestamp', this.getCurrentTimestamp().toString());
-	}
-
 	private createHeaders(timestamp?: number): Headers {
 		const headers = new Headers();
 		const ts = timestamp ?? this.getCurrentTimestamp();
 
 		headers.append('X-API-Key', this.apiKey);
 		headers.append('X-Request-ID', uuidv4());
-		headers.append('User-Agent', 'oullin/web-app');
 		headers.append('X-API-Username', this.apiUsername);
 		headers.append('Content-Type', 'application/json');
 		headers.append('X-API-Timestamp', ts.toString());
@@ -146,43 +157,30 @@ export class ApiClient {
 		this.clockOffsetMs = correctedServerTime - now;
 	}
 
-	private async getSignature(nonce: string, origin: string): Promise<SignatureResponse> {
-		const fullUrl = new URL('relay/generate-signature', this.hostURL);
+	private async getSignature(nonce: string, origin: string, timestamp: number): Promise<SignatureResponse> {
+		const fullUrl = this.getSignatureUrl();
 
 		if (this.isProd() && fullUrl.protocol !== 'https:') {
 			throw new Error('Signature endpoint must be accessed over HTTPS.');
 		}
 
-		const makeRequest = async () => {
-			const timestamp = this.getCurrentTimestamp();
-			const headers = this.createHeaders(timestamp);
+		const headers = this.createHeaders(timestamp);
 
-			headers.append('X-API-Intended-Origin', origin);
+		headers.append('X-API-Intended-Origin', origin);
 
-			const startTime = Date.now();
+		const startTime = Date.now();
+		const response = await fetch(fullUrl.href, {
+			method: 'POST',
+			headers: headers,
+			body: JSON.stringify({
+				nonce: nonce,
+				public_key: this.apiKey,
+				username: this.apiUsername,
+				timestamp: timestamp,
+			}),
+		});
 
-			const res = await fetch(fullUrl.href, {
-				method: 'POST',
-				headers: headers,
-				body: JSON.stringify({
-					nonce: nonce,
-					public_key: this.apiKey,
-					username: this.apiUsername,
-					timestamp: timestamp,
-				}),
-			});
-
-			this.syncClockOffset(res, startTime);
-
-			return res;
-		};
-
-		let response = await makeRequest();
-
-		// Handle 401 specifically for clock skew (retry once with new offset)
-		if (!response.ok && response.status === 401) {
-			response = await makeRequest();
-		}
+		this.syncClockOffset(response, startTime);
 
 		if (!response.ok) {
 			throw new HttpError(response, await response.text());
@@ -196,21 +194,26 @@ export class ApiClient {
 		let lastError: Error | undefined;
 
 		for (let i = 0; i < retries; i++) {
+			const timestamp = this.getCurrentTimestamp();
+
+			headers.set('X-API-Timestamp', timestamp.toString());
+
 			try {
-				const sigResp = await this.getSignature(nonce, origin);
+				const sigResp = await this.getSignature(nonce, origin, timestamp);
 
-				headers.append('X-API-Nonce', nonce);
-				headers.append('X-API-Intended-Origin', origin);
-
-				// Critical: Update the timestamp to "now" just before sending a request
-				this.refreshTimestamp(headers);
-				headers.append('X-API-Signature', sigResp.signature);
+				headers.set('X-API-Nonce', nonce);
+				headers.set('X-API-Intended-Origin', origin);
+				headers.set('X-API-Signature', sigResp.signature);
 
 				return;
 			} catch (error) {
 				lastError = error as Error;
 
 				if (i < retries - 1) {
+					if (error instanceof HttpError && error.status === 401) {
+						continue;
+					}
+
 					// Exponential backoff: waits 1 s, then 2 s.
 					await new Promise((resolve) => setTimeout(resolve, Math.pow(2, i) * 1000));
 				}
@@ -226,7 +229,6 @@ export class ApiClient {
 		const fullUrl = new URL(url, this.basedURL);
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
-		this.refreshTimestamp(headers);
 
 		const startTime = Date.now();
 		const response = await fetch(fullUrl.href, {
@@ -250,17 +252,17 @@ export class ApiClient {
 		const cached = this.getFromCache<T>(url);
 		const fullUrl = new URL(url, this.basedURL);
 
-		if (cached) {
+		if (cached && this.usesPersistentCache()) {
 			headers.append('If-None-Match', cached.etag);
 		}
 
 		await this.appendSignature(nonce, headers, fullUrl.href);
-		this.refreshTimestamp(headers);
 
 		const startTime = Date.now();
 		const response = await fetch(fullUrl.href, {
 			method: 'GET',
 			headers: headers,
+			cache: this.isDev() ? 'no-store' : undefined,
 		});
 
 		this.syncClockOffset(response, startTime);
@@ -277,7 +279,7 @@ export class ApiClient {
 		const eTag = response.headers.get('ETag');
 		const payload = await response.json();
 
-		if (eTag) {
+		if (eTag && this.usesPersistentCache()) {
 			this.setToCache(url, eTag, payload);
 		}
 

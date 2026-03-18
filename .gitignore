@@ -1,15 +1,40 @@
 .env
-.env.production
 stats.html
-
+.env.production
 .DS_Store
 
+# --- Build output
 dist/
+# ad-hoc build output for verifying production builds without overwriting dist/
+dist-verify/
 .vite/
 .idea/
 dist-ssr/
-node_modules/
 coverage/
+node_modules/
+.playwright-cli/
+.pnpm-store/
+pnpm-debug.log
+package-lock.json
+.vite-build-check/
+
+# --- Storage
+!storage/.gitkeep
+
+storage/coverage/
+storage/.playwright-cli/
+storage/.pnpm-store/
+
+storage/oullin/*
+!storage/oullin/.gitkeep
+
+!storage/oullin/html/
+storage/oullin/html/*
+!storage/oullin/html/.gitkeep
+
+!storage/oullin/logos/
+storage/oullin/logos/*
+!storage/oullin/logos/.gitkeep
 
 # --- [Caddy]: mtls
 caddy/mtls/*.*

@@ -17,7 +17,7 @@ const skills: ProfileSkillResponse[] = [
 
 const profile: ProfileResponse = {
 	nickname: faker.word.words(1).toLowerCase(),
-	handle: faker.internet.userName(),
+	handle: faker.internet.username(),
 	name: faker.person.fullName(),
 	email: faker.internet.email(),
 	profession: faker.person.jobTitle(),
@@ -25,9 +25,9 @@ const profile: ProfileResponse = {
 };
 
 const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
+const getRecommendations = vi.fn();
 
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile }) }));
-vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
+vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile, getRecommendations }) }));
 
 const App = defineComponent({
 	template: '<router-view />',
@@ -48,11 +48,10 @@ const mountComponent = async () => {
 		global: {
 			plugins: [router],
 			stubs: {
-				SideNavPartial: true,
-				HeaderPartial: true,
-				WidgetSocialTransitionWrapper: true,
-				WidgetSkillsPartial: true,
 				FooterPartial: true,
+				RecommendationPartial: defineComponent({
+					template: '<div data-testid="recommendation-partial">Recommendations partial</div>',
+				}),
 			},
 		},
 	});
@@ -63,12 +62,29 @@ describe('AboutPage', () => {
 		vi.clearAllMocks();
 	});
 
-	it('shows formatted nickname', async () => {
+	it('renders the Oullin brand page title', async () => {
 		const wrapper = await mountComponent();
 		await flushPromises();
-		const formatted = profile.nickname.charAt(0).toUpperCase() + profile.nickname.slice(1);
 		expect(getProfile).toHaveBeenCalled();
-		expect(wrapper.find('h1').text()).toContain(formatted);
+		expect(getRecommendations).not.toHaveBeenCalled();
+		expect(wrapper.find('h1').text()).toContain('Oullin.');
+		expect(wrapper.text()).toContain('boutique software engineering and architecture consultancy');
+		expect(wrapper.text()).toContain('20+ years across software, consulting, architecture');
+		expect(wrapper.text()).toContain('10+ years in banking');
+		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('Recommendations partial');
+		expect(wrapper.html()).toContain('https://www.linkedin.com/in/gocanto/');
+	});
+
+	it('renders the about footer without the skills marquee band', async () => {
+		const wrapper = await mountComponent();
+		await flushPromises();
+
+		const html = wrapper.html();
+		const footerIndex = html.indexOf('<footer-partial-stub');
+
+		expect(footerIndex).toBeGreaterThan(-1);
+		expect(html).toContain('site-footer--about');
+		expect(html).not.toContain('skills-band skills-band--about');
 	});
 
 	it('renders skeleton while loading the profile', async () => {
@@ -82,11 +98,9 @@ describe('AboutPage', () => {
 	});
 
 	it('handles profile errors gracefully', async () => {
-		const error = new Error('fail');
-		getProfile.mockRejectedValueOnce(error);
-		await mountComponent();
+		getProfile.mockRejectedValueOnce(new Error('fail'));
+		const wrapper = await mountComponent();
 		await flushPromises();
-		const { debugError } = await import('@api/http-error.ts');
-		expect(debugError).toHaveBeenCalledWith(error);
+		expect(wrapper.text()).toContain('We are currently unable to load contact details');
 	});
 });

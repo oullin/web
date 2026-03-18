@@ -1,150 +1,167 @@
 <template>
-	<div class="max-w-7xl mx-auto">
-		<div class="min-h-screen flex">
-			<SideNavPartial />
+	<div class="theme min-h-screen about-page">
+		<NavPartial />
 
-			<!-- Main content -->
-			<main class="grow overflow-hidden px-6">
-				<div class="rounded-lg w-full h-full max-w-[1072px] mx-auto flex flex-col">
-					<HeaderPartial />
-
-					<!-- Content -->
-					<div class="grow md:flex space-y-8 md:space-y-0 md:space-x-8 pt-12 md:pt-16 pb-16 md:pb-20">
-						<!-- Middle area -->
-						<div class="grow">
-							<div class="max-w-[700px]">
-								<section>
-									<!-- Page title -->
-									<h1 class="h1 blog-h1">I'm {{ formattedNickname }}. I live in Singapore, where I enjoy the present.</h1>
-
-									<CoverImageLoader class="mb-5 aspect-[16/9]" :src="aboutPicture" :alt="`Portrait of: ${formattedNickname}`" :width="4032" :height="2268" />
-
-									<!-- Page content -->
-									<div class="space-y-8 text-slate-500">
-										<div class="space-y-4">
-											<p class="block mb-3">
-												I am an engineering leader who’s passionate about building reliable and smooth software that strive to make a difference. With over twenty years in
-												software development and architecture, I’ve worked extensively with
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://go.dev/">GO</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en">Node.js</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>, and
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://www.php.net/">PHP</a>. I’m also comfortable with
-												frameworks/libraries such as <a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://laravel.com/">Laravel</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://vuejs.org/">Vue</a>,
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://symfony.com/">Symfony</a>, and
-												<a v-lazy-link class="blog-link" target="_blank" rel="noopener noreferrer" href="https://nextjs.org/">Next.js</a>.
-											</p>
-											<p class="block mb-3">
-												I’ve led teams in designing and delivering scalable, high-performance systems that run efficiently even in complex environments. Beyond writing code, I
-												focus on helping teams work better together by improving workflows and encouraging innovation.
-											</p>
-											<p class="block mb-3">
-												I thrive in fast-paced settings where clear thinking and problem-solving are key, and I’m always committed to delivering high-quality results.
-											</p>
-											<p class="block mb-3">
-												For me, software has always been more than just a job—it’s a way to turn ideas into real solutions. Over the years, I’ve enjoyed tackling challenges,
-												learning new technologies, and guiding talented teams to create tools that users and businesses rely on.
-											</p>
-											<p class="block">
-												Today, I combine deep technical skills with thoughtful leadership to help teams push boundaries and build software that grows and scales with purpose.
-											</p>
-										</div>
-
-										<div class="mt-5 space-y-5">
-											<h2 class="h2 font-aspekta text-slate-700 dark:text-slate-300">Let's Connect</h2>
-											<div class="relative min-h-[5rem]">
-												<p v-if="profile" key="connect">
-													I'm happy to connect by
-													<a v-lazy-link class="blog-link" title="send me an email" aria-label="send me an email" :href="`mailto:${profile.email}`"> email </a>
-													to discuss projects and ideas. While I'm not always available for freelance or long-term work, please don't hesitate to reach out anytime.
-												</p>
-												<AboutConnectSkeletonPartial v-else key="skeleton" />
-											</div>
-										</div>
-									</div>
-								</section>
-								<!-- content --->
-							</div>
-						</div>
-
-						<!-- Right sidebar -->
-						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
-							<div class="space-y-6">
-								<WidgetSocialTransitionWrapper />
-								<WidgetSkillsTransitionWrapper :profile="profile" :is-loading="isLoadingProfile" />
-							</div>
-						</aside>
+		<main class="page-shell">
+			<section class="page-hero">
+				<div class="page-hero-main">
+					<p class="page-kicker">OULLIN // SOFTWARE ENGINEERING // SINGAPORE</p>
+					<h1 class="page-title">Oullin.</h1>
+					<div class="page-copy">
+						<p>
+							Oullin is a boutique software engineering and architecture consultancy for organisations navigating high-availability software, digital transformation in the AI era, and
+							delivery in regulated or high-trust environments.
+						</p>
+						<p>&nbsp;</p>
+						<p>
+							The firm blends senior software engineering, consulting, software architecture, AI-first product and company experience, and technical management. The values still matter
+							here, but they stay in service of systems that must work.
+						</p>
 					</div>
-
-					<FooterPartial />
 				</div>
-			</main>
-		</div>
+
+				<div class="page-hero-side">
+					<div class="page-side-block">
+						<div class="page-section-label">// founder</div>
+						<div class="page-panel-title">Gustavo Ocanto</div>
+						<p class="page-panel-copy">
+							Founder of Oullin. Engineering leader with 20+ years across software, consulting, architecture, AI-first products and companies, and technical management.
+						</p>
+						<div class="mt-4">
+							<a v-lazy-link href="https://www.linkedin.com/in/gocanto/" target="_blank" rel="noopener noreferrer" class="blog-link">LinkedIn Profile →</a>
+						</div>
+					</div>
+					<div class="page-side-block">
+						<div class="page-section-label">// proof</div>
+						<div class="data-list">
+							<span>20+ years in software</span>
+							<span>10+ years in banking</span>
+							<span>High-availability systems</span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-band">
+				<div class="page-band-intro">
+					<div>
+						<span class="page-section-label">What Oullin Brings</span>
+						<h2 class="page-section-title">Engineering depth for complex transformation.</h2>
+					</div>
+					<p class="page-lead">
+						Oullin helps teams modernise core software, shape architecture, and execute transformation in the AI era without losing rigour, reliability, or business context.
+					</p>
+				</div>
+
+				<div class="page-editorial">
+					<div class="page-editorial-row">
+						<span class="page-section-label">The Firm</span>
+						<p class="page-panel-copy">
+							Oullin is a founder-led consultancy that works close to architecture and delivery. The focus is software that has to last: resilient platforms, modernisation programmes,
+							AI-era change, and technical decision-making under pressure.
+						</p>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">The Name</span>
+						<p class="page-panel-copy">
+							The name is a deliberate respelling of <strong>Ollin</strong>, the Aztec day-sign of movement and transformation. That idea remains, but here it supports a practical
+							standard: keep moving, modernise with intent, and build software that survives contact with production.
+						</p>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">How We Work</span>
+						<p class="page-panel-copy">
+							Clarity over hype. High standards over hollow velocity. Modernisation that respects constraints. Architecture decisions made to survive production, not just presentations.
+						</p>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">Connect</span>
+						<div>
+							<p v-if="profile" key="connect" class="page-panel-copy">
+								Reach out by <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">email</a> if your team is modernising core systems, designing AI-era capabilities, or
+								needs stronger architecture and technical leadership close to delivery.
+							</p>
+							<AboutConnectSkeletonPartial v-else-if="isLoadingProfile" key="skeleton" />
+							<p v-else key="fallback" class="page-panel-copy">We are currently unable to load contact details. Please try again later.</p>
+						</div>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<RecommendationPartial class="!mt-0" />
+				</div>
+			</section>
+		</main>
+
+		<FooterPartial class="site-footer--about" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
-import AboutPicture from '@images/profile/about.jpg';
+import { ref, onMounted } from 'vue';
+import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
-import HeaderPartial from '@partials/HeaderPartial.vue';
-import SideNavPartial from '@partials/SideNavPartial.vue';
-import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
-import CoverImageLoader from '@components/CoverImageLoader.vue';
-import WidgetSkillsTransitionWrapper from '@components/WidgetSkillsTransitionWrapper.vue';
-import { useSeo, SITE_NAME, ABOUT_IMAGE, siteUrlFor, buildKeywords, PERSON_JSON_LD } from '@/support/seo';
+import RecommendationPartial from '@partials/RecommendationPartial.vue';
+import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 
 import { useApiStore } from '@api/store.ts';
-import { debugError } from '@api/http-error.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
 
 const apiStore = useApiStore();
-const nickname = ref<string>('Gus');
 const profile = ref<ProfileResponse | null>(null);
 const isLoadingProfile = ref(true);
-
-const aboutPicture = computed<string>(() => {
-	return AboutPicture;
-});
-
-const formattedNickname = computed((): string => {
-	const str = nickname.value;
-
-	return str.charAt(0).toUpperCase() + str.slice(1);
-});
+const hasProfileError = ref(false);
 
 useSeo({
 	title: 'About',
-	image: ABOUT_IMAGE,
+	image: SEO_IMAGE,
 	url: siteUrlFor('/about'),
-	imageAlt: `${SITE_NAME} portrait`,
-	keywords: buildKeywords('engineering leadership', 'software architecture expertise', 'tech mentoring'),
-	description: `${SITE_NAME} is an engineering leader who’s passionate about building reliable and smooth software.`,
+	imageAlt: `${SITE_NAME} brand story`,
+	keywords: buildKeywords(
+		'about Oullin',
+		'Gustavo Ocanto',
+		'highly available software',
+		'software architecture',
+		'software engineering',
+		'banking technology',
+		'technical management',
+		'digital transformation',
+		'AI transformation',
+		'regulated systems',
+	),
+	description: 'Meet Oullin and Gustavo Ocanto, and learn how the firm approaches highly available software, banking-domain systems, and digital transformation in the AI era.',
 	jsonLd: [
 		{
 			name: 'About',
 			'@type': 'AboutPage',
 			url: siteUrlFor('/about'),
 			'@context': 'https://schema.org',
-			description: `${SITE_NAME} is an engineering leader focused on building reliable, people-first software.`,
+			description: 'About Oullin, a boutique software engineering and architecture consultancy focused on resilient systems, modernisation, and AI-era transformation.',
 		},
-		PERSON_JSON_LD,
+		{
+			'@context': 'https://schema.org',
+			'@type': 'Person',
+			name: 'Gustavo Ocanto',
+			jobTitle: 'Founder of Oullin',
+			url: siteUrlFor('/about'),
+			description: 'Founder of Oullin and engineering leader working across architecture, modernisation, banking-domain systems, and software delivery.',
+		},
+		ORGANIZATION_JSON_LD,
 	],
 });
 
-onMounted(async () => {
+const loadAboutPageData = async () => {
 	try {
-		const userProfileResponse = await apiStore.getProfile();
-
-		if (userProfileResponse.data) {
-			profile.value = userProfileResponse.data;
-			nickname.value = profile.value.nickname;
-		}
-	} catch (error) {
-		debugError(error);
+		const res = await apiStore.getProfile();
+		if (res.data) profile.value = res.data;
+	} catch {
+		hasProfileError.value = true;
 	} finally {
 		isLoadingProfile.value = false;
 	}
-});
+};
+
+onMounted(loadAboutPageData);
 </script>

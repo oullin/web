@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { Seo, SITE_NAME, SITE_URL, seo, siteUrlFor, useSeo, useSeoFromPost } from '@/support/seo.ts';
+import { DEFAULT_DESCRIPTION, DEFAULT_KEYWORDS, DEFAULT_TWITTER_HANDLE, SEO_IMAGE, SITE_LOGO, Seo, SITE_NAME, SITE_URL, seo, siteUrlFor, useSeo, useSeoFromPost } from '@/support/seo.ts';
 import { defineComponent, nextTick, ref } from 'vue';
 import { mount } from '@vue/test-utils';
 import type { PostResponse } from '@api/response/posts-response.ts';
@@ -77,8 +77,11 @@ describe('Seo.apply', () => {
 		expect(serializeMeta('meta[name="msapplication-TileColor"]')).toBe(options.themeColor);
 		expect(serializeMeta('meta[name="application-name"]')).toBe(expectedTitle);
 		expect(serializeMeta('meta[name="apple-mobile-web-app-title"]')).toBe(expectedTitle);
+		expect(document.documentElement.lang).toBe('en-GB');
+		expect(serializeMeta('meta[name="language"]')).toBe('en-GB');
 
 		expect(serializeLink('link[rel="canonical"]')).toBe(options.url);
+		expect(serializeLink('link[rel="alternate"][hreflang="en-GB"]')).toBe(options.url);
 
 		expect(serializeMeta('meta[property="og:title"]')).toBe(expectedTitle);
 		expect(serializeMeta('meta[property="og:description"]')).toBe(options.description);
@@ -86,6 +89,7 @@ describe('Seo.apply', () => {
 		expect(serializeMeta('meta[property="og:url"]')).toBe(options.url);
 		expect(serializeMeta('meta[property="og:image"]')).toBe(expectedImage);
 		expect(serializeMeta('meta[property="og:site_name"]')).toBe(options.siteName);
+		expect(serializeMeta('meta[property="og:locale"]')).toBe('en_GB');
 
 		expect(serializeMeta('meta[name="twitter:card"]')).toBe(options.twitter!.card);
 		expect(serializeMeta('meta[name="twitter:site"]')).toBe(options.twitter!.site);
@@ -112,9 +116,34 @@ describe('Seo.apply', () => {
 
 		expect(document.title).toBe(SITE_NAME);
 		expect(serializeLink('link[rel="canonical"]')).toBe(siteUrlFor(fallbackPath));
+		expect(serializeMeta('meta[name="description"]')).toBe(DEFAULT_DESCRIPTION);
+		expect(serializeMeta('meta[name="keywords"]')).toBe(DEFAULT_KEYWORDS);
 		expect(serializeMeta('meta[name="robots"]')).toBe('index,follow');
 		expect(serializeMeta('meta[name="theme-color"]')).toBe('#ffffff');
+		expect(serializeMeta('meta[property="og:image"]')).toBe(new URL(SEO_IMAGE, SITE_URL).toString());
+		expect(document.documentElement.lang).toBe('en-GB');
+		expect(serializeMeta('meta[name="language"]')).toBe('en-GB');
+		expect(serializeMeta('meta[property="og:locale"]')).toBe('en_GB');
+		expect(serializeMeta('meta[name="twitter:site"]')).toBe(DEFAULT_TWITTER_HANDLE);
+		expect(serializeMeta('meta[name="twitter:creator"]')).toBe(DEFAULT_TWITTER_HANDLE);
 		expect(getJsonLd()).toBeNull();
+	});
+
+	it('reuses existing head tags instead of appending duplicate metadata', () => {
+		document.head.innerHTML = `
+			<meta name="description" content="Static description" />
+			<meta property="og:title" content="Static title" />
+		`;
+
+		instance.apply({
+			title: 'Fresh page',
+			description: 'Updated description',
+		});
+
+		expect(document.head.querySelectorAll('meta[name="description"]')).toHaveLength(1);
+		expect(document.head.querySelectorAll('meta[property="og:title"]')).toHaveLength(1);
+		expect(serializeMeta('meta[name="description"]')).toBe('Updated description');
+		expect(serializeMeta('meta[property="og:title"]')).toBe(`Fresh page - ${SITE_NAME}`);
 	});
 });
 
@@ -205,6 +234,8 @@ describe('SEO composition utilities', () => {
 			title: samplePost.title,
 			description: samplePost.excerpt,
 			image: samplePost.cover_image_url,
+			imageAlt: `${samplePost.title} cover image`,
+			keywords: `${DEFAULT_KEYWORDS},article`,
 			type: 'article',
 			url: siteUrlFor(`/post/${samplePost.slug}`),
 			jsonLd: {
@@ -213,10 +244,20 @@ describe('SEO composition utilities', () => {
 				headline: samplePost.title,
 				description: samplePost.excerpt,
 				image: samplePost.cover_image_url,
+				mainEntityOfPage: siteUrlFor(`/post/${samplePost.slug}`),
 				datePublished: samplePost.published_at,
+				dateModified: samplePost.updated_at,
+				keywords: `${DEFAULT_KEYWORDS},article`,
+				articleSection: [],
 				author: {
 					'@type': 'Person',
+					name: samplePost.author.display_name,
+				},
+				publisher: {
+					'@type': 'Organization',
 					name: SITE_NAME,
+					url: SITE_URL,
+					logo: siteUrlFor(SITE_LOGO),
 				},
 			},
 		});

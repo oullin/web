@@ -30,7 +30,7 @@ const post: PostResponse = {
 		uuid: faker.string.uuid(),
 		first_name: faker.person.firstName(),
 		last_name: faker.person.lastName(),
-		username: faker.internet.userName(),
+		username: faker.internet.username(),
 		display_name: faker.person.fullName(),
 		bio: faker.lorem.sentence(),
 		picture_file_name: faker.system.fileName(),
@@ -97,12 +97,7 @@ const mountComponent = async () => {
 		global: {
 			plugins: [router],
 			stubs: {
-				SideNavPartial: true,
-				HeaderPartial: true,
 				FooterPartial: true,
-				WidgetSponsorPartial: true,
-				WidgetSocialTransitionWrapper: true,
-				WidgetSkillsPartial: true,
 				RouterLink: RouterLinkStub,
 			},
 		},
@@ -173,29 +168,24 @@ describe('PostPage', () => {
 		expect(wrapper.text()).toContain("We couldn't load this post.");
 	});
 
-	it('renders the follow widget above the sponsor widget', async () => {
+	it('does not render the right rail widgets on the post page', async () => {
 		const wrapper = await mountComponent();
 
 		await flushPromises();
 
-		const aside = wrapper.find('aside');
-		expect(aside.exists()).toBe(true);
-
-		const container = aside.find('div');
-		expect(container.exists()).toBe(true);
-
-		const children = container.element.children;
-		expect(children.length).toBeGreaterThanOrEqual(2);
-		expect(children[0].tagName).toBe('WIDGET-SOCIAL-TRANSITION-WRAPPER-STUB');
-		expect(children[1].tagName).toBe('WIDGET-SPONSOR-PARTIAL-STUB');
+		expect(wrapper.html()).not.toContain('widget-social-transition-wrapper-stub');
+		expect(wrapper.html()).not.toContain('widget-sponsor-partial-stub');
+		expect(wrapper.text()).not.toContain('Reading Mode');
 	});
 
-	it('renders a back to top link targeting the post header', async () => {
+	it('renders the post cover inside the hero when a cover image is available', async () => {
 		const wrapper = await mountComponent();
 
 		await flushPromises();
 
-		const backToTopLink = wrapper.find('a[href="#post-top"]');
-		expect(backToTopLink.exists()).toBe(true);
+		const cover = wrapper.find('[data-testid="post-cover"] img');
+		expect(cover.exists()).toBe(true);
+		expect(cover.attributes('src')).toBe(post.cover_image_url);
+		expect(cover.attributes('alt')).toBe(post.title);
 	});
 });

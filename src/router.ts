@@ -1,30 +1,21 @@
 import { createRouter, createWebHistory, Router } from 'vue-router';
-import { TERMS_AND_POLICIES_PATH } from '@/support/routes';
+import { scrollBehavior } from '@support/scrolls';
 
 const routerHistory = createWebHistory();
 
 const router: Router = createRouter({
-	scrollBehavior(to): void {
-		if (to.hash) {
-			window.scroll({ top: 0 });
-		} else {
-			const el: HTMLElement | null = document.querySelector('html');
-
-			if (el === null) {
-				return;
-			}
-
-			el.style.scrollBehavior = 'auto';
-			window.scroll({ top: 0 });
-			el.style.scrollBehavior = '';
-		}
-	},
+	scrollBehavior,
 	history: routerHistory,
 	routes: [
 		{
 			path: '/',
 			name: 'Home',
 			component: () => import('@pages/HomePage.vue'),
+		},
+		{
+			path: '/writing',
+			name: 'Writing',
+			component: () => import('@pages/WritingPage.vue'),
 		},
 		{
 			path: '/post/:slug',
@@ -38,19 +29,20 @@ const router: Router = createRouter({
 		},
 		{
 			path: '/about',
+			name: 'About',
 			component: () => import('@pages/AboutPage.vue'),
+		},
+		{
+			path: '/contact',
+			name: 'Contact',
+			component: () => import('@pages/ContactPage.vue'),
 		},
 		{
 			path: '/projects',
 			component: () => import('@pages/ProjectsPage.vue'),
 		},
 		{
-			path: '/resume',
-			component: () => import('@pages/ResumePage.vue'),
-		},
-
-		{
-			path: TERMS_AND_POLICIES_PATH,
+			path: '/terms-and-conditions',
 			name: 'TermsAndPolicies',
 			component: () => import('@pages/TermsAndPoliciesPage.vue'),
 		},

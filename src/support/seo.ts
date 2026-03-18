@@ -1,21 +1,44 @@
 import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } from 'vue';
 import type { PostResponse } from '@api/response/posts-response.ts';
 
-export const SITE_NAME = 'Gustavo Ocanto';
-export const DEFAULT_SITE_URL = 'https://oullin.io';
-export const ABOUT_IMAGE = '/images/profile/about.jpg';
-export const DEFAULT_DESCRIPTION = 'Personal Website of Gustavo Ocanto, Engineering Leader, AI Architect, and Software Engineer.';
+export const SITE_NAME = 'Oullin';
+const DEFAULT_SITE_URL = 'https://oullin.io';
+export const SEO_IMAGE = '/images/profile/about-seo.png';
+export const SITE_LOGO = '/brand/logo-touch.png';
+export const DEFAULT_TWITTER_HANDLE = '@oullin';
+export const DEFAULT_DESCRIPTION =
+	'Oullin is a boutique software engineering and architecture consultancy focused on highly available software, digital transformation in the AI era, and complex systems in regulated and high-trust environments.';
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
-export const DEFAULT_KEYWORDS = [SITE_NAME, 'Software Engineer', 'Engineering Leader', 'AI Architect', 'Tech Speaker', 'Technical Blog', 'Leadership in Technology', 'Vue.js', 'TypeScript'].join(',');
-export const PERSON_JSON_LD = {
+export const DEFAULT_KEYWORDS = [
+	SITE_NAME,
+	'Transformation',
+	'Software Engineering',
+	'Software Architecture',
+	'Highly Available Software',
+	'AI Transformation',
+	'Banking Technology',
+	'Technical Management',
+	'Digital Transformation',
+	'Consulting',
+	'Regulated Systems',
+	'AI-First Products',
+].join(',');
+export const WEBSITE_JSON_LD = {
 	'@context': 'https://schema.org',
-	'@type': 'Person',
+	'@type': 'WebSite',
 	name: SITE_NAME,
 	url: SITE_URL,
-	image: ABOUT_IMAGE,
-	jobTitle: 'Engineering Leader, AI Architect, Software Engineer',
 	description: DEFAULT_DESCRIPTION,
-	sameAs: ['https://x.com/gocanto', 'https://www.linkedin.com/in/gocanto/', 'https://github.com/gocanto'],
+};
+export const ORGANIZATION_JSON_LD = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: SITE_NAME,
+	url: SITE_URL,
+	logo: siteUrlFor(SITE_LOGO),
+	image: siteUrlFor(SITE_LOGO),
+	description: DEFAULT_DESCRIPTION,
+	sameAs: ['https://github.com/oullin'],
 };
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
@@ -45,8 +68,8 @@ interface SeoOptions {
 		  };
 	twitter?: {
 		card?: TwitterCard;
-		site?: string; // e.g. @gocanto
-		creator?: string; // e.g. @gocanto
+		site?: string; // e.g. @oullin
+		creator?: string; // e.g. @oullin
 	};
 	jsonLd?: JsonLd;
 }
@@ -60,11 +83,11 @@ export class Seo {
 
 		const currentPath = window.location.pathname + window.location.search;
 		const url = options.url ?? siteUrlFor(currentPath || '/');
-		const image = options.image ? new URL(options.image, SITE_URL).toString() : undefined;
+		const image = new URL(options.image ?? SEO_IMAGE, SITE_URL).toString();
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
 		const description = options.description ?? DEFAULT_DESCRIPTION;
-		const language = options.siteLanguage ?? 'en';
-		const locale = options.locale ?? 'en_US';
+		const language = options.siteLanguage ?? 'en-GB';
+		const locale = options.locale ?? 'en_GB';
 		const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
 
 		document.title = title;
@@ -93,31 +116,20 @@ export class Seo {
 		this.setMetaByProperty('og:description', description);
 		this.setMetaByProperty('og:type', options.type ?? 'website');
 		this.setMetaByProperty('og:url', url);
-		if (image) {
-			this.setMetaByProperty('og:image', image);
-			this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
-		} else {
-			// ensure previous values don't leak
-			this.setMetaByProperty('og:image', undefined);
-			this.setMetaByProperty('og:image:alt', undefined);
-		}
+		this.setMetaByProperty('og:image', image);
+		this.setMetaByProperty('og:image:alt', options.imageAlt ?? title);
 		this.setMetaByProperty('og:site_name', options.siteName ?? SITE_NAME);
 		this.setMetaByProperty('og:locale', locale);
 
 		// Twitter
 		const twitter = options.twitter ?? {};
 		this.setMetaByName('twitter:card', twitter.card ?? 'summary_large_image');
-		this.setMetaByName('twitter:site', twitter.site);
-		this.setMetaByName('twitter:creator', twitter.creator);
+		this.setMetaByName('twitter:site', twitter.site ?? DEFAULT_TWITTER_HANDLE);
+		this.setMetaByName('twitter:creator', twitter.creator ?? DEFAULT_TWITTER_HANDLE);
 		this.setMetaByName('twitter:title', title);
 		this.setMetaByName('twitter:description', description);
-		if (image) {
-			this.setMetaByName('twitter:image', image);
-			this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
-		} else {
-			this.setMetaByName('twitter:image', undefined);
-			this.setMetaByName('twitter:image:alt', undefined);
-		}
+		this.setMetaByName('twitter:image', image);
+		this.setMetaByName('twitter:image:alt', options.imageAlt ?? title);
 
 		// Structured data for AI and crawlers
 		this.setJsonLd(options.jsonLd);
@@ -127,40 +139,40 @@ export class Seo {
 		if (!hasDocument) return;
 
 		const selector = `meta[name="${name}"]`;
-		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ?? document.head.querySelector<HTMLMetaElement>(selector);
 
 		if (!content) {
-			if (element) element.remove();
+			if (element?.dataset.seo === '1') element.remove();
 			return;
 		}
 
 		if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('name', name);
-			element.dataset.seo = '1';
 			document.head.appendChild(element);
 		}
 
+		element.dataset.seo = '1';
 		element.setAttribute('content', content);
 	}
 
 	private setMetaByProperty(property: string, content?: string): void {
 		if (!hasDocument) return;
 		const selector = `meta[property="${property}"]`;
-		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`);
+		let element = document.head.querySelector<HTMLMetaElement>(`${selector}[data-seo="1"]`) ?? document.head.querySelector<HTMLMetaElement>(selector);
 
 		if (!content) {
-			if (element) element.remove();
+			if (element?.dataset.seo === '1') element.remove();
 			return;
 		}
 
 		if (!element) {
 			element = document.createElement('meta');
 			element.setAttribute('property', property);
-			element.dataset.seo = '1';
 			document.head.appendChild(element);
 		}
 
+		element.dataset.seo = '1';
 		element.setAttribute('content', content);
 	}
 
@@ -278,10 +290,18 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 
 		if (!value) return undefined;
 
+		const keywords = buildKeywords(
+			value.categories.map((category) => category.name),
+			value.tags.map((tag) => tag.name),
+			'article',
+		);
+
 		return {
 			title: value.title,
 			description: value.excerpt,
 			image: value.cover_image_url,
+			imageAlt: `${value.title} cover image`,
+			keywords,
 			type: 'article',
 			url: siteUrlFor(`/post/${value.slug}`),
 			jsonLd: {
@@ -290,10 +310,20 @@ export function useSeoFromPost(post: MaybeRefOrGetter<PostResponse | null | unde
 				headline: value.title,
 				description: value.excerpt,
 				image: value.cover_image_url,
+				mainEntityOfPage: siteUrlFor(`/post/${value.slug}`),
 				datePublished: value.published_at,
+				dateModified: value.updated_at,
+				keywords,
+				articleSection: value.categories.map((category) => category.name),
 				author: {
 					'@type': 'Person',
+					name: value.author.display_name || SITE_NAME,
+				},
+				publisher: {
+					'@type': 'Organization',
 					name: SITE_NAME,
+					url: SITE_URL,
+					logo: siteUrlFor(SITE_LOGO),
 				},
 			},
 		} satisfies SeoOptions;

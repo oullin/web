@@ -7,6 +7,10 @@ BUILD_PACKAGE_OWNER ?= oullin_web
 
 BUILD_UID ?= $(shell id -u)
 BUILD_GID ?= $(shell id -g)
+LOCAL_WEB_PORT ?= 5179
+LOCAL_API_PORT ?= 18080
+export LOCAL_WEB_PORT
+export LOCAL_API_PORT
 
 # Capture git SHA for Sentry release tracking
 GIT_SHA ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
@@ -35,7 +39,6 @@ local-build:
 	docker compose --profile local up -d --force-recreate --no-deps
 
 local-watch:
-	@printf "\n$(YELLOW)Using UID=$(BUILD_UID) GID=$(BUILD_GID).$(NC)\n"
-	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local down --volumes --rmi all --remove-orphans
-	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local build --no-cache
-	UID=$(BUILD_UID) GID=$(BUILD_GID) docker compose --profile local up caddy-watcher caddy-local
+	@printf "\n$(YELLOW)Using LOCAL_WEB_PORT=$(LOCAL_WEB_PORT) LOCAL_API_PORT=$(LOCAL_API_PORT) UID=$(BUILD_UID) GID=$(BUILD_GID).$(NC)\n"
+	docker compose --profile local down --remove-orphans
+	docker compose --profile local up --build caddy-watcher caddy-local

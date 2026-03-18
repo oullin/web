@@ -14,10 +14,23 @@ describe('public utilities', () => {
 			const formatter = date();
 			const options = formatter.resolvedOptions();
 
-			expect(options.locale.toLowerCase()).toContain('en');
+			expect(options.locale.toLowerCase()).toContain('en-gb');
 			expect(options.year).toBe('numeric');
 			expect(options.month).toBe('long');
 			expect(options.day).toBe('numeric');
+			expect(options.timeZone).toBe('UTC');
+		});
+
+		it('defaults to British English date formatting in UTC', () => {
+			const formatter = date();
+
+			expect(formatter.format(new Date('2024-03-05T12:34:56Z'))).toBe('5 March 2024');
+		});
+
+		it('keeps calendar dates stable for midnight UTC timestamps', () => {
+			const formatter = date();
+
+			expect(formatter.format(new Date('2026-03-17T00:00:00Z'))).toBe('17 March 2026');
 		});
 
 		it('honours custom language and formatting options', () => {

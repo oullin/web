@@ -1,8 +1,9 @@
 # --- Builder Stage ---
 # Use a standard Node.js image as the base for building the application.
 # This stage compiles your source code into static assets.
-FROM node:22-alpine AS builder
+FROM node:25.8.1-alpine AS builder
 
+ARG PNPM_VERSION=10.31.0
 ARG VITE_API_ENV
 ARG VITE_API_URL
 ARG VITE_HOST_URL
@@ -19,18 +20,17 @@ ARG ENV_API_LOCAL_DIR
 WORKDIR /app
 
 # Copy package.json and lock files first to leverage Docker layer caching
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 
-# Install project dependencies
-# Use 'npm ci' for cleaner, more reliable builds in CI/CD environments
-RUN npm ci
+# Install a pinned pnpm via corepack for reproducible Docker builds.
+RUN npm install -g corepack@latest --force &&     corepack enable &&     corepack prepare pnpm@${PNPM_VERSION} --activate &&     pnpm install --frozen-lockfile
 
 # Copy the rest of your application source code
 COPY . .
 
 # Run the build script
 # VITE_SENTRY_RELEASE should be provided as a build argument
-RUN npm run build
+RUN pnpm run build
 
 
 # --- Artifact Stage ---

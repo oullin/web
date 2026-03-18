@@ -28,6 +28,7 @@ beforeEach(() => {
 afterEach(() => {
 	vi.restoreAllMocks();
 	vi.unstubAllEnvs();
+	vi.unstubAllGlobals();
 });
 
 describe('ApiClient', () => {
@@ -62,17 +63,22 @@ describe('ApiClient', () => {
 	});
 
 	it('caches get requests and serves from cache', async () => {
+		const prodClient = new ApiClient({ ...options, env: 'production' });
+		vi.spyOn(prodClient as any, 'appendSignature').mockResolvedValue(undefined);
+
 		// prefill cache
 		const cacheKey = 'api-cache-test';
 		localStorage.setItem(cacheKey, JSON.stringify({ etag: 'x', data: { cached: true } }));
 
 		(fetch as Mock).mockResolvedValue(new Response(null, { status: 304 }));
 
-		const result = await client.get('test');
+		const result = await prodClient.get('test');
 		expect(result).toEqual({ cached: true });
 	});
 
 	it('stores response with etag in cache', async () => {
+		const prodClient = new ApiClient({ ...options, env: 'production' });
+		vi.spyOn(prodClient as any, 'appendSignature').mockResolvedValue(undefined);
 		const data = { foo: 'bar' };
 		(fetch as Mock).mockResolvedValue(
 			new Response(JSON.stringify(data), {
@@ -81,9 +87,28 @@ describe('ApiClient', () => {
 			}),
 		);
 
-		const result = await client.get('test');
+		const result = await prodClient.get('test');
 		expect(result).toEqual(data);
 		expect(localStorage.getItem('api-cache-test')).not.toBeNull();
+	});
+
+	it('skips persisted cache and forces no-store in non-production', async () => {
+		localStorage.setItem('api-cache-test', JSON.stringify({ etag: 'stale', data: { cached: true } }));
+		(fetch as Mock).mockResolvedValue(
+			new Response(JSON.stringify({ fresh: true }), {
+				status: 200,
+				headers: { ETag: 'abc' },
+			}),
+		);
+
+		const result = await client.get('test');
+		const [, requestInit] = (fetch as Mock).mock.calls[0] as [string, RequestInit];
+		const headers = requestInit.headers as Headers;
+
+		expect(result).toEqual({ fresh: true });
+		expect(requestInit.cache).toBe('no-store');
+		expect(headers.get('If-None-Match')).toBeNull();
+		expect(localStorage.getItem('api-cache-test')).toBe(JSON.stringify({ etag: 'stale', data: { cached: true } }));
 	});
 
 	it('throws HttpError on failed get', async () => {
@@ -92,7 +117,27 @@ describe('ApiClient', () => {
 		await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
 	});
 
-	it('retries signature once when clock skew is detected and refreshes timestamp', async () => {
+	it('requests signatures through the same origin relay path in the browser', async () => {
+		const testOrigin = 'http://localhost:5179';
+		vi.stubGlobal('location', { ...window.location, origin: testOrigin });
+
+		const realClient = new ApiClient(options);
+		const fetchMock = fetch as Mock;
+
+		fetchMock.mockReset();
+		fetchMock.mockResolvedValue(new Response(JSON.stringify({ signature: 'sig-relay' }), { status: 200 }));
+
+		await (realClient as any).getSignature('nonce-relay', `${url}profile`);
+
+		expect(fetchMock).toHaveBeenCalledWith(
+			`${testOrigin}/relay/generate-signature`,
+			expect.objectContaining({
+				method: 'POST',
+			}),
+		);
+	});
+
+	it('retries signature when clock skew is detected and keeps the signed timestamp aligned', async () => {
 		const serverDate = new Date('2025-01-01T00:00:00Z').toUTCString();
 		const realClient = new ApiClient(options);
 		const fetchMock = fetch as Mock;
@@ -107,7 +152,7 @@ describe('ApiClient', () => {
 
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 		expect(headers.get('X-API-Signature')).toBe('sig-1');
-		expect(headers.get('X-API-Timestamp')).not.toBeNull();
+		expect(headers.get('X-API-Timestamp')).toBe(String((realClient as any).getCurrentTimestamp()));
 		expect((realClient as any).clockOffsetMs).not.toBe(0);
 	});
 
@@ -151,10 +196,9 @@ describe('ApiClient', () => {
 		expect((realClient as any).clockOffsetMs).toBe(0);
 	});
 
-	it('refreshes timestamp immediately before attaching signature', async () => {
+	it('uses one stable timestamp for signature generation and the final request headers', async () => {
 		const realClient = new ApiClient(options);
 		const getSignatureSpy = vi.spyOn(realClient as any, 'getSignature').mockResolvedValue({ signature: 'sig-2' } as SignatureResponse);
-		const refreshSpy = vi.spyOn(realClient as any, 'refreshTimestamp');
 		const now = 9_000;
 
 		vi.spyOn(Date, 'now').mockReturnValue(now);
@@ -164,8 +208,7 @@ describe('ApiClient', () => {
 		await (realClient as any).appendSignature('nonce-2', headers, `${url}profile`);
 
 		expect(getSignatureSpy).toHaveBeenCalledTimes(1);
-		expect(refreshSpy).toHaveBeenCalledTimes(1);
-		expect(refreshSpy.mock.invocationCallOrder[0]).toBeGreaterThan(getSignatureSpy.mock.invocationCallOrder[0]);
+		expect(getSignatureSpy).toHaveBeenCalledWith('nonce-2', `${url}profile`, Math.floor(now / 1000));
 		expect(headers.get('X-API-Timestamp')).toBe(String(Math.floor(now / 1000)));
 		expect(headers.get('X-API-Signature')).toBe('sig-2');
 	});

@@ -13,14 +13,14 @@ export type { ProfileResponse };
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 export type { RecommendationsResponse };
 
-import { PostsCollectionResponse, PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsFilters } from '@api/response/posts-response.ts';
-export type { PostsCollectionResponse, PostResponse, PostsAuthorResponse, PostsCategoryResponse, PostsTagResponse, PostsFilters };
+import type { PostsCollectionResponse, PostResponse, PostsFilters } from '@api/response/posts-response.ts';
+export type { PostsCollectionResponse, PostResponse, PostsFilters };
 
-import type { ProjectsResponse } from '@api/response/projects-response.ts';
-export type { ProjectsResponse };
+import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/projects-response.ts';
+export type { ProjectsCollectionResponse, ProjectsResponse };
 
 import type { TalksResponse } from '@api/response/talks-response.ts';
 export type { TalksResponse };
 
-import type { SocialResponse } from '@api/response/social-response.ts';
-export type { SocialResponse };
+import type { LinksResponse } from '@api/response/links-response.ts';
+export type { LinksResponse };

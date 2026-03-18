@@ -96,12 +96,7 @@ const mountComponent = async () => {
 		global: {
 			plugins: [router],
 			stubs: {
-				SideNavPartial: true,
-				HeaderPartial: true,
 				FooterPartial: true,
-				WidgetSponsorPartial: true,
-				WidgetSocialTransitionWrapper: true,
-				BackToTopLink: true,
 				RouterLink: true,
 				ArticleItemPartial: ArticleItemPartialStub,
 				ArticleItemSkeletonPartial: ArticleItemSkeletonPartialStub,
@@ -143,7 +138,7 @@ describe('TagPostsPage', () => {
 		const renderedPosts = wrapper.findAll('[data-testid="article-item-stub"]');
 		expect(renderedPosts).toHaveLength(0);
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain('No posts found for#DESIGN');
+		expect(summary.text()).toContain('No posts found for #DESIGN.');
 	});
 
 	it('handles API errors gracefully', async () => {
@@ -153,7 +148,7 @@ describe('TagPostsPage', () => {
 		await flushPromises();
 		expect(debugError).toHaveBeenCalledWith(error);
 		const summary = wrapper.get('[data-testid="tag-posts-summary"]');
-		expect(summary.text()).toContain("We couldn't load posts for#DESIGN");
+		expect(summary.text()).toContain("We couldn't load posts for #DESIGN.");
 	});
 
 	it('refetches posts when the route tag parameter changes', async () => {

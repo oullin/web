@@ -43,8 +43,28 @@ class LocalStorageMock {
 
 declare global {
 	var localStorage: Storage | undefined;
+	var sessionStorage: Storage | undefined;
 }
 
-if (!globalThis.localStorage) {
-	globalThis.localStorage = new LocalStorageMock() as Storage;
-}
+const installStorageMock = (property: 'localStorage' | 'sessionStorage') => {
+	const storage = new LocalStorageMock() as Storage;
+
+	Object.defineProperty(globalThis, property, {
+		value: storage,
+		configurable: true,
+		enumerable: true,
+		writable: true,
+	});
+
+	if (typeof window !== 'undefined') {
+		Object.defineProperty(window, property, {
+			value: storage,
+			configurable: true,
+			enumerable: true,
+			writable: true,
+		});
+	}
+};
+
+installStorageMock('localStorage');
+installStorageMock('sessionStorage');

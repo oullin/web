@@ -122,6 +122,13 @@ describe('useApiStore', () => {
 		expect(res).toEqual({ list: [1] });
 	});
 
+	it('gets paginated projects', async () => {
+		client.get.mockResolvedValue({ list: [2] });
+		const res = await store.getProjects(2);
+		expect(client.get).toHaveBeenCalledWith('projects?page=2');
+		expect(res).toEqual({ list: [2] });
+	});
+
 	it('handles projects errors', async () => {
 		client.get.mockRejectedValue(new Error('fail'));
 		await expect(store.getProjects()).rejects.toThrow('parsed');
@@ -139,16 +146,16 @@ describe('useApiStore', () => {
 		await expect(store.getTalks()).rejects.toThrow('parsed');
 	});
 
-	it('gets social', async () => {
+	it('gets links', async () => {
 		client.get.mockResolvedValue({ list: [] });
-		const res = await store.getSocial();
-		expect(client.get).toHaveBeenCalledWith('social');
+		const res = await store.getLinks();
+		expect(client.get).toHaveBeenCalledWith('links');
 		expect(res).toEqual({ list: [] });
 	});
 
-	it('handles social errors', async () => {
+	it('handles links errors', async () => {
 		client.get.mockRejectedValue(new Error('fail'));
-		await expect(store.getSocial()).rejects.toThrow('parsed');
+		await expect(store.getLinks()).rejects.toThrow('parsed');
 	});
 
 	it('gets education', async () => {

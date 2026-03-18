@@ -79,7 +79,7 @@ export function renderMarkdown(markdown?: string | null): string {
 	return ensureString(marked.parse(cleanedMarkdown));
 }
 
-export function getHighlightThemePath(isDark: boolean): string {
+function getHighlightThemePath(isDark: boolean): string {
 	return isDark ? githubDarkTheme : githubLightTheme;
 }
 

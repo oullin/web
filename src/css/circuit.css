@@ -1,0 +1,56 @@
+.circuit-bg {
+	position: absolute;
+	inset: 0;
+	grid-column: 1 / -1;
+	grid-row: 1 / -1;
+	pointer-events: none;
+	z-index: 0;
+	color: var(--primary);
+}
+
+.circuit-bg svg {
+	width: 100%;
+	height: 100%;
+}
+
+:not(.dark) .circuit-bg {
+	opacity: 0.5;
+}
+
+@keyframes circuit-signal-1280 {
+	from {
+		stroke-dashoffset: 0;
+	}
+	to {
+		stroke-dashoffset: -1280;
+	}
+}
+
+@keyframes circuit-signal-1400 {
+	from {
+		stroke-dashoffset: 0;
+	}
+	to {
+		stroke-dashoffset: -1400;
+	}
+}
+
+@keyframes circuit-signal-1000 {
+	from {
+		stroke-dashoffset: 0;
+	}
+	to {
+		stroke-dashoffset: -1000;
+	}
+}
+
+.circuit-signal {
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.circuit-signal {
+		animation: none;
+	}
+}

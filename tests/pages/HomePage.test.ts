@@ -1,97 +1,65 @@
 import { mount, flushPromises } from '@vue/test-utils';
-import { faker } from '@faker-js/faker';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import HomePage from '@pages/HomePage.vue';
-import type { ProfileResponse, ProfileSkillResponse } from '@api/response/index.ts';
+import principles from '@fixtures/principles.json';
+import about from '@fixtures/about.json';
+import cta from '@fixtures/cta.json';
+import { defineComponent } from 'vue';
 
-const skills: ProfileSkillResponse[] = [
-	{
-		uuid: faker.string.uuid(),
-		percentage: faker.number.int({ min: 1, max: 100 }),
-		item: faker.lorem.word(),
-		description: faker.lorem.sentence(),
+const global = {
+	stubs: {
+		NavPartial: true,
+		HeroPartial: true,
+		FooterPartial: defineComponent({
+			props: {
+				showMarquee: {
+					type: Boolean,
+					default: false,
+				},
+			},
+			template: '<footer data-testid="footer-partial" :data-show-marquee="showMarquee"></footer>',
+		}),
+		RouterLink: { template: '<a><slot /></a>' },
 	},
-];
-
-const profile: ProfileResponse = {
-	nickname: faker.person.firstName(),
-	handle: faker.internet.userName(),
-	name: faker.person.fullName(),
-	email: faker.internet.email(),
-	profession: faker.person.jobTitle(),
-	skills,
 };
 
-const getProfile = vi.fn<[], Promise<{ data: ProfileResponse }>>(() => Promise.resolve({ data: profile }));
-
-vi.mock('@api/store.ts', () => ({ useApiStore: () => ({ getProfile }) }));
-vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
-
 describe('HomePage', () => {
-	it('loads profile on mount', async () => {
-		const wrapper = mount(HomePage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					HeroPartial: true,
-					FooterPartial: true,
-					ArticlesListPartial: true,
-					FeaturedProjectsPartial: true,
-					TalksPartial: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: { template: '<div class="skills" />', props: ['skills'] },
-				},
-			},
-		});
-		await flushPromises();
-		expect(getProfile).toHaveBeenCalledTimes(1);
-		expect(wrapper.find('.skills').exists()).toBe(true);
+	afterEach(() => {
+		vi.clearAllMocks();
 	});
 
-	it('handles profile load errors', async () => {
-		const error = new Error('oops');
-		getProfile.mockRejectedValueOnce(error);
-		const _wrapper = mount(HomePage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					HeroPartial: true,
-					FooterPartial: true,
-					ArticlesListPartial: true,
-					FeaturedProjectsPartial: true,
-					TalksPartial: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-				},
-			},
-		});
-		await flushPromises();
-		const { debugError } = await import('@api/http-error.ts');
-		expect(debugError).toHaveBeenCalledWith(error);
+	it('enables the footer marquee on the home page', () => {
+		const wrapper = mount(HomePage, { global });
+		expect(wrapper.get('[data-testid="footer-partial"]').attributes('data-show-marquee')).toBe('true');
 	});
 
-	it('renders a back to top link targeting the home container', async () => {
-		const wrapper = mount(HomePage, {
-			global: {
-				stubs: {
-					SideNavPartial: true,
-					HeaderPartial: true,
-					HeroPartial: true,
-					FooterPartial: true,
-					ArticlesListPartial: true,
-					FeaturedProjectsPartial: true,
-					TalksPartial: true,
-					WidgetSponsorPartial: true,
-					WidgetSkillsPartial: true,
-				},
-			},
+	it('renders all principles', () => {
+		const wrapper = mount(HomePage, { global });
+		principles.items.forEach((p) => {
+			expect(wrapper.text()).toContain(p.tag);
+			expect(wrapper.text()).toContain(p.body);
 		});
+	});
 
+	it('renders the about section with the Oullin brand copy', async () => {
+		const wrapper = mount(HomePage, { global });
 		await flushPromises();
+		about.defaultName.forEach((part) => {
+			expect(wrapper.text()).toContain(part);
+		});
+		expect(wrapper.text()).toContain(about.body.role);
+		expect(wrapper.text()).toContain('20+ years across software');
+		expect(wrapper.text()).toContain('Aztec sacred day-sign of movement and transformation');
+		about.work.forEach((item) => {
+			expect(wrapper.text()).toContain(item.title);
+		});
+	});
 
-		const backToTopLink = wrapper.find('a[href="#home-top"]');
-		expect(backToTopLink.exists()).toBe(true);
+	it('renders the cta section', () => {
+		const wrapper = mount(HomePage, { global });
+		expect(wrapper.text()).toContain(cta.watermark);
+		expect(wrapper.text()).toContain(cta.headlineAccent);
+		expect(wrapper.text()).toContain(cta.button.label);
+		expect(wrapper.text()).toContain('COMPLEX');
 	});
 });

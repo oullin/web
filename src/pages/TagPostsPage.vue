@@ -1,108 +1,79 @@
 <template>
-	<div class="max-w-7xl mx-auto">
-		<div class="min-h-screen flex">
-			<SideNavPartial />
+	<div class="theme min-h-screen tags-page">
+		<NavPartial />
 
-			<!-- Main content -->
-			<main class="grow overflow-hidden px-6">
-				<div class="w-full h-full max-w-[1072px] mx-auto flex flex-col">
-					<HeaderPartial />
-
-					<!-- Content -->
-					<div class="grow md:flex space-y-8 md:space-y-0 md:space-x-8 pt-12 md:pt-16 pb-16 md:pb-20">
-						<!-- Middle area -->
-						<div class="grow">
-							<div class="max-w-[700px]" data-testid="tag-posts">
-								<section>
-									<!-- Page title -->
-									<div class="flex flex-wrap items-center justify-between gap-4 mb-12">
-										<h1 id="tag-posts-top" class="h1 font-aspekta">Topics & Tags Explorer</h1>
-										<button
-											type="button"
-											class="inline-flex items-center gap-2 text-sm font-medium transition-colors rounded-full border border-slate-200/70 px-4 py-2 text-slate-600 hover:border-fuchsia-400/70 hover:text-slate-800 dark:border-slate-700/80 dark:text-slate-300 dark:hover:text-slate-100 cursor-pointer"
-											@click="handleGoBack"
-										>
-											<span aria-hidden="true">←</span>
-											Go back
-										</button>
-									</div>
-
-									<!-- Page content -->
-									<div class="space-y-10">
-										<div class="mb-5">
-											<p>
-												Post tags help you quickly find the themes, tools or ideas you care about most across the blog. Browse through the tags below to group related posts
-												together and dive deeper into specific topics, from high-level concepts to hands-on guides.
-											</p>
-											<p class="mt-4" data-testid="tag-posts-summary">
-												<template v-if="summaryContent.label">
-													{{ summaryContent.text
-													}}<a
-														href="#"
-														class="font-semibold transition-colors hover:text-fuchsia-500 dark:hover:text-teal-500"
-														@click.prevent="summaryContent.onLabelClick?.()"
-													>
-														{{ summaryContent.label }}
-													</a>
-													<span v-if="summaryContent.suffix">{{ summaryContent.suffix }}</span>
-												</template>
-												<template v-else>
-													{{ summaryContent.text }}
-												</template>
-											</p>
-										</div>
-										<section role="status">
-											<h2 class="font-aspekta text-xl font-[650] mb-6">Articles</h2>
-											<div class="relative min-h-[20rem]">
-												<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
-													<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
-												</div>
-												<div v-else key="list" class="space-y-5" data-testid="tag-posts-list">
-													<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
-												</div>
-											</div>
-										</section>
-									</div>
-								</section>
-							</div>
-						</div>
-
-						<!-- Right sidebar -->
-						<aside class="md:w-[240px] lg:w-[300px] shrink-0">
-							<div class="space-y-6">
-								<WidgetSocialTransitionWrapper />
-								<WidgetSponsorPartial />
-							</div>
-						</aside>
+		<main class="page-shell" data-testid="tag-posts">
+			<section class="page-hero">
+				<div class="page-hero-main">
+					<p class="page-kicker">TAGS // WRITING // EXPLORATION</p>
+					<h1 id="tag-posts-top" class="page-title">Topics & Tags Explorer.</h1>
+					<div class="page-copy">
+						<p>Use tags to trace themes, tools, and recurring ideas across the writing. This view groups related material so one topic can be followed without jumping around blindly.</p>
 					</div>
-
-					<div class="flex justify-end pt-10 mb-10">
-						<BackToTopLink target="#tag-posts-top" />
+					<div class="page-pill-row">
+						<button type="button" class="page-pill cursor-pointer border-0" @click="handleGoBack">Go back</button>
 					</div>
-
-					<FooterPartial />
 				</div>
-			</main>
-		</div>
+				<div class="page-hero-side">
+					<div class="page-side-block">
+						<div class="page-section-label">Current Topic</div>
+						<div class="page-panel-title">{{ formattedTagLabel || 'All tags' }}</div>
+						<p class="page-panel-copy" data-testid="tag-posts-summary">
+							<template v-if="summaryContent.label">
+								{{ summaryContent.text }}
+								<a href="#" class="font-semibold transition-colors hover:text-[var(--violet)]" @click.prevent="summaryContent.onLabelClick?.()">
+									{{ summaryContent.label }}
+								</a>
+								<span v-if="summaryContent.suffix">{{ summaryContent.suffix }}</span>
+							</template>
+							<template v-else>
+								{{ summaryContent.text }}
+							</template>
+						</p>
+					</div>
+					<div class="page-side-block">
+						<div class="page-stat-value">{{ isLoading ? '…' : posts.length }}</div>
+						<div class="page-stat-label">Articles matched</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="page-band">
+				<section>
+					<span class="page-section-label">Articles</span>
+					<h2 class="page-section-title">Browse the posts tied to this signal.</h2>
+					<div class="relative min-h-[20rem] mt-8">
+						<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
+							<p role="status" class="sr-only">Loading articles…</p>
+							<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
+						</div>
+						<p v-else-if="hasError" key="error" role="status" class="page-empty-state" data-testid="tag-posts-error">Something went wrong loading posts. Please try again later.</p>
+						<div v-else-if="posts.length > 0" key="list" class="space-y-5" data-testid="tag-posts-list">
+							<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
+						</div>
+						<p v-else-if="normalizedTag" key="empty" class="page-empty-state" data-testid="tag-posts-empty">No posts found for this tag.</p>
+						<p v-else key="landing" class="page-empty-state" data-testid="tag-posts-landing">Select a tag to browse related articles.</p>
+					</div>
+				</section>
+			</section>
+		</main>
+
+		<FooterPartial />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
-import HeaderPartial from '@partials/HeaderPartial.vue';
-import SideNavPartial from '@partials/SideNavPartial.vue';
+import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
-import WidgetSponsorPartial from '@partials/WidgetSponsorPartial.vue';
-import WidgetSocialTransitionWrapper from '@components/WidgetSocialTransitionWrapper.vue';
-import BackToTopLink from '@partials/BackToTopLink.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
-import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@/support/seo';
-import { formatLabel, normalizeParam, sanitizeTag, summaryFor } from '@/support/tags.ts';
+import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@support/seo';
+import { formatLabel, normalizeParam, sanitizeTag, summaryFor } from '@support/tags.ts';
 import { goBack } from '@/public.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;
@@ -146,8 +117,9 @@ const seoOptions = computed(() => {
 
 	if (!tag) {
 		return {
-			title: 'Tagged posts',
-			description: `Explore tagged articles on ${SITE_NAME}.`,
+			title: 'Topics and Tags',
+			description: `Explore topics and tags across ${SITE_NAME}'s writing archive to follow themes, tools, and recurring ideas.`,
+			keywords: buildKeywords('topics explorer', 'writing tags', 'article navigation', 'software architect/engineering', 'technical management', 'digital transformation', 'AI orchestration'),
 			url: siteUrlFor('/tags'),
 		};
 	}
@@ -155,9 +127,9 @@ const seoOptions = computed(() => {
 	const label = formattedTagLabel.value;
 
 	return {
-		title: `Posts tagged ${label}`,
-		description: `Explore articles tagged ${tag} on ${SITE_NAME}.`,
-		keywords: buildKeywords(tag, `${tag} posts`, `${tag} articles`),
+		title: `${label} Articles`,
+		description: `Browse ${label} posts from ${SITE_NAME}'s writing archive, including essays and notes connected by the same theme.`,
+		keywords: buildKeywords(tag, `${tag} topic`, `${tag} articles`, `${tag} essays`, 'software architect/engineering', 'technical management', 'digital transformation', 'AI orchestration'),
 		url: siteUrlFor(`/tags/${encodeURIComponent(normalizedTag.value)}`),
 	};
 });

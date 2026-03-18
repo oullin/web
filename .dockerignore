@@ -10,8 +10,9 @@ docker/
 
 # Node
 node_modules
-npm-debug.log
-.npmrc
+pnpm-debug.log
+.pnpm-store
+package-lock.json
 .nvmrc
 
 # Editor/IDE
@@ -43,8 +44,5 @@ Makefile
 *.md
 
 # Config files not needed for build
-.prettierrc.json
-.prettierignore
-eslint.config.js
+.oxlintrc.json
 vitest.config.ts
-

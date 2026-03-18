@@ -1,6 +1,18 @@
 :80 {
-	# --- CORS (dev-friendly) ---
-	@preflight method OPTIONS
+	@spa {
+		not path /relay /relay/*
+	}
+
+	# --- CORS (dev-friendly, localhost only) ---
+	@localhost_origin {
+		header_regexp origin Origin ^https?://(localhost|127\.0\.0\.1)(:\d+)?$
+	}
+
+	@preflight {
+		method OPTIONS
+		header_regexp origin Origin ^https?://(localhost|127\.0\.0\.1)(:\d+)?$
+	}
+
 	handle @preflight {
 		header Access-Control-Max-Age "600"
 		header Access-Control-Allow-Credentials "true"
@@ -16,8 +28,11 @@
 		Vary "Origin"
 		X-Frame-Options "SAMEORIGIN"
 		X-Content-Type-Options "nosniff"
-		Access-Control-Allow-Credentials "true"
 		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+
+	header @localhost_origin {
+		Access-Control-Allow-Credentials "true"
 		Access-Control-Expose-Headers "ETag, X-Request-ID"
 		Access-Control-Allow-Origin "{http.request.header.Origin}"
 	}
@@ -36,18 +51,36 @@
 		}
 	}
 
+	# --- Serve static assets without SPA fallback ---
+	handle /assets/* {
+		root * /usr/share/caddy
+		encode zstd gzip
+		header Cache-Control "public, max-age=31536000, immutable"
+		file_server
+	}
+
+	handle /images/* {
+		root * /usr/share/caddy
+		encode zstd gzip
+		header Cache-Control "public, max-age=31536000, immutable"
+		file_server
+	}
+
+	handle /brand/* {
+		root * /usr/share/caddy
+		encode zstd gzip
+		header Cache-Control "public, max-age=31536000, immutable"
+		file_server
+	}
+
 	# --- Serve SPA (simple) ---
-	@spa {
-        not path /relay/*
-    }
+	handle @spa {
+		root * /usr/share/caddy
+		try_files {path} {path}/index.html /index.html
+		encode zstd gzip
 
-    handle @spa {
-        root * /usr/share/caddy
-        try_files {path} {path}/index.html /index.html
-        encode zstd gzip
-
-        file_server
-    }
+		file_server
+	}
 
 	log {
 		output stdout
