@@ -63,6 +63,7 @@ describe('ArticleItemPartial', () => {
 
 		const article = wrapper.find('article');
 		expect(article.classes()).toContain('group');
+		expect(article.classes()).toContain('border-b');
 
 		const links = wrapper.findAll('a');
 		const imageLink = links[0];
@@ -70,6 +71,17 @@ describe('ArticleItemPartial', () => {
 
 		const titleLink = links[1];
 		expect(titleLink.classes()).toEqual(expect.arrayContaining(['group-hover:text-fuchsia-500', 'dark:group-hover:text-teal-500', 'group-hover:before:scale-100']));
+	});
+
+	it('removes the bottom border for the last article item', () => {
+		const wrapper = mount(ArticleItemPartial, {
+			props: { item, isLast: true },
+			global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } },
+		});
+
+		const article = wrapper.find('article');
+		expect(article.classes()).toContain('border-b-0');
+		expect(article.classes()).not.toContain('border-b');
 	});
 
 	it('relies on the cover loader placeholder when no image url is provided', () => {

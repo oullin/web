@@ -75,19 +75,16 @@ describe('AboutPage', () => {
 		expect(wrapper.html()).toContain('https://www.linkedin.com/in/gocanto/');
 	});
 
-	it('renders the footer before the floating skills marquee', async () => {
+	it('renders the about footer without the skills marquee band', async () => {
 		const wrapper = await mountComponent();
 		await flushPromises();
 
 		const html = wrapper.html();
 		const footerIndex = html.indexOf('<footer-partial-stub');
-		const skillsBandIndex = html.indexOf('skills-band skills-band--about');
 
 		expect(footerIndex).toBeGreaterThan(-1);
-		expect(skillsBandIndex).toBeGreaterThan(-1);
-		expect(footerIndex).toBeLessThan(skillsBandIndex);
 		expect(html).toContain('site-footer--about');
-		expect(wrapper.findAll('.skills-band--about .marquee-item')).toHaveLength(skills.length * 2);
+		expect(html).not.toContain('skills-band skills-band--about');
 	});
 
 	it('renders skeleton while loading the profile', async () => {

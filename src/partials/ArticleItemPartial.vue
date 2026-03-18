@@ -1,5 +1,5 @@
 <template>
-	<article v-if="item" class="py-5 border-b border-slate-100 last:border-b-0 dark:border-slate-800 group">
+	<article v-if="item" :class="articleClass">
 		<div class="flex items-start">
 			<RouterLink
 				v-lazy-link
@@ -74,7 +74,10 @@ const { highlight } = useTextHighlight();
 const titleLinkClass =
 	'inline-flex relative group-hover:text-fuchsia-500 dark:group-hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 group-hover:before:scale-100 before:duration-150 before:ease-in-out';
 
-defineProps<{
+const props = defineProps<{
 	item: PostResponse;
+	isLast?: boolean;
 }>();
+
+const articleClass = ['py-5 group', props.isLast ? 'border-b-0' : 'border-b border-slate-100 dark:border-slate-800'];
 </script>

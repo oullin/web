@@ -1,5 +1,5 @@
 <template>
-	<div class="theme min-h-screen">
+	<div class="theme min-h-screen about-page">
 		<NavPartial />
 
 		<main class="page-shell">
@@ -94,14 +94,7 @@
 			</section>
 		</main>
 
-		<FooterPartial class="site-footer--about" />
-
-		<section v-if="profile && profile.skills.length > 0" class="skills-band skills-band--about">
-			<div class="marquee-track">
-				<span v-for="skill in profile.skills" :key="skill.uuid" class="marquee-item">{{ skill.item }} <em aria-hidden="true">///</em></span>
-				<span v-for="skill in profile.skills" :key="`dup-${skill.uuid}`" class="marquee-item" aria-hidden="true">{{ skill.item }} <em>///</em></span>
-			</div>
-		</section>
+		<FooterPartial />
 	</div>
 </template>
 

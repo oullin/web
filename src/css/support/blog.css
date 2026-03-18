@@ -225,8 +225,13 @@
 }
 
 .post-markdown pre {
-	border: 1px solid var(--border);
+	background: transparent !important;
+	padding: 0 !important;
 	scrollbar-width: thin;
+}
+
+.post-markdown pre code {
+	padding: 0.6rem 1rem;
 }
 
 @media (max-width: 768px) {

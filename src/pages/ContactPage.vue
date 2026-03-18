@@ -1,5 +1,5 @@
 <template>
-	<div class="theme min-h-screen">
+	<div class="theme min-h-screen contact-page">
 		<NavPartial />
 
 		<main class="page-shell">

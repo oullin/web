@@ -22,7 +22,7 @@
 				<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
 			</div>
 			<div v-else-if="items.length > 0" key="list" class="min-h-[24rem]">
-				<ArticleItemPartial v-for="item in items" :key="item.uuid" :item="item" />
+				<ArticleItemPartial v-for="(item, index) in items" :key="item.uuid" :item="item" :is-last="index === items.length - 1" />
 			</div>
 			<p v-else key="empty" class="page-empty-state py-8 min-h-[24rem]">No articles found.</p>
 		</div>

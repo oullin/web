@@ -137,8 +137,12 @@ vi.mock('@partials/ArticleItemPartial.vue', () => ({
 				type: Object,
 				required: true,
 			},
+			isLast: {
+				type: Boolean,
+				default: false,
+			},
 		},
-		template: '<div data-testid="article-item">{{ item.title }}</div>',
+		template: '<div data-testid="article-item" :data-is-last="String(isLast)">{{ item.title }}</div>',
 	},
 }));
 
@@ -196,6 +200,8 @@ describe('ArticlesListPartial', () => {
 		const articleItems = wrapper.findAll('[data-testid="article-item"]');
 		expect(articleItems).toHaveLength(posts.length);
 		expect(articleItems[0].text()).toContain(posts[0].title);
+		expect(articleItems[0].attributes('data-is-last')).toBe('false');
+		expect(articleItems[1].attributes('data-is-last')).toBe('true');
 	});
 
 	it('shows skeletons while loading new posts and updates results when the search term changes', async () => {
