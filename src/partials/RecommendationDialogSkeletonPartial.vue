@@ -1,6 +1,6 @@
 <template>
 	<div class="space-y-6" aria-hidden="true" data-testid="recommendations-dialog-skeleton">
-		<div v-for="item in 3" :key="`recommendation-dialog-skeleton-${item}`" class="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/60 p-5">
+		<div v-for="item in props.count" :key="`recommendation-dialog-skeleton-${item}`" class="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/60 p-5">
 			<div class="flex items-start gap-4">
 				<Skeleton class="h-12 w-12 rounded-full" />
 				<div class="min-w-0 flex-1 space-y-3">
@@ -23,4 +23,6 @@
 
 <script setup lang="ts">
 import { Skeleton } from '@components/ui/skeleton';
+
+const props = withDefaults(defineProps<{ count?: number }>(), { count: 3 });
 </script>

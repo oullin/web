@@ -1638,15 +1638,15 @@ footer.site-footer.site-footer--about::before {
 }
 
 :root {
-	--custom-scrollbar-track: var(--color-gray-100);
-	--custom-scrollbar-thumb: var(--color-fuchsia-500);
-	--custom-scrollbar-thumb-hover: var(--color-fuchsia-400);
+	--custom-scrollbar-track: var(--surface);
+	--custom-scrollbar-thumb: var(--dimmed);
+	--custom-scrollbar-thumb-hover: var(--primary);
 }
 
 .dark {
-	--custom-scrollbar-track: var(--color-slate-800);
-	--custom-scrollbar-thumb: var(--color-teal-500);
-	--custom-scrollbar-thumb-hover: var(--color-teal-400);
+	--custom-scrollbar-track: var(--surface);
+	--custom-scrollbar-thumb: var(--dimmed);
+	--custom-scrollbar-thumb-hover: var(--primary);
 }
 
 .custom-scrollbar {
