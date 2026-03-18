@@ -25,8 +25,18 @@
 				</NavigationMenu>
 			</div>
 
-			<!-- Right column: desktop theme toggle + mobile hamburger -->
+			<!-- Right column: social links + desktop theme toggle + mobile hamburger -->
 			<div class="nav-inner-right">
+				<a v-if="linkedinUrl" :href="linkedinUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link hidden md:flex">
+					<Linkedin :size="18" />
+				</a>
+				<a v-if="xUrl" :href="xUrl" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="nav-social-link hidden md:flex">
+					<Twitter :size="18" />
+				</a>
+				<a v-if="githubUrl" :href="githubUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link hidden md:flex">
+					<Github :size="18" />
+				</a>
+
 				<button type="button" class="nav-theme-icon hidden md:flex" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
 					<Sun v-if="isDark" :size="18" />
 					<Moon v-else :size="18" />
@@ -47,6 +57,15 @@
 								</RouterLink>
 							</nav>
 							<div class="nav-sheet-footer">
+								<a v-if="linkedinUrl" :href="linkedinUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link">
+									<Linkedin :size="18" />
+								</a>
+								<a v-if="xUrl" :href="xUrl" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="nav-social-link">
+									<Twitter :size="18" />
+								</a>
+								<a v-if="githubUrl" :href="githubUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link">
+									<Github :size="18" />
+								</a>
 								<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
 									<Sun v-if="isDark" :size="18" />
 									<Moon v-else :size="18" />
@@ -61,13 +80,33 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
-import { Menu, Moon, Sun } from 'lucide-vue-next';
+import { Github, Linkedin, Menu, Moon, Sun, Twitter } from 'lucide-vue-next';
 import { useDarkMode } from '@/dark-mode.ts';
+import { useApiStore } from '@api/store.ts';
+import { debugError } from '@api/http-error.ts';
 import { NavigationMenu, NavigationMenuLink, NavigationMenuItem, NavigationMenuList } from '@components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@components/ui/sheet';
 
 const { isDark, toggleDarkMode } = useDarkMode();
+const apiStore = useApiStore();
+
+const linkedinUrl = ref('');
+const xUrl = ref('');
+const githubUrl = ref('');
+
+onMounted(async () => {
+	try {
+		const response = await apiStore.getLinks();
+		const data = response.data ?? [];
+		linkedinUrl.value = data.find((l) => l.name === 'linkedin')?.url ?? '';
+		xUrl.value = data.find((l) => l.name === 'x')?.url ?? '';
+		githubUrl.value = data.find((l) => l.name === 'github')?.url ?? '';
+	} catch (error) {
+		debugError(error);
+	}
+});
 
 const navLinks = [
 	{ to: '/writing', label: 'writing' },

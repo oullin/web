@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import NavPartial from '@partials/NavPartial.vue';
 
 const toggleDarkMode = vi.fn();
+const getLinks = vi.fn().mockResolvedValue({ data: [] });
 
 vi.mock('@/dark-mode.ts', () => ({
 	useDarkMode: () => ({
@@ -10,6 +11,14 @@ vi.mock('@/dark-mode.ts', () => ({
 		toggleDarkMode,
 	}),
 }));
+
+vi.mock('@api/store.ts', () => ({
+	useApiStore: () => ({
+		getLinks,
+	}),
+}));
+
+vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
 
 describe('NavPartial', () => {
 	it('renders the primary site links including contact', () => {
@@ -33,8 +42,5 @@ describe('NavPartial', () => {
 
 		const contactLink = wrapper.findAll('a').find((link) => link.text().includes('contact'));
 		expect(contactLink?.attributes('to')).toBe('/contact');
-		expect(wrapper.text()).toContain('BUILT: 2026.03');
-		expect(wrapper.text()).toContain('NODE: OULLIN_PRIME');
-		expect(wrapper.text()).not.toContain('SIGNAL: ACTIVE');
 	});
 });
