@@ -32,7 +32,7 @@
 			</section>
 
 			<section class="page-article">
-				<div class="space-y-10 text-slate-500 dark:text-slate-300">
+				<div class="prose dark:prose-invert max-w-none space-y-10">
 					<section class="space-y-4">
 						<h2 class="page-panel-title">1. Scope of Services</h2>
 						<p>

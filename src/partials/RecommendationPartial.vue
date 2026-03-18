@@ -93,7 +93,10 @@
 												</AccordionTrigger>
 												<AccordionContent class="pb-0">
 													<div class="pl-16" data-testid="recommendation-accordion-content">
-														<div class="post-markdown page-panel-copy !text-[0.7rem] !leading-[2] !text-[var(--muted)]" v-html="item.html"></div>
+														<div
+															class="post-markdown prose prose-sm dark:prose-invert page-panel-copy !text-[0.7rem] !leading-[2] !text-[var(--muted)]"
+															v-html="item.html"
+														></div>
 													</div>
 												</AccordionContent>
 											</AccordionItem>

@@ -55,7 +55,7 @@
 						</header>
 
 						<section class="page-article page-article--wide">
-							<div ref="postContainer" class="post-markdown" v-html="htmlContent"></div>
+							<div ref="postContainer" class="post-markdown prose dark:prose-invert" v-html="htmlContent"></div>
 						</section>
 					</article>
 

@@ -22,6 +22,8 @@
 @import '@css/theme.css';
 @import '@css/support/shadcn-bridge.css';
 
+@plugin '@tailwindcss/typography';
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {

@@ -79,97 +79,89 @@
 }
 
 /* --- markdown content --- */
+
 .post-markdown {
-	@apply font-sans text-base leading-relaxed text-slate-500 dark:text-slate-300;
+	max-width: 72ch;
+
+	/* light mode — map prose color tokens to design system */
+	--tw-prose-body: var(--sub);
+	--tw-prose-headings: var(--text);
+	--tw-prose-lead: var(--sub);
+	--tw-prose-links: var(--violet);
+	--tw-prose-bold: var(--text);
+	--tw-prose-counters: var(--violet);
+	--tw-prose-bullets: var(--violet);
+	--tw-prose-hr: var(--border);
+	--tw-prose-quotes: var(--sub);
+	--tw-prose-quote-borders: var(--violet);
+	--tw-prose-captions: var(--muted);
+	--tw-prose-code: var(--text);
+	--tw-prose-pre-code: #e2e8f0;
+	--tw-prose-pre-bg: #0f172a;
+	--tw-prose-th-borders: var(--border);
+	--tw-prose-td-borders: var(--border);
+
+	/* dark mode — used when dark:prose-invert is applied */
+	--tw-prose-invert-body: var(--sub);
+	--tw-prose-invert-headings: var(--text);
+	--tw-prose-invert-lead: var(--sub);
+	--tw-prose-invert-links: var(--cyan);
+	--tw-prose-invert-bold: var(--text);
+	--tw-prose-invert-counters: var(--cyan);
+	--tw-prose-invert-bullets: var(--cyan);
+	--tw-prose-invert-hr: var(--border);
+	--tw-prose-invert-quotes: var(--sub);
+	--tw-prose-invert-quote-borders: var(--cyan);
+	--tw-prose-invert-captions: var(--muted);
+	--tw-prose-invert-code: var(--text);
+	--tw-prose-invert-pre-code: #e2e8f0;
+	--tw-prose-invert-pre-bg: #0f172a;
+	--tw-prose-invert-th-borders: var(--border);
+	--tw-prose-invert-td-borders: var(--border);
 }
 
-.post-markdown h1,
-.post-markdown h2,
-.post-markdown h3,
-.post-markdown h4,
-.post-markdown h5,
-.post-markdown h6 {
-	@apply font-aspekta font-semibold text-slate-700 dark:text-slate-100;
-}
-
-.post-markdown h1 {
-	@apply text-4xl mt-10 mb-4;
-}
-
+/* h2 — left accent bar */
 .post-markdown h2 {
-	@apply text-3xl mt-10 mb-4;
+	padding-left: 0.875rem;
+	border-left: 3px solid var(--violet);
 }
 
-.post-markdown h3 {
-	@apply text-2xl mt-8 mb-3;
+.dark .post-markdown h2 {
+	border-left-color: var(--cyan);
 }
 
-.post-markdown h4 {
-	@apply text-xl mt-6 mb-2;
-}
-
-.post-markdown h5 {
-	@apply text-lg mt-6 mb-2;
-}
-
+/* h6 — mono section label */
 .post-markdown h6 {
-	@apply text-base uppercase tracking-wide text-slate-400 dark:text-slate-500 mt-6 mb-2;
+	font-family: var(--font-mono);
 }
 
-.post-markdown p,
-.post-markdown ul,
-.post-markdown ol,
-.post-markdown blockquote,
-.post-markdown pre,
-.post-markdown table,
+/* HR — ornamental separator */
 .post-markdown hr {
-	@apply mt-6;
+	border: none;
+	text-align: center;
 }
 
-.post-markdown > *:first-child {
-	@apply mt-0;
+.post-markdown hr::before {
+	content: '· · ·';
+	letter-spacing: 0.5em;
+	color: var(--muted);
+	font-size: 0.875rem;
 }
 
-.post-markdown a {
-	@apply text-fuchsia-500 font-medium underline underline-offset-4 decoration-1 hover:text-fuchsia-600 transition;
-	@apply dark:text-teal-500 dark:hover:text-teal-400;
-}
-
-.post-markdown strong {
-	@apply text-slate-700 dark:text-slate-100;
-}
-
-.post-markdown em {
-	@apply italic;
-}
-
-.post-markdown ul {
-	@apply list-disc pl-6 space-y-2;
-}
-
-.post-markdown ol {
-	@apply list-decimal pl-6 space-y-2;
-}
-
-.post-markdown li > ul,
-.post-markdown li > ol {
-	@apply mt-2;
-}
-
+/* blockquote — surface background from design tokens */
 .post-markdown blockquote {
-	@apply border-l-4 border-fuchsia-500 dark:border-teal-600 pl-6 py-3 text-slate-600 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 rounded-r-xl;
+	background: var(--surface);
+	border-radius: 0 0.375rem 0.375rem 0;
 }
 
-.post-markdown blockquote > :first-child {
-	@apply mt-1;
+.dark .post-markdown blockquote {
+	border-left-color: var(--cyan);
 }
 
-.post-markdown blockquote > :last-child {
-	@apply mb-1;
-}
-
-.post-markdown hr {
-	@apply border-slate-200 dark:border-slate-700;
+/* inline code — surface token background */
+.post-markdown :not(pre) > code {
+	background: var(--surface2) !important;
+	color: var(--text) !important;
 }
 
 .project-card-link {
@@ -227,9 +219,14 @@
 	color: var(--cyan);
 }
 
-.post-markdown table {
-	@apply w-full text-sm border border-slate-200 dark:border-slate-700;
-	border-collapse: collapse;
+/* table — design token borders + mobile responsive */
+.post-markdown thead {
+	background: var(--surface);
+}
+
+.post-markdown pre {
+	border: 1px solid var(--border);
+	scrollbar-width: thin;
 }
 
 @media (max-width: 768px) {
@@ -237,37 +234,6 @@
 		display: block;
 		overflow-x: auto;
 	}
-}
-
-.post-markdown thead {
-	@apply bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-200;
-}
-
-.post-markdown th,
-.post-markdown td {
-	@apply border border-slate-200 dark:border-slate-700 px-4 py-3 align-top text-left;
-}
-
-.post-markdown pre {
-	--scrollbar-track: var(--custom-scrollbar-track);
-	--scrollbar-thumb: var(--custom-scrollbar-thumb);
-	--scrollbar-thumb-hover: var(--custom-scrollbar-thumb-hover);
-	@apply bg-slate-900 text-slate-100 dark:bg-slate-900/90 dark:text-slate-100 rounded-2xl p-6 overflow-x-auto text-sm;
-	scrollbar-width: thin; /* Firefox */
-	scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-}
-
-.post-markdown code {
-	@apply font-mono text-sm bg-slate-900/10 text-slate-700 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
-}
-
-.post-markdown pre code {
-	@apply bg-transparent px-0 py-0 text-inherit;
-}
-
-.post-markdown img {
-	@apply shadow-sm dark:shadow-none rounded-md;
-	max-width: 100%;
 }
 
 /* --- transitions --- */
