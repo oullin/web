@@ -27,9 +27,10 @@
 @theme {
 	--breakpoint-xs: 30rem;
 
-	--font-inter: Inter, sans-serif;
+	--font-sans: 'Space Grotesk', sans-serif;
+	--font-display: Aspekta, sans-serif;
 	--font-aspekta: Aspekta, sans-serif;
-	--font-pt-mono: PT Mono, monospace;
+	--font-mono: 'JetBrains Mono', monospace;
 
 	--text-xs: 0.75rem;
 	--text-xs--line-height: 1.5;

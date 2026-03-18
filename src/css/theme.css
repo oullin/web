@@ -63,7 +63,7 @@ html {
 body.theme {
 	background: var(--bg);
 	color: var(--text);
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-sans);
 	overflow-x: hidden;
 	-webkit-font-smoothing: antialiased;
 }
@@ -142,7 +142,7 @@ nav.site-nav {
 .nav-logo-wordmark {
 	display: inline-flex;
 	align-items: baseline;
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-weight: 700;
 	font-size: 1.15rem;
 	letter-spacing: -0.04em;
@@ -165,7 +165,7 @@ nav.site-nav {
 }
 
 .nav-links a {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.67rem;
 	color: var(--muted);
 	text-decoration: none;
@@ -182,7 +182,7 @@ nav.site-nav {
 }
 
 .nav-status {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.6rem;
 	color: var(--muted);
 	display: flex;
@@ -214,7 +214,7 @@ nav.site-nav {
 }
 
 .nav-theme {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.6rem;
 	color: var(--muted);
 	text-decoration: none;
@@ -318,7 +318,7 @@ nav.site-nav {
 }
 
 .eyebrow {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.6rem;
 	color: var(--primary);
 	letter-spacing: 0.3em;
@@ -337,7 +337,7 @@ nav.site-nav {
 }
 
 .hero h1 {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(4.5rem, 11vw, 10.5rem);
 	font-weight: 700;
 	line-height: 0.88;
@@ -358,7 +358,7 @@ nav.site-nav {
 }
 
 .hero-sub {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.77rem;
 	line-height: 1.9;
 	color: var(--muted);
@@ -381,7 +381,7 @@ nav.site-nav {
 .btn-primary {
 	background: var(--violet);
 	color: #fff;
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-sans);
 	font-size: 0.72rem;
 	font-weight: 700;
 	letter-spacing: 0.2em;
@@ -403,7 +403,7 @@ nav.site-nav {
 }
 
 .btn-ghost {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.67rem;
 	color: var(--muted);
 	text-decoration: none;
@@ -437,7 +437,7 @@ nav.site-nav {
 }
 
 .data-label {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.57rem;
 	color: var(--muted);
 	letter-spacing: 0.28em;
@@ -446,7 +446,7 @@ nav.site-nav {
 }
 
 .data-value {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 2.8rem;
 	font-weight: 700;
 	line-height: 1;
@@ -515,7 +515,7 @@ nav.site-nav {
 }
 
 .data-note {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.62rem;
 	color: var(--muted);
 	line-height: 1.75;
@@ -523,7 +523,7 @@ nav.site-nav {
 }
 
 .data-list {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.72rem;
 	color: var(--sub);
 	display: flex;
@@ -542,7 +542,7 @@ nav.site-nav {
 }
 
 .data-quote {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-sans);
 	font-size: 0.84rem;
 	font-weight: 500;
 	color: var(--sub);
@@ -599,7 +599,7 @@ nav.site-nav {
 }
 
 .marquee-item {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.62rem;
 	letter-spacing: 0.28em;
 	text-transform: uppercase;
@@ -654,7 +654,7 @@ nav.site-nav {
 }
 
 .p-num {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.57rem;
 	color: var(--primary);
 	letter-spacing: 0.28em;
@@ -662,7 +662,7 @@ nav.site-nav {
 }
 
 .p-title {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: 1.75rem;
 	font-weight: 700;
 	line-height: 1.08;
@@ -672,7 +672,7 @@ nav.site-nav {
 }
 
 .p-body {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.71rem;
 	color: var(--muted);
 	line-height: 1.85;
@@ -682,7 +682,7 @@ nav.site-nav {
 	position: absolute;
 	bottom: 8px;
 	right: 20px;
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: 3.75rem;
 	font-weight: 700;
 	color: var(--border);
@@ -713,7 +713,7 @@ nav.site-nav {
 }
 
 .section-tag {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.58rem;
 	color: var(--primary);
 	letter-spacing: 0.28em;
@@ -732,7 +732,7 @@ nav.site-nav {
 }
 
 .about-name {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(2.2rem, 4.5vw, 4rem);
 	font-weight: 700;
 	line-height: 0.9;
@@ -742,7 +742,7 @@ nav.site-nav {
 }
 
 .about-body {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.75rem;
 	color: var(--muted);
 	line-height: 1.95;
@@ -772,7 +772,7 @@ nav.site-nav {
 }
 
 .w-idx {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.57rem;
 	color: var(--primary);
 	min-width: 28px;
@@ -780,7 +780,7 @@ nav.site-nav {
 }
 
 .w-title {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: 0.95rem;
 	font-weight: 700;
 	margin-bottom: 6px;
@@ -788,7 +788,7 @@ nav.site-nav {
 }
 
 .w-desc {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.68rem;
 	color: var(--muted);
 	line-height: 1.7;
@@ -816,7 +816,7 @@ nav.site-nav {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: 20vw;
 	font-weight: 700;
 	color: rgba(110, 86, 207, 0.05);
@@ -831,7 +831,7 @@ nav.site-nav {
 }
 
 .cta-head {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(2.8rem, 7vw, 6.5rem);
 	font-weight: 700;
 	line-height: 0.9;
@@ -904,7 +904,7 @@ footer.site-footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.58rem;
 	color: var(--footer-text);
 	letter-spacing: 0.2em;
@@ -1039,7 +1039,7 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-kicker {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.6rem;
 	letter-spacing: 0.3em;
 	text-transform: uppercase;
@@ -1048,7 +1048,7 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-title {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(2.8rem, 6vw, 5.8rem);
 	font-weight: 700;
 	line-height: 0.92;
@@ -1058,7 +1058,7 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-copy {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.76rem;
 	line-height: 1.95;
 	color: var(--muted);
@@ -1087,7 +1087,7 @@ footer.site-footer.site-footer--about::before {
 	padding: 10px 18px;
 	border: 1px solid var(--border);
 	background: rgba(255, 255, 255, 0.38);
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.64rem;
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
@@ -1139,7 +1139,7 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-section-label {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.58rem;
 	color: var(--primary);
 	letter-spacing: 0.28em;
@@ -1149,7 +1149,7 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-section-title {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(1.6rem, 4vw, 2.8rem);
 	font-weight: 700;
 	line-height: 1;
@@ -1158,7 +1158,7 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-lead {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.74rem;
 	line-height: 1.95;
 	color: var(--muted);
@@ -1213,7 +1213,7 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-editorial-name {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-size: clamp(2rem, 4vw, 3.5rem);
 	font-weight: 700;
 	line-height: 0.95;
@@ -1228,7 +1228,7 @@ footer.site-footer.site-footer--about::before {
 
 .page-panel-title,
 .page-stat-value {
-	font-family: 'Space Grotesk', sans-serif;
+	font-family: var(--font-display);
 	font-weight: 700;
 	color: var(--text);
 }
@@ -1240,10 +1240,16 @@ footer.site-footer.site-footer--about::before {
 }
 
 .page-panel-copy,
-.page-stat-label,
-.page-meta-list,
 .page-empty-state {
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
+	font-size: 0.68rem;
+	line-height: 1.8;
+	color: var(--muted);
+}
+
+.page-stat-label,
+.page-meta-list {
+	font-family: var(--font-mono);
 	font-size: 0.68rem;
 	line-height: 1.8;
 	color: var(--muted);
@@ -1260,7 +1266,7 @@ footer.site-footer.site-footer--about::before {
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 0.45rem;
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.68rem;
 	line-height: 1.8;
 	color: var(--muted);

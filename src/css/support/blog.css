@@ -80,7 +80,7 @@
 
 /* --- markdown content --- */
 .post-markdown {
-	@apply text-base leading-relaxed text-slate-500 dark:text-slate-300;
+	@apply font-sans text-base leading-relaxed text-slate-500 dark:text-slate-300;
 }
 
 .post-markdown h1,
@@ -203,7 +203,7 @@
 	color: var(--muted);
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 	font-size: 0.6rem;
 }
 
@@ -213,12 +213,12 @@
 
 .project-card-timestamp {
 	color: var(--cyan);
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-mono);
 }
 
 .project-card-excerpt {
 	color: var(--muted);
-	font-family: 'JetBrains Mono', monospace;
+	font-family: var(--font-sans);
 	font-size: 0.72rem;
 	line-height: 1.9;
 }
@@ -258,7 +258,7 @@
 }
 
 .post-markdown code {
-	@apply font-pt-mono text-sm bg-slate-900/10 text-slate-700 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
+	@apply font-mono text-sm bg-slate-900/10 text-slate-700 dark:bg-slate-700/70 dark:text-slate-100 rounded px-2 py-1;
 }
 
 .post-markdown pre code {
