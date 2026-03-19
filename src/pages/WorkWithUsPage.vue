@@ -40,7 +40,7 @@
 					<template v-for="engagement in engagements" :key="engagement.label">
 						<div class="page-editorial-row">
 							<div>
-								<span class="page-section-label">{{ engagement.label }}</span>
+								<h3 class="page-section-label">{{ engagement.label }}</h3>
 								<p class="page-panel-copy">
 									<em>{{ engagement.values }}</em>
 								</p>
@@ -61,13 +61,11 @@
 					</template>
 
 					<div class="page-editorial-row">
-						<span class="page-section-label">{{ faq.label }}</span>
+						<h3 class="page-section-label">{{ faq.label }}</h3>
 						<div>
 							<template v-for="(item, index) in faq.items" :key="item.question">
 								<div class="page-panel-copy">
-									<p>
-										<strong>{{ item.question }}</strong>
-									</p>
+									<h4 class="page-panel-heading">{{ item.question }}</h4>
 									<p>{{ item.answer }}</p>
 								</div>
 								<div v-if="index < faq.items.length - 1" class="page-editorial-sep mt-5 mb-5"></div>
@@ -77,7 +75,7 @@
 					<div class="page-editorial-sep"></div>
 
 					<div class="page-editorial-row">
-						<span class="page-section-label">{{ cta.label }}</span>
+						<h3 class="page-section-label">{{ cta.label }}</h3>
 						<div>
 							<p class="page-panel-copy">{{ cta.copy }}</p>
 							<RouterLink :to="cta.button.to" class="btn-primary mt-5 inline-block">{{ cta.button.label }}</RouterLink>

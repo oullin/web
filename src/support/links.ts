@@ -22,12 +22,14 @@ export const NAV_SOCIAL_FALLBACKS: Record<NavSocialPlatform, string> = {
 	github: 'https://github.com/oullin',
 };
 
+const isHttpUrl = (url: string): boolean => /^https?:\/\//i.test(url);
+
 export const resolveNavSocialLinks = (links: LinksResponse[]): Record<NavSocialPlatform, string> => {
 	const resolvedLinks = { ...NAV_SOCIAL_FALLBACKS };
 
 	for (const platform of Object.keys(NAV_SOCIAL_FALLBACKS) as NavSocialPlatform[]) {
 		const match = links.find((item) => item.name === platform && item.url);
-		if (match?.url) {
+		if (match?.url && isHttpUrl(match.url)) {
 			resolvedLinks[platform] = match.url;
 		}
 	}

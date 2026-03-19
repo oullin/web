@@ -96,7 +96,8 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { contactPageContent, resolveJsonLd, siteContent } from '@support/content.ts';
+import { contactPageContent, resolveJsonLd } from '@support/content.ts';
+import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
@@ -104,7 +105,14 @@ const links = ref<LinksResponse[]>([]);
 const hasProfileError = ref(false);
 const hasLinksError = ref(false);
 const { hero, sidebar, intro, process, email, social, founder, seo } = contactPageContent;
-const fallbackLinks: LinksResponse[] = siteContent.fallbackLinks;
+
+const fallbackLinks: LinksResponse[] = Object.entries(NAV_SOCIAL_FALLBACKS).map(([name, url]) => ({
+	uuid: `social-${name}`,
+	name,
+	handle: '',
+	url,
+	description: '',
+}));
 
 const visibleLinks = computed<LinksResponse[]>(() => {
 	return links.value.length > 0 ? links.value : fallbackLinks;
