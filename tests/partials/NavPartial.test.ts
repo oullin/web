@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi } from 'vitest';
 import NavPartial from '@partials/NavPartial.vue';
+import { siteContent } from '@support/content.ts';
 
 const toggleDarkMode = vi.fn();
 const getLinks = vi.fn().mockResolvedValue({ data: [] });
@@ -30,17 +31,17 @@ describe('NavPartial', () => {
 			},
 		});
 
-		expect(wrapper.text()).toContain('writing');
-		expect(wrapper.text()).toContain('projects');
-		expect(wrapper.text()).toContain('about');
-		expect(wrapper.text()).toContain('contact');
+		siteContent.nav.links.forEach((link) => {
+			expect(wrapper.text()).toContain(link.label);
+		});
 		expect(wrapper.text()).toContain('oullin');
 
 		const homeLink = wrapper.findAll('a').find((link) => link.text().includes('oullin'));
 		expect(homeLink?.attributes('to')).toBe('/');
 		expect(homeLink?.findAll('img')).toHaveLength(1);
 
-		const contactLink = wrapper.findAll('a').find((link) => link.text().includes('contact'));
-		expect(contactLink?.attributes('to')).toBe('/contact');
+		const lastNavLink = siteContent.nav.links[siteContent.nav.links.length - 1];
+		const contactLink = wrapper.findAll('a').find((link) => link.text().includes(lastNavLink.label));
+		expect(contactLink?.attributes('to')).toBe(lastNavLink.to);
 	});
 });

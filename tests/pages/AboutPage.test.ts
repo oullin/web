@@ -5,6 +5,7 @@ import AboutPage from '@pages/AboutPage.vue';
 import type { ProfileResponse, ProfileSkillResponse } from '@api/response/index.ts';
 import { createRouter, createMemoryHistory, RouterView, type Router } from 'vue-router';
 import { defineComponent } from 'vue';
+import { aboutPageContent } from '@support/content.ts';
 
 const skills: ProfileSkillResponse[] = [
 	{
@@ -67,12 +68,12 @@ describe('AboutPage', () => {
 		await flushPromises();
 		expect(getProfile).toHaveBeenCalled();
 		expect(getRecommendations).not.toHaveBeenCalled();
-		expect(wrapper.find('h1').text()).toContain('Oullin.');
-		expect(wrapper.text()).toContain('boutique software engineering and architecture consultancy');
-		expect(wrapper.text()).toContain('20+ years across software engineering, consulting, architecture, AI-first products and companies');
-		expect(wrapper.text()).toContain('10+ years in banking');
+		expect(wrapper.find('h1').text()).toContain(aboutPageContent.hero.title);
+		expect(wrapper.text()).toContain(aboutPageContent.hero.copy[0]);
+		expect(wrapper.text()).toContain(aboutPageContent.sidebar.founder.copy);
+		expect(wrapper.text()).toContain(aboutPageContent.sidebar.proof.items[1]);
 		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('Recommendations partial');
-		expect(wrapper.html()).toContain('https://www.linkedin.com/in/gocanto/');
+		expect(wrapper.html()).toContain(aboutPageContent.sidebar.founder.linkUrl);
 	});
 
 	it('renders the about footer without the skills marquee band', async () => {

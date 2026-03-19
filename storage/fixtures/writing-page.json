@@ -1,0 +1,42 @@
+{
+	"hero": {
+		"kicker": "WRITING // USE CASES // FIELD NOTES",
+		"title": "Field notes from real systems.",
+		"copy": [
+			"Patterns, decisions, and hard-won lessons from 20+ years of building software that has to keep working. Architecture, AI integration, fintech, and the problems that show up when prototypes meet production."
+		]
+	},
+	"sidebar": {
+		"label": "[ // WHAT THIS IS FOR ]",
+		"items": [
+			"<strong>Scope:</strong> use cases, case studies, technical essays",
+			"<strong>Filter:</strong> category-first browsing",
+			"<strong>Intent:</strong> concrete over abstract — problems, decisions, outcomes"
+		],
+		"copy": "These aren't opinion pieces. They're documentation of real architectural decisions, integration patterns, and the failure modes that only show up under real load. Engineering judgment, written down so you can use it."
+	},
+	"seo": {
+		"title": "Writing",
+		"description": "Field notes from real systems. Use cases, case studies, and technical essays on AI architecture, production systems, and engineering judgment — problems, decisions, and outcomes from 20+ years of building software that has to keep working.",
+		"keywords": [
+			"writing archive",
+			"technical essays",
+			"architecture notes",
+			"systems thinking",
+			"software architect/engineering",
+			"technical management",
+			"digital transformation",
+			"AI orchestration"
+		],
+		"imageAlt": "Oullin writing archive preview",
+		"jsonLd": [
+			{
+				"name": "Writing Archive",
+				"@type": "CollectionPage",
+				"urlPath": "/writing",
+				"@context": "https://schema.org",
+				"description": "Oullin's archive of essays, notes, and articles on software engineering, AI, and architecture."
+			}
+		]
+	}
+}

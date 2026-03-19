@@ -1,10 +1,8 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import HomePage from '@pages/HomePage.vue';
-import principles from '@fixtures/principles.json';
-import about from '@fixtures/about.json';
-import cta from '@fixtures/cta.json';
 import { defineComponent } from 'vue';
+import { homePageContent } from '@support/content.ts';
 
 const global = {
 	stubs: {
@@ -35,7 +33,7 @@ describe('HomePage', () => {
 
 	it('renders all principles', () => {
 		const wrapper = mount(HomePage, { global });
-		principles.items.forEach((p) => {
+		homePageContent.principles.items.forEach((p) => {
 			expect(wrapper.text()).toContain(p.tag);
 			expect(wrapper.text()).toContain(p.body);
 		});
@@ -44,22 +42,22 @@ describe('HomePage', () => {
 	it('renders the about section with the Oullin brand copy', async () => {
 		const wrapper = mount(HomePage, { global });
 		await flushPromises();
-		about.defaultName.forEach((part) => {
+		homePageContent.about.defaultName.forEach((part) => {
 			expect(wrapper.text()).toContain(part);
 		});
-		expect(wrapper.text()).toContain(about.body.role);
+		expect(wrapper.text()).toContain(homePageContent.about.body.role);
 		expect(wrapper.text()).toContain('20+ years across software');
-		expect(wrapper.text()).toContain('Aztec sacred day-sign of movement and transformation');
-		about.work.forEach((item) => {
+		expect(wrapper.text()).toContain(homePageContent.about.body.originIntro);
+		homePageContent.about.work.forEach((item) => {
 			expect(wrapper.text()).toContain(item.title);
 		});
 	});
 
 	it('renders the cta section', () => {
 		const wrapper = mount(HomePage, { global });
-		expect(wrapper.text()).toContain(cta.watermark);
-		expect(wrapper.text()).toContain(cta.headlineAccent);
-		expect(wrapper.text()).toContain(cta.button.label);
+		expect(wrapper.text()).toContain(homePageContent.cta.watermark);
+		expect(wrapper.text()).toContain(homePageContent.cta.headlineAccent);
+		expect(wrapper.text()).toContain(homePageContent.cta.button.label);
 		expect(wrapper.text()).toContain('COMPLEX');
 	});
 });

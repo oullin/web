@@ -1,27 +1,15 @@
 import { computed, onBeforeUnmount, unref, watchEffect, type MaybeRefOrGetter } from 'vue';
 import type { PostResponse } from '@api/response/posts-response.ts';
+import { siteContent } from '@support/content.ts';
 
-export const SITE_NAME = 'Oullin';
+export const SITE_NAME = siteContent.name;
 const DEFAULT_SITE_URL = 'https://oullin.io';
 export const SEO_IMAGE = '/images/profile/about-seo.png';
-export const SITE_LOGO = '/brand/logo-touch.png';
-export const DEFAULT_TWITTER_HANDLE = '@oullin';
-export const DEFAULT_DESCRIPTION = 'Boutique AI architecture consultancy. 20+ years of production systems experience in fintech and banking, applied to the AI era. Rigour over hype.';
+export const SITE_LOGO = siteContent.logoPath;
+export const DEFAULT_TWITTER_HANDLE = siteContent.twitterHandle;
+export const DEFAULT_DESCRIPTION = siteContent.seo.defaultDescription;
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
-export const DEFAULT_KEYWORDS = [
-	SITE_NAME,
-	'Transformation',
-	'Software Engineering',
-	'Software Architecture',
-	'Highly Available Software',
-	'AI Transformation',
-	'Banking Technology',
-	'Technical Management',
-	'Digital Transformation',
-	'Consulting',
-	'Regulated Systems',
-	'AI-First Products',
-].join(',');
+export const DEFAULT_KEYWORDS = siteContent.seo.defaultKeywords.join(',');
 export const WEBSITE_JSON_LD = {
 	'@context': 'https://schema.org',
 	'@type': 'WebSite',
@@ -36,8 +24,8 @@ export const ORGANIZATION_JSON_LD = {
 	url: SITE_URL,
 	logo: siteUrlFor(SITE_LOGO),
 	image: siteUrlFor(SITE_LOGO),
-	description: DEFAULT_DESCRIPTION,
-	sameAs: ['https://github.com/oullin'],
+	description: siteContent.organization.description,
+	sameAs: siteContent.organization.sameAs,
 };
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';
@@ -85,8 +73,8 @@ export class Seo {
 		const image = new URL(options.image ?? SEO_IMAGE, SITE_URL).toString();
 		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
 		const description = options.description ?? DEFAULT_DESCRIPTION;
-		const language = options.siteLanguage ?? 'en-GB';
-		const locale = options.locale ?? 'en_GB';
+		const language = options.siteLanguage ?? siteContent.seo.siteLanguage;
+		const locale = options.locale ?? siteContent.seo.locale;
 		const keywords = normalizeKeywords(options.keywords) ?? DEFAULT_KEYWORDS;
 
 		document.title = title;

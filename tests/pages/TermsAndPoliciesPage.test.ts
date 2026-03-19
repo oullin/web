@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import TermsAndPoliciesPage from '@pages/TermsAndPoliciesPage.vue';
+import { termsAndPoliciesPageContent } from '@support/content.ts';
 
 const global = {
 	stubs: {
@@ -14,7 +15,7 @@ describe('TermsAndPoliciesPage', () => {
 		const wrapper = mount(TermsAndPoliciesPage, { global });
 
 		expect(wrapper.find('[data-testid="site-footer"]').exists()).toBe(true);
-		expect(wrapper.find('h1').text()).toContain('Terms and Policies.');
+		expect(wrapper.find('h1').text()).toContain(termsAndPoliciesPageContent.hero.title);
 	});
 
 	it('links policy enquiries to the contact page', () => {

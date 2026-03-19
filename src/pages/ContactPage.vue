@@ -3,39 +3,28 @@
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">CONTACT // OULLIN // CONVERSATION</p>
-					<h1 class="page-title">Contact Oullin.</h1>
+					<p class="page-kicker">{{ hero.kicker }}</p>
+					<h1 class="page-title">{{ hero.title }}</h1>
 					<div class="page-copy">
-						<p>Oullin is open to conversations about high-availability software, AI-era modernisation, architecture, and delivery in regulated and high-trust environments.</p>
+						<p>{{ hero.copy[0] }}</p>
 						<p>&nbsp;</p>
-						<p>
-							We take a limited number of engagements at a time. If you're working on a system that has to hold — and needs senior engineering judgment close to the architecture — start
-							the conversation here.
-						</p>
+						<p>{{ hero.copy[1] }}</p>
 					</div>
 				</div>
 
 				<div class="page-hero-side">
 					<div class="page-side-block">
-						<div class="page-section-label">Primary channel</div>
+						<div class="page-section-label">{{ sidebar.primaryChannel.label }}</div>
 						<div class="page-panel-title">
 							<a v-if="profile" v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a>
-							<span v-else>Direct email</span>
+							<span v-else>{{ sidebar.primaryChannel.fallbackTitle }}</span>
 						</div>
-						<p class="page-panel-copy">
-							<template v-if="profile"
-								>Email is the fastest way to reach Oullin for architecture, AI consulting, modernisation, and transformation enquiries. Come with context: your current stack, the
-								problem you're trying to solve, and any constraints. We respond within 48 hours to enquiries with enough detail for a real conversation.</template
-							>
-							<template v-else>Contact details are loading or temporarily unavailable.</template>
-						</p>
+						<p class="page-panel-copy">{{ profile ? sidebar.primaryChannel.copy : 'Contact details are loading or temporarily unavailable.' }}</p>
 					</div>
 					<div class="page-side-block">
-						<div class="page-section-label">Best fit</div>
+						<div class="page-section-label">{{ sidebar.bestFit.label }}</div>
 						<div class="page-meta-list">
-							<span><strong>Projects:</strong> AI architecture, modernisation, resilient delivery, banking, healthcare, e-commerce, loyalty and customer engagement</span>
-							<span><strong>Environments:</strong> regulated, high-trust, AI-era change, fintech, scale-up, high-availability infrastructure</span>
-							<span><strong>Approach:</strong> direct, senior, hands-on, embedded close to delivery</span>
+							<span v-for="item in sidebar.bestFit.items" :key="item" v-html="item"></span>
 						</div>
 					</div>
 				</div>
@@ -44,38 +33,36 @@
 			<section class="page-band">
 				<div class="page-band-intro">
 					<div>
-						<span class="page-section-label">What Happens Next</span>
-						<h2 class="page-section-title">Clarity from the first exchange.</h2>
+						<span class="page-section-label">{{ intro.label }}</span>
+						<h2 class="page-section-title">{{ intro.title }}</h2>
 					</div>
-					<p class="page-lead">No pitch decks. No proposals that take two weeks. A straight answer from the first conversation.</p>
+					<p class="page-lead">{{ intro.lead }}</p>
 				</div>
 
 				<div class="page-editorial">
 					<div class="page-editorial-row">
-						<span class="page-section-label">// process</span>
+						<span class="page-section-label">{{ process.label }}</span>
 						<div>
 							<div class="page-meta-list">
-								<span>— We respond within 48 hours if there's enough context to have a real conversation.</span>
-								<span>— If it's a fit, we schedule a 30-minute call — your stack, your problem, your constraints.</span>
-								<span>— We give you a straight read: whether we can help, which engagement fits, and what it costs.</span>
-								<span>— If we proceed: a one-page scope document within 48 hours.</span>
+								<span v-for="item in process.items" :key="item">{{ item }}</span>
 							</div>
 						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
-						<span class="page-section-label">Email</span>
+						<span class="page-section-label">{{ email.label }}</span>
 						<div>
 							<p v-if="profile" class="page-panel-copy">
-								Use <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a> for architecture, AI consulting, modernisation, and transformation
-								discussions.
+								{{ email.copyBeforeLink }}
+								<a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a>
+								{{ email.copyAfterLink }}
 							</p>
 							<p v-else class="page-panel-copy">We are currently unable to load the direct email address. Please try again later.</p>
 						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
-						<span class="page-section-label">Social</span>
+						<span class="page-section-label">{{ social.label }}</span>
 						<div>
 							<div v-if="visibleLinks.length > 0" class="page-social-links">
 								<template v-for="(link, index) in visibleLinks" :key="link.uuid">
@@ -85,17 +72,14 @@
 									<span v-if="index < visibleLinks.length - 1" class="page-social-separator" aria-hidden="true">/</span>
 								</template>
 							</div>
-							<p v-else class="page-panel-copy">Social channels are currently unavailable. Email remains the best way to reach Oullin.</p>
+							<p v-else class="page-panel-copy">{{ social.unavailableCopy }}</p>
 						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
-						<span class="page-section-label">Founder</span>
+						<span class="page-section-label">{{ founder.label }}</span>
 						<div>
-							<p class="page-panel-copy">
-								Gustavo Ocanto leads Oullin's work directly, so enquiries stay close to architecture, delivery, and technical decision-making rather than getting filtered through
-								layers.
-							</p>
+							<p class="page-panel-copy">{{ founder.copy }}</p>
 						</div>
 					</div>
 				</div>
@@ -112,57 +96,28 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
+import { contactPageContent, resolveJsonLd, siteContent } from '@support/content.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const links = ref<LinksResponse[]>([]);
 const hasProfileError = ref(false);
 const hasLinksError = ref(false);
-const fallbackLinks: LinksResponse[] = [
-	{
-		uuid: 'fallback-linkedin',
-		name: 'linkedin',
-		handle: 'gocanto',
-		url: 'https://www.linkedin.com/in/gocanto/',
-		description: 'Professional profile',
-	},
-	{
-		uuid: 'fallback-github',
-		name: 'github',
-		handle: 'gocanto',
-		url: 'https://github.com/gocanto',
-		description: 'Code and projects',
-	},
-];
+const { hero, sidebar, intro, process, email, social, founder, seo } = contactPageContent;
+const fallbackLinks: LinksResponse[] = siteContent.fallbackLinks;
 
 const visibleLinks = computed<LinksResponse[]>(() => {
 	return links.value.length > 0 ? links.value : fallbackLinks;
 });
 
 useSeo({
-	title: 'Contact',
+	title: seo.title,
 	image: SEO_IMAGE,
 	url: siteUrlFor('/contact'),
-	imageAlt: `${SITE_NAME} contact page preview`,
-	description: 'Start a conversation about AI architecture, modernisation, and delivery in regulated environments. No pitch decks. Clarity from the first exchange.',
-	keywords: buildKeywords('contact Oullin', 'AI architecture consulting', 'fractional AI architect', 'regulated systems', 'technical advisory', 'AI-era modernisation'),
-	jsonLd: [
-		{
-			'@context': 'https://schema.org',
-			'@type': 'ContactPage',
-			name: 'Contact',
-			url: siteUrlFor('/contact'),
-			description: 'Start a conversation about AI architecture, modernisation, and delivery in regulated environments. We respond within 48 hours.',
-		},
-		{
-			'@context': 'https://schema.org',
-			'@type': 'Person',
-			name: 'Gustavo Ocanto',
-			jobTitle: 'Founder of Oullin',
-			url: siteUrlFor('/contact'),
-		},
-		ORGANIZATION_JSON_LD,
-	],
+	imageAlt: seo.imageAlt ?? `${SITE_NAME} contact page preview`,
+	description: seo.description,
+	keywords: buildKeywords(seo.keywords),
+	jsonLd: [...(resolveJsonLd(seo.jsonLd, siteUrlFor) as Record<string, unknown>[]), ORGANIZATION_JSON_LD],
 });
 
 const loadContactData = async () => {

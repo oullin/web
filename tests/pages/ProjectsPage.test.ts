@@ -5,6 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ProjectsPage from '@pages/ProjectsPage.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
+import { projectsPageContent } from '@support/content.ts';
 
 const projectsPageOne: ProjectsResponse[] = [
 	{
@@ -72,8 +73,8 @@ describe('ProjectsPage', () => {
 		expect(getProjects).toHaveBeenCalledWith(1);
 		const items = wrapper.findAll('.project');
 		expect(items).toHaveLength(projectsPageOne.length);
-		expect(wrapper.text()).toContain('Proof from real systems.');
-		expect(wrapper.text()).toContain('banking, consulting, AI-era product teams');
+		expect(wrapper.text()).toContain(projectsPageContent.hero.title);
+		expect(wrapper.text()).toContain(projectsPageContent.hero.copy[0]);
 		expect(wrapper.text()).toContain(projectsPageOne[0].title);
 	});
 

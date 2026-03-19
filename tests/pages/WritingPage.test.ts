@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import WritingPage from '@pages/WritingPage.vue';
+import { writingPageContent } from '@support/content.ts';
 
 const global = {
 	stubs: {
@@ -14,8 +15,8 @@ const global = {
 describe('WritingPage', () => {
 	it('renders the writing archive shell', () => {
 		const wrapper = mount(WritingPage, { global });
-		expect(wrapper.text()).toContain('Field notes from real systems.');
-		expect(wrapper.text()).toContain('Patterns, decisions, and hard-won lessons from 20+ years of building software that has to keep working.');
+		expect(wrapper.text()).toContain(writingPageContent.hero.title);
+		expect(wrapper.text()).toContain(writingPageContent.hero.copy[0]);
 		expect(wrapper.find('[data-testid="articles-list"]').exists()).toBe(true);
 	});
 });

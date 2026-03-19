@@ -1,0 +1,90 @@
+{
+	"hero": {
+		"kicker": "TERMS // POLICIES // TRUST",
+		"title": "Terms and Policies.",
+		"copy": [
+			"These terms govern access to and use of our digital products and professional services, including software consulting, technical architecture, and platform-based offerings.",
+			"By registering for, purchasing, or using the services, you acknowledge that you have read and agreed to the terms set out here."
+		]
+	},
+	"sidebar": {
+		"effectiveDate": {
+			"label": "Effective Date",
+			"title": "1 December 2025",
+			"copy": "The current published version applies unless a later date is stated on this page."
+		},
+		"scope": {
+			"label": "Scope",
+			"items": [
+				"<strong>Services:</strong> SaaS, consulting, architecture",
+				"<strong>Audience:</strong> business and professional users",
+				"<strong>Priority:</strong> legal clarity, operational boundaries"
+			]
+		}
+	},
+	"legalSections": [
+		{
+			"title": "1. Scope of Services",
+			"paragraphs": [
+				"We provide software products and advisory services for business and professional users. Specific deliverables, service levels, timelines, and pricing are defined in the applicable order form, checkout page, or written statement of work.",
+				"We may update, improve, or retire features to maintain security, performance, legal compliance, and product quality."
+			]
+		},
+		{
+			"title": "2. Account and Customer Responsibilities",
+			"paragraphs": [
+				"You are responsible for maintaining the confidentiality of account credentials, restricting unauthorised access, and ensuring the accuracy of all information submitted through our platforms.",
+				"You are also responsible for your use of the services and for ensuring your activities comply with all applicable laws, regulations, and industry requirements in relevant jurisdictions."
+			]
+		},
+		{
+			"title": "3. Acceptable Use Policy",
+			"paragraphs": [
+				"Our services must not be used for unlawful, fraudulent, deceptive, abusive, or harmful activity. We strictly prohibit misleading offers, including \"get rich quick\" claims, \"guaranteed placement\" promises, or equivalent representations of guaranteed outcomes.",
+				"We reserve the right to suspend or terminate access where use presents legal, security, reputational, or operational risk."
+			]
+		},
+		{
+			"title": "4. Fees, Billing, and Refunds",
+			"paragraphs": [
+				"Fees, billing cycles, and payment terms are displayed at purchase or set out in writing. Applicable taxes and payment processing fees may be charged based on jurisdiction and selected plan.",
+				"Unless otherwise required by law or expressly agreed in writing, fees are non-refundable for partially used subscription periods or partially delivered service terms."
+			]
+		},
+		{
+			"title": "5. Intellectual Property",
+			"paragraphs": [
+				"All platform content, product materials, software, and related documentation remain our property or the property of our licensors unless otherwise agreed in writing.",
+				"Subject to payment and compliance with these terms, you receive a limited, non-exclusive, non-transferable right to use the services for internal business purposes."
+			]
+		},
+		{
+			"title": "6. Liability and Service Availability",
+			"paragraphs": [
+				"We aim to provide reliable services, but we do not warrant uninterrupted or error-free operation at all times. Services are provided on an \"as available\" basis, except where warranties cannot be excluded under applicable law in your jurisdiction.",
+				"To the maximum extent permitted by law, we are not liable for indirect, incidental, special, consequential, or punitive damages arising from the use of our services."
+			]
+		},
+		{
+			"title": "7. Updates to These Terms",
+			"paragraphs": ["We may revise these Terms and Policies from time to time. Updated versions become effective when published on this page unless otherwise notified."]
+		},
+		{
+			"title": "8. Contact",
+			"paragraphs": ["For legal, billing, or policy-related enquiries, please contact us through the communication channels listed on the Contact page."],
+			"contactLink": { "label": "Contact page", "to": "/contact" }
+		}
+	],
+	"seo": {
+		"title": "Terms and Policies",
+		"description": "Review Oullin's terms and policies for software products, consulting, technical architecture, billing, acceptable use, and service responsibilities.",
+		"keywords": ["terms of service", "acceptable use policy", "software consulting terms", "billing and refunds", "service availability", "technical management", "digital transformation"],
+		"jsonLd": {
+			"@context": "https://schema.org",
+			"@type": "WebPage",
+			"name": "Terms and Policies",
+			"urlPath": "/terms-and-conditions",
+			"description": "Terms and policies covering Oullin's SaaS, consulting, technical architecture, billing, and account responsibilities."
+		}
+	}
+}

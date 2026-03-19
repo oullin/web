@@ -1,0 +1,50 @@
+{
+	"hero": {
+		"kicker": "BANKING // FINTECH // AI SYSTEMS // ARCHITECTURE",
+		"title": "Proof from real systems.",
+		"copy": [
+			"This portfolio reflects work shaped by banking, consulting, AI-era product teams, and resilient software delivery. It includes open-source tools, internal platforms, and client systems built for availability, security, maintainability, and change.",
+			"The point is not novelty. It is evidence of judgement — across architecture, delivery, and systems that need to keep working after launch."
+		]
+	},
+	"sidebar": {
+		"statsLabel": "Projects currently indexed",
+		"focus": {
+			"label": "Focus",
+			"items": [
+				"<strong>Domains:</strong> banking, fintech, e-wallets, insurance, healthtech, e-commerce, SaaS, customer success platforms",
+				"<strong>Systems:</strong> high-trust, resilient, maintainable, high-availability",
+				"<strong>Lens:</strong> architecture, delivery, modernisation, AI integration"
+			]
+		}
+	},
+	"intro": {
+		"label": "Selected Work",
+		"title": "Work inspected through an engineering lens."
+	},
+	"seo": {
+		"title": "Projects",
+		"description": "Proof from real systems. Open-source tools, internal platforms, and client work across banking, fintech, and AI-era architecture.",
+		"keywords": [
+			"open source tools",
+			"client systems",
+			"software delivery",
+			"platform architecture",
+			"software architecture",
+			"technical management",
+			"digital transformation",
+			"AI transformation",
+			"banking insurance SaaS"
+		],
+		"imageAlt": "Oullin project collection preview",
+		"jsonLd": [
+			{
+				"name": "Projects",
+				"@type": "CollectionPage",
+				"urlPath": "/projects",
+				"@context": "https://schema.org",
+				"description": "Selected open-source and client projects from Oullin across banking, consulting, product delivery, and resilient production systems."
+			}
+		]
+	}
+}

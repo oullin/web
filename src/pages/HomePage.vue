@@ -18,42 +18,30 @@
 		<!-- AI ERA -->
 		<section id="ai-era" class="about-section">
 			<div class="about-left">
-				<div class="section-tag">// ai.era</div>
-				<h2 class="about-name">The bottleneck shifted.<br />We were ready.</h2>
+				<div class="section-tag">{{ aiEra.leftTag }}</div>
+				<h2 class="about-name">
+					<template v-for="(line, index) in aiEra.titleLines" :key="line">{{ line }}<br v-if="index < aiEra.titleLines.length - 1" /></template>
+				</h2>
 				<p class="about-body">
-					AI tools generate code faster than most teams can review it. The cost of implementation is falling. The cost of a bad architectural decision is not.<br /><br />
-					Oullin has always been in the business of engineering judgment — knowing what to build, how to build it safely, and what breaks under real load in a regulated environment. The AI
-					era didn't change our work. It made it more necessary.<br /><br />
-					We work with startups and scale-ups as a fractional AI architecture partner. Not to generate code. To ensure what gets generated holds.
+					<template v-for="(paragraph, index) in aiEra.body" :key="paragraph">
+						<template v-if="index > 0"><br /><br /></template>
+						{{ paragraph }}
+					</template>
 				</p>
 			</div>
 			<div class="about-right">
-				<div class="section-tag">// engagements</div>
+				<div class="section-tag">{{ aiEra.rightTag }}</div>
 				<div class="work-list">
-					<div class="work-item">
-						<span class="w-idx">[ 01 ]</span>
+					<div v-for="item in aiEra.work" :key="item.index" class="work-item">
+						<span class="w-idx">{{ item.index }}</span>
 						<div>
-							<div class="w-title">AI Architecture Sprint</div>
-							<div class="w-desc">Two weeks. One production-ready roadmap. Built by engineers who have shipped the systems you're building.</div>
-						</div>
-					</div>
-					<div class="work-item">
-						<span class="w-idx">[ 02 ]</span>
-						<div>
-							<div class="w-title">Fractional AI Architect</div>
-							<div class="w-desc">Embedded. Reviewing what your team and your AI tools produce. 3-month minimum.</div>
-						</div>
-					</div>
-					<div class="work-item">
-						<span class="w-idx">[ 03 ]</span>
-						<div>
-							<div class="w-title">Production Hardening</div>
-							<div class="w-desc">Your prototype works in demos. We make it work in production.</div>
+							<div class="w-title">{{ item.title }}</div>
+							<div class="w-desc">{{ item.description }}</div>
 						</div>
 					</div>
 				</div>
 				<div>&nbsp;</div>
-				<RouterLink to="/work-with-us" class="btn-ghost mt-8 inline-block">See all engagements →</RouterLink>
+				<RouterLink :to="aiEra.button.to" class="btn-ghost mt-8 inline-block">{{ aiEra.button.label }}</RouterLink>
 			</div>
 		</section>
 
@@ -67,7 +55,7 @@
 				<p class="about-body">
 					{{ about.body.role }}<br /><br />
 					{{ about.body.mission }}<br /><br />
-					The name <strong>Oullin</strong> is a deliberate misspelling of <strong>Ollin</strong>, the Aztec sacred day-sign of movement and transformation. {{ about.body.origin }}
+					{{ about.body.originIntro }} {{ about.body.origin }}
 				</p>
 			</div>
 			<div class="about-right">
@@ -103,38 +91,17 @@ import { RouterLink } from 'vue-router';
 import HeroPartial from '@partials/HeroPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@support/seo';
-import principles from '@fixtures/principles.json';
-import about from '@fixtures/about.json';
-import cta from '@fixtures/cta.json';
+import { homePageContent, resolveJsonLd } from '@support/content.ts';
 
+const { principles, aiEra, about, cta, seo } = homePageContent;
 const nameLines = about.defaultName;
 
 useSeo({
 	image: SEO_IMAGE,
 	url: siteUrlFor('/'),
-	imageAlt: `${SITE_NAME} brand preview`,
-	keywords: buildKeywords(
-		'AI architecture consulting',
-		'fractional AI architect',
-		'AI-era modernisation',
-		'software architecture',
-		'technical management',
-		'banking technology',
-		'fintech',
-		'startup AI architecture',
-	),
-	description:
-		'Oullin is a boutique AI architecture consultancy for startups and scale-ups. 20+ years of production systems experience — banking, fintech, high-availability infrastructure — applied to the AI era.',
-	jsonLd: [
-		{
-			name: SITE_NAME,
-			'@type': 'WebPage',
-			url: siteUrlFor('/'),
-			'@context': 'https://schema.org',
-			description: 'Landing page for Oullin, covering highly available software, banking-domain delivery, architecture leadership, and digital transformation in the AI era.',
-		},
-		WEBSITE_JSON_LD,
-		ORGANIZATION_JSON_LD,
-	],
+	imageAlt: seo.imageAlt ?? `${SITE_NAME} brand preview`,
+	keywords: buildKeywords(seo.keywords),
+	description: seo.description,
+	jsonLd: [...(resolveJsonLd(seo.jsonLd, siteUrlFor) as Record<string, unknown>[]), WEBSITE_JSON_LD, ORGANIZATION_JSON_LD],
 });
 </script>

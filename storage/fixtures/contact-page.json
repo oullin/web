@@ -1,0 +1,74 @@
+{
+	"hero": {
+		"kicker": "CONTACT // OULLIN // CONVERSATION",
+		"title": "Contact Oullin.",
+		"copy": [
+			"Oullin is open to conversations about high-availability software, AI-era modernisation, architecture, and delivery in regulated and high-trust environments.",
+			"We take a limited number of engagements at a time. If you're working on a system that has to hold — and needs senior engineering judgment close to the architecture — start the conversation here."
+		]
+	},
+	"sidebar": {
+		"primaryChannel": {
+			"label": "Primary channel",
+			"fallbackTitle": "Direct email",
+			"copy": "Email is the fastest way to reach Oullin for architecture, AI consulting, modernisation, and transformation enquiries. Come with context: your current stack, the problem you're trying to solve, and any constraints. We respond within 48 hours to enquiries with enough detail for a real conversation."
+		},
+		"bestFit": {
+			"label": "Best fit",
+			"items": [
+				"<strong>Projects:</strong> AI architecture, modernisation, resilient delivery, banking, healthcare, e-commerce, loyalty and customer engagement",
+				"<strong>Environments:</strong> regulated, high-trust, AI-era change, fintech, scale-up, high-availability infrastructure",
+				"<strong>Approach:</strong> direct, senior, hands-on, embedded close to delivery"
+			]
+		}
+	},
+	"intro": {
+		"label": "What Happens Next",
+		"title": "Clarity from the first exchange.",
+		"lead": "No pitch decks. No proposals that take two weeks. A straight answer from the first conversation."
+	},
+	"process": {
+		"label": "// process",
+		"items": [
+			"— We respond within 48 hours if there's enough context to have a real conversation.",
+			"— If it's a fit, we schedule a 30-minute call — your stack, your problem, your constraints.",
+			"— We give you a straight read: whether we can help, which engagement fits, and what it costs.",
+			"— If we proceed: a one-page scope document within 48 hours."
+		]
+	},
+	"email": {
+		"label": "Email",
+		"copyBeforeLink": "Use",
+		"copyAfterLink": "for architecture, AI consulting, modernisation, and transformation discussions."
+	},
+	"social": {
+		"label": "Social",
+		"unavailableCopy": "Social channels are currently unavailable. Email remains the best way to reach Oullin."
+	},
+	"founder": {
+		"label": "Founder",
+		"copy": "Gustavo Ocanto leads Oullin's work directly, so enquiries stay close to architecture, delivery, and technical decision-making rather than getting filtered through layers."
+	},
+	"seo": {
+		"title": "Contact",
+		"description": "Start a conversation about AI architecture, modernisation, and delivery in regulated environments. No pitch decks. Clarity from the first exchange.",
+		"keywords": ["contact Oullin", "AI architecture consulting", "fractional AI architect", "regulated systems", "technical advisory", "AI-era modernisation"],
+		"imageAlt": "Oullin contact page preview",
+		"jsonLd": [
+			{
+				"@context": "https://schema.org",
+				"@type": "ContactPage",
+				"name": "Contact",
+				"urlPath": "/contact",
+				"description": "Start a conversation about AI architecture, modernisation, and delivery in regulated environments. We respond within 48 hours."
+			},
+			{
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"name": "Gustavo Ocanto",
+				"jobTitle": "Founder of Oullin",
+				"urlPath": "/contact"
+			}
+		]
+	}
+}

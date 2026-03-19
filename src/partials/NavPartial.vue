@@ -72,6 +72,7 @@ import { useDarkMode } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { NAV_SOCIAL_FALLBACKS, resolveNavSocialLinks } from '@support/links.ts';
+import { siteContent } from '@support/content.ts';
 import { NavigationMenu, NavigationMenuLink, NavigationMenuItem, NavigationMenuList } from '@components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@components/ui/sheet';
 
@@ -94,11 +95,5 @@ onMounted(async () => {
 	}
 });
 
-const navLinks = [
-	{ to: '/work-with-us', label: 'work with us' },
-	{ to: '/writing', label: 'writing' },
-	{ to: '/projects', label: 'projects' },
-	{ to: '/about', label: 'about' },
-	{ to: '/contact', label: 'contact' },
-];
+const navLinks = siteContent.nav.links;
 </script>

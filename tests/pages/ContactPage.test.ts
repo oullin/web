@@ -2,6 +2,7 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ContactPage from '@pages/ContactPage.vue';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
+import { contactPageContent, siteContent } from '@support/content.ts';
 
 const profile: ProfileResponse = {
 	nickname: 'Oullin',
@@ -57,9 +58,9 @@ describe('ContactPage', () => {
 
 		expect(getProfile).toHaveBeenCalled();
 		expect(getLinks).toHaveBeenCalled();
-		expect(wrapper.text()).toContain('Contact Oullin.');
-		expect(wrapper.text()).toContain('high-availability software');
-		expect(wrapper.text()).toContain('regulated and high-trust environments');
+		expect(wrapper.text()).toContain(contactPageContent.hero.title);
+		expect(wrapper.text()).toContain(contactPageContent.hero.copy[0]);
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.copy);
 		expect(wrapper.text()).toContain(profile.email);
 		expect(wrapper.text()).toContain('GITHUB');
 		expect(wrapper.text()).toContain('X');
@@ -73,9 +74,9 @@ describe('ContactPage', () => {
 		const wrapper = mount(ContactPage, { global });
 		await flushPromises();
 
-		expect(wrapper.text()).toContain('Direct email');
-		expect(wrapper.text()).toContain('LINKEDIN');
-		expect(wrapper.text()).toContain('GITHUB');
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackTitle);
+		expect(wrapper.text()).toContain(siteContent.fallbackLinks[0].name.toUpperCase());
+		expect(wrapper.text()).toContain(siteContent.fallbackLinks[1].name.toUpperCase());
 	});
 
 	it('handles API errors gracefully', async () => {
@@ -85,8 +86,8 @@ describe('ContactPage', () => {
 		const wrapper = mount(ContactPage, { global });
 		await flushPromises();
 
-		expect(wrapper.text()).toContain('Direct email');
-		expect(wrapper.text()).toContain('LINKEDIN');
-		expect(wrapper.text()).toContain('GITHUB');
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackTitle);
+		expect(wrapper.text()).toContain(siteContent.fallbackLinks[0].name.toUpperCase());
+		expect(wrapper.text()).toContain(siteContent.fallbackLinks[1].name.toUpperCase());
 	});
 });

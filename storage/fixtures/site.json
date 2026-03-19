@@ -1,0 +1,83 @@
+{
+	"name": "Oullin",
+	"twitterHandle": "@oullin",
+	"logoPath": "/brand/logo-touch.png",
+	"seo": {
+		"defaultDescription": "Boutique AI architecture consultancy. 20+ years of production systems experience in fintech and banking, applied to the AI era. Rigour over hype.",
+		"defaultKeywords": [
+			"Oullin",
+			"Transformation",
+			"Software Engineering",
+			"Software Architecture",
+			"Highly Available Software",
+			"AI Transformation",
+			"Banking Technology",
+			"Technical Management",
+			"Digital Transformation",
+			"Consulting",
+			"Regulated Systems",
+			"AI-First Products"
+		],
+		"siteLanguage": "en-GB",
+		"locale": "en_GB"
+	},
+	"organization": {
+		"description": "Boutique AI architecture consultancy. 20+ years of production systems experience in fintech and banking, applied to the AI era. Rigour over hype.",
+		"sameAs": ["https://github.com/oullin"]
+	},
+	"nav": {
+		"links": [
+			{ "label": "work with us", "to": "/work-with-us" },
+			{ "label": "writing", "to": "/writing" },
+			{ "label": "projects", "to": "/projects" },
+			{ "label": "about", "to": "/about" },
+			{ "label": "contact", "to": "/contact" }
+		]
+	},
+	"footer": {
+		"brandLine": "OULLIN // MOVEMENT // CRAFT",
+		"tagline": "MOVEMENT IS NOT OPTIONAL.",
+		"links": [
+			{ "label": "Contact", "to": "/contact" },
+			{ "label": "Terms", "to": "/terms-and-conditions" }
+		],
+		"backToTopLabel": "Back to top",
+		"marqueeItems": [
+			"Banking",
+			"High Availability",
+			"Architecture",
+			"Consulting",
+			"AI Transformation",
+			"AI-First Products",
+			"Technical Management",
+			"Modernization",
+			"Regulated Systems",
+			"Software Delivery"
+		]
+	},
+	"recommendations": {
+		"triggerLabel": "People",
+		"intro": "who have worked with Gustavo across architecture, delivery, and leadership.",
+		"dialog": {
+			"sectionLabel": "People",
+			"title": "Recommendations",
+			"description": "People who have worked with Gustavo across architecture, delivery, and leadership."
+		}
+	},
+	"fallbackLinks": [
+		{
+			"uuid": "fallback-linkedin",
+			"name": "linkedin",
+			"handle": "gocanto",
+			"url": "https://www.linkedin.com/in/gocanto/",
+			"description": "Professional profile"
+		},
+		{
+			"uuid": "fallback-github",
+			"name": "github",
+			"handle": "gocanto",
+			"url": "https://github.com/gocanto",
+			"description": "Code and projects"
+		}
+	]
+}

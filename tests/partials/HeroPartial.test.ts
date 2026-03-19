@@ -2,7 +2,9 @@ import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import HeroPartial from '@partials/HeroPartial.vue';
 import HeroCircuitPartial from '@partials/HeroCircuitPartial.vue';
-import hero from '@fixtures/hero.json';
+import { homePageContent } from '@support/content.ts';
+
+const { hero } = homePageContent;
 
 const global = {
 	stubs: { RouterLink: { template: '<a><slot /></a>' } },

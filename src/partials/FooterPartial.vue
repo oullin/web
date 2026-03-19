@@ -8,16 +8,17 @@
 		</div>
 
 		<footer v-bind="attrs" class="site-footer">
-			<span>OULLIN // MOVEMENT // CRAFT</span>
-			<span>MOVEMENT IS NOT OPTIONAL.</span>
+			<span>{{ footer.brandLine }}</span>
+			<span>{{ footer.tagline }}</span>
 			<div class="footer-right">
 				<span>
 					© {{ currentYear }} ·
-					<RouterLink v-lazy-link to="/contact" class="footer-social-link">Contact</RouterLink>
+					<template v-for="(link, index) in footer.links" :key="link.to">
+						<RouterLink v-lazy-link :to="link.to" class="footer-social-link">{{ link.label }}</RouterLink>
+						<span v-if="index < footer.links.length - 1"> · </span>
+					</template>
 					·
-					<RouterLink v-lazy-link to="/terms-and-conditions" class="footer-social-link">Terms</RouterLink>
-					·
-					<button type="button" class="footer-social-link footer-link-button" @click="scrollToTop">Back to top</button>
+					<button type="button" class="footer-social-link footer-link-button" @click="scrollToTop">{{ footer.backToTopLabel }}</button>
 				</span>
 			</div>
 		</footer>
@@ -27,7 +28,7 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
 import { RouterLink } from 'vue-router';
-import marquee from '@fixtures/marquee.json';
+import { siteContent } from '@support/content.ts';
 
 defineOptions({ inheritAttrs: false });
 
@@ -42,7 +43,8 @@ withDefaults(
 
 const currentYear = computed(() => new Date().getFullYear());
 const attrs = useAttrs();
-const marqueeItems = marquee.items;
+const { footer } = siteContent;
+const marqueeItems = footer.marqueeItems;
 
 const scrollToTop = () => {
 	if (typeof window === 'undefined') {

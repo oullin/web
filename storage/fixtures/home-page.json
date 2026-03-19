@@ -1,0 +1,158 @@
+{
+	"hero": {
+		"eyebrow": "OULLIN // SOFTWARE ENGINEERING // ARCHITECTURE // AI",
+		"headline": [{ "text": "SYSTEMS" }, { "text": "THAT", "accent": true }, { "text": "HOLD.", "accent2": true }],
+		"sub": {
+			"lines": [
+				"Oullin is a boutique software engineering and architecture consultancy for startups and scale-ups navigating the AI era. We bring 20+ years of production systems experience — banking, fintech, healthcare, e-commerce, loyalty and customer engagement, and high-availability infrastructure — to the question that matters most right now:",
+				"Not what to build with AI. How to build it so it lasts."
+			]
+		},
+		"cta": [
+			{ "label": "Start a conversation →", "to": "/contact", "style": "primary" },
+			{ "label": "Explore our work", "to": "/work-with-us", "style": "ghost" }
+		],
+		"dataBlocks": [
+			{
+				"type": "metric",
+				"label": "// experience.depth",
+				"value": "20+",
+				"valueSuffix": " years",
+				"bar": "v",
+				"note": ["Software, consulting, architecture,", "and technical management."]
+			},
+			{
+				"type": "metric",
+				"label": "// banking.depth",
+				"value": "10+",
+				"valueSuffix": " years in banking",
+				"valueColor": "cyan",
+				"bar": "c",
+				"note": ["Built for regulated, high-trust,", "and operationally demanding environments."]
+			},
+			{
+				"type": "list",
+				"label": "// strategic.themes",
+				"items": ["AI Engineering Judgment", "Regulated Systems", "Architecture & Leadership"]
+			},
+			{
+				"type": "quote",
+				"label": "// operating.range",
+				"lines": ["Banking, consulting, product, and", "AI-first companies under real constraints."]
+			}
+		]
+	},
+	"principles": {
+		"items": [
+			{
+				"number": "01",
+				"tag": "AVAILABILITY",
+				"title": ["Reliable", "Systems,", "Built Right."],
+				"body": "Highly available software needs rigour, calm engineering, and architecture that stays clear under pressure — whether the pressure comes from scale, a regulated environment, or AI-generated code that nobody has fully reviewed."
+			},
+			{
+				"number": "02",
+				"tag": "TRANSFORMATION",
+				"title": ["Transform", "Without", "The Hype."],
+				"body": "Digital transformation in the AI era works when modernisation, delivery, and operating reality move together. AI is a tool. Judgment is the work. We've been doing the work since before the tools existed."
+			},
+			{
+				"number": "03",
+				"tag": "LEADERSHIP",
+				"title": ["Lead", "Complex Work", "Well."],
+				"body": "Architecture, technical management, and execution should reduce risk, raise clarity, and keep teams moving. We embed close to delivery — not above it."
+			}
+		]
+	},
+	"aiEra": {
+		"leftTag": "// ai.era",
+		"titleLines": ["The bottleneck shifted.", "We were ready."],
+		"body": [
+			"AI tools generate code faster than most teams can review it. The cost of implementation is falling. The cost of a bad architectural decision is not.",
+			"Oullin has always been in the business of engineering judgment — knowing what to build, how to build it safely, and what breaks under real load in a regulated environment. The AI era didn't change our work. It made it more necessary.",
+			"We work with startups and scale-ups as a fractional AI architecture partner. Not to generate code. To ensure what gets generated holds."
+		],
+		"rightTag": "// engagements",
+		"work": [
+			{
+				"index": "[ 01 ]",
+				"title": "AI Architecture Sprint",
+				"description": "Two weeks. One production-ready roadmap. Built by engineers who have shipped the systems you're building."
+			},
+			{
+				"index": "[ 02 ]",
+				"title": "Fractional AI Architect",
+				"description": "Embedded. Reviewing what your team and your AI tools produce. 3-month minimum."
+			},
+			{
+				"index": "[ 03 ]",
+				"title": "Production Hardening",
+				"description": "Your prototype works in demos. We make it work in production."
+			}
+		],
+		"button": {
+			"label": "See all engagements →",
+			"to": "/work-with-us"
+		}
+	},
+	"about": {
+		"leftTag": "// about.oullin",
+		"defaultName": ["OULLIN."],
+		"body": {
+			"role": "Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust environments.",
+			"originIntro": "The name Oullin is a deliberate misspelling of Ollin, the Aztec sacred day-sign of movement and transformation.",
+			"origin": "The name still points to movement and transformation, but the work is grounded in senior engineering judgement and systems that have to keep running.",
+			"mission": "Led by Gustavo Ocanto, with 20+ years across software, consulting, software architecture, AI-first products and companies, and technical management, including 10+ years in banking."
+		},
+		"rightTag": "// strategic.focus",
+		"work": [
+			{
+				"index": "[ 01 ]",
+				"title": "Regulated & High-Trust Systems",
+				"description": "Software for banking and other environments where reliability, risk, and operational discipline are not optional."
+			},
+			{
+				"index": "[ 02 ]",
+				"title": "AI-Era Architecture & Modernisation",
+				"description": "Practical modernisation that connects legacy reality, platform evolution, and AI capability. Without the hype. With the rigour."
+			},
+			{
+				"index": "[ 03 ]",
+				"title": "Fractional Architecture & Technical Leadership",
+				"description": "Hands-on guidance across software architecture, AI integration, delivery, and technical management — when the systems are complex and the stakes are real."
+			}
+		]
+	},
+	"cta": {
+		"watermark": "BUILD",
+		"headline": ["COMPLEX", "SYSTEM?"],
+		"headlineAccent": "LET'S TALK.",
+		"button": {
+			"label": "Start a conversation →",
+			"to": "/contact"
+		}
+	},
+	"seo": {
+		"description": "Oullin is a boutique AI architecture consultancy for startups and scale-ups. 20+ years of production systems experience — banking, fintech, high-availability infrastructure — applied to the AI era.",
+		"keywords": [
+			"AI architecture consulting",
+			"fractional AI architect",
+			"AI-era modernisation",
+			"software architecture",
+			"technical management",
+			"banking technology",
+			"fintech",
+			"startup AI architecture"
+		],
+		"imageAlt": "Oullin brand preview",
+		"jsonLd": [
+			{
+				"name": "Oullin",
+				"@type": "WebPage",
+				"urlPath": "/",
+				"@context": "https://schema.org",
+				"description": "Landing page for Oullin, covering highly available software, banking-domain delivery, architecture leadership, and digital transformation in the AI era."
+			}
+		]
+	}
+}
