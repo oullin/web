@@ -9,6 +9,7 @@ import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue
 const projectsPageOne: ProjectsResponse[] = [
 	{
 		uuid: faker.string.uuid(),
+		sort: 1,
 		title: faker.lorem.words(2),
 		excerpt: faker.lorem.sentence(),
 		url: faker.internet.url(),
@@ -16,14 +17,13 @@ const projectsPageOne: ProjectsResponse[] = [
 		icon: faker.image.avatarGitHub(),
 		is_open_source: true,
 		published_at: faker.date.past().toISOString(),
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
 	},
 ];
 
 const projectsPageTwo: ProjectsResponse[] = [
 	{
 		uuid: faker.string.uuid(),
+		sort: 2,
 		title: faker.lorem.words(3),
 		excerpt: faker.lorem.sentence(),
 		url: faker.internet.url(),
@@ -31,8 +31,6 @@ const projectsPageTwo: ProjectsResponse[] = [
 		icon: faker.image.avatarGitHub(),
 		is_open_source: true,
 		published_at: faker.date.past().toISOString(),
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
 	},
 ];
 

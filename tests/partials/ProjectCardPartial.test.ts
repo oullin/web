@@ -7,13 +7,12 @@ import type { ProjectsResponse } from '@api/response/index.ts';
 describe('ProjectCardPartial', () => {
 	const item: ProjectsResponse = {
 		uuid: faker.string.uuid(),
+		sort: 1,
 		title: faker.lorem.word(),
 		excerpt: faker.lorem.sentence(),
 		url: faker.internet.url(),
 		is_open_source: false,
 		published_at: '2026-03-17T00:00:00Z',
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
 		language: faker.lorem.word(),
 		icon: 'Bot',
 	};
@@ -25,20 +24,18 @@ describe('ProjectCardPartial', () => {
 		expect(wrapper.text()).toContain('2026');
 	});
 
-	it('falls back to updated date when published_at is missing', () => {
+	it('hides timestamp when published_at is invalid', () => {
 		const wrapper = mount(ProjectCardPartial, {
 			props: {
 				item: {
 					...item,
-					published_at: undefined,
-					updated_at: '2025-04-22T00:00:00Z',
+					published_at: 'bad-date',
 				},
 			},
 		});
 
-		expect(wrapper.text()).toContain('Updated');
-		expect(wrapper.text()).toContain('April');
-		expect(wrapper.text()).toContain('2025');
+		expect(wrapper.text()).not.toContain('Published');
+		expect(wrapper.text()).not.toContain('April');
 	});
 
 	it('supports newer API icon names', () => {
