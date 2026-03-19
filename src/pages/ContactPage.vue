@@ -33,8 +33,8 @@
 					<div class="page-side-block">
 						<div class="page-section-label">Best fit</div>
 						<div class="page-meta-list">
-							<span><strong>Projects:</strong> AI architecture, modernisation, resilient delivery</span>
-							<span><strong>Environments:</strong> regulated, high-trust, AI-era change, fintech, scale-up</span>
+							<span><strong>Projects:</strong> AI architecture, modernisation, resilient delivery, banking, healthcare, e-commerce, loyalty and customer engagement</span>
+							<span><strong>Environments:</strong> regulated, high-trust, AI-era change, fintech, scale-up, high-availability infrastructure</span>
 							<span><strong>Approach:</strong> direct, senior, hands-on, embedded close to delivery</span>
 						</div>
 					</div>
