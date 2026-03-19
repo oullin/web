@@ -59,7 +59,7 @@ describe('ContactPage', () => {
 		expect(getLinks).toHaveBeenCalled();
 		expect(wrapper.text()).toContain('Contact Oullin.');
 		expect(wrapper.text()).toContain('high-availability software');
-		expect(wrapper.text()).toContain('regulated or high-trust environment');
+		expect(wrapper.text()).toContain('regulated and high-trust environments');
 		expect(wrapper.text()).toContain(profile.email);
 		expect(wrapper.text()).toContain('GITHUB');
 		expect(wrapper.text()).toContain('X');

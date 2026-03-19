@@ -69,7 +69,7 @@ describe('AboutPage', () => {
 		expect(getRecommendations).not.toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain('Oullin.');
 		expect(wrapper.text()).toContain('boutique software engineering and architecture consultancy');
-		expect(wrapper.text()).toContain('20+ years across software, consulting, architecture');
+		expect(wrapper.text()).toContain('20+ years across software engineering, consulting, architecture, AI-first products and companies');
 		expect(wrapper.text()).toContain('10+ years in banking');
 		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('Recommendations partial');
 		expect(wrapper.html()).toContain('https://www.linkedin.com/in/gocanto/');

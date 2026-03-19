@@ -73,7 +73,7 @@ describe('ProjectsPage', () => {
 		const items = wrapper.findAll('.project');
 		expect(items).toHaveLength(projectsPageOne.length);
 		expect(wrapper.text()).toContain('Proof from real systems.');
-		expect(wrapper.text()).toContain('banking, consulting, product teams');
+		expect(wrapper.text()).toContain('banking, consulting, AI-era product teams');
 		expect(wrapper.text()).toContain(projectsPageOne[0].title);
 	});
 

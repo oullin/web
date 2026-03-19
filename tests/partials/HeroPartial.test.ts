@@ -43,10 +43,28 @@ describe('HeroPartial', () => {
 
 	it('renders the proof-led expertise blocks', () => {
 		const wrapper = mount(HeroPartial, { global });
-		expect(wrapper.text()).toContain('20+');
-		expect(wrapper.text()).toContain('10+');
-		expect(wrapper.text()).toContain('Highly Available Software');
-		expect(wrapper.text()).toContain('AI-first companies under real constraints.');
+		const text = wrapper.text();
+		hero.dataBlocks.forEach((block) => {
+			if (block.type === 'metric') {
+				expect(text).toContain(block.value);
+				expect(text).toContain(block.valueSuffix.trim());
+				block.note?.forEach((line) => {
+					expect(text).toContain(line);
+				});
+			}
+
+			if (block.type === 'list') {
+				block.items.forEach((item) => {
+					expect(text).toContain(item);
+				});
+			}
+
+			if (block.type === 'quote') {
+				block.lines?.forEach((line) => {
+					expect(text).toContain(line);
+				});
+			}
+		});
 	});
 
 	it('renders cta buttons', () => {
