@@ -1,15 +1,15 @@
 {
-	"eyebrow": "OULLIN // SOFTWARE ENGINEERING // ARCHITECTURE // TRANSFORMATION",
+	"eyebrow": "OULLIN // SOFTWARE ENGINEERING // ARCHITECTURE // AI",
 	"headline": [{ "text": "SYSTEMS" }, { "text": "THAT", "accent": true }, { "text": "HOLD.", "accent2": true }],
 	"sub": {
 		"lines": [
-			"Oullin is a boutique software engineering and architecture consultancy for high-availability software, digital transformation in the AI era, and complex systems in regulated and high-trust environments.",
-			"20+ years across software, consulting, architecture, AI-first products and companies, and technical management. 10+ years in banking. Movement and transformation still matter here, but they are carried by engineering depth."
+			"Oullin is a boutique software engineering and architecture consultancy for startups and scale-ups navigating the AI era. We bring 20+ years of production systems experience — banking, fintech, healthcare, e-commerce, loyalty and customer engagement, and high-availability infrastructure — to the question that matters most right now:",
+			"Not what to build with AI. How to build it so it lasts."
 		]
 	},
 	"cta": [
 		{ "label": "Start a conversation →", "to": "/contact", "style": "primary" },
-		{ "label": "Explore projects", "to": "/projects", "style": "ghost" }
+		{ "label": "Explore our work", "to": "/work-with-us", "style": "ghost" }
 	],
 	"dataBlocks": [
 		{
@@ -32,7 +32,7 @@
 		{
 			"type": "list",
 			"label": "// strategic.themes",
-			"items": ["Highly Available Software", "AI-Era Transformation", "Architecture & Leadership"]
+			"items": ["AI Engineering Judgment", "Regulated Systems", "Architecture & Leadership"]
 		},
 		{
 			"type": "quote",

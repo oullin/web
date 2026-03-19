@@ -3,15 +3,15 @@
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">BANKING // CONSULTING // SYSTEMS</p>
+					<p class="page-kicker">BANKING // FINTECH // AI SYSTEMS // ARCHITECTURE</p>
 					<h1 id="projects-top" class="page-title">Proof from real systems.</h1>
 					<div class="page-copy">
 						<p>
-							This portfolio reflects work shaped by banking, consulting, product teams, and resilient software delivery. It includes open-source tools, internal platforms, and client
-							systems built for availability, security, maintainability, and change.
+							This portfolio reflects work shaped by banking, consulting, AI-era product teams, and resilient software delivery. It includes open-source tools, internal platforms, and
+							client systems built for availability, security, maintainability, and change.
 						</p>
 						<p>&nbsp;</p>
-						<p>These projects show how architecture, delivery, and product judgement come together when the software has to keep working after launch.</p>
+						<p>The point is not novelty. It is evidence of judgement — across architecture, delivery, and systems that need to keep working after launch.</p>
 					</div>
 				</div>
 				<div class="page-hero-side">
@@ -22,9 +22,9 @@
 					<div class="page-side-block">
 						<div class="page-section-label">Focus</div>
 						<div class="page-meta-list">
-							<span><strong>Domains:</strong> banking, insurance, SaaS, product</span>
-							<span><strong>Systems:</strong> high-trust, resilient, maintainable</span>
-							<span><strong>Lens:</strong> architecture, delivery, modernisation</span>
+							<span><strong>Domains:</strong> banking, fintech, e-wallets, insurance, healthtech, e-commerce, SaaS, customer success platforms</span>
+							<span><strong>Systems:</strong> high-trust, resilient, maintainable, high-availability</span>
+							<span><strong>Lens:</strong> architecture, delivery, modernisation, AI integration</span>
 						</div>
 					</div>
 				</div>
@@ -36,7 +36,6 @@
 						<span class="page-section-label">Selected Work</span>
 						<h2 class="page-section-title">Work inspected through an engineering lens.</h2>
 					</div>
-					<p class="page-lead">The point is not novelty. It is evidence of judgement across architecture, product delivery, and systems that need to keep working after launch.</p>
 				</div>
 
 				<div class="relative min-h-[25rem] mt-8">
@@ -115,7 +114,7 @@ useSeo({
 		'AI transformation',
 		'banking insurance SaaS',
 	),
-	description: `Explore open-source tools, internal platforms, and client systems from ${SITE_NAME}, showing depth across banking, consulting, product delivery, and resilient software.`,
+	description: `Proof from real systems. Open-source tools, internal platforms, and client work across banking, fintech, and AI-era architecture.`,
 	jsonLd: [
 		{
 			name: 'Projects',

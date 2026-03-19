@@ -2,7 +2,7 @@
 	"leftTag": "// about.oullin",
 	"defaultName": ["OULLIN."],
 	"body": {
-		"role": "Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, modernisation, and digital transformation in the AI era.",
+		"role": "Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust environments.",
 		"origin": "The name still points to movement and transformation, but the work is grounded in senior engineering judgement and systems that have to keep running.",
 		"mission": "Led by Gustavo Ocanto, with 20+ years across software, consulting, software architecture, AI-first products and companies, and technical management, including 10+ years in banking."
 	},
@@ -15,13 +15,13 @@
 		},
 		{
 			"index": "[ 02 ]",
-			"title": "Modernization In The AI Era",
-			"description": "Practical digital transformation that connects legacy reality, platform evolution, and AI capability without hype."
+			"title": "AI-Era Architecture & Modernisation",
+			"description": "Practical modernisation that connects legacy reality, platform evolution, and AI capability. Without the hype. With the rigour."
 		},
 		{
 			"index": "[ 03 ]",
-			"title": "Architecture & Technical Leadership",
-			"description": "Hands-on guidance across software architecture, delivery, and technical management when the systems are complex and the stakes are real."
+			"title": "Fractional Architecture & Technical Leadership",
+			"description": "Hands-on guidance across software architecture, AI integration, delivery, and technical management — when the systems are complex and the stakes are real."
 		}
 	]
 }

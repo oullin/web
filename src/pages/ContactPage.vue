@@ -6,9 +6,12 @@
 					<p class="page-kicker">CONTACT // OULLIN // CONVERSATION</p>
 					<h1 class="page-title">Contact Oullin.</h1>
 					<div class="page-copy">
-						<p>Oullin is open to conversations about high-availability software, modernisation, architecture, and digital transformation in the AI era.</p>
+						<p>Oullin is open to conversations about high-availability software, AI-era modernisation, architecture, and delivery in regulated and high-trust environments.</p>
 						<p>&nbsp;</p>
-						<p>If you are working in a regulated or high-trust environment, or need senior technical leadership close to a difficult system, start the conversation here.</p>
+						<p>
+							We take a limited number of engagements at a time. If you're working on a system that has to hold — and needs senior engineering judgment close to the architecture — start
+							the conversation here.
+						</p>
 					</div>
 				</div>
 
@@ -20,16 +23,19 @@
 							<span v-else>Direct email</span>
 						</div>
 						<p class="page-panel-copy">
-							<template v-if="profile">Email is the fastest way to reach Oullin for architecture, modernisation, and transformation enquiries.</template>
+							<template v-if="profile"
+								>Email is the fastest way to reach Oullin for architecture, AI consulting, modernisation, and transformation enquiries. Come with context: your current stack, the
+								problem you're trying to solve, and any constraints. We respond within 48 hours to enquiries with enough detail for a real conversation.</template
+							>
 							<template v-else>Contact details are loading or temporarily unavailable.</template>
 						</p>
 					</div>
 					<div class="page-side-block">
 						<div class="page-section-label">Best fit</div>
 						<div class="page-meta-list">
-							<span><strong>Projects:</strong> modernisation, architecture, resilient delivery</span>
-							<span><strong>Environments:</strong> regulated, high-trust, AI-era change</span>
-							<span><strong>Approach:</strong> direct, senior, hands-on</span>
+							<span><strong>Projects:</strong> AI architecture, modernisation, resilient delivery</span>
+							<span><strong>Environments:</strong> regulated, high-trust, AI-era change, fintech, scale-up</span>
+							<span><strong>Approach:</strong> direct, senior, hands-on, embedded close to delivery</span>
 						</div>
 					</div>
 				</div>
@@ -38,20 +44,30 @@
 			<section class="page-band">
 				<div class="page-band-intro">
 					<div>
-						<span class="page-section-label">Ways to Reach Us</span>
-						<h2 class="page-section-title">Choose the channel that suits the conversation.</h2>
+						<span class="page-section-label">What Happens Next</span>
+						<h2 class="page-section-title">Clarity from the first exchange.</h2>
 					</div>
-					<p class="page-lead">
-						For most enquiries, email first. Many conversations start with a strained system, a modernisation effort, or an AI initiative that needs stronger engineering judgement.
-					</p>
+					<p class="page-lead">No pitch decks. No proposals that take two weeks. A straight answer from the first conversation.</p>
 				</div>
 
 				<div class="page-editorial">
 					<div class="page-editorial-row">
+						<span class="page-section-label">// process</span>
+						<div>
+							<div class="page-meta-list">
+								<span>— We respond within 48 hours if there's enough context to have a real conversation.</span>
+								<span>— If it's a fit, we schedule a 30-minute call — your stack, your problem, your constraints.</span>
+								<span>— We give you a straight read: whether we can help, which engagement fits, and what it costs.</span>
+								<span>— If we proceed: a one-page scope document within 48 hours.</span>
+							</div>
+						</div>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
 						<span class="page-section-label">Email</span>
 						<div>
 							<p v-if="profile" class="page-panel-copy">
-								Use <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a> for architecture, modernisation, advisory, and transformation
+								Use <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a> for architecture, AI consulting, modernisation, and transformation
 								discussions.
 							</p>
 							<p v-else class="page-panel-copy">We are currently unable to load the direct email address. Please try again later.</p>
@@ -128,15 +144,15 @@ useSeo({
 	image: SEO_IMAGE,
 	url: siteUrlFor('/contact'),
 	imageAlt: `${SITE_NAME} contact page preview`,
-	description: 'Contact Oullin about architecture, modernisation, highly available software, regulated systems, and digital transformation in the AI era.',
-	keywords: buildKeywords('contact Oullin', 'software architecture', 'digital transformation', 'regulated systems', 'technical advisory', 'highly available software'),
+	description: 'Start a conversation about AI architecture, modernisation, and delivery in regulated environments. No pitch decks. Clarity from the first exchange.',
+	keywords: buildKeywords('contact Oullin', 'AI architecture consulting', 'fractional AI architect', 'regulated systems', 'technical advisory', 'AI-era modernisation'),
 	jsonLd: [
 		{
 			'@context': 'https://schema.org',
 			'@type': 'ContactPage',
 			name: 'Contact',
 			url: siteUrlFor('/contact'),
-			description: 'Contact Oullin about architecture, modernisation, resilient systems, and AI-era transformation work.',
+			description: 'Start a conversation about AI architecture, modernisation, and delivery in regulated environments. We respond within 48 hours.',
 		},
 		{
 			'@context': 'https://schema.org',

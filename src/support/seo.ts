@@ -6,8 +6,7 @@ const DEFAULT_SITE_URL = 'https://oullin.io';
 export const SEO_IMAGE = '/images/profile/about-seo.png';
 export const SITE_LOGO = '/brand/logo-touch.png';
 export const DEFAULT_TWITTER_HANDLE = '@oullin';
-export const DEFAULT_DESCRIPTION =
-	'Oullin is a boutique software engineering and architecture consultancy focused on highly available software, digital transformation in the AI era, and complex systems in regulated and high-trust environments.';
+export const DEFAULT_DESCRIPTION = 'Boutique AI architecture consultancy. 20+ years of production systems experience in fintech and banking, applied to the AI era. Rigour over hype.';
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL as string | undefined) ?? (typeof window !== 'undefined' ? window.location.origin : DEFAULT_SITE_URL);
 export const DEFAULT_KEYWORDS = [
 	SITE_NAME,

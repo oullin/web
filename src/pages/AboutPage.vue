@@ -3,27 +3,28 @@
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">OULLIN // SOFTWARE ENGINEERING // SINGAPORE</p>
+					<p class="page-kicker">ABOUT // OULLIN // MOVEMENT // CRAFT</p>
 					<h1 class="page-title">Oullin.</h1>
 					<div class="page-copy">
 						<p>
-							Oullin is a boutique software engineering and architecture consultancy for organisations navigating high-availability software, digital transformation in the AI era, and
-							delivery in regulated or high-trust environments.
+							Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust
+							environments.
 						</p>
 						<p>&nbsp;</p>
 						<p>
-							The firm blends senior software engineering, consulting, software architecture, AI-first product and company experience, and technical management. The values still matter
-							here, but they stay in service of systems that must work.
+							We work close to architecture and delivery. Not above it. The focus is software that has to last — resilient platforms, modernisation programmes, AI-era change, and
+							technical decision-making under pressure.
 						</p>
 					</div>
 				</div>
 
 				<div class="page-hero-side">
 					<div class="page-side-block">
-						<div class="page-section-label">// founder</div>
+						<div class="page-section-label">// founder &amp; lead architect</div>
 						<div class="page-panel-title">Gustavo Ocanto</div>
 						<p class="page-panel-copy">
-							Founder of Oullin. Engineering leader with 20+ years across software, consulting, architecture, AI-first products and companies, and technical management.
+							Engineering leader with 20+ years across software engineering, consulting, architecture, AI-first products and companies, and technical management. 10+ years in banking and
+							fintech.
 						</p>
 						<div class="mt-4">
 							<a v-lazy-link href="https://www.linkedin.com/in/gocanto/" target="_blank" rel="noopener noreferrer" class="blog-link">LinkedIn Profile →</a>
@@ -43,36 +44,71 @@
 			<section class="page-band">
 				<div class="page-band-intro">
 					<div>
-						<span class="page-section-label">What Oullin Brings</span>
-						<h2 class="page-section-title">Engineering depth for complex transformation.</h2>
+						<span class="page-section-label">The Firm</span>
+						<h2 class="page-section-title">Small by design. Senior by default.</h2>
 					</div>
 					<p class="page-lead">
-						Oullin helps teams modernise core software, shape architecture, and execute transformation in the AI era without losing rigour, reliability, or business context.
+						Oullin is deliberately small. We take a limited number of engagements at a time so every client gets the senior architectural attention their systems require. We don't scale
+						headcount to fill projects. We scale judgment.
 					</p>
 				</div>
 
 				<div class="page-editorial">
 					<div class="page-editorial-row">
 						<span class="page-section-label">The Firm</span>
-						<p class="page-panel-copy">
-							Oullin is a founder-led consultancy that works close to architecture and delivery. The focus is software that has to last: resilient platforms, modernisation programmes,
-							AI-era change, and technical decision-making under pressure.
-						</p>
+						<div>
+							<p class="page-panel-copy">
+								Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust
+								environments. We work close to architecture and delivery. Not above it.
+							</p>
+							<p class="page-panel-copy mt-3">
+								The focus is software that has to last — resilient platforms, modernisation programmes, AI-era change, and technical decision-making under pressure.
+							</p>
+						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
 						<span class="page-section-label">The Name</span>
 						<p class="page-panel-copy">
-							The name is a deliberate respelling of <strong>Ollin</strong>, the Aztec day-sign of movement and transformation. That idea remains, but here it supports a practical
-							standard: keep moving, modernise with intent, and build software that survives contact with production.
+							Oullin is a deliberate misspelling of <strong>Ollin</strong> — the Aztec sacred day-sign of movement and transformation. The name still points to movement. But here,
+							movement is carried by engineering depth and a practical standard: keep moving, modernise with intent, and build software that survives contact with production. Movement is
+							not optional. Neither is rigour.
 						</p>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
 						<span class="page-section-label">How We Work</span>
-						<p class="page-panel-copy">
-							Clarity over hype. High standards over hollow velocity. Modernisation that respects constraints. Architecture decisions made to survive production, not just presentations.
-						</p>
+						<div>
+							<p class="page-panel-copy">
+								Clarity over hype. High standards over hollow velocity. Modernisation that respects constraints. Architecture decisions made to survive production, not just
+								presentations.
+							</p>
+							<p class="page-panel-copy mt-3">
+								We only recommend AI where it is the right answer. We don't dress up good engineering in buzzwords. We don't take engagements we can't deliver with senior attention.
+								And we don't produce roadmaps that disappear into a drawer.
+							</p>
+							<p class="page-panel-copy mt-3">The work is the standard. Movement is not optional.</p>
+						</div>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">// founder's note</span>
+						<div>
+							<p class="page-panel-copy">
+								I started Oullin because I kept seeing the same pattern: companies adopting AI at the feature layer without anyone asking what happens to that code in six months, at
+								ten times the load, in a regulated market.
+							</p>
+							<p class="page-panel-copy mt-3">
+								I've been building production systems for over 20 years. I've been the Head of Engineering. I've been the founding engineer. I've been the person called at 3 AM when
+								production goes down. I know what breaks and why.
+							</p>
+							<p class="page-panel-copy mt-3">
+								The name Oullin comes from Ollin — movement and transformation. But I chose it because I believe movement without rigour is just chaos with momentum. The work has
+								always been about systems that hold. The AI era made that work more urgent, not different.
+							</p>
+							<p class="page-panel-copy mt-3">If your team is moving fast and needs someone to make sure the architecture holds the pace — that's the conversation I want to have.</p>
+							<p class="page-panel-copy mt-3">— Gustavo Ocanto, Founder &amp; Lead Architect</p>
+						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
@@ -128,14 +164,15 @@ useSeo({
 		'AI transformation',
 		'regulated systems',
 	),
-	description: 'Meet Oullin and Gustavo Ocanto, and learn how the firm approaches highly available software, banking-domain systems, and digital transformation in the AI era.',
+	description: 'A boutique software engineering and architecture consultancy. Movement and craft in service of systems that hold. Led by Gustavo Ocanto.',
 	jsonLd: [
 		{
 			name: 'About',
 			'@type': 'AboutPage',
 			url: siteUrlFor('/about'),
 			'@context': 'https://schema.org',
-			description: 'About Oullin, a boutique software engineering and architecture consultancy focused on resilient systems, modernisation, and AI-era transformation.',
+			description:
+				'About Oullin, a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust environments.',
 		},
 		{
 			'@context': 'https://schema.org',

@@ -15,6 +15,48 @@
 			</div>
 		</section>
 
+		<!-- AI ERA -->
+		<section id="ai-era" class="about-section">
+			<div class="about-left">
+				<div class="section-tag">// ai.era</div>
+				<h2 class="about-name">The bottleneck shifted.<br />We were ready.</h2>
+				<p class="about-body">
+					AI tools generate code faster than most teams can review it. The cost of implementation is falling. The cost of a bad architectural decision is not.<br /><br />
+					Oullin has always been in the business of engineering judgment — knowing what to build, how to build it safely, and what breaks under real load in a regulated environment. The AI
+					era didn't change our work. It made it more necessary.<br /><br />
+					We work with startups and scale-ups as a fractional AI architecture partner. Not to generate code. To ensure what gets generated holds.
+				</p>
+			</div>
+			<div class="about-right">
+				<div class="section-tag">// engagements</div>
+				<div class="work-list">
+					<div class="work-item">
+						<span class="w-idx">[ 01 ]</span>
+						<div>
+							<div class="w-title">AI Architecture Sprint</div>
+							<div class="w-desc">Two weeks. One production-ready roadmap. Built by engineers who have shipped the systems you're building.</div>
+						</div>
+					</div>
+					<div class="work-item">
+						<span class="w-idx">[ 02 ]</span>
+						<div>
+							<div class="w-title">Fractional AI Architect</div>
+							<div class="w-desc">Embedded. Reviewing what your team and your AI tools produce. 3-month minimum.</div>
+						</div>
+					</div>
+					<div class="work-item">
+						<span class="w-idx">[ 03 ]</span>
+						<div>
+							<div class="w-title">Production Hardening</div>
+							<div class="w-desc">Your prototype works in demos. We make it work in production.</div>
+						</div>
+					</div>
+				</div>
+				<div>&nbsp;</div>
+				<RouterLink to="/work-with-us" class="btn-ghost mt-8 inline-block">See all engagements →</RouterLink>
+			</div>
+		</section>
+
 		<!-- ABOUT -->
 		<section id="about" class="about-section">
 			<div class="about-left">
@@ -71,9 +113,18 @@ useSeo({
 	image: SEO_IMAGE,
 	url: siteUrlFor('/'),
 	imageAlt: `${SITE_NAME} brand preview`,
-	keywords: buildKeywords('highly available software', 'software architecture', 'technical management', 'digital transformation', 'AI transformation', 'banking technology', 'consulting'),
+	keywords: buildKeywords(
+		'AI architecture consulting',
+		'fractional AI architect',
+		'AI-era modernisation',
+		'software architecture',
+		'technical management',
+		'banking technology',
+		'fintech',
+		'startup AI architecture',
+	),
 	description:
-		'Oullin is a boutique software engineering and architecture consultancy with 20+ years across software, consulting, architecture, AI-first products and companies, and technical management, including 10+ years in banking.',
+		'Oullin is a boutique AI architecture consultancy for startups and scale-ups. 20+ years of production systems experience — banking, fintech, high-availability infrastructure — applied to the AI era.',
 	jsonLd: [
 		{
 			name: SITE_NAME,

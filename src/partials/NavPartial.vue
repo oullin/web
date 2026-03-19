@@ -18,7 +18,7 @@
 					<NavigationMenuList>
 						<NavigationMenuItem v-for="link in navLinks" :key="link.to">
 							<NavigationMenuLink as-child>
-								<RouterLink :to="link.to">{{ link.label }}</RouterLink>
+								<RouterLink :to="link.to" class="whitespace-nowrap">{{ link.label }}</RouterLink>
 							</NavigationMenuLink>
 						</NavigationMenuItem>
 					</NavigationMenuList>
@@ -95,6 +95,7 @@ onMounted(async () => {
 });
 
 const navLinks = [
+	{ to: '/work-with-us', label: 'work with us' },
 	{ to: '/writing', label: 'writing' },
 	{ to: '/projects', label: 'projects' },
 	{ to: '/about', label: 'about' },

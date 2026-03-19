@@ -3,10 +3,10 @@
 		<main class="page-shell" data-testid="tag-posts">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">TAGS // WRITING // EXPLORATION</p>
-					<h1 id="tag-posts-top" class="page-title">Topics & Tags Explorer.</h1>
+					<p class="page-kicker">WRITING // TOPICS // FIND YOUR PROBLEM</p>
+					<h1 id="tag-posts-top" class="page-title">Find what's relevant to your system.</h1>
 					<div class="page-copy">
-						<p>Use tags to trace themes, tools, and recurring ideas across the writing. This view groups related material so one topic can be followed without jumping around blindly.</p>
+						<p>Tags trace recurring problems, patterns, and decisions across the writing. Pick a topic and follow it through — without jumping around blindly.</p>
 					</div>
 					<div class="page-pill-row">
 						<button type="button" class="page-pill cursor-pointer border-0" @click="handleGoBack">Go back</button>

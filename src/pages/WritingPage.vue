@@ -3,20 +3,27 @@
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">WRITING // ESSAYS // SIGNAL</p>
-					<h1 class="page-title">Writing archive.</h1>
+					<p class="page-kicker">WRITING // USE CASES // FIELD NOTES</p>
+					<h1 class="page-title">Field notes from real systems.</h1>
 					<div class="page-copy">
-						<p>This page holds Oullin's article archive. It is a dedicated place to browse categories, open essays, and follow the writing without burying it inside the landing page.</p>
+						<p>
+							Patterns, decisions, and hard-won lessons from 20+ years of building software that has to keep working. Architecture, AI integration, fintech, and the problems that show up
+							when prototypes meet production.
+						</p>
 					</div>
 				</div>
 				<div class="page-hero-side">
 					<div class="page-side-block">
-						<div class="page-section-label">What this page is for</div>
+						<div class="page-section-label">[ // WHAT THIS IS FOR ]</div>
 						<div class="page-meta-list">
-							<span><strong>Scope:</strong> articles, notes, technical essays</span>
+							<span><strong>Scope:</strong> use cases, case studies, technical essays</span>
 							<span><strong>Filter:</strong> category-first browsing</span>
-							<span><strong>Intent:</strong> keep the homepage focused and the archive useful</span>
+							<span><strong>Intent:</strong> concrete over abstract — problems, decisions, outcomes</span>
 						</div>
+						<p class="page-panel-copy mt-4">
+							These aren't opinion pieces. They're documentation of real architectural decisions, integration patterns, and the failure modes that only show up under real load.
+							Engineering judgment, written down so you can use it.
+						</p>
 					</div>
 				</div>
 			</section>
@@ -40,7 +47,7 @@ useSeo({
 	image: SEO_IMAGE,
 	url: siteUrlFor('/writing'),
 	imageAlt: `${SITE_NAME} writing archive preview`,
-	description: `Browse ${SITE_NAME}'s writing archive for technical essays, architecture notes, and category-based reading across software, AI, and systems thinking.`,
+	description: `Field notes from real systems. Use cases, case studies, and technical essays on AI architecture, production systems, and engineering judgment — problems, decisions, and outcomes from 20+ years of building software that has to keep working.`,
 	keywords: buildKeywords(
 		'writing archive',
 		'technical essays',
