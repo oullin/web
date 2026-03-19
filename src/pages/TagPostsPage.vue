@@ -1,7 +1,5 @@
 <template>
 	<div class="theme min-h-screen tags-page">
-		<NavPartial />
-
 		<main class="page-shell" data-testid="tag-posts">
 			<section class="page-hero">
 				<div class="page-hero-main">
@@ -65,7 +63,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
 import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';

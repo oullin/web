@@ -1,7 +1,5 @@
 <template>
 	<div class="theme min-h-screen contact-page">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
@@ -94,7 +92,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';

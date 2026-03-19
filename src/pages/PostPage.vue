@@ -1,7 +1,5 @@
 <template>
 	<div class="theme min-h-screen post-page">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-band !pt-6">
 				<div class="mb-6">
@@ -76,7 +74,6 @@ import { useDarkMode } from '@/dark-mode.ts';
 import highlight from 'highlight.js/lib/core';
 import { debugError } from '@api/http-error.ts';
 import { date, getReadingTime, goBack } from '@/public.ts';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';

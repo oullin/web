@@ -1,8 +1,5 @@
 <template>
 	<div class="theme min-h-screen home-wrap">
-		<!-- NAV -->
-		<NavPartial />
-
 		<!-- HERO -->
 		<HeroPartial />
 
@@ -62,7 +59,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import HeroPartial from '@partials/HeroPartial.vue';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@support/seo';
 import principles from '@fixtures/principles.json';

@@ -1,7 +1,5 @@
 <template>
 	<div class="theme min-h-screen writing-page">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
@@ -33,7 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';

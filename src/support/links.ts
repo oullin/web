@@ -14,6 +14,26 @@ interface LinksNavLink {
 }
 
 type PlatformName = 'x' | 'youtube' | 'instagram' | 'linkedin' | 'github';
+type NavSocialPlatform = Extract<PlatformName, 'linkedin' | 'x' | 'github'>;
+
+export const NAV_SOCIAL_FALLBACKS: Record<NavSocialPlatform, string> = {
+	linkedin: 'https://www.linkedin.com/in/gocanto/',
+	x: 'https://x.com/oullin',
+	github: 'https://github.com/oullin',
+};
+
+export const resolveNavSocialLinks = (links: LinksResponse[]): Record<NavSocialPlatform, string> => {
+	const resolvedLinks = { ...NAV_SOCIAL_FALLBACKS };
+
+	for (const platform of Object.keys(NAV_SOCIAL_FALLBACKS) as NavSocialPlatform[]) {
+		const match = links.find((item) => item.name === platform && item.url);
+		if (match?.url) {
+			resolvedLinks[platform] = match.url;
+		}
+	}
+
+	return resolvedLinks;
+};
 
 export class Links {
 	private readonly apiStore = useApiStore();

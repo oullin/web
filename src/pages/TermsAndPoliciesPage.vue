@@ -1,7 +1,5 @@
 <template>
 	<div class="theme min-h-screen">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
@@ -109,7 +107,6 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, siteUrlFor, buildKeywords } from '@support/seo';
 

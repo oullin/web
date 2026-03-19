@@ -1,7 +1,5 @@
 <template>
 	<div class="theme min-h-screen about-page">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
@@ -100,7 +98,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';

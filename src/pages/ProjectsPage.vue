@@ -1,7 +1,5 @@
 <template>
 	<div class="theme min-h-screen projects-page">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
@@ -78,7 +76,6 @@
 import { ref, onMounted, computed } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
