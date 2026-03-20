@@ -13,6 +13,21 @@ import { writingPageContent } from '@/support/content/writing-page.ts';
 const indexHtml = readFileSync(resolve(process.cwd(), 'index.html'), 'utf8');
 const staleGustavoTitle = 'Gustavo Ocanto - Engineering, Leadership, Fintech & eCommerce | Software Engineer, Architect, AI , AI Architect & Manager';
 
+function collectJsonLdTypes(value: unknown): string[] {
+	if (Array.isArray(value)) {
+		return value.flatMap((entry) => collectJsonLdTypes(entry));
+	}
+
+	if (typeof value !== 'object' || value === null) {
+		return [];
+	}
+
+	const record = value as Record<string, unknown>;
+	const types = typeof record['@type'] === 'string' ? [record['@type']] : Array.isArray(record['@type']) ? record['@type'].filter((type): type is string => typeof type === 'string') : [];
+
+	return [...types, ...Object.values(record).flatMap((entry) => collectJsonLdTypes(entry))];
+}
+
 describe('SEO content fixtures', () => {
 	it('keeps the home page and site defaults aligned to the current Oullin positioning', () => {
 		expect(homePageContent.seo.title).toBe('Oullin');
@@ -24,8 +39,8 @@ describe('SEO content fixtures', () => {
 	it('keeps page seo copy brand-led and removes stale person-led metadata', () => {
 		expect(aboutPageContent.seo.description).not.toContain('Gustavo');
 		expect(contactPageContent.seo.description).not.toContain('Gustavo');
-		expect(JSON.stringify(aboutPageContent.seo.jsonLd)).not.toContain('"@type":"Person"');
-		expect(JSON.stringify(contactPageContent.seo.jsonLd)).not.toContain('"@type":"Person"');
+		expect(collectJsonLdTypes(aboutPageContent.seo.jsonLd)).not.toContain('Person');
+		expect(collectJsonLdTypes(contactPageContent.seo.jsonLd)).not.toContain('Person');
 		expect(workWithUsPageContent.seo.description).toContain('judgment-first engagements');
 		expect(projectsPageContent.seo.description).toContain('resilient software delivery');
 		expect(writingPageContent.seo.description).toContain('engineering judgment');

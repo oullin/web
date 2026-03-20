@@ -155,6 +155,26 @@ describe('Seo.apply', () => {
 		expect(serializeMeta('meta[property="og:title"]')).toBe(SITE_NAME);
 		expect(serializeMeta('meta[name="twitter:title"]')).toBe(SITE_NAME);
 	});
+
+	it('does not duplicate the brand suffix when the page title is already composed', () => {
+		instance.apply({
+			title: `Projects | ${SITE_NAME}`,
+		});
+
+		expect(document.title).toBe(`Projects | ${SITE_NAME}`);
+		expect(serializeMeta('meta[property="og:title"]')).toBe(`Projects | ${SITE_NAME}`);
+		expect(serializeMeta('meta[name="twitter:title"]')).toBe(`Projects | ${SITE_NAME}`);
+	});
+
+	it('normalizes site-name input after trimming surrounding whitespace', () => {
+		instance.apply({
+			title: ` ${SITE_NAME} `,
+		});
+
+		expect(document.title).toBe(SITE_NAME);
+		expect(serializeMeta('meta[property="og:title"]')).toBe(SITE_NAME);
+		expect(serializeMeta('meta[name="twitter:title"]')).toBe(SITE_NAME);
+	});
 });
 
 describe('siteUrlFor', () => {

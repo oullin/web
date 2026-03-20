@@ -64,6 +64,23 @@ interface SeoOptions {
 const hasDocument = typeof document !== 'undefined';
 const hasWindow = typeof window !== 'undefined';
 
+function composeTitle(pageTitle?: string): string {
+	const normalizedPageTitle = pageTitle?.trim();
+
+	if (!normalizedPageTitle || normalizedPageTitle === SITE_NAME) {
+		return SITE_NAME;
+	}
+
+	const brandSuffix = ` | ${SITE_NAME}`;
+	const deduplicatedTitle = normalizedPageTitle.endsWith(brandSuffix) ? normalizedPageTitle.slice(0, -brandSuffix.length).trim() : normalizedPageTitle;
+
+	if (!deduplicatedTitle || deduplicatedTitle === SITE_NAME) {
+		return SITE_NAME;
+	}
+
+	return `${deduplicatedTitle} | ${SITE_NAME}`;
+}
+
 export class Seo {
 	apply(options: SeoOptions): void {
 		if (!hasDocument || !hasWindow) return;
@@ -71,8 +88,7 @@ export class Seo {
 		const currentPath = window.location.pathname + window.location.search;
 		const url = options.url ?? siteUrlFor(currentPath || '/');
 		const image = new URL(options.image ?? SEO_IMAGE, SITE_URL).toString();
-		const normalizedPageTitle = options.title?.trim();
-		const title = !normalizedPageTitle || normalizedPageTitle === SITE_NAME ? SITE_NAME : `${normalizedPageTitle} | ${SITE_NAME}`;
+		const title = composeTitle(options.title);
 		const description = options.description ?? DEFAULT_DESCRIPTION;
 		const language = options.siteLanguage ?? siteContent.seo.siteLanguage;
 		const locale = options.locale ?? siteContent.seo.locale;
