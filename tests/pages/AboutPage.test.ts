@@ -69,7 +69,9 @@ describe('AboutPage', () => {
 		expect(getProfile).toHaveBeenCalled();
 		expect(getRecommendations).not.toHaveBeenCalled();
 		expect(wrapper.find('h1').text()).toContain(aboutPageContent.hero.title);
-		expect(wrapper.text()).toContain(aboutPageContent.hero.copy[0]);
+		aboutPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
 		expect(wrapper.text()).toContain(aboutPageContent.sidebar.founder.copy);
 		expect(wrapper.text()).toContain(aboutPageContent.sidebar.proof.items[1]);
 		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('Recommendations partial');

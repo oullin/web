@@ -16,12 +16,23 @@ describe('TermsAndPoliciesPage', () => {
 
 		expect(wrapper.find('[data-testid="site-footer"]').exists()).toBe(true);
 		expect(wrapper.find('h1').text()).toContain(termsAndPoliciesPageContent.hero.title);
+		termsAndPoliciesPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
 	});
 
 	it('links policy enquiries to the contact page', () => {
 		const wrapper = mount(TermsAndPoliciesPage, { global });
+		const contactSection = termsAndPoliciesPageContent.legalSections.find((section) => section.contactLink);
+		const normalizedText = wrapper
+			.text()
+			.replace(/\s+/g, ' ')
+			.replace(/\s+([.,;:!?])/g, '$1')
+			.trim();
 
-		const contactLink = wrapper.findAll('a').find((link) => link.text() === 'Contact page');
-		expect(contactLink?.attributes('to')).toBe('/contact');
+		expect(contactSection).toBeDefined();
+		expect(normalizedText).toContain(contactSection!.paragraphs[0]);
+		const contactLink = wrapper.findAll('a').find((link) => link.attributes('to') === contactSection!.contactLink?.to);
+		expect(contactLink?.text()).toBe(contactSection!.contactLink?.label);
 	});
 });

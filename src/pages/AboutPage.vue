@@ -6,9 +6,7 @@
 					<p class="page-kicker">{{ hero.kicker }}</p>
 					<h1 class="page-title">{{ hero.title }}</h1>
 					<div class="page-copy">
-						<p>{{ hero.copy[0] }}</p>
-						<p>&nbsp;</p>
-						<p>{{ hero.copy[1] }}</p>
+						<p v-for="(paragraph, index) in hero.copy" :key="paragraph" :class="{ 'mt-6': index > 0 }">{{ paragraph }}</p>
 					</div>
 				</div>
 
@@ -79,7 +77,7 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { aboutPageContent, resolveJsonLd } from '@support/content.ts';
+import { aboutPageContent, resolveJsonLdArray } from '@support/content.ts';
 
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse } from '@api/response/index.ts';
@@ -97,7 +95,7 @@ useSeo({
 	imageAlt: seo.imageAlt ?? `${SITE_NAME} brand story`,
 	keywords: buildKeywords(seo.keywords),
 	description: seo.description,
-	jsonLd: [...(resolveJsonLd(seo.jsonLd, siteUrlFor) as Record<string, unknown>[]), ORGANIZATION_JSON_LD],
+	jsonLd: [...resolveJsonLdArray(seo.jsonLd, siteUrlFor), ORGANIZATION_JSON_LD],
 });
 
 const loadAboutPageData = async () => {

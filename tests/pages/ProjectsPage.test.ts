@@ -74,7 +74,9 @@ describe('ProjectsPage', () => {
 		const items = wrapper.findAll('.project');
 		expect(items).toHaveLength(projectsPageOne.length);
 		expect(wrapper.text()).toContain(projectsPageContent.hero.title);
-		expect(wrapper.text()).toContain(projectsPageContent.hero.copy[0]);
+		projectsPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
 		expect(wrapper.text()).toContain(projectsPageOne[0].title);
 	});
 

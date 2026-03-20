@@ -16,7 +16,9 @@ describe('WritingPage', () => {
 	it('renders the writing archive shell', () => {
 		const wrapper = mount(WritingPage, { global });
 		expect(wrapper.text()).toContain(writingPageContent.hero.title);
-		expect(wrapper.text()).toContain(writingPageContent.hero.copy[0]);
+		writingPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
 		expect(wrapper.find('[data-testid="articles-list"]').exists()).toBe(true);
 	});
 });

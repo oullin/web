@@ -40,8 +40,9 @@ describe('NavPartial', () => {
 		expect(homeLink?.attributes('to')).toBe('/');
 		expect(homeLink?.findAll('img')).toHaveLength(1);
 
-		const lastNavLink = siteContent.nav.links[siteContent.nav.links.length - 1];
-		const contactLink = wrapper.findAll('a').find((link) => link.text().includes(lastNavLink.label));
-		expect(contactLink?.attributes('to')).toBe(lastNavLink.to);
+		const contactNavLink = siteContent.nav.links.find((link) => link.to === '/contact');
+		expect(contactNavLink).toBeDefined();
+		const contactLink = wrapper.findAll('a').find((link) => link.attributes('to') === contactNavLink?.to);
+		expect(contactLink?.text()).toContain(contactNavLink!.label);
 	});
 });

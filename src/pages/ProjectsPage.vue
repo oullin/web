@@ -6,9 +6,7 @@
 					<p class="page-kicker">{{ hero.kicker }}</p>
 					<h1 id="projects-top" class="page-title">{{ hero.title }}</h1>
 					<div class="page-copy">
-						<p>{{ hero.copy[0] }}</p>
-						<p>&nbsp;</p>
-						<p>{{ hero.copy[1] }}</p>
+						<p v-for="(paragraph, index) in hero.copy" :key="paragraph" :class="{ 'mt-6': index > 0 }">{{ paragraph }}</p>
 					</div>
 				</div>
 				<div class="page-hero-side">
@@ -19,6 +17,7 @@
 					<div class="page-side-block">
 						<div class="page-section-label">{{ sidebar.focus.label }}</div>
 						<div class="page-meta-list">
+							<!-- Trusted HTML from repo-owned fixtures only. Do not source this from user input or external data. -->
 							<span v-for="item in sidebar.focus.items" :key="item" v-html="item"></span>
 						</div>
 					</div>
@@ -76,7 +75,7 @@ import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { projectsPageContent, resolveJsonLd } from '@support/content.ts';
+import { projectsPageContent, resolveJsonLdArray } from '@support/content.ts';
 
 const DEFAULT_SKELETON_COUNT = 4;
 const apiStore = useApiStore();
@@ -102,7 +101,7 @@ useSeo({
 	imageAlt: seo.imageAlt ?? `${SITE_NAME} project collection preview`,
 	keywords: buildKeywords(seo.keywords),
 	description: seo.description,
-	jsonLd: [...(resolveJsonLd(seo.jsonLd, siteUrlFor) as Record<string, unknown>[]), ORGANIZATION_JSON_LD],
+	jsonLd: [...resolveJsonLdArray(seo.jsonLd, siteUrlFor), ORGANIZATION_JSON_LD],
 });
 
 const scrollToProjectsStart = async () => {

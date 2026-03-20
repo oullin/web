@@ -15,7 +15,9 @@ describe('WorkWithUsPage', () => {
 		const wrapper = mount(WorkWithUsPage, { global });
 
 		expect(wrapper.text()).toContain(workWithUsPageContent.hero.title);
-		expect(wrapper.text()).toContain(workWithUsPageContent.hero.copy[0]);
+		workWithUsPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
 		expect(wrapper.text()).toContain(workWithUsPageContent.engagements[0].label);
 		expect(wrapper.text()).toContain(workWithUsPageContent.faq.items[0].question);
 		expect(wrapper.text()).toContain(workWithUsPageContent.cta.button.label);

@@ -59,7 +59,9 @@ describe('ContactPage', () => {
 		expect(getProfile).toHaveBeenCalled();
 		expect(getLinks).toHaveBeenCalled();
 		expect(wrapper.text()).toContain(contactPageContent.hero.title);
-		expect(wrapper.text()).toContain(contactPageContent.hero.copy[0]);
+		contactPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
 		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.copy);
 		expect(wrapper.text()).toContain(profile.email);
 		expect(wrapper.text()).toContain('GITHUB');

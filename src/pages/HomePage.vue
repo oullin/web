@@ -91,7 +91,7 @@ import { RouterLink } from 'vue-router';
 import HeroPartial from '@partials/HeroPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@support/seo';
-import { homePageContent, resolveJsonLd } from '@support/content.ts';
+import { homePageContent, resolveJsonLdArray } from '@support/content.ts';
 
 const { principles, aiEra, about, cta, seo } = homePageContent;
 const nameLines = about.defaultName;
@@ -102,6 +102,6 @@ useSeo({
 	imageAlt: seo.imageAlt ?? `${SITE_NAME} brand preview`,
 	keywords: buildKeywords(seo.keywords),
 	description: seo.description,
-	jsonLd: [...(resolveJsonLd(seo.jsonLd, siteUrlFor) as Record<string, unknown>[]), WEBSITE_JSON_LD, ORGANIZATION_JSON_LD],
+	jsonLd: [...resolveJsonLdArray(seo.jsonLd, siteUrlFor), WEBSITE_JSON_LD, ORGANIZATION_JSON_LD],
 });
 </script>
