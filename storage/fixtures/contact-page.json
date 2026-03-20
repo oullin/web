@@ -52,23 +52,16 @@
 	},
 	"seo": {
 		"title": "Contact",
-		"description": "Start a conversation about AI architecture, modernisation, and delivery in regulated environments. No pitch decks. Clarity from the first exchange.",
-		"keywords": ["contact Oullin", "AI architecture consulting", "fractional AI architect", "regulated systems", "technical advisory", "AI-era modernisation"],
+		"description": "Contact Oullin about AI architecture, modernisation, and resilient delivery in regulated and high-trust environments. Direct, senior guidance from the first exchange.",
+		"keywords": ["contact Oullin", "AI architecture consulting", "software architecture advisory", "AI-era modernisation", "regulated systems", "resilient delivery", "technical leadership"],
 		"imageAlt": "Oullin contact page preview",
 		"jsonLd": [
 			{
 				"@context": "https://schema.org",
 				"@type": "ContactPage",
-				"name": "Contact",
+				"name": "Contact Oullin",
 				"urlPath": "/contact",
-				"description": "Start a conversation about AI architecture, modernisation, and delivery in regulated environments. We respond within 48 hours."
-			},
-			{
-				"@context": "https://schema.org",
-				"@type": "Person",
-				"name": "Gustavo Ocanto",
-				"jobTitle": "Founder of Oullin",
-				"urlPath": "/contact"
+				"description": "Contact Oullin about AI architecture, modernisation, and resilient delivery in regulated and high-trust environments."
 			}
 		]
 	}

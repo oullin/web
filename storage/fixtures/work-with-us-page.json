@@ -133,16 +133,24 @@
 	},
 	"seo": {
 		"title": "Work With Us",
-		"description": "Four ways to work with Oullin: AI Architecture Sprint, Fractional AI Architect, Production Hardening, and AI-Era Team Enablement. Judgment-first engagements for startups and scale-ups.",
-		"keywords": ["AI architecture sprint", "fractional AI architect", "production hardening", "AI team enablement", "AI consulting", "startup AI architecture", "judgment-first engagements"],
+		"description": "Explore Oullin's judgment-first engagements: AI Architecture Sprint, Fractional AI Architect, Production Hardening, and AI-Era Team Enablement for startups and scale-ups.",
+		"keywords": [
+			"AI architecture sprint",
+			"fractional AI architect",
+			"production hardening",
+			"AI team enablement",
+			"AI consulting",
+			"startup architecture consulting",
+			"judgment-first engagements"
+		],
 		"imageAlt": "Oullin engagements",
 		"jsonLd": [
 			{
-				"name": "Work With Us",
+				"name": "Work With Oullin",
 				"@type": "WebPage",
 				"urlPath": "/work-with-us",
 				"@context": "https://schema.org",
-				"description": "Four AI consulting engagements for startups and scale-ups: AI Architecture Sprint, Fractional AI Architect, Production Hardening, and AI-Era Team Enablement."
+				"description": "Explore Oullin's judgment-first engagements: AI Architecture Sprint, Fractional AI Architect, Production Hardening, and AI-Era Team Enablement for startups and scale-ups."
 			}
 		]
 	}

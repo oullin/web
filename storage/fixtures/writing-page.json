@@ -17,26 +17,16 @@
 	},
 	"seo": {
 		"title": "Writing",
-		"description": "Field notes from real systems. Use cases, case studies, and technical essays on AI architecture, production systems, and engineering judgment — problems, decisions, and outcomes from 20+ years of building software that has to keep working.",
-		"keywords": [
-			"writing archive",
-			"technical essays",
-			"architecture notes",
-			"systems thinking",
-			"software architect",
-			"software engineering",
-			"technical management",
-			"digital transformation",
-			"AI orchestration"
-		],
+		"description": "Field notes from real systems: case studies, technical essays, and use cases on AI architecture, production systems, and engineering judgment.",
+		"keywords": ["Oullin writing", "technical essays", "AI architecture notes", "production systems", "engineering judgment", "software architecture", "systems thinking", "AI-era modernisation"],
 		"imageAlt": "Oullin writing archive preview",
 		"jsonLd": [
 			{
-				"name": "Writing Archive",
+				"name": "Oullin Writing",
 				"@type": "CollectionPage",
 				"urlPath": "/writing",
 				"@context": "https://schema.org",
-				"description": "Oullin's archive of essays, notes, and articles on software engineering, AI, and architecture."
+				"description": "Field notes from real systems: case studies, technical essays, and use cases on AI architecture, production systems, and engineering judgment."
 			}
 		]
 	}

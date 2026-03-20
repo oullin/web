@@ -71,7 +71,8 @@ export class Seo {
 		const currentPath = window.location.pathname + window.location.search;
 		const url = options.url ?? siteUrlFor(currentPath || '/');
 		const image = new URL(options.image ?? SEO_IMAGE, SITE_URL).toString();
-		const title = options.title ? `${options.title} - ${SITE_NAME}` : SITE_NAME;
+		const normalizedPageTitle = options.title?.trim();
+		const title = !normalizedPageTitle || normalizedPageTitle === SITE_NAME ? SITE_NAME : `${normalizedPageTitle} | ${SITE_NAME}`;
 		const description = options.description ?? DEFAULT_DESCRIPTION;
 		const language = options.siteLanguage ?? siteContent.seo.siteLanguage;
 		const locale = options.locale ?? siteContent.seo.locale;

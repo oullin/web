@@ -3,26 +3,26 @@
 	"twitterHandle": "@oullin",
 	"logoPath": "/brand/logo-touch.png",
 	"seo": {
-		"defaultDescription": "Boutique AI architecture consultancy. 20+ years of production systems experience in fintech and banking, applied to the AI era. Rigour over hype.",
+		"defaultDescription": "Oullin is a boutique software engineering and architecture consultancy for startups and scale-ups navigating the AI era. AI architecture, modernisation, and resilient systems for regulated and high-trust environments.",
 		"defaultKeywords": [
 			"Oullin",
-			"Transformation",
+			"AI Architecture Consultancy",
 			"Software Engineering",
 			"Software Architecture",
-			"Highly Available Software",
-			"AI Transformation",
-			"Banking Technology",
-			"Technical Management",
-			"Digital Transformation",
-			"Consulting",
+			"Resilient Systems",
+			"AI-Era Modernisation",
 			"Regulated Systems",
-			"AI-First Products"
+			"High-Trust Environments",
+			"Technical Leadership",
+			"Production Systems",
+			"Startup Architecture",
+			"Fractional AI Architect"
 		],
 		"siteLanguage": "en-GB",
 		"locale": "en_GB"
 	},
 	"organization": {
-		"description": "Boutique AI architecture consultancy. 20+ years of production systems experience in fintech and banking, applied to the AI era. Rigour over hype.",
+		"description": "Oullin is a boutique software engineering and architecture consultancy for startups and scale-ups navigating the AI era. AI architecture, modernisation, and resilient systems for regulated and high-trust environments.",
 		"sameAs": ["https://github.com/oullin"]
 	},
 	"nav": {

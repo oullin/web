@@ -66,35 +66,26 @@
 	},
 	"seo": {
 		"title": "About",
-		"description": "A boutique software engineering and architecture consultancy. Movement and craft in service of systems that hold. Led by Gustavo Ocanto.",
+		"description": "About Oullin, a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and engineering judgment in regulated and high-trust environments.",
 		"keywords": [
 			"about Oullin",
-			"Gustavo Ocanto",
-			"highly available software",
+			"boutique consultancy",
+			"resilient systems",
+			"AI-era modernisation",
 			"software architecture",
-			"software engineering",
-			"banking technology",
-			"technical management",
-			"digital transformation",
-			"AI transformation",
-			"regulated systems"
+			"technical leadership",
+			"engineering judgment",
+			"regulated systems",
+			"high-trust environments"
 		],
 		"imageAlt": "Oullin brand story",
 		"jsonLd": [
 			{
-				"name": "About",
+				"name": "About Oullin",
 				"@type": "AboutPage",
 				"urlPath": "/about",
 				"@context": "https://schema.org",
-				"description": "About Oullin, a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust environments."
-			},
-			{
-				"@context": "https://schema.org",
-				"@type": "Person",
-				"name": "Gustavo Ocanto",
-				"jobTitle": "Founder of Oullin",
-				"urlPath": "/about",
-				"description": "Founder of Oullin and engineering leader working across architecture, modernisation, banking-domain systems, and software delivery."
+				"description": "About Oullin, a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and engineering judgment in regulated and high-trust environments."
 			}
 		]
 	}
