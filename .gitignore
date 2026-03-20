@@ -7,7 +7,7 @@ stats.html
 dist/
 dist-plan/
 # ad-hoc build output for verifying production builds without overwriting dist/
-dist-verify/
+dist-verify*/
 .vite/
 .idea/
 dist-ssr/

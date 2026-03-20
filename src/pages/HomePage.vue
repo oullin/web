@@ -91,7 +91,7 @@ import { RouterLink } from 'vue-router';
 import HeroPartial from '@partials/HeroPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD, WEBSITE_JSON_LD } from '@support/seo';
-import { resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/json-ld.ts';
 import { homePageContent } from '@support/content/home-page.ts';
 
 const { principles, aiEra, about, cta, seo } = homePageContent;

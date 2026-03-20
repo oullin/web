@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { Github, Linkedin, Menu, Moon, Sun, Twitter } from 'lucide-vue-next';
 import { useDarkMode } from '@/dark-mode.ts';
@@ -73,6 +73,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { NAV_SOCIAL_FALLBACKS, resolveNavSocialLinks } from '@support/links.ts';
 import { siteContent } from '@support/content.ts';
+import { runAfterLoadAndIdle, type DeferredCleanup } from '@support/deferred.ts';
 import { NavigationMenu, NavigationMenuLink, NavigationMenuItem, NavigationMenuList } from '@components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@components/ui/sheet';
 
@@ -82,10 +83,17 @@ const apiStore = useApiStore();
 const linkedinUrl = ref(NAV_SOCIAL_FALLBACKS.linkedin);
 const xUrl = ref(NAV_SOCIAL_FALLBACKS.x);
 const githubUrl = ref(NAV_SOCIAL_FALLBACKS.github);
+let isActive = true;
+let cancelDeferredRefresh: DeferredCleanup = () => {};
 
-onMounted(async () => {
+const refreshSocialLinks = async () => {
 	try {
 		const response = await apiStore.getLinks();
+
+		if (!isActive) {
+			return;
+		}
+
 		const resolvedLinks = resolveNavSocialLinks(response.data ?? []);
 		linkedinUrl.value = resolvedLinks.linkedin;
 		xUrl.value = resolvedLinks.x;
@@ -93,6 +101,17 @@ onMounted(async () => {
 	} catch (error) {
 		debugError(error);
 	}
+};
+
+onMounted(() => {
+	cancelDeferredRefresh = runAfterLoadAndIdle(() => {
+		void refreshSocialLinks();
+	});
+});
+
+onBeforeUnmount(() => {
+	isActive = false;
+	cancelDeferredRefresh();
 });
 
 const navLinks = siteContent.nav.links;

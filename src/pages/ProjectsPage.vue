@@ -75,7 +75,7 @@ import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/json-ld.ts';
 import { projectsPageContent } from '@support/content/projects-page.ts';
 
 const DEFAULT_SKELETON_COUNT = 4;

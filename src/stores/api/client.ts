@@ -334,7 +334,9 @@ export class ApiClient {
 		}
 
 		const request = this.performGet<T>(url, options).finally(() => {
-			this.inFlightGets.delete(url);
+			if (this.inFlightGets.get(url) === request) {
+				this.inFlightGets.delete(url);
+			}
 		});
 
 		this.inFlightGets.set(url, request);

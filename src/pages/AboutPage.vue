@@ -49,7 +49,7 @@
 						</div>
 						<div class="page-editorial-sep"></div>
 					</template>
-					<div class="page-editorial-row">
+					<div ref="connectSection" class="page-editorial-row">
 						<span class="page-section-label">{{ connect.label }}</span>
 						<div>
 							<p v-if="profile" key="connect" class="page-panel-copy">
@@ -72,12 +72,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onBeforeUnmount, onMounted } from 'vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/json-ld.ts';
 import { aboutPageContent } from '@support/content/about-page.ts';
 
 import { useApiStore } from '@api/store.ts';
@@ -87,7 +87,10 @@ const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const isLoadingProfile = ref(true);
 const hasProfileError = ref(false);
+const connectSection = ref<HTMLElement | null>(null);
 const { hero, sidebar, intro, sections, connect, seo } = aboutPageContent;
+let connectObserver: IntersectionObserver | null = null;
+let hasRequestedProfile = false;
 
 useSeo({
 	title: seo.title,
@@ -100,6 +103,12 @@ useSeo({
 });
 
 const loadAboutPageData = async () => {
+	if (hasRequestedProfile) {
+		return;
+	}
+
+	hasRequestedProfile = true;
+
 	try {
 		const res = await apiStore.getProfile();
 		if (res.data) profile.value = res.data;
@@ -110,5 +119,29 @@ const loadAboutPageData = async () => {
 	}
 };
 
-onMounted(loadAboutPageData);
+onMounted(() => {
+	const target = connectSection.value;
+
+	if (!target || typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+		void loadAboutPageData();
+		return;
+	}
+
+	connectObserver = new IntersectionObserver(
+		(entries) => {
+			if (entries.some((entry) => entry.isIntersecting)) {
+				connectObserver?.disconnect();
+				connectObserver = null;
+				void loadAboutPageData();
+			}
+		},
+		{ rootMargin: '240px 0px' },
+	);
+
+	connectObserver.observe(target);
+});
+
+onBeforeUnmount(() => {
+	connectObserver?.disconnect();
+});
 </script>

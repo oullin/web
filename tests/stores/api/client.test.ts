@@ -140,6 +140,59 @@ describe('ApiClient.get', () => {
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 
+	it('does not evict a replacement in-flight entry when the old request settles after clearMemoryCache', async () => {
+		let resolveOldData: ((response: Response) => void) | null = null;
+		const oldDataPromise = new Promise<Response>((resolve) => {
+			resolveOldData = resolve;
+		});
+
+		let resolveNewData: ((response: Response) => void) | null = null;
+		const newDataPromise = new Promise<Response>((resolve) => {
+			resolveNewData = resolve;
+		});
+
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			// old request: signature + data
+			.mockResolvedValueOnce(signatureResponse())
+			.mockImplementationOnce(() => oldDataPromise)
+			// new request after clear: signature + data
+			.mockResolvedValueOnce(signatureResponse())
+			.mockImplementationOnce(() => newDataPromise);
+
+		vi.stubGlobal('fetch', fetchMock);
+
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
+
+		// 1. Start first request (registers in inFlightGets)
+		const oldRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		// 2. Clear caches (wipes inFlightGets)
+		client.clearMemoryCache();
+
+		// 3. Start replacement request for the same URL (re-registers in inFlightGets)
+		const newRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		// 4. A third caller joins while the replacement is still in-flight — should deduplicate
+		const deduplicatedRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		// 5. Old request settles — its .finally() must NOT evict the replacement
+		resolveOldData?.(jsonResponse({ data: { email: 'old@oullin.io' } }));
+		await oldRequest;
+
+		// 6. Resolve replacement
+		resolveNewData?.(jsonResponse({ data: { email: 'new@oullin.io' } }));
+		const [newResult, deduplicatedResult] = await Promise.all([newRequest, deduplicatedRequest]);
+
+		// The deduplicated caller must have shared the replacement promise (same result, no extra fetch)
+		expect(newResult).toEqual({ data: { email: 'new@oullin.io' } });
+		expect(deduplicatedResult).toEqual(newResult);
+		// 4 fetches total: 2 for old request + 2 for replacement. No extra pair for the deduplicated caller.
+		expect(fetchMock).toHaveBeenCalledTimes(4);
+	});
+
 	it('returns memoized responses for repeated shared GETs in the same session', async () => {
 		const fetchMock = vi
 			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()

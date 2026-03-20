@@ -193,6 +193,7 @@ const paginatedRecommendations = computed(() => {
 const isPreparingRecommendations = computed(
 	() => !hasRecommendationsError.value && (isDialogAnimating.value || isLoadingRecommendations.value || (hasLoadedRecommendations.value && !renderMarkdown.value)),
 );
+
 const showPagination = computed(() => !isDialogAnimating.value && !isLoadingRecommendations.value && !hasRecommendationsError.value && processedRecommendations.value.length > PAGE_SIZE);
 
 const clearHighlightTheme = () => {
@@ -256,6 +257,7 @@ const ensureRecommendationsLoaded = async () => {
 const resetDialogState = () => {
 	currentPage.value = 1;
 	openRecommendation.value = '';
+	hasRecommendationsError.value = false;
 };
 
 const handleDialogOpen = () => {
@@ -295,7 +297,7 @@ onUnmounted(() => {
 });
 
 watch(
-	[paginatedRecommendations, isDark],
+	[paginatedRecommendations, isDark, openRecommendation],
 	async ([newRecommendations]) => {
 		if (!newRecommendations || newRecommendations.length === 0 || isLoadingRecommendations.value || hasRecommendationsError.value || !renderMarkdown.value) {
 			return;

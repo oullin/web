@@ -5,8 +5,8 @@ import { createPinia, Pinia } from 'pinia';
 import '@css/style.css';
 import App from '@/App.vue';
 import router from '@/router';
+import { runAfterLoadAndIdle } from '@support/deferred.ts';
 import { lazyLinkDirective } from '@support/lazy-loading.ts';
-import { initSentry } from '@support/sentry.ts';
 
 const root = document.documentElement;
 const markFontsReady = () => root.classList.add('fonts-ready');
@@ -29,6 +29,14 @@ app.use(pinia);
 
 app.directive('lazy-link', lazyLinkDirective);
 
-initSentry(app, router);
+const sentryDsn = import.meta.env.VITE_SENTRY_DSN as string | undefined;
+
+if (sentryDsn) {
+	runAfterLoadAndIdle(() => {
+		void import('@support/sentry.ts').then(({ initSentry }) => {
+			initSentry(app, router);
+		});
+	});
+}
 
 app.mount('#app');
