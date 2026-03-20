@@ -5,7 +5,7 @@ import { reactiveOmit } from '@vueuse/core';
 import { Cross2Icon } from '@radix-icons/vue';
 import { DialogClose, DialogContent, DialogPortal, useForwardPropsEmits } from 'reka-ui';
 import { cn } from '@components/lib/utils';
-import SheetOverlay from './SheetOverlay.vue';
+import SheetOverlay from './SheetOver.vue';
 
 interface SheetContentProps extends DialogContentProps {
 	class?: HTMLAttributes['class'];

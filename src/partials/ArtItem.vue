@@ -66,8 +66,8 @@
 import { date } from '@/public.ts';
 import { RouterLink } from 'vue-router';
 import type { PostResponse } from '@api/response/index.ts';
-import CoverImageLoader from '@components/CoverImageLoader.vue';
-import { useTxtHi } from '@support/useTextHighlight.ts';
+import CoverImageLoader from '@components/CoverImg.vue';
+import { useTxtHi } from '@support/useTxtHi.ts';
 
 const { hilite } = useTxtHi();
 

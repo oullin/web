@@ -30,11 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import FooterPartial from '@partials/FooterPartial.vue';
-import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
+import FooterPartial from '@partials/Footer.vue';
+import ArticlesListPartial from '@partials/ArtList.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 import { resolveJsonLdArray } from '@support/json-ld.ts';
-import { writingPageContent } from '@support/content/writing-page.ts';
+import { writingPageContent } from '@support/content/writpage.ts';
 
 const { hero, sidebar, seo } = writingPageContent;
 

@@ -63,9 +63,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
-import FooterPartial from '@partials/FooterPartial.vue';
-import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
-import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
+import FooterPartial from '@partials/Footer.vue';
+import ArticleItemPartial from '@partials/ArtItem.vue';
+import ArticleItemSkeletonPartial from '@partials/ArtItemSk.vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';

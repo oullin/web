@@ -27,7 +27,7 @@
 										<div class="page-copy mt-0! mb-4">
 											<span class="text-(--violet)">—</span> {{ date().format(new Date(post.published_at)) }}
 											<span class="text-(--muted)">·</span>
-											{{ readTime(post.content) }}
+											{{ getReadingTime(post.content) }}
 										</div>
 										<h1 id="post-top" class="page-title max-w-[12ch]!">{{ post.title }}</h1>
 										<p class="page-copy">{{ post.excerpt }}</p>
@@ -37,7 +37,7 @@
 											<ul class="flex flex-wrap items-center gap-y-1">
 												<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
 													<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-(--violet)">
-														{{ fmtLabel(tag.name) }}
+														{{ formatLabel(tag.name) }}
 													</RouterLink>
 													<span v-if="index < post.tags.length - 1" class="mx-2 text-(--muted)" aria-hidden="true" data-testid="post-tag-separator"> / </span>
 												</li>
@@ -70,15 +70,15 @@
 import DOMPurify from 'dompurify';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
-import { useDark } from '@/dark-mode.ts';
+import { useDarkMode } from '@/dark-mode.ts';
 import { debugError } from '@api/http-error.ts';
-import { date, readTime, goBack } from '@/public.ts';
-import FooterPartial from '@partials/FooterPartial.vue';
-import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
+import { date, getReadingTime, goBack } from '@/public.ts';
+import FooterPartial from '@partials/Footer.vue';
+import PostPageSkeletonPartial from '@partials/PostPgSkl.vue';
 import type { PostResponse } from '@api/response/index.ts';
 import { useSeoFromPost } from '@support/seo';
-import { fmtLabel, routeFor } from '@support/tags.ts';
-import CoverImageLoader from '@components/CoverImageLoader.vue';
+import { formatLabel, routeFor } from '@support/tags.ts';
+import CoverImageLoader from '@components/CoverImg.vue';
 import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue';
 import { renderMarkdown } from '@support/markdown/render.ts';
 
@@ -90,7 +90,7 @@ const route = useRoute();
 const router = useRouter();
 const goBackFn = () => goBack(router);
 const api = useApiStore();
-const { isDark } = useDark();
+const { isDark } = useDarkMode();
 const post = ref<PostResponse>();
 const isLoad = ref(true);
 const postWrap = ref<HTMLElement | null>(null);

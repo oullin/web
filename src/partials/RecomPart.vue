@@ -139,8 +139,8 @@ import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { useApiStore } from '@api/store.ts';
-import RecommendationDialogSkeletonPartial from '@partials/RecommendationDialogSkeletonPartial.vue';
-import { useDark } from '@/dark-mode.ts';
+import RecommendationDialogSkeletonPartial from '@partials/RecDlgSkel.vue';
+import { useDarkMode } from '@/dark-mode.ts';
 import { image, date } from '@/public.ts';
 import { siteContent } from '@support/content.ts';
 
@@ -151,7 +151,7 @@ type HighlightCore = typeof import('highlight.js/lib/core').default;
 const PAGE_SIZE = 8;
 
 const api = useApiStore();
-const { isDark } = useDark();
+const { isDark } = useDarkMode();
 const recsText = siteContent.recommendations;
 const recs = ref<RecommendationsResponse[]>([]);
 const recsWrap = ref<HTMLElement | null>(null);

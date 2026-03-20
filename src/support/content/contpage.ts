@@ -1,4 +1,4 @@
 import contactPage from '@fixtures/contact-page.json';
-import type { ContactPageContent } from '@support/content-types.ts';
+import type { ContactPageContent } from '@support/contype.ts';
 
 export const contactPageContent: ContactPageContent = contactPage;

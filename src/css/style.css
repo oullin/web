@@ -9,12 +9,12 @@
 
 /* ------------------------------------------------------- app ------------------------------------------------------ */
 @import '@css/utils.css' layer(components);
-@import '@css/range-slider.css' layer(components);
-@import '@css/toggle-switch.css' layer(components);
+@import '@css/slider.css' layer(components);
+@import '@css/toggle.css' layer(components);
 @import '@css/app.css';
 @import '@css/circuit.css';
 @import '@css/theme.css';
-@import '@css/shadcn-bridge.css';
+@import '@css/shadcn.css';
 
 @plugin '@tailwindcss/typography';
 

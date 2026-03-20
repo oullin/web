@@ -73,9 +73,9 @@
 
 <script setup lang="ts">
 import { ref, onBeforeUnmount, onMounted } from 'vue';
-import FooterPartial from '@partials/FooterPartial.vue';
-import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
-import RecommendationPartial from '@partials/RecommendationPartial.vue';
+import FooterPartial from '@partials/Footer.vue';
+import AboutConnectSkeletonPartial from '@partials/AbtConnSk.vue';
+import RecommendationPartial from '@partials/RecomPart.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 import { resolveJsonLdArray } from '@support/json-ld.ts';
 import { aboutPageContent } from '@support/content/about-page.ts';

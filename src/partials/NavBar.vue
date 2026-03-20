@@ -37,7 +37,7 @@
 					<GithubIcon :size="18" />
 				</a>
 
-				<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="togDark">
+				<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
 					<Sun v-if="isDark" :size="18" />
 					<Moon v-else :size="18" />
 				</button>
@@ -69,9 +69,9 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { Menu, Moon, Sun } from 'lucide-vue-next';
 import GithubIcon from '@components/icons/GithubIcon.vue';
-import LinkedinIcon from '@components/icons/LinkedinIcon.vue';
+import LinkedinIcon from '@components/icons/Linkedin.vue';
 import XIcon from '@components/icons/XIcon.vue';
-import { useDark } from '@/dark-mode.ts';
+import { useDarkMode } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { NAV_FBKS, navLinks } from '@support/links.ts';
@@ -80,7 +80,7 @@ import { runAfterLoadAndIdle, type DeferredCleanup } from '@support/deferred.ts'
 import { NavigationMenu, NavigationMenuLink, NavigationMenuItem, NavigationMenuList } from '@components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@components/ui/sheet';
 
-const { isDark, togDark } = useDark();
+const { isDark, toggleDarkMode } = useDarkMode();
 const api = useApiStore();
 
 const liUrl = ref(NAV_FBKS.linkedin);

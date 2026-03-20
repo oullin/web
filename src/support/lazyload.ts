@@ -255,3 +255,5 @@ export const lazyLink: Directive<HTMLAnchorElement, undefined> = {
 		linkMap.delete(element);
 	},
 };
+
+export const lazyLinkDirective = lazyLink;

@@ -5,7 +5,7 @@ import { reactiveOmit } from '@vueuse/core';
 import { Cross2Icon } from '@radix-icons/vue';
 import { DialogClose, DialogContent, DialogPortal, useForwardPropsEmits } from 'reka-ui';
 import { cn } from '@components/lib/utils';
-import DialogOverlay from './DialogOverlay.vue';
+import DialogOverlay from './DlgOver.vue';
 
 defineOptions({
 	inheritAttrs: false,

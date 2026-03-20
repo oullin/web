@@ -28,3 +28,9 @@ export function useTxtHi() {
 
 	return { hilite };
 }
+
+export function useTextHighlight() {
+	const { hilite } = useTxtHi();
+
+	return { highlight: hilite };
+}

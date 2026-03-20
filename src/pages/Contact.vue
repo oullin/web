@@ -90,12 +90,12 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
-import FooterPartial from '@partials/FooterPartial.vue';
+import FooterPartial from '@partials/Footer.vue';
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 import { resolveJsonLdArray } from '@support/json-ld.ts';
-import { contactPageContent } from '@support/content/contact-page.ts';
+import { contactPageContent } from '@support/content/contpage.ts';
 import { buildNav, NAV_FBKS, navLinks } from '@support/links.ts';
 import { runAfterLoadAndIdle } from '@support/deferred.ts';
 

@@ -4,5 +4,5 @@
 </template>
 
 <script setup lang="ts">
-import NavPartial from '@partials/NavPartial.vue';
+import NavPartial from '@partials/NavBar.vue';
 </script>

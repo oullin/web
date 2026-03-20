@@ -89,10 +89,10 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import FooterPartial from '@partials/FooterPartial.vue';
+import FooterPartial from '@partials/Footer.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 import { resolveJsonLdArray } from '@support/json-ld.ts';
-import { workWithUsPageContent } from '@support/content/work-with-us-page.ts';
+import { workWithUsPageContent } from '@support/content/workpage.ts';
 
 const { hero, sidebar, intro, engagements, faq, cta, seo } = workWithUsPageContent;
 

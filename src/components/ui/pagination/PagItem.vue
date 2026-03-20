@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
 import { computed } from 'vue';
-import PaginationLink from './PaginationLink.vue';
+import PaginationLink from './PagLink.vue';
 import { usePag } from './pagination';
 
 interface Props {

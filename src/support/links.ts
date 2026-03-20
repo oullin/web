@@ -47,6 +47,11 @@ export const navLinks = (links: LinksResponse[]): Record<NavSocialPlatform, stri
 	return linkMap;
 };
 
+export const NAV_SOCIAL_FALLBACKS = NAV_FBKS;
+export const NAV_SOCIAL_ORDER = NAV_ORDR;
+export const buildNavSocialLinkEntries = buildNav;
+export const resolveNavSocialLinks = navLinks;
+
 export class Links {
 	private readonly apiStore = useApiStore();
 

@@ -69,14 +69,14 @@
 import { ref, onMounted, computed } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import FooterPartial from '@partials/FooterPartial.vue';
-import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
+import FooterPartial from '@partials/Footer.vue';
+import ProjectCardPartial from '@partials/ProjCard.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
-import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
+import ProjectCardSkeletonPartial from '@partials/ProjCardSk.vue';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 import { resolveJsonLdArray } from '@support/json-ld.ts';
-import { projectsPageContent } from '@support/content/projects-page.ts';
+import { projectsPageContent } from '@support/content/projpage.ts';
 
 const DEFAULT_SKELETON_COUNT = 4;
 const apiStore = useApiStore();

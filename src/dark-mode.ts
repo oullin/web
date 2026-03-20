@@ -18,3 +18,12 @@ export function useDark() {
 		togDark,
 	};
 }
+
+export function useDarkMode() {
+	const { isDark: darkRef, togDark } = useDark();
+
+	return {
+		isDark: darkRef,
+		toggleDarkMode: togDark,
+	};
+}

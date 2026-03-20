@@ -34,8 +34,8 @@ import debounce from 'lodash/debounce';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
-import ArticleItemPartial from '@partials/ArticleItemPartial.vue';
-import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue';
+import ArticleItemPartial from '@partials/ArtItem.vue';
+import ArticleItemSkeletonPartial from '@partials/ArtItemSk.vue';
 import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/index.ts';
 import type { CategoriesCollectionResponse, CategoryResponse } from '@api/response/index.ts';
 

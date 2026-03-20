@@ -1,4 +1,4 @@
-import type { JsonLdContent } from '@support/content-types.ts';
+import type { JsonLdContent } from '@support/contype.ts';
 
 type JsonLdEntry = Record<string, unknown>;
 

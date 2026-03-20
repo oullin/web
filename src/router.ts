@@ -15,7 +15,7 @@ const router: Router = createRouter({
 		{
 			path: '/writing',
 			name: 'Writing',
-			component: () => import('@pages/WritingPage.vue'),
+			component: () => import('@pages/Writing.vue'),
 		},
 		{
 			path: '/post/:slug',
@@ -25,7 +25,7 @@ const router: Router = createRouter({
 		{
 			path: '/tags/:tag',
 			name: 'TagPosts',
-			component: () => import('@pages/TagPostsPage.vue'),
+			component: () => import('@pages/TagPosts.vue'),
 		},
 		{
 			path: '/about',
@@ -35,21 +35,21 @@ const router: Router = createRouter({
 		{
 			path: '/contact',
 			name: 'Contact',
-			component: () => import('@pages/ContactPage.vue'),
+			component: () => import('@pages/Contact.vue'),
 		},
 		{
 			path: '/work-with-us',
 			name: 'WorkWithUs',
-			component: () => import('@pages/WorkWithUsPage.vue'),
+			component: () => import('@pages/WorkUs.vue'),
 		},
 		{
 			path: '/projects',
-			component: () => import('@pages/ProjectsPage.vue'),
+			component: () => import('@pages/Projects.vue'),
 		},
 		{
 			path: '/terms-and-conditions',
 			name: 'TermsAndPolicies',
-			component: () => import('@pages/TermsAndPoliciesPage.vue'),
+			component: () => import('@pages/TermsPage.vue'),
 		},
 	],
 });

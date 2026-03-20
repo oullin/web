@@ -47,11 +47,11 @@
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import FooterPartial from '@partials/FooterPartial.vue';
+import FooterPartial from '@partials/Footer.vue';
 import { useSeo, siteUrlFor, buildKeywords } from '@support/seo';
-import type { RouteLink } from '@support/content-types.ts';
+import type { RouteLink } from '@support/contype.ts';
 import { resolveJsonLd } from '@support/json-ld.ts';
-import { termsAndPoliciesPageContent } from '@support/content/terms-and-policies-page.ts';
+import { termsAndPoliciesPageContent } from '@support/content/termspage.ts';
 
 const { hero, sidebar, legalSections, seo } = termsAndPoliciesPageContent;
 const splitContactLinkParagraph = (paragraph: string, contactLink?: RouteLink) => {

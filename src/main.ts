@@ -6,7 +6,7 @@ import '@css/style.css';
 import App from '@/App.vue';
 import router from '@/router';
 import { runAfterLoadAndIdle } from '@support/deferred.ts';
-import { lazyLink } from '@support/lazy-loading.ts';
+import { lazyLink } from '@support/lazyload.ts';
 
 const root = document.documentElement;
 const markFontsReady = () => root.classList.add('fonts-ready');

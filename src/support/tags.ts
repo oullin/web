@@ -82,3 +82,8 @@ export function tagSum(tag: string, state: TagSummaryState, onLabelClick?: (labe
 	const noun = state.postCount === 1 ? 'post' : 'posts';
 	return { text: `${state.postCount} ${noun} found for`, label, suffix: '', onLabelClick: clickFn };
 }
+
+export const sanitizeTag = cleanTag;
+export const normalizeParam = normTag;
+export const formatLabel = fmtLabel;
+export const summaryFor = tagSum;
