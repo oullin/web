@@ -18,7 +18,9 @@ node_modules/
 pnpm-debug.log
 package-lock.json
 .vite-build-check/
-public/brand/
+public/brand/*
+!public/brand/logo-*.svg
+!public/brand/logo-touch.png
 
 
 # --- Storage

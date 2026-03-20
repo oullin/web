@@ -1,7 +1,7 @@
 import { marked } from 'marked';
 
 // Match YAML front matter only at the very start (optional BOM supported)
-const FRONT_MATTER_REGEX = /^\uFEFF?---\s*[\r\n]+([\s\S]*?)\r?\n---\s*[\r\n]*/;
+const FRONT_MATTER_REGEX = /^\uFEFF?---[^\S\r\n]*[\r\n]+([\s\S]*?)\r?\n---[^\S\r\n]*[\r\n]*/;
 
 marked.setOptions({
 	breaks: true,
