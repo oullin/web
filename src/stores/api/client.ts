@@ -274,13 +274,15 @@ export class ApiClient {
 		this.syncClockOffset(response, startTime);
 
 		if (response.status === 304) {
-			const responseData = cached!.data;
-
-			if (options.useMemoryCache) {
-				this.memoryCache.set(url, responseData);
+			if (!cached) {
+				throw new HttpError(response, 'Received 304 but no cached entry exists');
 			}
 
-			return responseData;
+			if (options.useMemoryCache) {
+				this.memoryCache.set(url, cached.data);
+			}
+
+			return cached.data;
 		}
 
 		if (!response.ok) {
@@ -299,6 +301,10 @@ export class ApiClient {
 		}
 
 		return payload;
+	}
+
+	public clearMemoryCache(): void {
+		this.memoryCache.clear();
 	}
 
 	public async get<T>(url: string, options: GetOptions = {}): Promise<T> {

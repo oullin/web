@@ -26,9 +26,7 @@ const LANGUAGE_ALIASES: ReadonlyArray<[string[], string]> = [
 	[['js', 'jsx', 'nodejs'], 'javascript'],
 	[['html', 'vue', 'angular'], 'xml'],
 	[['docker'], 'dockerfile'],
-	[['curl', 'Curl', 'CURL'], 'bash'],
-	[['sh', 'shell', 'zsh'], 'bash'],
-	[['yml'], 'yaml'],
+	[['Curl', 'CURL'], 'bash'],
 	[['Text', 'TXT'], 'plaintext'],
 	[['TS'], 'typescript'],
 ];

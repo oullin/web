@@ -16,7 +16,7 @@ function stripFrontMatter(markdown: string): string {
 
 	const withoutFrontMatter = markdown.replace(FRONT_MATTER_REGEX, '');
 
-	return withoutFrontMatter.replace(/^\s+/, '');
+	return withoutFrontMatter.replace(/^[\r\n]+/, '');
 }
 
 function ensureString(result: string | Promise<string>): string {

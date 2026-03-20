@@ -305,12 +305,12 @@ watch(
 			return;
 		}
 
-		const { highlightSupport, highlightCore } = await ensureHighlightSupportLoaded();
+		await ensureHighlightSupportLoaded();
 
-		highlightSupport.loadHighlightTheme(isDark.value, themeLink);
+		highlightSupport!.loadHighlightTheme(isDark.value, themeLink);
 
 		blocks.forEach((block) => {
-			highlightCore.highlightElement(block as HTMLElement);
+			highlightCore!.highlightElement(block as HTMLElement);
 		});
 	},
 	{ immediate: true },

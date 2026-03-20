@@ -55,6 +55,27 @@ describe('ApiClient.get', () => {
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 
+	it('cleans up in-flight entry on rejection so retries can succeed', async () => {
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			.mockResolvedValueOnce(signatureResponse())
+			.mockResolvedValueOnce(new Response('Internal Server Error', { status: 500 }))
+			.mockResolvedValueOnce(signatureResponse())
+			.mockResolvedValueOnce(jsonResponse({ data: { email: 'hello@oullin.io' } }));
+
+		vi.stubGlobal('fetch', fetchMock);
+
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
+
+		await expect(client.get('profile')).rejects.toThrow();
+
+		const result = await client.get<{ data: { email: string } }>('profile');
+		expect(result).toEqual({ data: { email: 'hello@oullin.io' } });
+		expect(fetchMock).toHaveBeenCalledTimes(4);
+	});
+
 	it('returns memoized responses for repeated shared GETs in the same session', async () => {
 		const fetchMock = vi
 			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
