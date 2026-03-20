@@ -114,7 +114,7 @@ describe('PostPage', () => {
 		const wrapper = await mountComponent();
 		const skeleton = wrapper.find('[data-testid="post-page-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
-		expect(skeleton.classes()).toContain('min-h-[25rem]');
+		expect(skeleton.classes()).toContain('min-h-100');
 		await flushPromises();
 		expect(getPost).toHaveBeenCalledWith(post.slug);
 		expect(wrapper.find('[data-testid="post-page-skeleton"]').exists()).toBe(false);
