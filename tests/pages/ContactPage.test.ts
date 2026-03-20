@@ -2,7 +2,8 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ContactPage from '@pages/ContactPage.vue';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
-import { contactPageContent, siteContent } from '@support/content.ts';
+import { contactPageContent } from '@support/content.ts';
+import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
 
 const profile: ProfileResponse = {
 	nickname: 'Oullin',
@@ -77,8 +78,10 @@ describe('ContactPage', () => {
 		await flushPromises();
 
 		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackTitle);
-		expect(wrapper.text()).toContain(siteContent.fallbackLinks[0].name.toUpperCase());
-		expect(wrapper.text()).toContain(siteContent.fallbackLinks[1].name.toUpperCase());
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackCopy);
+		for (const platform of Object.keys(NAV_SOCIAL_FALLBACKS)) {
+			expect(wrapper.text()).toContain(platform.toUpperCase());
+		}
 	});
 
 	it('handles API errors gracefully', async () => {
@@ -89,7 +92,9 @@ describe('ContactPage', () => {
 		await flushPromises();
 
 		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackTitle);
-		expect(wrapper.text()).toContain(siteContent.fallbackLinks[0].name.toUpperCase());
-		expect(wrapper.text()).toContain(siteContent.fallbackLinks[1].name.toUpperCase());
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackCopy);
+		for (const platform of Object.keys(NAV_SOCIAL_FALLBACKS)) {
+			expect(wrapper.text()).toContain(platform.toUpperCase());
+		}
 	});
 });

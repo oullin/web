@@ -241,6 +241,7 @@ export interface ContactPageContent {
 			label: string;
 			fallbackTitle: string;
 			copy: string;
+			fallbackCopy: string;
 		};
 		bestFit: {
 			label: string;

@@ -17,7 +17,7 @@
 							<a v-if="profile" v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a>
 							<span v-else>{{ sidebar.primaryChannel.fallbackTitle }}</span>
 						</div>
-						<p class="page-panel-copy">{{ profile ? sidebar.primaryChannel.copy : 'Contact details are loading or temporarily unavailable.' }}</p>
+						<p class="page-panel-copy">{{ profile ? sidebar.primaryChannel.copy : sidebar.primaryChannel.fallbackCopy }}</p>
 					</div>
 					<div class="page-side-block">
 						<div class="page-section-label">{{ sidebar.bestFit.label }}</div>

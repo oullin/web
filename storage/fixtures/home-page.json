@@ -133,6 +133,7 @@
 		}
 	},
 	"seo": {
+		"title": "Home",
 		"description": "Oullin is a boutique AI architecture consultancy for startups and scale-ups. 20+ years of production systems experience — banking, fintech, high-availability infrastructure — applied to the AI era.",
 		"keywords": [
 			"AI architecture consulting",

@@ -17,7 +17,7 @@ const global = {
 			},
 			template: '<footer data-testid="footer-partial" :data-show-marquee="showMarquee"></footer>',
 		}),
-		RouterLink: { template: '<a><slot /></a>' },
+		RouterLink: { props: ['to'], template: '<a :data-to="to"><slot /></a>' },
 	},
 };
 
@@ -59,5 +59,10 @@ describe('HomePage', () => {
 		expect(wrapper.text()).toContain(homePageContent.cta.headlineAccent);
 		expect(wrapper.text()).toContain(homePageContent.cta.button.label);
 		expect(wrapper.text()).toContain('COMPLEX');
+
+		const ctaLinks = wrapper.findAll('[data-to]');
+		const targets = ctaLinks.map((el) => el.attributes('data-to'));
+		expect(targets).toContain(homePageContent.aiEra.button.to);
+		expect(targets).toContain(homePageContent.cta.button.to);
 	});
 });

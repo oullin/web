@@ -97,6 +97,7 @@ const { principles, aiEra, about, cta, seo } = homePageContent;
 const nameLines = about.defaultName;
 
 useSeo({
+	title: seo.title,
 	image: SEO_IMAGE,
 	url: siteUrlFor('/'),
 	imageAlt: seo.imageAlt ?? `${SITE_NAME} brand preview`,

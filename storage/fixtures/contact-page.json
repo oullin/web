@@ -11,7 +11,8 @@
 		"primaryChannel": {
 			"label": "Primary channel",
 			"fallbackTitle": "Direct email",
-			"copy": "Email is the fastest way to reach Oullin for architecture, AI consulting, modernisation, and transformation enquiries. Come with context: your current stack, the problem you're trying to solve, and any constraints. We respond within 48 hours to enquiries with enough detail for a real conversation."
+			"copy": "Email is the fastest way to reach Oullin for architecture, AI consulting, modernisation, and transformation enquiries. Come with context: your current stack, the problem you're trying to solve, and any constraints. We respond within 48 hours to enquiries with enough detail for a real conversation.",
+			"fallbackCopy": "Contact details are loading or temporarily unavailable."
 		},
 		"bestFit": {
 			"label": "Best fit",
