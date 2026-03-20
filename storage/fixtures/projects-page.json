@@ -24,26 +24,25 @@
 	},
 	"seo": {
 		"title": "Projects",
-		"description": "Proof from real systems. Open-source tools, internal platforms, and client work across banking, fintech, and AI-era architecture.",
+		"description": "Proof from real systems: open-source tools, internal platforms, and client work across banking, fintech, AI-era architecture, and resilient software delivery.",
 		"keywords": [
+			"Oullin projects",
 			"open source tools",
-			"client systems",
-			"software delivery",
 			"platform architecture",
-			"software architecture",
-			"technical management",
-			"digital transformation",
-			"AI transformation",
-			"banking insurance SaaS"
+			"resilient systems",
+			"AI-era architecture",
+			"software delivery",
+			"banking fintech systems",
+			"technical leadership"
 		],
 		"imageAlt": "Oullin project collection preview",
 		"jsonLd": [
 			{
-				"name": "Projects",
+				"name": "Oullin Projects",
 				"@type": "CollectionPage",
 				"urlPath": "/projects",
 				"@context": "https://schema.org",
-				"description": "Selected open-source and client projects from Oullin across banking, consulting, product delivery, and resilient production systems."
+				"description": "Proof from real systems: open-source tools, internal platforms, and client work across banking, fintech, AI-era architecture, and resilient software delivery."
 			}
 		]
 	}

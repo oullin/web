@@ -81,7 +81,7 @@
 /* --- markdown content --- */
 
 .post-markdown {
-	max-width: none;
+	max-width: 85ch;
 	font-size: 1rem;
 	line-height: 1.875;
 

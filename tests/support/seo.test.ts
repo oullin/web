@@ -66,7 +66,7 @@ describe('Seo.apply', () => {
 
 		instance.apply(options);
 
-		const expectedTitle = `${options.title} - ${SITE_NAME}`;
+		const expectedTitle = `${options.title} | ${SITE_NAME}`;
 		const expectedImage = new URL(options.image!, SITE_URL).toString();
 
 		expect(document.title).toBe(expectedTitle);
@@ -143,7 +143,37 @@ describe('Seo.apply', () => {
 		expect(document.head.querySelectorAll('meta[name="description"]')).toHaveLength(1);
 		expect(document.head.querySelectorAll('meta[property="og:title"]')).toHaveLength(1);
 		expect(serializeMeta('meta[name="description"]')).toBe('Updated description');
-		expect(serializeMeta('meta[property="og:title"]')).toBe(`Fresh page - ${SITE_NAME}`);
+		expect(serializeMeta('meta[property="og:title"]')).toBe(`Fresh page | ${SITE_NAME}`);
+	});
+
+	it('does not duplicate the brand name when the page title already matches the site name', () => {
+		instance.apply({
+			title: SITE_NAME,
+		});
+
+		expect(document.title).toBe(SITE_NAME);
+		expect(serializeMeta('meta[property="og:title"]')).toBe(SITE_NAME);
+		expect(serializeMeta('meta[name="twitter:title"]')).toBe(SITE_NAME);
+	});
+
+	it('does not duplicate the brand suffix when the page title is already composed', () => {
+		instance.apply({
+			title: `Projects | ${SITE_NAME}`,
+		});
+
+		expect(document.title).toBe(`Projects | ${SITE_NAME}`);
+		expect(serializeMeta('meta[property="og:title"]')).toBe(`Projects | ${SITE_NAME}`);
+		expect(serializeMeta('meta[name="twitter:title"]')).toBe(`Projects | ${SITE_NAME}`);
+	});
+
+	it('normalizes site-name input after trimming surrounding whitespace', () => {
+		instance.apply({
+			title: ` ${SITE_NAME} `,
+		});
+
+		expect(document.title).toBe(SITE_NAME);
+		expect(serializeMeta('meta[property="og:title"]')).toBe(SITE_NAME);
+		expect(serializeMeta('meta[name="twitter:title"]')).toBe(SITE_NAME);
 	});
 });
 
