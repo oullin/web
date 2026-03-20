@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue';
 import { computed } from 'vue';
 import PaginationLink from './PaginationLink.vue';
-import { usePaginationContext } from './pagination';
+import { usePag } from './pagination';
 
 interface Props {
 	disabled?: boolean;
@@ -13,20 +13,20 @@ const props = withDefaults(defineProps<Props>(), {
 	disabled: false,
 });
 
-const pagination = usePaginationContext();
-const isDisabled = computed(() => props.disabled || pagination.disabled.value || pagination.page.value <= 1);
+const pager = usePag();
+const isDisab = computed(() => props.disabled || pager.disabled.value || pager.page.value <= 1);
 
-const handleClick = () => {
-	if (isDisabled.value) {
+const onClick = () => {
+	if (isDisab.value) {
 		return;
 	}
 
-	pagination.goToPreviousPage();
+	pager.goToPreviousPage();
 };
 </script>
 
 <template>
-	<PaginationLink data-slot="pagination-previous" :disabled="isDisabled" :class="props.class" @click="handleClick">
+	<PaginationLink data-slot="pagination-previous" :disabled="isDisab" :class="props.class" @click="onClick">
 		<slot>Prev</slot>
 	</PaginationLink>
 </template>

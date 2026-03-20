@@ -1,4 +1,5 @@
 const isBrowser = typeof window !== 'undefined';
+const noop = () => {};
 
 type IdleWindow = Window &
 	typeof globalThis & {
@@ -10,7 +11,7 @@ export type DeferredCleanup = () => void;
 
 export function runAfterLoad(task: () => void): DeferredCleanup {
 	if (!isBrowser) {
-		return () => {};
+		return noop;
 	}
 
 	if (document.readyState === 'complete') {
@@ -32,16 +33,16 @@ export function runAfterLoad(task: () => void): DeferredCleanup {
 
 export function runWhenIdle(task: () => void, timeout = 1500): DeferredCleanup {
 	if (!isBrowser) {
-		return () => {};
+		return noop;
 	}
 
-	const idleWindow = window as IdleWindow;
+	const idleWin = window as IdleWindow;
 
-	if (typeof idleWindow.requestIdleCallback === 'function') {
-		const handle = idleWindow.requestIdleCallback(task, { timeout });
+	if (typeof idleWin.requestIdleCallback === 'function') {
+		const handle = idleWin.requestIdleCallback(task, { timeout });
 
 		return () => {
-			idleWindow.cancelIdleCallback?.(handle);
+			idleWin.cancelIdleCallback?.(handle);
 		};
 	}
 
@@ -51,14 +52,14 @@ export function runWhenIdle(task: () => void, timeout = 1500): DeferredCleanup {
 }
 
 export function runAfterLoadAndIdle(task: () => void, timeout = 1500): DeferredCleanup {
-	let cancelIdle: DeferredCleanup = () => {};
+	let cancelId: DeferredCleanup = noop;
 
-	const cancelLoad = runAfterLoad(() => {
-		cancelIdle = runWhenIdle(task, timeout);
+	const cancelLd = runAfterLoad(() => {
+		cancelId = runWhenIdle(task, timeout);
 	});
 
 	return () => {
-		cancelLoad();
-		cancelIdle();
+		cancelLd();
+		cancelId();
 	};
 }

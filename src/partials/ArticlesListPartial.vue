@@ -10,7 +10,7 @@
 					href="#"
 					:class="filters.category === category.slug ? 'text-(--text) border-(--violet)' : 'text-(--muted) border-transparent hover:border-(--border)'"
 					class="block py-3 font-medium border-b-2 transition-colors"
-					@click.prevent="selectCategory(category.slug)"
+					@click.prevent="pickCtg(category.slug)"
 					>{{ category.name }}</a
 				>
 			</li>
@@ -18,8 +18,8 @@
 
 		<!-- Articles list -->
 		<div class="relative min-h-96">
-			<div v-if="isLoading" key="skeleton" aria-busy="true" class="min-h-96">
-				<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
+			<div v-if="isLoad" key="skeleton" aria-busy="true" class="min-h-96">
+				<ArticleItemSkeletonPartial v-for="skeleton in skelCnt" :key="`article-skeleton-${skeleton}`" />
 			</div>
 			<div v-else-if="items.length > 0" key="list" class="min-h-96">
 				<ArticleItemPartial v-for="(item, index) in items" :key="item.uuid" :item="item" :is-last="index === items.length - 1" />
@@ -39,22 +39,22 @@ import ArticleItemSkeletonPartial from '@partials/ArticleItemSkeletonPartial.vue
 import type { PostResponse, PostsCollectionResponse, PostsFilters } from '@api/response/index.ts';
 import type { CategoriesCollectionResponse, CategoryResponse } from '@api/response/index.ts';
 
-const apiStore = useApiStore();
+const api = useApiStore();
 const items = ref<PostResponse[]>([]);
-const isLoading = ref(false);
+const isLoad = ref(false);
 const DEFAULT_SKELETON_COUNT = 3;
-const skeletonCount = ref(DEFAULT_SKELETON_COUNT);
+const skelCnt = ref(DEFAULT_SKELETON_COUNT);
 
-const categoriesCollection = ref<CategoriesCollectionResponse>();
+const categsRes = ref<CategoriesCollectionResponse>();
 const categories = ref<CategoryResponse[]>([]);
 
-const categoryBeforeSearch = ref<string>('');
+const prevCtg = ref<string>('');
 
-const selectCategory = (categorySlug: string) => {
-	filters.category = categorySlug;
+const pickCtg = (ctgSlug: string) => {
+	filters.category = ctgSlug;
 
 	if (filters.text) {
-		categoryBeforeSearch.value = categorySlug;
+		prevCtg.value = ctgSlug;
 	}
 };
 
@@ -63,94 +63,94 @@ const filters = reactive<PostsFilters>({
 	text: '',
 });
 
-let lastRequestId = 0;
+let lastReq = 0;
 
-const skeletonCountFor = (list: PostResponse[]) => (list.length > 0 ? list.length : DEFAULT_SKELETON_COUNT);
+const getSkels = (list: PostResponse[]) => (list.length > 0 ? list.length : DEFAULT_SKELETON_COUNT);
 
-const fetchPosts = async () => {
-	const requestId = ++lastRequestId;
+const loadPosts = async () => {
+	const reqId = ++lastReq;
 
-	const previousItems = items.value;
-	skeletonCount.value = skeletonCountFor(previousItems);
-	isLoading.value = true;
+	const prevItems = items.value;
+	skelCnt.value = getSkels(prevItems);
+	isLoad.value = true;
 
 	try {
-		const collection: PostsCollectionResponse = await apiStore.getPosts(filters);
+		const collection: PostsCollectionResponse = await api.getPosts(filters);
 
-		if (requestId !== lastRequestId) {
+		if (reqId !== lastReq) {
 			return;
 		}
 
 		items.value = collection.data as PostResponse[];
 	} catch (error) {
 		debugError(error);
-		if (requestId === lastRequestId) {
-			items.value = previousItems.length > 0 ? previousItems : [];
+		if (reqId === lastReq) {
+			items.value = prevItems.length > 0 ? prevItems : [];
 		}
 	} finally {
-		if (requestId === lastRequestId) {
-			skeletonCount.value = skeletonCountFor(items.value);
-			isLoading.value = false;
+		if (reqId === lastReq) {
+			skelCnt.value = getSkels(items.value);
+			isLoad.value = false;
 		}
 	}
 };
 
 // --- Categories' Filter:
-const debouncedFetchPosts = debounce(
+const debFetch = debounce(
 	() => {
-		fetchPosts();
+		loadPosts();
 	},
 	500,
 	{ leading: true, trailing: true },
 );
 
-const debouncedSearch = debounce(() => {
-	fetchPosts();
+const debSearch = debounce(() => {
+	loadPosts();
 }, 300);
 
 watch(
 	() => filters.category,
 	() => {
-		debouncedFetchPosts();
+		debFetch();
 	},
 );
 
 onBeforeUnmount(() => {
-	debouncedFetchPosts.cancel();
-	debouncedSearch.cancel();
+	debFetch.cancel();
+	debSearch.cancel();
 });
 
 // --- Search: filter post by the given search criteria.
 watch(
-	() => apiStore.searchTerm,
-	(newSearchTerm: string): void => {
-		const newText = newSearchTerm.trim();
+	() => api.searchTerm,
+	(nextTerm: string): void => {
+		const newText = nextTerm.trim();
 		const oldText = filters.text;
 		filters.text = newText;
 
 		if (newText && !oldText) {
 			// Starting search
-			categoryBeforeSearch.value = filters.category ?? '';
+			prevCtg.value = filters.category ?? '';
 			filters.category = '';
 		} else if (!newText && oldText) {
 			// Clearing search
-			filters.category = categoryBeforeSearch.value;
-			categoryBeforeSearch.value = '';
+			filters.category = prevCtg.value;
+			prevCtg.value = '';
 		}
 
 		if (!filters.text && !filters.category && categories.value.length > 0) {
 			filters.category = categories.value[0].slug;
 		}
 
-		debouncedSearch();
+		debSearch();
 	},
 );
 
 // --- Mount the Vue component
 onMounted(async () => {
 	try {
-		categoriesCollection.value = await apiStore.getCategories();
-		categories.value = categoriesCollection.value.data as CategoryResponse[];
+		categsRes.value = await api.getCategories();
+		categories.value = categsRes.value.data as CategoryResponse[];
 
 		if (categories.value.length > 0) {
 			filters.category = categories.value[0].slug;

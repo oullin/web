@@ -1,9 +1,9 @@
 import type { Router as VueRouter } from 'vue-router';
 
-const IMAGES_DIR = 'images';
+const IMG_DIR = 'images';
 
 export function image(filename: string): string {
-	return `/${IMAGES_DIR}/${filename}`;
+	return `/${IMG_DIR}/${filename}`;
 }
 
 export function date(language?: string, options?: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
@@ -19,16 +19,16 @@ export function date(language?: string, options?: Intl.DateTimeFormatOptions): I
 	return new Intl.DateTimeFormat(lang, ops);
 }
 
-export function getReadingTime(text: string, wpm: number = 225): string {
+export function readTime(text: string, wpm: number = 225): string {
 	if (!text || !text.trim() || wpm <= 0) {
 		return '1 min read';
 	}
 
-	const wordCount: number = text.trim().split(/\s+/).length;
-	const totalMinutes: number = Math.ceil(wordCount / wpm);
+	const wordCnt: number = text.trim().split(/\s+/).length;
+	const totalMin: number = Math.ceil(wordCnt / wpm);
 
 	// Ensure a minimum of 1 minute for any content
-	const minutes: number = Math.max(1, totalMinutes);
+	const minutes: number = Math.max(1, totalMin);
 
 	// --- Formatting Steps ---
 	if (minutes < 60) {
@@ -36,17 +36,17 @@ export function getReadingTime(text: string, wpm: number = 225): string {
 	}
 
 	const hours: number = Math.floor(minutes / 60);
-	const remainingMinutes: number = minutes % 60;
-	const hourText: string = hours > 1 ? 'hours' : 'hour';
+	const remMins: number = minutes % 60;
+	const hourTxt: string = hours > 1 ? 'hours' : 'hour';
 
-	if (remainingMinutes === 0) {
-		return `${hours} ${hourText} read`;
+	if (remMins === 0) {
+		return `${hours} ${hourTxt} read`;
 	}
 
-	return `${hours} ${hourText} ${remainingMinutes} min read`;
+	return `${hours} ${hourTxt} ${remMins} min read`;
 }
 
-export function getRandomInt(min: number, max: number): number {
+export function randInt(min: number, max: number): number {
 	if (min > max) {
 		return max;
 	}

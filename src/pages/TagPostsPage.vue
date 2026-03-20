@@ -9,28 +9,28 @@
 						<p>Tags trace recurring problems, patterns, and decisions across the writing. Pick a topic and follow it through — without jumping around blindly.</p>
 					</div>
 					<div class="page-pill-row">
-						<button type="button" class="page-pill cursor-pointer border-0" @click="handleGoBack">Go back</button>
+						<button type="button" class="page-pill cursor-pointer border-0" @click="goBackFn">Go back</button>
 					</div>
 				</div>
 				<div class="page-hero-side">
 					<div class="page-side-block">
 						<div class="page-section-label">Current Topic</div>
-						<div class="page-panel-title">{{ formattedTagLabel || 'All tags' }}</div>
+						<div class="page-panel-title">{{ tagLabel || 'All tags' }}</div>
 						<p class="page-panel-copy" data-testid="tag-posts-summary">
-							<template v-if="summaryContent.label">
-								{{ summaryContent.text }}
-								<a href="#" class="font-semibold transition-colors hover:text-(--violet)" @click.prevent="summaryContent.onLabelClick?.()">
-									{{ summaryContent.label }}
+							<template v-if="sumText.label">
+								{{ sumText.text }}
+								<a href="#" class="font-semibold transition-colors hover:text-(--violet)" @click.prevent="sumText.onLabelClick?.()">
+									{{ sumText.label }}
 								</a>
-								<span v-if="summaryContent.suffix">{{ summaryContent.suffix }}</span>
+								<span v-if="sumText.suffix">{{ sumText.suffix }}</span>
 							</template>
 							<template v-else>
-								{{ summaryContent.text }}
+								{{ sumText.text }}
 							</template>
 						</p>
 					</div>
 					<div class="page-side-block">
-						<div class="page-stat-value">{{ isLoading ? '…' : posts.length }}</div>
+						<div class="page-stat-value">{{ isLoad ? '…' : posts.length }}</div>
 						<div class="page-stat-label">Articles matched</div>
 					</div>
 				</div>
@@ -41,15 +41,15 @@
 					<span class="page-section-label">Articles</span>
 					<h2 class="page-section-title">Browse the posts tied to this signal.</h2>
 					<div class="relative min-h-80 mt-8">
-						<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
+						<div v-if="isLoad" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
 							<p role="status" class="sr-only">Loading articles…</p>
-							<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />
+							<ArticleItemSkeletonPartial v-for="skeleton in skelCnt" :key="`tag-post-skeleton-${skeleton}`" />
 						</div>
 						<p v-else-if="hasError" key="error" role="status" class="page-empty-state" data-testid="tag-posts-error">Something went wrong loading posts. Please try again later.</p>
 						<div v-else-if="posts.length > 0" key="list" class="space-y-5" data-testid="tag-posts-list">
 							<ArticleItemPartial v-for="post in posts" :key="post.uuid" :item="post" />
 						</div>
-						<p v-else-if="normalizedTag" key="empty" class="page-empty-state" data-testid="tag-posts-empty">No posts found for this tag.</p>
+						<p v-else-if="cleanName" key="empty" class="page-empty-state" data-testid="tag-posts-empty">No posts found for this tag.</p>
 						<p v-else key="landing" class="page-empty-state" data-testid="tag-posts-landing">Select a tag to browse related articles.</p>
 					</div>
 				</section>
@@ -70,7 +70,7 @@ import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
 import type { PostResponse, PostsCollectionResponse } from '@api/response/index.ts';
 import { SITE_NAME, buildKeywords, siteUrlFor, useSeo } from '@support/seo';
-import { formatLabel, normalizeParam, sanitizeTag, summaryFor } from '@support/tags.ts';
+import { fmtLabel, normTag, cleanTag, tagSum } from '@support/tags.ts';
 import { goBack } from '@/public.ts';
 
 const DEFAULT_SKELETON_COUNT = 3;
@@ -79,38 +79,38 @@ const route = useRoute();
 const router = useRouter();
 
 const posts = ref<PostResponse[]>([]);
-const skeletonCount = ref(DEFAULT_SKELETON_COUNT);
-const isLoading = ref(false);
+const skelCnt = ref(DEFAULT_SKELETON_COUNT);
+const isLoad = ref(false);
 const hasError = ref(false);
-let lastRequestId = 0;
+let lastReq = 0;
 
-const normalizedTag = computed(() => normalizeParam(route.params.tag));
-const formattedTagLabel = computed(() => formatLabel(normalizedTag.value));
+const cleanName = computed(() => normTag(route.params.tag));
+const tagLabel = computed(() => fmtLabel(cleanName.value));
 
-const handleGoBack = () => {
+const goBackFn = () => {
 	apiStore.setSearchTerm('');
 	goBack(router);
 };
 
-const onSummaryLabelClick = () => {
-	const searchTerm = normalizedTag.value;
-	apiStore.setSearchTerm(searchTerm);
+const onTagClk = () => {
+	const srchTerm = cleanName.value;
+	apiStore.setSearchTerm(srchTerm);
 };
 
-const summaryContent = computed(() =>
-	summaryFor(
-		normalizedTag.value,
+const sumText = computed(() =>
+	tagSum(
+		cleanName.value,
 		{
-			isLoading: isLoading.value,
+			isLoading: isLoad.value,
 			hasError: hasError.value,
 			postCount: posts.value.length,
 		},
-		onSummaryLabelClick,
+		onTagClk,
 	),
 );
 
 const seoOptions = computed(() => {
-	const tag = sanitizeTag(normalizedTag.value);
+	const tag = cleanTag(cleanName.value);
 
 	if (!tag) {
 		return {
@@ -121,32 +121,32 @@ const seoOptions = computed(() => {
 		};
 	}
 
-	const label = formattedTagLabel.value;
+	const label = tagLabel.value;
 
 	return {
 		title: `${label} Articles`,
 		description: `Browse ${label} posts from ${SITE_NAME}'s writing archive, including essays and notes connected by the same theme.`,
 		keywords: buildKeywords(tag, `${tag} topic`, `${tag} articles`, `${tag} essays`, 'software architect/engineering', 'technical management', 'digital transformation', 'AI orchestration'),
-		url: siteUrlFor(`/tags/${encodeURIComponent(normalizedTag.value)}`),
+		url: siteUrlFor(`/tags/${encodeURIComponent(cleanName.value)}`),
 	};
 });
 
 useSeo(seoOptions);
 
-const loadPostsForTag = async (tagName: string) => {
-	const requestId = ++lastRequestId;
+const loadPosts = async (tagName: string) => {
+	const reqId = ++lastReq;
 	hasError.value = false;
 
 	if (!tagName) {
 		posts.value = [];
-		skeletonCount.value = DEFAULT_SKELETON_COUNT;
-		isLoading.value = false;
+		skelCnt.value = DEFAULT_SKELETON_COUNT;
+		isLoad.value = false;
 		return;
 	}
 
-	const previousPosts = posts.value;
-	skeletonCount.value = previousPosts.length > 0 ? previousPosts.length : DEFAULT_SKELETON_COUNT;
-	isLoading.value = true;
+	const prevPosts = posts.value;
+	skelCnt.value = prevPosts.length > 0 ? prevPosts.length : DEFAULT_SKELETON_COUNT;
+	isLoad.value = true;
 
 	try {
 		const collection: PostsCollectionResponse = await apiStore.getPosts({
@@ -154,7 +154,7 @@ const loadPostsForTag = async (tagName: string) => {
 			text: apiStore.searchTerm.trim(),
 		});
 
-		if (requestId !== lastRequestId) {
+		if (reqId !== lastReq) {
 			return;
 		}
 
@@ -162,28 +162,28 @@ const loadPostsForTag = async (tagName: string) => {
 	} catch (error) {
 		debugError(error);
 
-		if (requestId !== lastRequestId) {
+		if (reqId !== lastReq) {
 			return;
 		}
 
 		hasError.value = true;
 		posts.value = [];
 	} finally {
-		if (requestId === lastRequestId) {
-			skeletonCount.value = posts.value.length > 0 ? posts.value.length : DEFAULT_SKELETON_COUNT;
-			isLoading.value = false;
+		if (reqId === lastReq) {
+			skelCnt.value = posts.value.length > 0 ? posts.value.length : DEFAULT_SKELETON_COUNT;
+			isLoad.value = false;
 		}
 	}
 };
 
 // Watch for changes to tag
 watch(
-	normalizedTag,
+	cleanName,
 	(newTag) => {
 		if (apiStore.searchTerm !== newTag) {
 			apiStore.setSearchTerm(newTag);
 		}
-		loadPostsForTag(newTag);
+		loadPosts(newTag);
 	},
 	{ immediate: true },
 );
@@ -192,8 +192,8 @@ watch(
 watch(
 	() => apiStore.searchTerm,
 	(newSearchTerm) => {
-		if (newSearchTerm !== normalizedTag.value) {
-			loadPostsForTag(normalizedTag.value);
+		if (newSearchTerm !== cleanName.value) {
+			loadPosts(cleanName.value);
 		}
 	},
 );

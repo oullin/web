@@ -1,5 +1,5 @@
 <template>
-	<article v-if="item" :class="articleClass">
+	<article v-if="item" :class="cardCls">
 		<div class="flex items-start">
 			<RouterLink
 				v-lazy-link
@@ -38,13 +38,13 @@
 					{{ date().format(new Date(item.published_at)) }}
 				</div>
 				<h3 class="text-slate-700 font-aspekta text-lg font-[650] mb-1 dark:text-slate-300">
-					<RouterLink v-lazy-link :class="titleLinkClass" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
-						<span v-html="highlight(item.title)"></span>
+					<RouterLink v-lazy-link :class="titleCls" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
+						<span v-html="hilite(item.title)"></span>
 					</RouterLink>
 				</h3>
 				<div class="flex">
 					<RouterLink v-lazy-link class="grow text-sm text-slate-500 dark:text-slate-600" :to="{ name: 'PostDetail', params: { slug: item.slug } }">
-						<span v-html="highlight(item.excerpt)"></span>
+						<span v-html="hilite(item.excerpt)"></span>
 					</RouterLink>
 					<RouterLink
 						v-lazy-link
@@ -67,11 +67,11 @@ import { date } from '@/public.ts';
 import { RouterLink } from 'vue-router';
 import type { PostResponse } from '@api/response/index.ts';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
-import { useTextHighlight } from '@support/useTextHighlight.ts';
+import { useTxtHi } from '@support/useTextHighlight.ts';
 
-const { highlight } = useTextHighlight();
+const { hilite } = useTxtHi();
 
-const titleLinkClass =
+const titleCls =
 	'inline-flex relative group-hover:text-fuchsia-500 dark:group-hover:text-teal-500 duration-150 ease-out before:scale-x-0 before:origin-center before:absolute before:inset-0 before:bg-sky-200 dark:before:bg-sky-500 before:opacity-30 before:-z-10 before:translate-y-1/4 before:-rotate-2 group-hover:before:scale-100 before:duration-150 before:ease-in-out';
 
 const props = defineProps<{
@@ -79,5 +79,5 @@ const props = defineProps<{
 	isLast?: boolean;
 }>();
 
-const articleClass = ['py-5 group', props.isLast ? 'border-b-0' : 'border-b border-slate-100 dark:border-slate-800'];
+const cardCls = ['py-5 group', props.isLast ? 'border-b-0' : 'border-b border-slate-100 dark:border-slate-800'];
 </script>

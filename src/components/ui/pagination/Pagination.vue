@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue';
 import { computed, provide, ref, watch } from 'vue';
 import { cn } from '@components/lib/utils';
-import { buildPaginationItems, clampPage, PAGINATION_CONTEXT } from './pagination';
+import { pagItems, clampPg, PAG_CTX } from './pagination';
 
 interface Props {
 	total: number;
@@ -27,56 +27,56 @@ const emit = defineEmits<{
 	'update:page': [page: number];
 }>();
 
-const uncontrolledPage = ref(props.defaultPage);
+const localPg = ref(props.defaultPage);
 
-const pageCount = computed(() => {
+const pageCnt = computed(() => {
 	const total = Number.isFinite(props.total) ? Math.max(0, props.total) : 0;
-	const itemsPerPage = Number.isFinite(props.itemsPerPage) ? Math.max(1, props.itemsPerPage) : 1;
+	const perPage = Number.isFinite(props.itemsPerPage) ? Math.max(1, props.itemsPerPage) : 1;
 
-	return Math.max(1, Math.ceil(total / itemsPerPage));
+	return Math.max(1, Math.ceil(total / perPage));
 });
 
-const currentPage = computed({
-	get: () => clampPage(props.page ?? uncontrolledPage.value, pageCount.value),
+const curPage = computed({
+	get: () => clampPg(props.page ?? localPg.value, pageCnt.value),
 	set: (page: number) => {
-		const nextPage = clampPage(page, pageCount.value);
+		const nextPg = clampPg(page, pageCnt.value);
 
 		if (props.page === undefined) {
-			uncontrolledPage.value = nextPage;
+			localPg.value = nextPg;
 		}
 
-		emit('update:page', nextPage);
+		emit('update:page', nextPg);
 	},
 });
 
-const isDisabled = computed(() => props.disabled);
-const items = computed(() => buildPaginationItems(currentPage.value, pageCount.value, props.siblingCount, props.showEdges));
+const isDisab = computed(() => props.disabled);
+const items = computed(() => pagItems(curPage.value, pageCnt.value, props.siblingCount, props.showEdges));
 
-watch(pageCount, (nextPageCount) => {
-	if (currentPage.value > nextPageCount) {
-		currentPage.value = nextPageCount;
+watch(pageCnt, (nextCnt) => {
+	if (curPage.value > nextCnt) {
+		curPage.value = nextCnt;
 	}
 });
 
-provide(PAGINATION_CONTEXT, {
-	page: currentPage,
-	pageCount,
+provide(PAG_CTX, {
+	page: curPage,
+	pageCount: pageCnt,
 	items,
-	disabled: isDisabled,
+	disabled: isDisab,
 	setPage: (page) => {
-		currentPage.value = page;
+		curPage.value = page;
 	},
 	goToPreviousPage: () => {
-		currentPage.value = currentPage.value - 1;
+		curPage.value = curPage.value - 1;
 	},
 	goToNextPage: () => {
-		currentPage.value = currentPage.value + 1;
+		curPage.value = curPage.value + 1;
 	},
 });
 </script>
 
 <template>
 	<nav role="navigation" aria-label="Pagination" data-slot="pagination" :class="cn('flex w-full', props.class)">
-		<slot :page="currentPage" :page-count="pageCount.value" :pageCount="pageCount.value" />
+		<slot :page="curPage" :page-count="pageCnt.value" :pageCount="pageCnt.value" />
 	</nav>
 </template>

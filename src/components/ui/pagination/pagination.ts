@@ -21,22 +21,22 @@ export interface PaginationContextValue {
 	goToNextPage: () => void;
 }
 
-export const PAGINATION_CONTEXT = Symbol('PaginationContext') as InjectionKey<PaginationContextValue>;
+export const PAG_CTX = Symbol('PaginationContext') as InjectionKey<PaginationContextValue>;
 
-export const paginationBaseClasses = 'page-panel-copy cursor-pointer border px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors disabled:cursor-not-allowed disabled:opacity-40';
+export const pagBase = 'page-panel-copy cursor-pointer border px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors disabled:cursor-not-allowed disabled:opacity-40';
 
-export const paginationButtonClasses = `${paginationBaseClasses} border-(--border) hover:border-(--primary) hover:text-(--text)`;
-export const paginationActiveButtonClasses = `${paginationBaseClasses} border-(--primary) text-(--primary)`;
+export const pagBtn = `${pagBase} border-(--border) hover:border-(--primary) hover:text-(--text)`;
+export const pagAct = `${pagBase} border-(--primary) text-(--primary)`;
 
-export const buildPaginationItems = (page: number, pageCount: number, siblingCount: number, showEdges: boolean): PaginationRenderItem[] => {
+export const pagItems = (page: number, pageCount: number, siblingCount: number, showEdges: boolean): PaginationRenderItem[] => {
 	if (pageCount <= 0) {
 		return [];
 	}
 
-	const normalizedPage = clampPage(page, pageCount);
+	const pageNum = clampPg(page, pageCount);
 	const pages = new Set<number>();
-	const start = Math.max(showEdges ? 2 : 1, normalizedPage - siblingCount);
-	const end = Math.min(showEdges ? pageCount - 1 : pageCount, normalizedPage + siblingCount);
+	const start = Math.max(showEdges ? 2 : 1, pageNum - siblingCount);
+	const end = Math.min(showEdges ? pageCount - 1 : pageCount, pageNum + siblingCount);
 
 	if (showEdges) {
 		pages.add(1);
@@ -48,17 +48,17 @@ export const buildPaginationItems = (page: number, pageCount: number, siblingCou
 	}
 
 	if (!showEdges && pages.size === 0) {
-		pages.add(normalizedPage);
+		pages.add(pageNum);
 	}
 
-	const orderedPages = [...pages].toSorted((left, right) => left - right);
+	const pageList = [...pages].toSorted((left, right) => left - right);
 	const items: PaginationRenderItem[] = [];
 
-	for (const value of orderedPages) {
-		const previousValue = items[items.length - 1];
+	for (const value of pageList) {
+		const prevItem = items[items.length - 1];
 
-		if (previousValue?.type === 'page' && value - previousValue.value > 1) {
-			items.push({ type: 'ellipsis', key: `${previousValue.value}-${value}` });
+		if (prevItem?.type === 'page' && value - prevItem.value > 1) {
+			items.push({ type: 'ellipsis', key: `${prevItem.value}-${value}` });
 		}
 
 		items.push({ type: 'page', value });
@@ -67,7 +67,7 @@ export const buildPaginationItems = (page: number, pageCount: number, siblingCou
 	return items;
 };
 
-export const clampPage = (page: number, pageCount: number) => {
+export const clampPg = (page: number, pageCount: number) => {
 	if (pageCount <= 0) {
 		return 1;
 	}
@@ -75,8 +75,8 @@ export const clampPage = (page: number, pageCount: number) => {
 	return Math.min(Math.max(1, Math.trunc(page)), pageCount);
 };
 
-export const usePaginationContext = () => {
-	const context = inject(PAGINATION_CONTEXT);
+export const usePag = () => {
+	const context = inject(PAG_CTX);
 
 	if (!context) {
 		throw new Error('Pagination components must be used within a Pagination root.');

@@ -6,7 +6,7 @@ import '@css/style.css';
 import App from '@/App.vue';
 import router from '@/router';
 import { runAfterLoadAndIdle } from '@support/deferred.ts';
-import { lazyLinkDirective } from '@support/lazy-loading.ts';
+import { lazyLink } from '@support/lazy-loading.ts';
 
 const root = document.documentElement;
 const markFontsReady = () => root.classList.add('fonts-ready');
@@ -27,11 +27,11 @@ const pinia: Pinia = createPinia();
 app.use(router);
 app.use(pinia);
 
-app.directive('lazy-link', lazyLinkDirective);
+app.directive('lazy-link', lazyLink);
 
-const sentryDsn = import.meta.env.VITE_SENTRY_DSN as string | undefined;
+const sentry = import.meta.env.VITE_SENTRY_DSN as string | undefined;
 
-if (sentryDsn) {
+if (sentry) {
 	runAfterLoadAndIdle(() => {
 		void import('@support/sentry.ts').then(({ initSentry }) => {
 			initSentry(app, router);

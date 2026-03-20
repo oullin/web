@@ -16,17 +16,17 @@ interface LinksNavLink {
 type PlatformName = 'x' | 'youtube' | 'instagram' | 'linkedin' | 'github';
 export type NavSocialPlatform = Extract<PlatformName, 'linkedin' | 'x' | 'github'>;
 
-export const NAV_SOCIAL_FALLBACKS: Record<NavSocialPlatform, string> = {
+export const NAV_FBKS: Record<NavSocialPlatform, string> = {
 	linkedin: 'https://www.linkedin.com/in/gocanto/',
 	x: 'https://x.com/oullin',
 	github: 'https://github.com/oullin',
 };
-export const NAV_SOCIAL_ORDER: NavSocialPlatform[] = ['linkedin', 'x', 'github'];
+export const NAV_ORDR: NavSocialPlatform[] = ['linkedin', 'x', 'github'];
 
 const isHttpUrl = (url: string): boolean => /^https?:\/\//i.test(url);
 
-export const buildNavSocialLinkEntries = (links: Record<NavSocialPlatform, string>): LinksResponse[] =>
-	NAV_SOCIAL_ORDER.map((platform) => ({
+export const buildNav = (links: Record<NavSocialPlatform, string>): LinksResponse[] =>
+	NAV_ORDR.map((platform) => ({
 		uuid: `social-${platform}`,
 		name: platform,
 		handle: '',
@@ -34,17 +34,17 @@ export const buildNavSocialLinkEntries = (links: Record<NavSocialPlatform, strin
 		description: '',
 	}));
 
-export const resolveNavSocialLinks = (links: LinksResponse[]): Record<NavSocialPlatform, string> => {
-	const resolvedLinks = { ...NAV_SOCIAL_FALLBACKS };
+export const navLinks = (links: LinksResponse[]): Record<NavSocialPlatform, string> => {
+	const linkMap = { ...NAV_FBKS };
 
-	for (const platform of NAV_SOCIAL_ORDER) {
+	for (const platform of NAV_ORDR) {
 		const match = links.find((item) => item.name === platform && item.url);
 		if (match?.url && isHttpUrl(match.url)) {
-			resolvedLinks[platform] = match.url;
+			linkMap[platform] = match.url;
 		}
 	}
 
-	return resolvedLinks;
+	return linkMap;
 };
 
 export class Links {

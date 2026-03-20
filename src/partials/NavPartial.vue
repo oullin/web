@@ -16,7 +16,7 @@
 
 				<NavigationMenu :viewport="false" class="hidden md:flex">
 					<NavigationMenuList>
-						<NavigationMenuItem v-for="link in navLinks" :key="link.to">
+						<NavigationMenuItem v-for="link in navItems" :key="link.to">
 							<NavigationMenuLink as-child>
 								<RouterLink :to="link.to" class="whitespace-nowrap">{{ link.label }}</RouterLink>
 							</NavigationMenuLink>
@@ -27,17 +27,17 @@
 
 			<!-- Right column: social links + desktop theme toggle + mobile hamburger -->
 			<div class="nav-inner-right">
-				<a :href="linkedinUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link">
+				<a :href="liUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link">
 					<LinkedinIcon :size="18" />
 				</a>
 				<a :href="xUrl" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="nav-social-link">
 					<XIcon :size="18" />
 				</a>
-				<a :href="githubUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link">
+				<a :href="ghUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link">
 					<GithubIcon :size="18" />
 				</a>
 
-				<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
+				<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="togDark">
 					<Sun v-if="isDark" :size="18" />
 					<Moon v-else :size="18" />
 				</button>
@@ -52,7 +52,7 @@
 						<SheetContent side="right" class="nav-sheet">
 							<SheetTitle class="sr-only">Navigation</SheetTitle>
 							<nav class="nav-sheet-links" aria-label="Mobile navigation">
-								<RouterLink v-for="link in navLinks" :key="link.to" :to="link.to" class="nav-sheet-link">
+								<RouterLink v-for="link in navItems" :key="link.to" :to="link.to" class="nav-sheet-link">
 									{{ link.label }}
 								</RouterLink>
 							</nav>
@@ -71,54 +71,54 @@ import { Menu, Moon, Sun } from 'lucide-vue-next';
 import GithubIcon from '@components/icons/GithubIcon.vue';
 import LinkedinIcon from '@components/icons/LinkedinIcon.vue';
 import XIcon from '@components/icons/XIcon.vue';
-import { useDarkMode } from '@/dark-mode.ts';
+import { useDark } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import { NAV_SOCIAL_FALLBACKS, resolveNavSocialLinks } from '@support/links.ts';
+import { NAV_FBKS, navLinks } from '@support/links.ts';
 import { siteContent } from '@support/content.ts';
 import { runAfterLoadAndIdle, type DeferredCleanup } from '@support/deferred.ts';
 import { NavigationMenu, NavigationMenuLink, NavigationMenuItem, NavigationMenuList } from '@components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@components/ui/sheet';
 
-const { isDark, toggleDarkMode } = useDarkMode();
-const apiStore = useApiStore();
+const { isDark, togDark } = useDark();
+const api = useApiStore();
 
-const linkedinUrl = ref(NAV_SOCIAL_FALLBACKS.linkedin);
-const xUrl = ref(NAV_SOCIAL_FALLBACKS.x);
-const githubUrl = ref(NAV_SOCIAL_FALLBACKS.github);
+const liUrl = ref(NAV_FBKS.linkedin);
+const xUrl = ref(NAV_FBKS.x);
+const ghUrl = ref(NAV_FBKS.github);
 
 let isActive = true;
-let cancelDeferredRefresh: DeferredCleanup = () => {};
+let cancelJob: DeferredCleanup = () => {};
 
-const refreshSocialLinks = async () => {
+const loadSocial = async () => {
 	try {
-		const response = await apiStore.getLinks();
+		const response = await api.getLinks();
 
 		if (!isActive) {
 			return;
 		}
 
-		const resolvedLinks = resolveNavSocialLinks(response.data ?? []);
+		const linkMap = navLinks(response.data ?? []);
 
-		linkedinUrl.value = resolvedLinks.linkedin;
-		xUrl.value = resolvedLinks.x;
-		githubUrl.value = resolvedLinks.github;
+		liUrl.value = linkMap.linkedin;
+		xUrl.value = linkMap.x;
+		ghUrl.value = linkMap.github;
 	} catch (error) {
 		debugError(error);
 	}
 };
 
 onMounted(() => {
-	cancelDeferredRefresh = runAfterLoadAndIdle(() => {
-		void refreshSocialLinks();
+	cancelJob = runAfterLoadAndIdle(() => {
+		void loadSocial();
 	});
 });
 
 onBeforeUnmount(() => {
 	isActive = false;
 
-	cancelDeferredRefresh();
+	cancelJob();
 });
 
-const navLinks = siteContent.nav.links;
+const navItems = siteContent.nav.links;
 </script>

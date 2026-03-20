@@ -1,11 +1,11 @@
 import router from '@/router';
 import type { Directive } from 'vue';
 
-const prefetchedRoutes = new Set<string>();
+const prefRts = new Set<string>();
 const isBrowser = typeof window !== 'undefined';
-const hasIntersectionObserver = isBrowser && 'IntersectionObserver' in window;
+const hasIntOb = isBrowser && 'IntersectionObserver' in window;
 
-const idleCallback =
+const idleCall =
 	isBrowser && 'requestIdleCallback' in window
 		? (
 				window as typeof window & {
@@ -14,7 +14,7 @@ const idleCallback =
 			).requestIdleCallback.bind(window)
 		: null;
 
-const cancelIdleCallback = isBrowser && 'cancelIdleCallback' in window ? (window as typeof window & { cancelIdleCallback: (handle: number) => void }).cancelIdleCallback.bind(window) : null;
+const cancelCb = isBrowser && 'cancelIdleCallback' in window ? (window as typeof window & { cancelIdleCallback: (handle: number) => void }).cancelIdleCallback.bind(window) : null;
 
 type Cleanup = () => void;
 
@@ -23,7 +23,7 @@ interface LinkState {
 	href: string | null;
 }
 
-const linkStates = new WeakMap<HTMLAnchorElement, LinkState>();
+const linkMap = new WeakMap<HTMLAnchorElement, LinkState>();
 
 function normaliseHref(element: HTMLAnchorElement): string | null {
 	const rawHref = element.getAttribute('href');
@@ -77,7 +77,7 @@ function prefetchRoute(href: string): void {
 		return;
 	}
 
-	if (prefetchedRoutes.has(href)) {
+	if (prefRts.has(href)) {
 		return;
 	}
 
@@ -99,13 +99,13 @@ function prefetchRoute(href: string): void {
 			});
 		});
 
-		prefetchedRoutes.add(href);
+		prefRts.add(href);
 	} catch (error) {
 		console.error('Unable to prefetch route component for link', href, error);
 	}
 }
 
-function createLazyLinkCleanup(element: HTMLAnchorElement, href: string | null): Cleanup {
+function makeCln(element: HTMLAnchorElement, href: string | null): Cleanup {
 	if (!href) {
 		element.dataset.lazyLink = 'ignored';
 
@@ -118,39 +118,39 @@ function createLazyLinkCleanup(element: HTMLAnchorElement, href: string | null):
 
 	let idleHandle: number | null = null;
 
-	const schedulePrefetch = (): void => {
-		if (!isBrowser || prefetchedRoutes.has(href)) {
+	const queuePref = (): void => {
+		if (!isBrowser || prefRts.has(href)) {
 			return;
 		}
 
-		const runPrefetch = () => {
+		const runPref = () => {
 			idleHandle = null;
 			prefetchRoute(href);
 			element.dataset.lazyLink = 'prefetched';
 		};
 
-		if (idleCallback) {
-			idleHandle = idleCallback(
+		if (idleCall) {
+			idleHandle = idleCall(
 				() => {
-					runPrefetch();
+					runPref();
 				},
 				{ timeout: 1500 },
 			);
 		} else {
 			idleHandle = window.setTimeout(() => {
-				runPrefetch();
+				runPref();
 			}, 120);
 		}
 	};
 
 	const cleanupFns: Cleanup[] = [];
 
-	if (hasIntersectionObserver) {
+	if (hasIntOb) {
 		const observer = new IntersectionObserver(
 			(entries, currentObserver) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						schedulePrefetch();
+						queuePref();
 						currentObserver.unobserve(entry.target);
 					}
 				});
@@ -160,31 +160,31 @@ function createLazyLinkCleanup(element: HTMLAnchorElement, href: string | null):
 
 		observer.observe(element);
 		cleanupFns.push(() => {
-			currentObserverCleanup(observer, element);
+			clearObs(observer, element);
 		});
 	} else {
 		// As a fallback, trigger prefetch on mount once the browser is idle
-		schedulePrefetch();
+		queuePref();
 	}
 
-	const pointerHandler = () => schedulePrefetch();
-	const focusHandler = () => schedulePrefetch();
-	const touchHandler = () => schedulePrefetch();
+	const ptrHover = () => queuePref();
+	const onFocus = () => queuePref();
+	const onTouch = () => queuePref();
 
-	element.addEventListener('pointerenter', pointerHandler, { once: true });
-	element.addEventListener('focus', focusHandler, { once: true });
-	element.addEventListener('touchstart', touchHandler, { once: true, passive: true });
+	element.addEventListener('pointerenter', ptrHover, { once: true });
+	element.addEventListener('focus', onFocus, { once: true });
+	element.addEventListener('touchstart', onTouch, { once: true, passive: true });
 
 	cleanupFns.push(() => {
-		element.removeEventListener('pointerenter', pointerHandler);
-		element.removeEventListener('focus', focusHandler);
-		element.removeEventListener('touchstart', touchHandler);
+		element.removeEventListener('pointerenter', ptrHover);
+		element.removeEventListener('focus', onFocus);
+		element.removeEventListener('touchstart', onTouch);
 	});
 
 	cleanupFns.push(() => {
 		if (idleHandle !== null) {
-			if (cancelIdleCallback) {
-				cancelIdleCallback(idleHandle);
+			if (cancelCb) {
+				cancelCb(idleHandle);
 			} else {
 				window.clearTimeout(idleHandle);
 			}
@@ -206,7 +206,7 @@ function createLazyLinkCleanup(element: HTMLAnchorElement, href: string | null):
 	};
 }
 
-function currentObserverCleanup(observer: IntersectionObserver, element: HTMLAnchorElement): void {
+function clearObs(observer: IntersectionObserver, element: HTMLAnchorElement): void {
 	try {
 		observer.unobserve(element);
 	} catch (error) {
@@ -216,42 +216,42 @@ function currentObserverCleanup(observer: IntersectionObserver, element: HTMLAnc
 	observer.disconnect();
 }
 
-export const lazyLinkDirective: Directive<HTMLAnchorElement, undefined> = {
+export const lazyLink: Directive<HTMLAnchorElement, undefined> = {
 	mounted(element) {
 		if (!isBrowser) {
 			return;
 		}
 
 		const href = normaliseHref(element);
-		const cleanup = createLazyLinkCleanup(element, href);
+		const cleanup = makeCln(element, href);
 
-		linkStates.set(element, { cleanup, href });
+		linkMap.set(element, { cleanup, href });
 	},
 	updated(element) {
 		if (!isBrowser) {
 			return;
 		}
 
-		const currentState = linkStates.get(element);
+		const curState = linkMap.get(element);
 		const href = normaliseHref(element);
 
-		if (currentState && currentState.href === href) {
+		if (curState && curState.href === href) {
 			return;
 		}
 
-		currentState?.cleanup();
+		curState?.cleanup();
 
-		const cleanup = createLazyLinkCleanup(element, href);
+		const cleanup = makeCln(element, href);
 
-		linkStates.set(element, { cleanup, href });
+		linkMap.set(element, { cleanup, href });
 	},
 	unmounted(element) {
 		if (!isBrowser) {
 			return;
 		}
 
-		const state = linkStates.get(element);
+		const state = linkMap.get(element);
 		state?.cleanup();
-		linkStates.delete(element);
+		linkMap.delete(element);
 	},
 };

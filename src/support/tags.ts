@@ -13,14 +13,14 @@ type TagSummaryDescription = {
 	onLabelClick?: () => void;
 };
 
-const DEFAULT_LABEL = '#TAG';
-const UNSAFE_TAG_PATTERN = /[<>"'&]/g;
+const DEF_LBL = '#TAG';
+const badTagRx = /[<>"'&]/g;
 
-export function sanitizeTag(tag: string): string {
-	return tag.replace(UNSAFE_TAG_PATTERN, '');
+export function cleanTag(tag: string): string {
+	return tag.replace(badTagRx, '');
 }
 
-export function normalizeParam(value: unknown): string {
+export function normTag(value: unknown): string {
 	if (typeof value === 'string') {
 		return value.trim().toLowerCase();
 	}
@@ -33,16 +33,16 @@ export function normalizeParam(value: unknown): string {
 	return '';
 }
 
-function formatLabelFromSanitized(tag: string): string {
+function fmtTag(tag: string): string {
 	if (!tag) {
-		return DEFAULT_LABEL;
+		return DEF_LBL;
 	}
 
 	return `#${tag.toUpperCase()}`;
 }
 
-export function formatLabel(tag?: string | null): string {
-	return formatLabelFromSanitized(sanitizeTag((tag ?? '').trim()));
+export function fmtLabel(tag?: string | null): string {
+	return fmtTag(cleanTag((tag ?? '').trim()));
 }
 
 function formatParam(tag: string): string {
@@ -58,27 +58,27 @@ export function routeFor(tag: string): RouteLocationRaw {
 	};
 }
 
-export function summaryFor(tag: string, state: TagSummaryState, onLabelClick?: (label: string) => void): TagSummaryDescription {
-	const safeTag = sanitizeTag(tag.trim());
-	if (!safeTag) {
+export function tagSum(tag: string, state: TagSummaryState, onLabelClick?: (label: string) => void): TagSummaryDescription {
+	const clean = cleanTag(tag.trim());
+	if (!clean) {
 		return { text: 'Select a tag to explore related posts.' };
 	}
 
-	const label = formatLabelFromSanitized(safeTag);
-	const handleLabelClick = onLabelClick ? () => onLabelClick(label) : undefined;
+	const label = fmtTag(clean);
+	const clickFn = onLabelClick ? () => onLabelClick(label) : undefined;
 
 	if (state.isLoading) {
-		return { text: 'Loading posts for', label, suffix: '…', onLabelClick: handleLabelClick };
+		return { text: 'Loading posts for', label, suffix: '…', onLabelClick: clickFn };
 	}
 
 	if (state.hasError) {
-		return { text: "We couldn't load posts for", label, suffix: '.', onLabelClick: handleLabelClick };
+		return { text: "We couldn't load posts for", label, suffix: '.', onLabelClick: clickFn };
 	}
 
 	if (state.postCount === 0) {
-		return { text: 'No posts found for', label, suffix: '.', onLabelClick: handleLabelClick };
+		return { text: 'No posts found for', label, suffix: '.', onLabelClick: clickFn };
 	}
 
 	const noun = state.postCount === 1 ? 'post' : 'posts';
-	return { text: `${state.postCount} ${noun} found for`, label, suffix: '', onLabelClick: handleLabelClick };
+	return { text: `${state.postCount} ${noun} found for`, label, suffix: '', onLabelClick: clickFn };
 }

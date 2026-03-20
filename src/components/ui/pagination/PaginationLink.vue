@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'vue';
 import { computed } from 'vue';
 import { cn } from '@components/lib/utils';
-import { paginationActiveButtonClasses, paginationButtonClasses } from './pagination';
+import { pagAct, pagBtn } from './pagination';
 
 interface Props {
 	isActive?: boolean;
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 	disabled: false,
 });
 
-const classes = computed(() => cn(props.isActive ? paginationActiveButtonClasses : paginationButtonClasses, props.class));
+const classes = computed(() => cn(props.isActive ? pagAct : pagBtn, props.class));
 </script>
 
 <template>

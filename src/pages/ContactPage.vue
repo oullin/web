@@ -62,12 +62,12 @@
 					<div class="page-editorial-row">
 						<span class="page-section-label">{{ social.label }}</span>
 						<div>
-							<div v-if="visibleLinks.length > 0" class="page-social-links">
-								<template v-for="(link, index) in visibleLinks" :key="link.uuid">
+							<div v-if="showLinks.length > 0" class="page-social-links">
+								<template v-for="(link, index) in showLinks" :key="link.uuid">
 									<a v-lazy-link :href="link.url" target="_blank" rel="noopener noreferrer" class="blog-link">
 										{{ link.name.toUpperCase() }}
 									</a>
-									<span v-if="index < visibleLinks.length - 1" class="page-social-separator" aria-hidden="true">/</span>
+									<span v-if="index < showLinks.length - 1" class="page-social-separator" aria-hidden="true">/</span>
 								</template>
 							</div>
 							<p v-else class="page-panel-copy">{{ social.unavailableCopy }}</p>
@@ -96,19 +96,19 @@ import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
 import { resolveJsonLdArray } from '@support/json-ld.ts';
 import { contactPageContent } from '@support/content/contact-page.ts';
-import { buildNavSocialLinkEntries, NAV_SOCIAL_FALLBACKS, resolveNavSocialLinks } from '@support/links.ts';
+import { buildNav, NAV_FBKS, navLinks } from '@support/links.ts';
 import { runAfterLoadAndIdle } from '@support/deferred.ts';
 
-const apiStore = useApiStore();
+const api = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
-const links = ref<LinksResponse[]>(buildNavSocialLinkEntries(NAV_SOCIAL_FALLBACKS));
-const hasProfileError = ref(false);
-const hasLinksError = ref(false);
+const links = ref<LinksResponse[]>(buildNav(NAV_FBKS));
+const hasProf = ref(false);
+const hasLinks = ref(false);
 const { hero, sidebar, intro, process, email, social, founder, seo } = contactPageContent;
 let isActive = true;
-let cancelDeferredRefresh = () => {};
+let cancelJob = () => {};
 
-const visibleLinks = computed<LinksResponse[]>(() => links.value);
+const showLinks = computed<LinksResponse[]>(() => links.value);
 
 useSeo({
 	title: seo.title,
@@ -120,45 +120,45 @@ useSeo({
 	jsonLd: [...resolveJsonLdArray(seo.jsonLd, siteUrlFor), ORGANIZATION_JSON_LD],
 });
 
-const loadContactData = async () => {
+const loadData = async () => {
 	try {
-		const profileResponse = await apiStore.getProfile();
+		const profRes = await api.getProfile();
 
-		if (profileResponse.data) {
-			profile.value = profileResponse.data;
+		if (profRes.data) {
+			profile.value = profRes.data;
 		}
 	} catch {
-		hasProfileError.value = true;
+		hasProf.value = true;
 	}
 };
 
-const refreshLinks = async () => {
+const loadLinks = async () => {
 	try {
-		const linksResponse = await apiStore.getLinks();
+		const linkRes = await api.getLinks();
 
 		if (!isActive) {
 			return;
 		}
 
-		const resolvedLinks = resolveNavSocialLinks(linksResponse.data ?? []);
+		const linkMap = navLinks(linkRes.data ?? []);
 
-		links.value = buildNavSocialLinkEntries(resolvedLinks);
+		links.value = buildNav(linkMap);
 	} catch {
-		hasLinksError.value = true;
+		hasLinks.value = true;
 	}
 };
 
 onMounted(() => {
-	void loadContactData();
+	void loadData();
 
-	cancelDeferredRefresh = runAfterLoadAndIdle(() => {
-		void refreshLinks();
+	cancelJob = runAfterLoadAndIdle(() => {
+		void loadLinks();
 	});
 });
 
 onBeforeUnmount(() => {
 	isActive = false;
 
-	cancelDeferredRefresh();
+	cancelJob();
 });
 </script>

@@ -8,11 +8,11 @@
 				<p class="page-panel-copy">
 					<Dialog>
 						<DialogTrigger as-child>
-							<button type="button" class="blog-link cursor-pointer bg-transparent p-0 text-left" data-testid="recommendations-dialog-trigger" @click="handleDialogOpen">
-								{{ recommendationsContent.triggerLabel }}
+							<button type="button" class="blog-link cursor-pointer bg-transparent p-0 text-left" data-testid="recommendations-dialog-trigger" @click="openDlg">
+								{{ recsText.triggerLabel }}
 							</button>
 						</DialogTrigger>
-						{{ recommendationsContent.intro }}
+						{{ recsText.intro }}
 
 						<DialogContent
 							:show-close-button="false"
@@ -22,9 +22,9 @@
 							<!-- Header — always visible -->
 							<div class="flex items-start justify-between border-b border-(--border) bg-(--bg) px-8 py-6 lg:px-10">
 								<div class="space-y-2 pr-4">
-									<div class="page-section-label mb-0!">{{ recommendationsContent.dialog.sectionLabel }}</div>
-									<DialogTitle id="recommendations-dialog-title" class="page-panel-title text-xl!">{{ recommendationsContent.dialog.title }}</DialogTitle>
-									<p class="page-panel-copy text-(--muted)!">{{ recommendationsContent.dialog.description }}</p>
+									<div class="page-section-label mb-0!">{{ recsText.dialog.sectionLabel }}</div>
+									<DialogTitle id="recommendations-dialog-title" class="page-panel-title text-xl!">{{ recsText.dialog.title }}</DialogTitle>
+									<p class="page-panel-copy text-(--muted)!">{{ recsText.dialog.description }}</p>
 								</div>
 								<DialogClose as-child>
 									<button
@@ -47,22 +47,14 @@
 							<!-- Scrollable body — accordion only -->
 							<div class="custom-scrollbar flex-1 min-h-0 overflow-y-auto">
 								<div class="px-8 py-8 lg:px-10">
-									<RecommendationDialogSkeletonPartial v-if="isPreparingRecommendations" :count="PAGE_SIZE" />
-									<p v-else-if="hasRecommendationsError" class="page-panel-copy" data-testid="recommendations-dialog-error">
-										Recommendations are currently unavailable. Please try again later.
-									</p>
-									<p v-else-if="processedRecommendations.length === 0" class="page-panel-copy" data-testid="recommendations-dialog-empty">
+									<RecommendationDialogSkeletonPartial v-if="isPrep" :count="PAGE_SIZE" />
+									<p v-else-if="hasErr" class="page-panel-copy" data-testid="recommendations-dialog-error">Recommendations are currently unavailable. Please try again later.</p>
+									<p v-else-if="readyRecs.length === 0" class="page-panel-copy" data-testid="recommendations-dialog-empty">
 										Recommendations will be added soon. Please check again later.
 									</p>
-									<div v-else ref="recommendationsContainer">
-										<Accordion v-model="openRecommendation" type="single" collapsible class="rounded-2xl">
-											<AccordionItem
-												v-for="item in paginatedRecommendations"
-												:key="item.uuid"
-												:value="item.uuid"
-												class="bg-transparent px-5"
-												data-testid="recommendation-accordion-item"
-											>
+									<div v-else ref="recsWrap">
+										<Accordion v-model="openRec" type="single" collapsible class="rounded-2xl">
+											<AccordionItem v-for="item in pageRecs" :key="item.uuid" :value="item.uuid" class="bg-transparent px-5" data-testid="recommendation-accordion-item">
 												<AccordionTrigger class="py-5 hover:no-underline">
 													<div class="flex min-w-0 flex-1 items-start gap-4 pr-4 text-left">
 														<div class="shrink-0 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-(--border) bg-(--surface)">
@@ -106,12 +98,12 @@
 
 							<!-- Pagination footer — always visible -->
 							<div
-								v-if="showPagination"
+								v-if="showPages"
 								class="flex flex-col gap-4 border-t border-(--border) px-8 py-4 md:flex-row md:items-center md:justify-between lg:px-10"
 								data-testid="recommendations-dialog-pagination"
 							>
-								<div class="page-panel-copy text-xs uppercase tracking-[0.14em]">Page {{ currentPage }} / {{ totalPages }}</div>
-								<Pagination :page="currentPage" :total="totalPages" :items-per-page="1" class="w-auto justify-end" @update:page="goToPage">
+								<div class="page-panel-copy text-xs uppercase tracking-[0.14em]">Page {{ curPage }} / {{ totalPages }}</div>
+								<Pagination :page="curPage" :total="totalPages" :items-per-page="1" class="w-auto justify-end" @update:page="goToPage">
 									<PaginationContent v-slot="{ items }" data-testid="recommendations-dialog-pagination-controls">
 										<PaginationPrevious aria-label="Go to previous recommendations page" />
 										<div class="flex flex-wrap items-center gap-2" data-testid="recommendations-dialog-pagination-pages">
@@ -119,7 +111,7 @@
 												<PaginationItem
 													v-if="item.type === 'page'"
 													:value="item.value"
-													:is-active="item.value === currentPage"
+													:is-active="item.value === curPage"
 													:aria-label="`Go to recommendations page ${item.value}`"
 												>
 													{{ item.value }}
@@ -148,7 +140,7 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 import type { RecommendationsResponse } from '@api/response/recommendations-response.ts';
 import { useApiStore } from '@api/store.ts';
 import RecommendationDialogSkeletonPartial from '@partials/RecommendationDialogSkeletonPartial.vue';
-import { useDarkMode } from '@/dark-mode.ts';
+import { useDark } from '@/dark-mode.ts';
 import { image, date } from '@/public.ts';
 import { siteContent } from '@support/content.ts';
 
@@ -158,181 +150,179 @@ type HighlightCore = typeof import('highlight.js/lib/core').default;
 
 const PAGE_SIZE = 8;
 
-const apiStore = useApiStore();
-const { isDark } = useDarkMode();
-const recommendationsContent = siteContent.recommendations;
-const recommendations = ref<RecommendationsResponse[]>([]);
-const recommendationsContainer = ref<HTMLElement | null>(null);
-const themeLink = ref<HTMLLinkElement | null>(null);
-const renderMarkdown = ref<RenderMarkdownFn | null>(null);
-const currentPage = ref(1);
-const openRecommendation = ref<string>('');
-const isLoadingRecommendations = ref(false);
-const isDialogAnimating = ref(false);
-const hasLoadedRecommendations = ref(false);
-const hasRecommendationsError = ref(false);
+const api = useApiStore();
+const { isDark } = useDark();
+const recsText = siteContent.recommendations;
+const recs = ref<RecommendationsResponse[]>([]);
+const recsWrap = ref<HTMLElement | null>(null);
+const thmLink = ref<HTMLLinkElement | null>(null);
+const mdRender = ref<RenderMarkdownFn | null>(null);
+const curPage = ref(1);
+const openRec = ref<string>('');
+const isLoad = ref(false);
+const isAnim = ref(false);
+const hasLoad = ref(false);
+const hasErr = ref(false);
 
-let animationTimer: ReturnType<typeof setTimeout> | null = null;
-let highlightSupport: HighlightSupport | null = null;
-let highlightCore: HighlightCore | null = null;
+let animTime: ReturnType<typeof setTimeout> | null = null;
+let hlSup: HighlightSupport | null = null;
+let hlCore: HighlightCore | null = null;
 
-const processedRecommendations = computed(() =>
-	recommendations.value.map((item) => ({
+const readyRecs = computed(() =>
+	recs.value.map((item) => ({
 		...item,
-		html: renderMarkdown.value ? DOMPurify.sanitize(renderMarkdown.value(item.text)) : '',
+		html: mdRender.value ? DOMPurify.sanitize(mdRender.value(item.text)) : '',
 		formattedDate: date().format(new Date(item.created_at)),
 	})),
 );
 
-const totalPages = computed(() => Math.max(1, Math.ceil(processedRecommendations.value.length / PAGE_SIZE)));
+const totalPages = computed(() => Math.max(1, Math.ceil(readyRecs.value.length / PAGE_SIZE)));
 
-const paginatedRecommendations = computed(() => {
-	const start = (currentPage.value - 1) * PAGE_SIZE;
-	return processedRecommendations.value.slice(start, start + PAGE_SIZE);
+const pageRecs = computed(() => {
+	const start = (curPage.value - 1) * PAGE_SIZE;
+	return readyRecs.value.slice(start, start + PAGE_SIZE);
 });
 
-const isPreparingRecommendations = computed(
-	() => !hasRecommendationsError.value && (isDialogAnimating.value || isLoadingRecommendations.value || (hasLoadedRecommendations.value && !renderMarkdown.value)),
-);
+const isPrep = computed(() => !hasErr.value && (isAnim.value || isLoad.value || (hasLoad.value && !mdRender.value)));
 
-const showPagination = computed(() => !isDialogAnimating.value && !isLoadingRecommendations.value && !hasRecommendationsError.value && processedRecommendations.value.length > PAGE_SIZE);
+const showPages = computed(() => !isAnim.value && !isLoad.value && !hasErr.value && readyRecs.value.length > PAGE_SIZE);
 
-const clearHighlightTheme = () => {
-	if (themeLink.value) {
-		themeLink.value.remove();
-		themeLink.value = null;
+const clearThm = () => {
+	if (thmLink.value) {
+		thmLink.value.remove();
+		thmLink.value = null;
 	}
 };
 
-const ensureMarkdownLoaded = async () => {
-	if (renderMarkdown.value) {
+const loadMd = async () => {
+	if (mdRender.value) {
 		return;
 	}
 
 	try {
 		const module = await import('@support/markdown/render.ts');
 
-		renderMarkdown.value = module.renderMarkdown;
+		mdRender.value = module.renderMarkdown;
 	} catch {
-		hasRecommendationsError.value = true;
+		hasErr.value = true;
 	}
 };
 
-const ensureHighlightSupportLoaded = async () => {
-	if (highlightSupport && highlightCore) {
-		return { highlightSupport, highlightCore };
+const loadHl = async () => {
+	if (hlSup && hlCore) {
+		return { hlSup, hlCore };
 	}
 
 	try {
-		const [highlightSupportModule, highlightCoreModule] = await Promise.all([import('@support/markdown/highlight.ts'), import('highlight.js/lib/core')]);
+		const [supMod, coreMod] = await Promise.all([import('@support/markdown/highlight.ts'), import('highlight.js/lib/core')]);
 
-		highlightSupport = highlightSupportModule;
-		highlightCore = highlightCoreModule.default;
+		hlSup = supMod;
+		hlCore = coreMod.default;
 
-		await highlightSupport.initializeHighlighter(highlightCore);
+		await hlSup.initializeHighlighter(hlCore);
 
-		return { highlightSupport, highlightCore };
+		return { hlSup, hlCore };
 	} catch {
 		return null;
 	}
 };
 
-const ensureRecommendationsLoaded = async () => {
-	if (isLoadingRecommendations.value || hasLoadedRecommendations.value) {
+const loadRecs = async () => {
+	if (isLoad.value || hasLoad.value) {
 		return;
 	}
 
-	isLoadingRecommendations.value = true;
-	hasRecommendationsError.value = false;
+	isLoad.value = true;
+	hasErr.value = false;
 
 	try {
-		const response = await apiStore.getRecommendations();
+		const response = await api.getRecommendations();
 
-		recommendations.value = response.data ?? [];
-		hasLoadedRecommendations.value = true;
+		recs.value = response.data ?? [];
+		hasLoad.value = true;
 	} catch {
-		hasRecommendationsError.value = true;
+		hasErr.value = true;
 	} finally {
-		isLoadingRecommendations.value = false;
+		isLoad.value = false;
 	}
 };
 
-const resetDialogState = () => {
-	currentPage.value = 1;
-	openRecommendation.value = '';
-	hasRecommendationsError.value = false;
+const resetDlg = () => {
+	curPage.value = 1;
+	openRec.value = '';
+	hasErr.value = false;
 };
 
-const handleDialogOpen = () => {
-	resetDialogState();
+const openDlg = () => {
+	resetDlg();
 
-	isDialogAnimating.value = true;
+	isAnim.value = true;
 
-	if (animationTimer) {
-		clearTimeout(animationTimer);
+	if (animTime) {
+		clearTimeout(animTime);
 	}
 
-	animationTimer = setTimeout(() => {
-		isDialogAnimating.value = false;
+	animTime = setTimeout(() => {
+		isAnim.value = false;
 	}, 150);
 
-	void ensureMarkdownLoaded();
-	void ensureRecommendationsLoaded();
+	void loadMd();
+	void loadRecs();
 };
 
-const goToPage = (pageNumber: number) => {
-	currentPage.value = Math.min(Math.max(1, pageNumber), totalPages.value);
+const goToPage = (pageNum: number) => {
+	curPage.value = Math.min(Math.max(1, pageNum), totalPages.value);
 
-	openRecommendation.value = '';
+	openRec.value = '';
 };
 
 watch(totalPages, (pageCount) => {
-	if (currentPage.value > pageCount) {
-		currentPage.value = pageCount;
+	if (curPage.value > pageCount) {
+		curPage.value = pageCount;
 	}
 });
 
 onUnmounted(() => {
-	clearHighlightTheme();
+	clearThm();
 
-	if (animationTimer) {
-		clearTimeout(animationTimer);
+	if (animTime) {
+		clearTimeout(animTime);
 	}
 });
 
 watch(
-	[paginatedRecommendations, isDark, openRecommendation],
-	async ([newRecommendations]) => {
-		if (!newRecommendations || newRecommendations.length === 0 || isLoadingRecommendations.value || hasRecommendationsError.value || !renderMarkdown.value) {
+	[pageRecs, isDark, openRec],
+	async ([nextRecs]) => {
+		if (!nextRecs || nextRecs.length === 0 || isLoad.value || hasErr.value || !mdRender.value) {
 			return;
 		}
 
 		await nextTick();
 
-		const container = recommendationsContainer.value;
+		const wrap = recsWrap.value;
 
-		if (!container) {
+		if (!wrap) {
 			return;
 		}
 
-		const blocks = container.querySelectorAll('pre code');
+		const blocks = wrap.querySelectorAll('pre code');
 
 		if (blocks.length === 0) {
-			clearHighlightTheme();
+			clearThm();
 
 			return;
 		}
 
-		const result = await ensureHighlightSupportLoaded();
+		const result = await loadHl();
 
 		if (!result) {
 			return;
 		}
 
-		result.highlightSupport.loadHighlightTheme(isDark.value, themeLink);
+		result.hlSup.loadHighlightTheme(isDark.value, thmLink);
 
 		blocks.forEach((block) => {
-			result.highlightCore.highlightElement(block as HTMLElement);
+			result.hlCore.highlightElement(block as HTMLElement);
 		});
 	},
 	{ immediate: true },
