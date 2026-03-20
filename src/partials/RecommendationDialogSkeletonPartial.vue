@@ -1,11 +1,11 @@
 <template>
 	<div class="space-y-6" aria-hidden="true" data-testid="recommendations-dialog-skeleton">
-		<div v-for="item in props.count" :key="`recommendation-dialog-skeleton-${item}`" class="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/60 p-5">
+		<div v-for="item in props.count" :key="`recommendation-dialog-skeleton-${item}`" class="rounded-2xl border border-(--border) bg-(--surface)/60 p-5">
 			<div class="flex items-start gap-4">
 				<Skeleton class="h-12 w-12 rounded-full" />
 				<div class="min-w-0 flex-1 space-y-3">
-					<Skeleton class="h-4 w-2/3 max-w-[220px]" />
-					<Skeleton class="h-4 w-1/2 max-w-[160px]" />
+					<Skeleton class="h-4 w-2/3 max-w-55" />
+					<Skeleton class="h-4 w-1/2 max-w-40" />
 					<div class="flex flex-wrap gap-2">
 						<Skeleton class="h-3 w-20" />
 						<Skeleton class="h-3 w-16" />

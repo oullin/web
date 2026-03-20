@@ -19,7 +19,7 @@
 						<p class="page-panel-copy" data-testid="tag-posts-summary">
 							<template v-if="summaryContent.label">
 								{{ summaryContent.text }}
-								<a href="#" class="font-semibold transition-colors hover:text-[var(--violet)]" @click.prevent="summaryContent.onLabelClick?.()">
+								<a href="#" class="font-semibold transition-colors hover:text-(--violet)" @click.prevent="summaryContent.onLabelClick?.()">
 									{{ summaryContent.label }}
 								</a>
 								<span v-if="summaryContent.suffix">{{ summaryContent.suffix }}</span>
@@ -40,7 +40,7 @@
 				<section>
 					<span class="page-section-label">Articles</span>
 					<h2 class="page-section-title">Browse the posts tied to this signal.</h2>
-					<div class="relative min-h-[20rem] mt-8">
+					<div class="relative min-h-80 mt-8">
 						<div v-if="isLoading" key="skeleton" class="space-y-5" data-testid="tag-posts-skeleton">
 							<p role="status" class="sr-only">Loading articles…</p>
 							<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`tag-post-skeleton-${skeleton}`" />

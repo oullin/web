@@ -32,7 +32,7 @@
 					</div>
 				</div>
 
-				<div class="relative min-h-[25rem] mt-8">
+				<div class="relative min-h-100 mt-8">
 					<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
 						<ProjectCardSkeletonPartial v-for="index in skeletonCount" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
 					</div>

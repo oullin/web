@@ -62,7 +62,7 @@
 						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
-					<RecommendationPartial class="!mt-0" />
+					<RecommendationPartial class="mt-0!" />
 				</div>
 			</section>
 		</main>

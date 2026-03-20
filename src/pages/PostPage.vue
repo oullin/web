@@ -1,11 +1,11 @@
 <template>
 	<div class="theme min-h-screen post-page">
 		<main class="page-shell">
-			<section class="page-band !pt-6">
+			<section class="page-band pt-6!">
 				<div class="mb-6">
 					<button
 						type="button"
-						class="inline-flex items-center gap-2 border border-[var(--border)] px-3 py-1.5 font-mono text-xs uppercase tracking-[0.14em] text-[var(--muted)] transition-all hover:border-[var(--violet)] hover:text-[var(--text)] cursor-pointer"
+						class="inline-flex items-center gap-2 border border-(--border) px-3 py-1.5 font-mono text-xs uppercase tracking-[0.14em] text-(--muted) transition-all hover:border-(--violet) hover:text-(--text) cursor-pointer"
 						@click="handleGoBack"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
@@ -15,31 +15,31 @@
 					</button>
 				</div>
 
-				<div class="relative min-h-[25rem]">
+				<div class="relative min-h-100">
 					<PostPageSkeletonPartial v-if="isLoading" key="skeleton" />
 
 					<article v-else-if="post" key="post">
-						<header class="page-hero page-hero--single border border-[var(--border)]">
+						<header class="page-hero page-hero--single border border-(--border)">
 							<div class="page-hero-main">
 								<div class="post-hero-layout" :class="{ 'post-hero-layout--with-cover': Boolean(post.cover_image_url) }">
 									<div class="post-hero-copy">
 										<p class="page-kicker">POST // WRITING // SIGNAL</p>
-										<div class="page-copy !mt-0 mb-4">
-											<span class="text-[var(--violet)]">—</span> {{ date().format(new Date(post.published_at)) }}
-											<span class="text-[var(--muted)]">·</span>
+										<div class="page-copy mt-0! mb-4">
+											<span class="text-(--violet)">—</span> {{ date().format(new Date(post.published_at)) }}
+											<span class="text-(--muted)">·</span>
 											{{ getReadingTime(post.content) }}
 										</div>
-										<h1 id="post-top" class="page-title !max-w-[12ch]">{{ post.title }}</h1>
+										<h1 id="post-top" class="page-title max-w-[12ch]!">{{ post.title }}</h1>
 										<p class="page-copy">{{ post.excerpt }}</p>
 										<p class="page-copy">&nbsp;</p>
 
-										<nav v-if="post.tags?.length" class="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted)]" aria-label="Post tags" data-testid="post-tags">
+										<nav v-if="post.tags?.length" class="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-(--muted)" aria-label="Post tags" data-testid="post-tags">
 											<ul class="flex flex-wrap items-center gap-y-1">
 												<li v-for="(tag, index) in post.tags" :key="tag.uuid" class="flex items-center">
-													<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-[var(--violet)]">
+													<RouterLink :to="routeFor(tag.name)" data-testid="post-tag" class="transition-colors hover:text-(--violet)">
 														{{ formatLabel(tag.name) }}
 													</RouterLink>
-													<span v-if="index < post.tags.length - 1" class="mx-2 text-[var(--muted)]" aria-hidden="true" data-testid="post-tag-separator"> / </span>
+													<span v-if="index < post.tags.length - 1" class="mx-2 text-(--muted)" aria-hidden="true" data-testid="post-tag-separator"> / </span>
 												</li>
 											</ul>
 										</nav>
@@ -138,12 +138,14 @@ onUnmounted(() => {
 watch([htmlContent, isDark], async ([newContent]) => {
 	if (!newContent) {
 		clearHighlightTheme();
+
 		return;
 	}
 
 	await nextTick();
 
 	const container = postContainer.value;
+
 	if (!container) {
 		return;
 	}
@@ -160,6 +162,7 @@ watch([htmlContent, isDark], async ([newContent]) => {
 	const blocks = container.querySelectorAll('pre code');
 	if (blocks.length === 0) {
 		clearHighlightTheme();
+
 		return;
 	}
 
