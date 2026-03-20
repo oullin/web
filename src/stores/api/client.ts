@@ -40,6 +40,7 @@ export class ApiClient {
 	private readonly apiUsername: string;
 	private readonly inFlightGets = new Map<string, Promise<unknown>>();
 	private readonly memoryCache = new Map<string, unknown>();
+	private cacheGeneration = 0;
 
 	// Default to 0, updated dynamically via server responses
 	private clockOffsetMs = 0;
@@ -253,6 +254,7 @@ export class ApiClient {
 	}
 
 	private async performGet<T>(url: string, options: GetOptions): Promise<T> {
+		const generation = this.cacheGeneration;
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const cached = this.getFromCache<T>(url);
@@ -278,7 +280,7 @@ export class ApiClient {
 				throw new HttpError(response, 'Received 304 but no cached entry exists');
 			}
 
-			if (options.useMemoryCache) {
+			if (options.useMemoryCache && generation === this.cacheGeneration) {
 				this.memoryCache.set(url, cached.data);
 			}
 
@@ -296,7 +298,7 @@ export class ApiClient {
 			this.setToCache(url, eTag, payload);
 		}
 
-		if (options.useMemoryCache) {
+		if (options.useMemoryCache && generation === this.cacheGeneration) {
 			this.memoryCache.set(url, payload);
 		}
 
@@ -304,7 +306,9 @@ export class ApiClient {
 	}
 
 	public clearMemoryCache(): void {
+		this.cacheGeneration++;
 		this.memoryCache.clear();
+		this.inFlightGets.clear();
 	}
 
 	public async get<T>(url: string, options: GetOptions = {}): Promise<T> {
@@ -312,9 +316,20 @@ export class ApiClient {
 			return this.memoryCache.get(url) as T;
 		}
 
+		const generation = this.cacheGeneration;
 		const inFlight = this.inFlightGets.get(url);
 
 		if (inFlight) {
+			if (options.useMemoryCache) {
+				return inFlight.then((data) => {
+					if (generation === this.cacheGeneration) {
+						this.memoryCache.set(url, data);
+					}
+
+					return data as T;
+				});
+			}
+
 			return inFlight as Promise<T>;
 		}
 

@@ -190,6 +190,28 @@ describe('RecommendationPartial', () => {
 		wrapper.unmount();
 	});
 
+	it('shows error state when the markdown dynamic import fails', async () => {
+		getRecommendations.mockResolvedValueOnce({ data: [buildRecommendation(1)] });
+
+		vi.doMock('@/support/markdown/render.ts', () => {
+			throw new Error('chunk load failed');
+		});
+
+		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
+
+		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
+		await flushPromises();
+		await nextTick();
+
+		const dialogBody = new DOMWrapper(document.body);
+		expect(dialogBody.find('[data-testid="recommendations-dialog-error"]').exists()).toBe(true);
+
+		wrapper.unmount();
+
+		vi.doMock('@/support/markdown/render.ts', () => ({ renderMarkdown }));
+	});
+
 	it('retries on a later open after a failed recommendation load', async () => {
 		getRecommendations.mockRejectedValueOnce(new Error('fail')).mockResolvedValueOnce({ data: [buildRecommendation(1)] });
 

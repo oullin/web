@@ -190,7 +190,9 @@ const paginatedRecommendations = computed(() => {
 	return processedRecommendations.value.slice(start, start + PAGE_SIZE);
 });
 
-const isPreparingRecommendations = computed(() => isDialogAnimating.value || isLoadingRecommendations.value || (hasLoadedRecommendations.value && !renderMarkdown.value));
+const isPreparingRecommendations = computed(
+	() => !hasRecommendationsError.value && (isDialogAnimating.value || isLoadingRecommendations.value || (hasLoadedRecommendations.value && !renderMarkdown.value)),
+);
 const showPagination = computed(() => !isDialogAnimating.value && !isLoadingRecommendations.value && !hasRecommendationsError.value && processedRecommendations.value.length > PAGE_SIZE);
 
 const clearHighlightTheme = () => {
@@ -205,8 +207,12 @@ const ensureMarkdownLoaded = async () => {
 		return;
 	}
 
-	const module = await import('@support/markdown/render.ts');
-	renderMarkdown.value = module.renderMarkdown;
+	try {
+		const module = await import('@support/markdown/render.ts');
+		renderMarkdown.value = module.renderMarkdown;
+	} catch {
+		hasRecommendationsError.value = true;
+	}
 };
 
 const ensureHighlightSupportLoaded = async () => {
@@ -214,14 +220,18 @@ const ensureHighlightSupportLoaded = async () => {
 		return { highlightSupport, highlightCore };
 	}
 
-	const [highlightSupportModule, highlightCoreModule] = await Promise.all([import('@support/markdown/highlight.ts'), import('highlight.js/lib/core')]);
+	try {
+		const [highlightSupportModule, highlightCoreModule] = await Promise.all([import('@support/markdown/highlight.ts'), import('highlight.js/lib/core')]);
 
-	highlightSupport = highlightSupportModule;
-	highlightCore = highlightCoreModule.default;
+		highlightSupport = highlightSupportModule;
+		highlightCore = highlightCoreModule.default;
 
-	await highlightSupport.initializeHighlighter(highlightCore);
+		await highlightSupport.initializeHighlighter(highlightCore);
 
-	return { highlightSupport, highlightCore };
+		return { highlightSupport, highlightCore };
+	} catch {
+		return null;
+	}
 };
 
 const ensureRecommendationsLoaded = async () => {
@@ -305,12 +315,16 @@ watch(
 			return;
 		}
 
-		await ensureHighlightSupportLoaded();
+		const result = await ensureHighlightSupportLoaded();
 
-		highlightSupport!.loadHighlightTheme(isDark.value, themeLink);
+		if (!result) {
+			return;
+		}
+
+		result.highlightSupport.loadHighlightTheme(isDark.value, themeLink);
 
 		blocks.forEach((block) => {
-			highlightCore!.highlightElement(block as HTMLElement);
+			result.highlightCore.highlightElement(block as HTMLElement);
 		});
 	},
 	{ immediate: true },

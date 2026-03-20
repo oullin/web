@@ -10,13 +10,9 @@ marked.setOptions({
 });
 
 function stripFrontMatter(markdown: string): string {
-	if (!FRONT_MATTER_REGEX.test(markdown)) {
-		return markdown;
-	}
+	const stripped = markdown.replace(FRONT_MATTER_REGEX, '');
 
-	const withoutFrontMatter = markdown.replace(FRONT_MATTER_REGEX, '');
-
-	return withoutFrontMatter.replace(/^[\r\n]+/, '');
+	return stripped === markdown ? markdown : stripped.replace(/^[\r\n]+/, '');
 }
 
 function ensureString(result: string | Promise<string>): string {
