@@ -34,18 +34,10 @@ describe('useApiStore', () => {
 		expect(store.searchTerm).toBe('vue');
 	});
 
-	it('boots in dev mode', () => {
-		const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-		store.boot();
-		expect(client.isDev).toHaveBeenCalled();
-		expect(spy).toHaveBeenCalledWith('API client booted ...');
-		spy.mockRestore();
-	});
-
 	it('gets profile', async () => {
 		client.get.mockResolvedValue({ data: { name: 'gus' } });
 		const res = await store.getProfile();
-		expect(client.get).toHaveBeenCalledWith('profile');
+		expect(client.get).toHaveBeenCalledWith('profile', { useMemoryCache: true });
 		expect(res).toEqual({ data: { name: 'gus' } });
 	});
 
@@ -57,7 +49,7 @@ describe('useApiStore', () => {
 	it('gets categories', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getCategories();
-		expect(client.get).toHaveBeenCalledWith('categories?limit=10');
+		expect(client.get).toHaveBeenCalledWith('categories?limit=10', { useMemoryCache: true });
 		expect(res).toEqual({ list: [] });
 	});
 
@@ -82,7 +74,7 @@ describe('useApiStore', () => {
 	it('gets single post', async () => {
 		client.get.mockResolvedValue({ slug: 'a' });
 		const res = await store.getPost('a');
-		expect(client.get).toHaveBeenCalledWith('posts/a');
+		expect(client.get).toHaveBeenCalledWith('posts/a', { useMemoryCache: true });
 		expect(res).toEqual({ slug: 'a' });
 	});
 
@@ -118,14 +110,14 @@ describe('useApiStore', () => {
 	it('gets projects', async () => {
 		client.get.mockResolvedValue({ list: [1] });
 		const res = await store.getProjects();
-		expect(client.get).toHaveBeenCalledWith('projects');
+		expect(client.get).toHaveBeenCalledWith('projects', { useMemoryCache: true });
 		expect(res).toEqual({ list: [1] });
 	});
 
 	it('gets paginated projects', async () => {
 		client.get.mockResolvedValue({ list: [2] });
 		const res = await store.getProjects(2);
-		expect(client.get).toHaveBeenCalledWith('projects?page=2');
+		expect(client.get).toHaveBeenCalledWith('projects?page=2', { useMemoryCache: false });
 		expect(res).toEqual({ list: [2] });
 	});
 
@@ -149,7 +141,7 @@ describe('useApiStore', () => {
 	it('gets links', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getLinks();
-		expect(client.get).toHaveBeenCalledWith('links');
+		expect(client.get).toHaveBeenCalledWith('links', { useMemoryCache: true });
 		expect(res).toEqual({ list: [] });
 	});
 

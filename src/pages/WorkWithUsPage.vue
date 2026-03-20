@@ -91,7 +91,8 @@
 import { RouterLink } from 'vue-router';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { workWithUsPageContent, resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/json-ld.ts';
+import { workWithUsPageContent } from '@support/content/work-with-us-page.ts';
 
 const { hero, sidebar, intro, engagements, faq, cta, seo } = workWithUsPageContent;
 

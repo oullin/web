@@ -2,7 +2,7 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ContactPage from '@pages/ContactPage.vue';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
-import { contactPageContent } from '@support/content.ts';
+import { contactPageContent } from '@support/content/contact-page.ts';
 import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
 
 const profile: ProfileResponse = {
@@ -41,6 +41,13 @@ vi.mock('@api/store.ts', () => ({
 	}),
 }));
 
+vi.mock('@support/deferred.ts', () => ({
+	runAfterLoadAndIdle: (task: () => void) => {
+		void task();
+		return () => {};
+	},
+}));
+
 const global = {
 	stubs: {
 		NavPartial: true,
@@ -65,9 +72,10 @@ describe('ContactPage', () => {
 		});
 		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.copy);
 		expect(wrapper.text()).toContain(profile.email);
+		expect(wrapper.text()).toContain('LINKEDIN');
 		expect(wrapper.text()).toContain('GITHUB');
 		expect(wrapper.text()).toContain('X');
-		expect(wrapper.findAll('.page-social-separator')).toHaveLength(links.length - 1);
+		expect(wrapper.findAll('.page-social-separator')).toHaveLength(Object.keys(NAV_SOCIAL_FALLBACKS).length - 1);
 	});
 
 	it('shows fallback copy when contact data is unavailable', async () => {

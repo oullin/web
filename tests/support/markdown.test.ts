@@ -30,9 +30,7 @@ const EXPECTED_ALIAS_REGISTRATIONS: Array<[string[], { languageName: string }]> 
 	[['js', 'jsx', 'nodejs'], { languageName: 'javascript' }],
 	[['html', 'vue', 'angular'], { languageName: 'xml' }],
 	[['docker'], { languageName: 'dockerfile' }],
-	[['curl', 'Curl', 'CURL'], { languageName: 'bash' }],
-	[['sh', 'shell', 'zsh'], { languageName: 'bash' }],
-	[['yml'], { languageName: 'yaml' }],
+	[['Curl', 'CURL'], { languageName: 'bash' }],
 	[['Text', 'TXT'], { languageName: 'plaintext' }],
 	[['TS'], { languageName: 'typescript' }],
 ];
@@ -56,6 +54,14 @@ describe('renderMarkdown', () => {
 		const html = renderMarkdown('## Just Heading');
 
 		expect(html).toContain('<h2>Just Heading</h2>');
+	});
+
+	it('preserves leading indentation on the first line after front matter', () => {
+		const markdown = `---\ntitle: test\n---\n    indented code\n`;
+		const html = renderMarkdown(markdown);
+
+		expect(html).toContain('<code>');
+		expect(html).toContain('indented code');
 	});
 });
 

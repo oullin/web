@@ -89,32 +89,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { contactPageContent, resolveJsonLdArray } from '@support/content.ts';
-import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
+import { resolveJsonLdArray } from '@support/json-ld.ts';
+import { contactPageContent } from '@support/content/contact-page.ts';
+import { buildNavSocialLinkEntries, NAV_SOCIAL_FALLBACKS, resolveNavSocialLinks } from '@support/links.ts';
+import { runAfterLoadAndIdle } from '@support/deferred.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
-const links = ref<LinksResponse[]>([]);
+const links = ref<LinksResponse[]>(buildNavSocialLinkEntries(NAV_SOCIAL_FALLBACKS));
 const hasProfileError = ref(false);
 const hasLinksError = ref(false);
 const { hero, sidebar, intro, process, email, social, founder, seo } = contactPageContent;
+let isActive = true;
+let cancelDeferredRefresh = () => {};
 
-const fallbackLinks: LinksResponse[] = Object.entries(NAV_SOCIAL_FALLBACKS).map(([name, url]) => ({
-	uuid: `social-${name}`,
-	name,
-	handle: '',
-	url,
-	description: '',
-}));
-
-const visibleLinks = computed<LinksResponse[]>(() => {
-	return links.value.length > 0 ? links.value : fallbackLinks;
-});
+const visibleLinks = computed<LinksResponse[]>(() => links.value);
 
 useSeo({
 	title: seo.title,
@@ -129,18 +123,42 @@ useSeo({
 const loadContactData = async () => {
 	try {
 		const profileResponse = await apiStore.getProfile();
-		if (profileResponse.data) profile.value = profileResponse.data;
+
+		if (profileResponse.data) {
+			profile.value = profileResponse.data;
+		}
 	} catch {
 		hasProfileError.value = true;
 	}
+};
 
+const refreshLinks = async () => {
 	try {
 		const linksResponse = await apiStore.getLinks();
-		if (linksResponse.data) links.value = linksResponse.data;
+
+		if (!isActive) {
+			return;
+		}
+
+		const resolvedLinks = resolveNavSocialLinks(linksResponse.data ?? []);
+
+		links.value = buildNavSocialLinkEntries(resolvedLinks);
 	} catch {
 		hasLinksError.value = true;
 	}
 };
 
-onMounted(loadContactData);
+onMounted(() => {
+	void loadContactData();
+
+	cancelDeferredRefresh = runAfterLoadAndIdle(() => {
+		void refreshLinks();
+	});
+});
+
+onBeforeUnmount(() => {
+	isActive = false;
+
+	cancelDeferredRefresh();
+});
 </script>

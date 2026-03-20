@@ -34,16 +34,11 @@ export const useApiStore = defineStore(STORE_KEY, {
 		setSearchTerm(term: string): void {
 			this.searchTerm = term;
 		},
-		boot(): void {
-			if (this.client.isDev()) {
-				console.log('API client booted ...');
-			}
-		},
 		async getProfile(): Promise<ApiResponse<ProfileResponse>> {
 			const url = 'profile';
 
 			try {
-				return await this.client.get<ApiResponse<ProfileResponse>>(url);
+				return await this.client.get<ApiResponse<ProfileResponse>>(url, { useMemoryCache: true });
 			} catch (error) {
 				return parseError(error);
 			}
@@ -70,7 +65,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 			const url = page > 1 ? `projects?page=${page}` : 'projects';
 
 			try {
-				return await this.client.get<ProjectsCollectionResponse>(url);
+				return await this.client.get<ProjectsCollectionResponse>(url, { useMemoryCache: page === 1 });
 			} catch (error) {
 				return parseError(error);
 			}
@@ -88,7 +83,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 			const url = 'links';
 
 			try {
-				return await this.client.get<ApiResponse<LinksResponse[]>>(url);
+				return await this.client.get<ApiResponse<LinksResponse[]>>(url, { useMemoryCache: true });
 			} catch (error) {
 				return parseError(error);
 			}
@@ -106,7 +101,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 			const url = 'categories?limit=10';
 
 			try {
-				return await this.client.get<CategoriesCollectionResponse>(url);
+				return await this.client.get<CategoriesCollectionResponse>(url, { useMemoryCache: true });
 			} catch (error) {
 				return parseError(error);
 			}
@@ -124,7 +119,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 			const url = `posts/${slug}`;
 
 			try {
-				return await this.client.get<PostResponse>(url);
+				return await this.client.get<PostResponse>(url, { useMemoryCache: true });
 			} catch (error) {
 				return parseError(error);
 			}

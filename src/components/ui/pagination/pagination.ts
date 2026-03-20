@@ -25,8 +25,8 @@ export const PAGINATION_CONTEXT = Symbol('PaginationContext') as InjectionKey<Pa
 
 export const paginationBaseClasses = 'page-panel-copy cursor-pointer border px-3 py-2 text-xs uppercase tracking-[0.14em] transition-colors disabled:cursor-not-allowed disabled:opacity-40';
 
-export const paginationButtonClasses = `${paginationBaseClasses} border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--text)]`;
-export const paginationActiveButtonClasses = `${paginationBaseClasses} border-[var(--primary)] text-[var(--primary)]`;
+export const paginationButtonClasses = `${paginationBaseClasses} border-(--border) hover:border-(--primary) hover:text-(--text)`;
+export const paginationActiveButtonClasses = `${paginationBaseClasses} border-(--primary) text-(--primary)`;
 
 export const buildPaginationItems = (page: number, pageCount: number, siblingCount: number, showEdges: boolean): PaginationRenderItem[] => {
 	if (pageCount <= 0) {

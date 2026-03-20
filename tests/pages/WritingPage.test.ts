@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import WritingPage from '@pages/WritingPage.vue';
-import { writingPageContent } from '@support/content.ts';
+import { writingPageContent } from '@support/content/writing-page.ts';
 
 const global = {
 	stubs: {

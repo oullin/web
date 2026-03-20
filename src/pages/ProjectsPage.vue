@@ -32,7 +32,7 @@
 					</div>
 				</div>
 
-				<div class="relative min-h-[25rem] mt-8">
+				<div class="relative min-h-100 mt-8">
 					<div v-if="isLoadingProjects" key="loading" data-testid="projects-skeleton-grid" class="blog-projects-grid">
 						<ProjectCardSkeletonPartial v-for="index in skeletonCount" :key="`projects-page-skeleton-${index}`" :is-animated="isLoadingProjects && projects.length === 0" />
 					</div>
@@ -75,7 +75,8 @@ import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { projectsPageContent, resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/json-ld.ts';
+import { projectsPageContent } from '@support/content/projects-page.ts';
 
 const DEFAULT_SKELETON_COUNT = 4;
 const apiStore = useApiStore();

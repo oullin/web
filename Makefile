@@ -1,7 +1,9 @@
-.PHONY: format env-fresh lint-fix
+.PHONY: format format-check env-fresh lint-fix
 
 SHELL := /bin/bash
 ROOT_PATH := $(shell pwd)
+OXFMT_EXCLUDES := '!**/.vite-build-check/**' '!dist/**' '!dist-plan/**' '!dist-verify/**'
+OXLINT_EXCLUDES := --ignore-pattern dist/** --ignore-pattern dist-plan/** --ignore-pattern dist-verify/**
 
 -include $(ROOT_PATH)/.env
 
@@ -20,8 +22,11 @@ include $(ROOT_PATH)/build/makefiles/build.mk
 # ---------
 
 format:
-	pnpm run format
+	pnpm exec oxfmt --write . $(OXFMT_EXCLUDES)
 	make lint-fix
+
+format-check:
+	pnpm exec oxfmt . $(OXFMT_EXCLUDES)
 
 env-fresh:
 	rm -rf $(ROOT_PATH)/node_modules
@@ -29,4 +34,4 @@ env-fresh:
 	pnpm install --frozen-lockfile
 
 lint-fix:
-	pnpm run lint:fix
+	pnpm exec oxlint --fix $(OXLINT_EXCLUDES)

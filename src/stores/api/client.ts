@@ -23,6 +23,10 @@ interface CacheEntry<T> {
 	data: T;
 }
 
+interface GetOptions {
+	useMemoryCache?: boolean;
+}
+
 export interface ApiResponse<T> {
 	version: string;
 	data: T;
@@ -34,6 +38,9 @@ export class ApiClient {
 	private readonly hostURL: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
+	private readonly inFlightGets = new Map<string, Promise<unknown>>();
+	private readonly memoryCache = new Map<string, unknown>();
+	private cacheGeneration = 0;
 
 	// Default to 0, updated dynamically via server responses
 	private clockOffsetMs = 0;
@@ -246,7 +253,8 @@ export class ApiClient {
 		return await response.json();
 	}
 
-	public async get<T>(url: string): Promise<T> {
+	private async performGet<T>(url: string, options: GetOptions): Promise<T> {
+		const generation = this.cacheGeneration;
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const cached = this.getFromCache<T>(url);
@@ -268,8 +276,15 @@ export class ApiClient {
 		this.syncClockOffset(response, startTime);
 
 		if (response.status === 304) {
-			// We can safely assert cached is not null here.
-			return cached!.data;
+			if (!cached) {
+				throw new HttpError(response, 'Received 304 but no cached entry exists');
+			}
+
+			if (options.useMemoryCache && generation === this.cacheGeneration) {
+				this.memoryCache.set(url, cached.data);
+			}
+
+			return cached.data;
 		}
 
 		if (!response.ok) {
@@ -283,6 +298,49 @@ export class ApiClient {
 			this.setToCache(url, eTag, payload);
 		}
 
+		if (options.useMemoryCache && generation === this.cacheGeneration) {
+			this.memoryCache.set(url, payload);
+		}
+
 		return payload;
+	}
+
+	public clearMemoryCache(): void {
+		this.cacheGeneration++;
+		this.memoryCache.clear();
+		this.inFlightGets.clear();
+	}
+
+	public async get<T>(url: string, options: GetOptions = {}): Promise<T> {
+		if (options.useMemoryCache && this.memoryCache.has(url)) {
+			return this.memoryCache.get(url) as T;
+		}
+
+		const generation = this.cacheGeneration;
+		const inFlight = this.inFlightGets.get(url);
+
+		if (inFlight) {
+			if (options.useMemoryCache) {
+				return inFlight.then((data) => {
+					if (generation === this.cacheGeneration) {
+						this.memoryCache.set(url, data);
+					}
+
+					return data as T;
+				});
+			}
+
+			return inFlight as Promise<T>;
+		}
+
+		const request = this.performGet<T>(url, options).finally(() => {
+			if (this.inFlightGets.get(url) === request) {
+				this.inFlightGets.delete(url);
+			}
+		});
+
+		this.inFlightGets.set(url, request);
+
+		return request;
 	}
 }

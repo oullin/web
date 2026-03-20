@@ -5,7 +5,7 @@ import AboutPage from '@pages/AboutPage.vue';
 import type { ProfileResponse, ProfileSkillResponse } from '@api/response/index.ts';
 import { createRouter, createMemoryHistory, RouterView, type Router } from 'vue-router';
 import { defineComponent } from 'vue';
-import { aboutPageContent } from '@support/content.ts';
+import { aboutPageContent } from '@support/content/about-page.ts';
 
 const skills: ProfileSkillResponse[] = [
 	{
@@ -97,7 +97,7 @@ describe('AboutPage', () => {
 
 		const skeleton = wrapper.find('[data-testid="about-connect-skeleton"]');
 		expect(skeleton.exists()).toBe(true);
-		expect(skeleton.classes()).toContain('min-h-[25rem]');
+		expect(skeleton.classes()).toContain('min-h-100');
 	});
 
 	it('handles profile errors gracefully', async () => {

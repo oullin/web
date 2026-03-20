@@ -3,12 +3,12 @@
 		<span class="page-section-label">// latest_articles</span>
 
 		<!-- Filters -->
-		<ul class="flex flex-wrap text-sm border-b border-[var(--border)]">
+		<ul class="flex flex-wrap text-sm border-b border-(--border)">
 			<li v-for="category in categories" :key="category.uuid" class="px-3 -mb-px">
 				<a
 					v-lazy-link
 					href="#"
-					:class="filters.category === category.slug ? 'text-[var(--text)] border-[var(--violet)]' : 'text-[var(--muted)] border-transparent hover:border-[var(--border)]'"
+					:class="filters.category === category.slug ? 'text-(--text) border-(--violet)' : 'text-(--muted) border-transparent hover:border-(--border)'"
 					class="block py-3 font-medium border-b-2 transition-colors"
 					@click.prevent="selectCategory(category.slug)"
 					>{{ category.name }}</a
@@ -17,14 +17,14 @@
 		</ul>
 
 		<!-- Articles list -->
-		<div class="relative min-h-[24rem]">
-			<div v-if="isLoading" key="skeleton" aria-busy="true" class="min-h-[24rem]">
+		<div class="relative min-h-96">
+			<div v-if="isLoading" key="skeleton" aria-busy="true" class="min-h-96">
 				<ArticleItemSkeletonPartial v-for="skeleton in skeletonCount" :key="`article-skeleton-${skeleton}`" />
 			</div>
-			<div v-else-if="items.length > 0" key="list" class="min-h-[24rem]">
+			<div v-else-if="items.length > 0" key="list" class="min-h-96">
 				<ArticleItemPartial v-for="(item, index) in items" :key="item.uuid" :item="item" :is-last="index === items.length - 1" />
 			</div>
-			<p v-else key="empty" class="page-empty-state py-8 min-h-[24rem]">No articles found.</p>
+			<p v-else key="empty" class="page-empty-state py-8 min-h-96">No articles found.</p>
 		</div>
 	</section>
 </template>

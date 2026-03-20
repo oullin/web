@@ -1472,16 +1472,11 @@ footer.site-footer::before {
 }
 
 .page-article {
-	max-width: 860px;
 	padding: 56px 64px 72px;
 }
 
-.page-article--wide {
-	max-width: none;
-}
-
 .page-article .post-markdown {
-	margin: 36px auto 0;
+	margin: 36px 0 0;
 }
 
 .page-summary-card {

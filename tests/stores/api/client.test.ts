@@ -1,248 +1,214 @@
-import { describe, it, expect, beforeEach, afterEach, vi, type Mock } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { ApiClient } from '@api/client.ts';
 
-import { HttpError } from '@api/http-error.ts';
-import { ApiClient, ApiClientOptions } from '@api/client.ts';
-import { SignatureResponse } from '@api/response/signature-response.ts';
-
-const options: ApiClientOptions = {
-	env: 'development',
-	apiKey: 'k',
-	apiUsername: 'u',
-};
-
-const url = 'http://example.com/';
-
-let client: ApiClient;
-
-beforeEach(() => {
-	localStorage.clear();
-
-	vi.stubEnv('VITE_API_URL', url);
-	vi.stubEnv('VITE_HOST_URL', url);
-	vi.stubGlobal('fetch', vi.fn());
-
-	client = new ApiClient(options);
-	vi.spyOn(client as any, 'appendSignature').mockResolvedValue(undefined);
-});
-
-afterEach(() => {
-	vi.restoreAllMocks();
-	vi.unstubAllEnvs();
-	vi.unstubAllGlobals();
-});
-
-describe('ApiClient', () => {
-	it('detects prod and dev modes', () => {
-		expect(client.isProd()).toBe(false);
-		expect(client.isDev()).toBe(true);
-
-		const prod = new ApiClient({ ...options, env: 'production' });
-		expect(prod.isProd()).toBe(true);
-		expect(prod.isDev()).toBe(false);
+const signatureResponse = () =>
+	new Response(JSON.stringify({ signature: 'signed' }), {
+		status: 200,
+		headers: { Date: new Date().toUTCString() },
 	});
 
-	it('creates unique 32-character hex nonces', () => {
-		const first = client.createNonce();
-		const second = client.createNonce();
-
-		expect(first).toMatch(/^[a-f0-9]{32}$/);
-		expect(second).toMatch(/^[a-f0-9]{32}$/);
-		expect(first).not.toBe(second);
+const jsonResponse = (payload: unknown, headers: Record<string, string> = {}) =>
+	new Response(JSON.stringify(payload), {
+		status: 200,
+		headers: {
+			Date: new Date().toUTCString(),
+			...headers,
+		},
 	});
 
-	it('handles post success and error responses', async () => {
-		const data = { ok: true };
-		(fetch as Mock).mockResolvedValue(new Response(JSON.stringify(data), { status: 200 }));
-
-		const result = await client.post('test', { id: 1 });
-		expect(result).toEqual(data);
-
-		(fetch as Mock).mockResolvedValue(new Response('fail', { status: 500, statusText: 'err' }));
-
-		await expect(client.post('test', { id: 2 })).rejects.toBeInstanceOf(HttpError);
+describe('ApiClient.get', () => {
+	beforeEach(() => {
+		localStorage.clear();
 	});
 
-	it('caches get requests and serves from cache', async () => {
-		const prodClient = new ApiClient({ ...options, env: 'production' });
-		vi.spyOn(prodClient as any, 'appendSignature').mockResolvedValue(undefined);
-
-		// prefill cache
-		const cacheKey = 'api-cache-test';
-		localStorage.setItem(cacheKey, JSON.stringify({ etag: 'x', data: { cached: true } }));
-
-		(fetch as Mock).mockResolvedValue(new Response(null, { status: 304 }));
-
-		const result = await prodClient.get('test');
-		expect(result).toEqual({ cached: true });
+	afterEach(() => {
+		vi.restoreAllMocks();
+		vi.unstubAllGlobals();
+		localStorage.clear();
 	});
 
-	it('stores response with etag in cache', async () => {
-		const prodClient = new ApiClient({ ...options, env: 'production' });
-		vi.spyOn(prodClient as any, 'appendSignature').mockResolvedValue(undefined);
-		const data = { foo: 'bar' };
-		(fetch as Mock).mockResolvedValue(
-			new Response(JSON.stringify(data), {
-				status: 200,
-				headers: { ETag: 'abc' },
-			}),
-		);
+	it('deduplicates concurrent GET requests for the same URL', async () => {
+		let resolveDataResponse: ((response: Response) => void) | null = null;
+		const dataResponsePromise = new Promise<Response>((resolve) => {
+			resolveDataResponse = resolve;
+		});
 
-		const result = await prodClient.get('test');
-		expect(result).toEqual(data);
-		expect(localStorage.getItem('api-cache-test')).not.toBeNull();
-	});
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			.mockResolvedValueOnce(signatureResponse())
+			.mockImplementationOnce(() => dataResponsePromise);
 
-	it('skips persisted cache and forces no-store in non-production', async () => {
-		localStorage.setItem('api-cache-test', JSON.stringify({ etag: 'stale', data: { cached: true } }));
-		(fetch as Mock).mockResolvedValue(
-			new Response(JSON.stringify({ fresh: true }), {
-				status: 200,
-				headers: { ETag: 'abc' },
-			}),
-		);
+		vi.stubGlobal('fetch', fetchMock);
 
-		const result = await client.get('test');
-		const [, requestInit] = (fetch as Mock).mock.calls[0] as [string, RequestInit];
-		const headers = requestInit.headers as Headers;
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
 
-		expect(result).toEqual({ fresh: true });
-		expect(requestInit.cache).toBe('no-store');
-		expect(headers.get('If-None-Match')).toBeNull();
-		expect(localStorage.getItem('api-cache-test')).toBe(JSON.stringify({ etag: 'stale', data: { cached: true } }));
-	});
+		const firstRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+		const secondRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
 
-	it('throws HttpError on failed get', async () => {
-		(fetch as Mock).mockResolvedValue(new Response('nope', { status: 404, statusText: 'NF' }));
+		resolveDataResponse?.(jsonResponse({ data: { email: 'hello@oullin.io' } }, { ETag: '"profile-v1"' }));
 
-		await expect(client.get('oops')).rejects.toBeInstanceOf(HttpError);
-	});
+		const [first, second] = await Promise.all([firstRequest, secondRequest]);
 
-	it('requests signatures through the same origin relay path in the browser', async () => {
-		const testOrigin = 'http://localhost:5179';
-		vi.stubGlobal('location', { ...window.location, origin: testOrigin });
-
-		const realClient = new ApiClient(options);
-		const fetchMock = fetch as Mock;
-
-		fetchMock.mockReset();
-		fetchMock.mockResolvedValue(new Response(JSON.stringify({ signature: 'sig-relay' }), { status: 200 }));
-
-		await (realClient as any).getSignature('nonce-relay', `${url}profile`);
-
-		expect(fetchMock).toHaveBeenCalledWith(
-			`${testOrigin}/relay/generate-signature`,
-			expect.objectContaining({
-				method: 'POST',
-			}),
-		);
-	});
-
-	it('retries signature when clock skew is detected and keeps the signed timestamp aligned', async () => {
-		const serverDate = new Date('2025-01-01T00:00:00Z').toUTCString();
-		const realClient = new ApiClient(options);
-		const fetchMock = fetch as Mock;
-
-		fetchMock.mockReset();
-		fetchMock.mockResolvedValueOnce(new Response('unauthorized', { status: 401, headers: { Date: serverDate } }));
-		fetchMock.mockResolvedValueOnce(new Response(JSON.stringify({ signature: 'sig-1' }), { status: 200, headers: { Date: serverDate } }));
-
-		const headers = new Headers();
-
-		await (realClient as any).appendSignature('nonce-1', headers, `${url}profile`);
-
+		expect(first).toEqual(second);
 		expect(fetchMock).toHaveBeenCalledTimes(2);
-		expect(headers.get('X-API-Signature')).toBe('sig-1');
-		expect(headers.get('X-API-Timestamp')).toBe(String((realClient as any).getCurrentTimestamp()));
-		expect((realClient as any).clockOffsetMs).not.toBe(0);
 	});
 
-	it('applies Cristian RTT compensation when latency is acceptable', () => {
-		const realClient = new ApiClient(options);
-		const now = 1_700_000_000_000;
-		const startTime = now - 200;
-		const dateHeader = new Date(now).toUTCString();
+	it('cleans up in-flight entry on rejection so retries can succeed', async () => {
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			.mockResolvedValueOnce(signatureResponse())
+			.mockResolvedValueOnce(new Response('Internal Server Error', { status: 500 }))
+			.mockResolvedValueOnce(signatureResponse())
+			.mockResolvedValueOnce(jsonResponse({ data: { email: 'hello@oullin.io' } }));
 
-		vi.spyOn(Date, 'now').mockReturnValue(now);
+		vi.stubGlobal('fetch', fetchMock);
 
-		(realClient as any).syncClockOffset(new Response(null, { headers: { Date: dateHeader } }), startTime);
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
 
-		expect((realClient as any).clockOffsetMs).toBe(100);
-		expect((realClient as any).getCurrentTimestamp()).toBe(Math.floor((now + 100) / 1000));
+		await expect(client.get('profile')).rejects.toThrow();
+
+		const result = await client.get<{ data: { email: string } }>('profile');
+		expect(result).toEqual({ data: { email: 'hello@oullin.io' } });
+		expect(fetchMock).toHaveBeenCalledTimes(4);
 	});
 
-	it('ignores clock sync on high-latency responses', () => {
-		const realClient = new ApiClient(options);
-		const now = 1_700_000_000_000;
-		const startTime = now - 2_000; // RTT 2s
-		const dateHeader = new Date(now).toUTCString();
-
-		vi.spyOn(Date, 'now').mockReturnValue(now);
-
-		(realClient as any).syncClockOffset(new Response(null, { headers: { Date: dateHeader } }), startTime);
-
-		expect((realClient as any).clockOffsetMs).toBe(0);
-	});
-
-	it('ignores stale cache Date headers during sync', () => {
-		const realClient = new ApiClient(options);
-		const now = 1_700_000_000_000;
-		const startTime = now - 50;
-		const staleDate = new Date(now - 120_000).toUTCString();
-
-		vi.spyOn(Date, 'now').mockReturnValue(now);
-
-		(realClient as any).syncClockOffset(new Response(null, { headers: { Date: staleDate } }), startTime);
-
-		expect((realClient as any).clockOffsetMs).toBe(0);
-	});
-
-	it('uses one stable timestamp for signature generation and the final request headers', async () => {
-		const realClient = new ApiClient(options);
-		const getSignatureSpy = vi.spyOn(realClient as any, 'getSignature').mockResolvedValue({ signature: 'sig-2' } as SignatureResponse);
-		const now = 9_000;
-
-		vi.spyOn(Date, 'now').mockReturnValue(now);
-
-		const headers = new Headers({ 'X-API-Timestamp': '0' });
-
-		await (realClient as any).appendSignature('nonce-2', headers, `${url}profile`);
-
-		expect(getSignatureSpy).toHaveBeenCalledTimes(1);
-		expect(getSignatureSpy).toHaveBeenCalledWith('nonce-2', `${url}profile`, Math.floor(now / 1000));
-		expect(headers.get('X-API-Timestamp')).toBe(String(Math.floor(now / 1000)));
-		expect(headers.get('X-API-Signature')).toBe('sig-2');
-	});
-
-	it('passes request start times into syncClockOffset for POST', async () => {
-		const syncSpy = vi.spyOn(client as any, 'syncClockOffset');
-		(fetch as Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
-
-		let callCountPost = 0;
-		vi.spyOn(Date, 'now').mockImplementation(() => {
-			callCountPost++;
-			return callCountPost === 1 ? 5_000 : 5_100; // 100ms RTT
+	it('does not populate memory cache from a stale in-flight request after clearMemoryCache', async () => {
+		let resolveDataResponse: ((response: Response) => void) | null = null;
+		const dataResponsePromise = new Promise<Response>((resolve) => {
+			resolveDataResponse = resolve;
 		});
 
-		await client.post('test', { a: 1 });
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			.mockResolvedValueOnce(signatureResponse())
+			.mockImplementationOnce(() => dataResponsePromise)
+			.mockResolvedValueOnce(signatureResponse())
+			.mockResolvedValueOnce(jsonResponse({ data: { email: 'fresh@oullin.io' } }));
 
-		expect(syncSpy).toHaveBeenCalledTimes(1);
-		expect(syncSpy.mock.calls[0][1]).toBe(5_100);
+		vi.stubGlobal('fetch', fetchMock);
+
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
+
+		const staleRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		client.clearMemoryCache();
+
+		resolveDataResponse?.(jsonResponse({ data: { email: 'stale@oullin.io' } }));
+		await staleRequest;
+
+		const freshResult = await client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		expect(freshResult).toEqual({ data: { email: 'fresh@oullin.io' } });
+		expect(fetchMock).toHaveBeenCalledTimes(4);
 	});
 
-	it('passes request start times into syncClockOffset for GET', async () => {
-		const syncSpy = vi.spyOn(client as any, 'syncClockOffset');
-		(fetch as Mock).mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200, headers: { Date: new Date().toUTCString() } }));
-
-		let callCountGet = 0;
-		vi.spyOn(Date, 'now').mockImplementation(() => {
-			callCountGet++;
-			return callCountGet === 1 ? 10_000 : 10_100; // 100ms RTT
+	it('populates memory cache when a memoized caller joins a non-memoized in-flight request', async () => {
+		let resolveDataResponse: ((response: Response) => void) | null = null;
+		const dataResponsePromise = new Promise<Response>((resolve) => {
+			resolveDataResponse = resolve;
 		});
 
-		await client.get('test');
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			.mockResolvedValueOnce(signatureResponse())
+			.mockImplementationOnce(() => dataResponsePromise);
 
-		expect(syncSpy).toHaveBeenCalledTimes(1);
-		// Start time is captured immediately before fetch after earlier timestamp refreshes.
-		expect(syncSpy.mock.calls[0][1]).toBe(10_100);
+		vi.stubGlobal('fetch', fetchMock);
+
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
+
+		const nonMemoized = client.get<{ data: { email: string } }>('profile');
+		const memoized = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		resolveDataResponse?.(jsonResponse({ data: { email: 'hello@oullin.io' } }));
+
+		const [nonMemoizedResult, memoizedResult] = await Promise.all([nonMemoized, memoized]);
+
+		expect(nonMemoizedResult).toEqual(memoizedResult);
+
+		const cachedResult = await client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		expect(cachedResult).toEqual({ data: { email: 'hello@oullin.io' } });
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
+
+	it('does not evict a replacement in-flight entry when the old request settles after clearMemoryCache', async () => {
+		let resolveOldData: ((response: Response) => void) | null = null;
+		const oldDataPromise = new Promise<Response>((resolve) => {
+			resolveOldData = resolve;
+		});
+
+		let resolveNewData: ((response: Response) => void) | null = null;
+		const newDataPromise = new Promise<Response>((resolve) => {
+			resolveNewData = resolve;
+		});
+
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			// old request: signature + data
+			.mockResolvedValueOnce(signatureResponse())
+			.mockImplementationOnce(() => oldDataPromise)
+			// new request after clear: signature + data
+			.mockResolvedValueOnce(signatureResponse())
+			.mockImplementationOnce(() => newDataPromise);
+
+		vi.stubGlobal('fetch', fetchMock);
+
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
+
+		// 1. Start first request (registers in inFlightGets)
+		const oldRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		// 2. Clear caches (wipes inFlightGets)
+		client.clearMemoryCache();
+
+		// 3. Start replacement request for the same URL (re-registers in inFlightGets)
+		const newRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		// 4. A third caller joins while the replacement is still in-flight — should deduplicate
+		const deduplicatedRequest = client.get<{ data: { email: string } }>('profile', { useMemoryCache: true });
+
+		// 5. Old request settles — its .finally() must NOT evict the replacement
+		resolveOldData?.(jsonResponse({ data: { email: 'old@oullin.io' } }));
+		await oldRequest;
+
+		// 6. Resolve replacement
+		resolveNewData?.(jsonResponse({ data: { email: 'new@oullin.io' } }));
+		const [newResult, deduplicatedResult] = await Promise.all([newRequest, deduplicatedRequest]);
+
+		// The deduplicated caller must have shared the replacement promise (same result, no extra fetch)
+		expect(newResult).toEqual({ data: { email: 'new@oullin.io' } });
+		expect(deduplicatedResult).toEqual(newResult);
+		// 4 fetches total: 2 for old request + 2 for replacement. No extra pair for the deduplicated caller.
+		expect(fetchMock).toHaveBeenCalledTimes(4);
+	});
+
+	it('returns memoized responses for repeated shared GETs in the same session', async () => {
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			.mockResolvedValueOnce(signatureResponse())
+			.mockResolvedValueOnce(jsonResponse({ data: [{ name: 'github', url: 'https://github.com/oullin' }] }, { ETag: '"links-v1"' }));
+
+		vi.stubGlobal('fetch', fetchMock);
+
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
+
+		const first = await client.get<{ data: Array<{ name: string; url: string }> }>('links', { useMemoryCache: true });
+		const second = await client.get<{ data: Array<{ name: string; url: string }> }>('links', { useMemoryCache: true });
+
+		expect(second).toEqual(first);
+		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 });

@@ -1,0 +1,34 @@
+import { marked } from 'marked';
+
+// Match YAML front matter only at the very start (optional BOM supported)
+const FRONT_MATTER_REGEX = /^\uFEFF?---[^\S\r\n]*[\r\n]+([\s\S]*?)\r?\n---[^\S\r\n]*[\r\n]*/;
+
+marked.setOptions({
+	breaks: true,
+	gfm: true,
+	async: false,
+});
+
+function stripFrontMatter(markdown: string): string {
+	const stripped = markdown.replace(FRONT_MATTER_REGEX, '');
+
+	return stripped === markdown ? markdown : stripped.replace(/^[\r\n]+/, '');
+}
+
+function ensureString(result: string | Promise<string>): string {
+	if (typeof result === 'string') {
+		return result;
+	}
+
+	throw new Error('renderMarkdown expected a synchronous string result.');
+}
+
+export function renderMarkdown(markdown?: string | null): string {
+	if (!markdown) {
+		return '';
+	}
+
+	const cleanedMarkdown = stripFrontMatter(markdown);
+
+	return ensureString(marked.parse(cleanedMarkdown));
+}

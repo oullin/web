@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ProjectsPage from '@pages/ProjectsPage.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
-import { projectsPageContent } from '@support/content.ts';
+import { projectsPageContent } from '@support/content/projects-page.ts';
 
 const projectsPageOne: ProjectsResponse[] = [
 	{

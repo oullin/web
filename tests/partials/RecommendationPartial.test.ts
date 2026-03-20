@@ -15,18 +15,18 @@ vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({ getRecommendations }),
 }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
-vi.mock('@/support/markdown.ts', async (importOriginal) => {
-	const actual = await importOriginal();
-	return {
-		...actual,
-		renderMarkdown,
-		initializeHighlighter,
-		loadHighlightTheme,
-	};
-});
+vi.mock('@/support/markdown/render.ts', () => ({ renderMarkdown }));
+vi.mock('@/support/markdown/highlight.ts', () => ({ initializeHighlighter, loadHighlightTheme }));
 vi.mock('@/public.ts', () => ({
 	image: (p: string) => `/img/${p}`,
 	date: () => ({ format: () => 'now' }),
+}));
+vi.mock('highlight.js/lib/core', () => ({
+	default: {
+		highlightElement: vi.fn(),
+		registerLanguage: vi.fn(),
+		registerAliases: vi.fn(),
+	},
 }));
 
 const buildRecommendation = (index: number): RecommendationsResponse => ({
@@ -60,6 +60,8 @@ describe('RecommendationPartial', () => {
 
 		expect(wrapper.text()).toContain(siteContent.recommendations.intro);
 		expect(getRecommendations).not.toHaveBeenCalled();
+		expect(renderMarkdown).not.toHaveBeenCalled();
+		expect(initializeHighlighter).not.toHaveBeenCalled();
 		expect(wrapper.get('[data-testid="recommendations-dialog-trigger"]').text()).toBe(siteContent.recommendations.triggerLabel);
 		expect(wrapper.get('[data-testid="recommendations-dialog-trigger"]').element.tagName).toBe('BUTTON');
 
@@ -186,6 +188,66 @@ describe('RecommendationPartial', () => {
 		expect(dialogBody.text()).not.toContain('great-1');
 
 		wrapper.unmount();
+	});
+
+	it('shows error state when the markdown dynamic import fails', async () => {
+		getRecommendations.mockResolvedValueOnce({ data: [buildRecommendation(1)] });
+
+		vi.resetModules();
+		vi.doMock('@/support/markdown/render.ts', () => {
+			throw new Error('chunk load failed');
+		});
+
+		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
+
+		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
+		await flushPromises();
+		await nextTick();
+
+		const dialogBody = new DOMWrapper(document.body);
+		expect(dialogBody.find('[data-testid="recommendations-dialog-error"]').exists()).toBe(true);
+
+		wrapper.unmount();
+
+		vi.doMock('@/support/markdown/render.ts', () => ({ renderMarkdown }));
+		vi.resetModules();
+	});
+
+	it('retries markdown import on a later open after a failed load', async () => {
+		getRecommendations.mockResolvedValue({ data: [buildRecommendation(1)] });
+
+		vi.resetModules();
+		vi.doMock('@/support/markdown/render.ts', () => {
+			throw new Error('chunk load failed');
+		});
+
+		const wrapper = mount(RecommendationPartial, { attachTo: document.body });
+
+		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
+		await flushPromises();
+		await nextTick();
+
+		const dialogBody = new DOMWrapper(document.body);
+		expect(dialogBody.find('[data-testid="recommendations-dialog-error"]').exists()).toBe(true);
+
+		await dialogBody.get('[data-testid="recommendations-dialog-close-button"]').trigger('click');
+		await nextTick();
+
+		vi.resetModules();
+		vi.doMock('@/support/markdown/render.ts', () => ({ renderMarkdown }));
+
+		await wrapper.get('[data-testid="recommendations-dialog-trigger"]').trigger('click');
+		await vi.runAllTimersAsync();
+		await flushPromises();
+		await nextTick();
+
+		expect(new DOMWrapper(document.body).find('[data-testid="recommendations-dialog-error"]').exists()).toBe(false);
+		expect(new DOMWrapper(document.body).text()).toContain('Person 1');
+
+		wrapper.unmount();
+		vi.resetModules();
 	});
 
 	it('retries on a later open after a failed recommendation load', async () => {

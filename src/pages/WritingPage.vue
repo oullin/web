@@ -33,7 +33,8 @@
 import FooterPartial from '@partials/FooterPartial.vue';
 import ArticlesListPartial from '@partials/ArticlesListPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { writingPageContent, resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/json-ld.ts';
+import { writingPageContent } from '@support/content/writing-page.ts';
 
 const { hero, sidebar, seo } = writingPageContent;
 
