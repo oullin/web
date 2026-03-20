@@ -2,6 +2,8 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ContactPage from '@pages/ContactPage.vue';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
+import { contactPageContent } from '@support/content.ts';
+import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
 
 const profile: ProfileResponse = {
 	nickname: 'Oullin',
@@ -57,9 +59,11 @@ describe('ContactPage', () => {
 
 		expect(getProfile).toHaveBeenCalled();
 		expect(getLinks).toHaveBeenCalled();
-		expect(wrapper.text()).toContain('Contact Oullin.');
-		expect(wrapper.text()).toContain('high-availability software');
-		expect(wrapper.text()).toContain('regulated or high-trust environment');
+		expect(wrapper.text()).toContain(contactPageContent.hero.title);
+		contactPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.copy);
 		expect(wrapper.text()).toContain(profile.email);
 		expect(wrapper.text()).toContain('GITHUB');
 		expect(wrapper.text()).toContain('X');
@@ -73,9 +77,11 @@ describe('ContactPage', () => {
 		const wrapper = mount(ContactPage, { global });
 		await flushPromises();
 
-		expect(wrapper.text()).toContain('Direct email');
-		expect(wrapper.text()).toContain('LINKEDIN');
-		expect(wrapper.text()).toContain('GITHUB');
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackTitle);
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackCopy);
+		for (const platform of Object.keys(NAV_SOCIAL_FALLBACKS)) {
+			expect(wrapper.text()).toContain(platform.toUpperCase());
+		}
 	});
 
 	it('handles API errors gracefully', async () => {
@@ -85,8 +91,10 @@ describe('ContactPage', () => {
 		const wrapper = mount(ContactPage, { global });
 		await flushPromises();
 
-		expect(wrapper.text()).toContain('Direct email');
-		expect(wrapper.text()).toContain('LINKEDIN');
-		expect(wrapper.text()).toContain('GITHUB');
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackTitle);
+		expect(wrapper.text()).toContain(contactPageContent.sidebar.primaryChannel.fallbackCopy);
+		for (const platform of Object.keys(NAV_SOCIAL_FALLBACKS)) {
+			expect(wrapper.text()).toContain(platform.toUpperCase());
+		}
 	});
 });

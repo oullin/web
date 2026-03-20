@@ -101,16 +101,6 @@ const projectTimestamp = computed(() => {
 		return { label: 'Published', value: publishedAt };
 	}
 
-	const updatedAt = formatProjectDate(item.updated_at);
-	if (updatedAt) {
-		return { label: 'Updated', value: updatedAt };
-	}
-
-	const createdAt = formatProjectDate(item.created_at);
-	if (createdAt) {
-		return { label: 'Created', value: createdAt };
-	}
-
 	return null;
 });
 </script>

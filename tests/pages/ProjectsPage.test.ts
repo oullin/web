@@ -5,10 +5,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ProjectsPage from '@pages/ProjectsPage.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
+import { projectsPageContent } from '@support/content.ts';
 
 const projectsPageOne: ProjectsResponse[] = [
 	{
 		uuid: faker.string.uuid(),
+		sort: 1,
 		title: faker.lorem.words(2),
 		excerpt: faker.lorem.sentence(),
 		url: faker.internet.url(),
@@ -16,14 +18,13 @@ const projectsPageOne: ProjectsResponse[] = [
 		icon: faker.image.avatarGitHub(),
 		is_open_source: true,
 		published_at: faker.date.past().toISOString(),
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
 	},
 ];
 
 const projectsPageTwo: ProjectsResponse[] = [
 	{
 		uuid: faker.string.uuid(),
+		sort: 2,
 		title: faker.lorem.words(3),
 		excerpt: faker.lorem.sentence(),
 		url: faker.internet.url(),
@@ -31,8 +32,6 @@ const projectsPageTwo: ProjectsResponse[] = [
 		icon: faker.image.avatarGitHub(),
 		is_open_source: true,
 		published_at: faker.date.past().toISOString(),
-		created_at: faker.date.past().toISOString(),
-		updated_at: faker.date.recent().toISOString(),
 	},
 ];
 
@@ -74,8 +73,10 @@ describe('ProjectsPage', () => {
 		expect(getProjects).toHaveBeenCalledWith(1);
 		const items = wrapper.findAll('.project');
 		expect(items).toHaveLength(projectsPageOne.length);
-		expect(wrapper.text()).toContain('Proof from real systems.');
-		expect(wrapper.text()).toContain('banking, consulting, product teams');
+		expect(wrapper.text()).toContain(projectsPageContent.hero.title);
+		projectsPageContent.hero.copy.forEach((paragraph) => {
+			expect(wrapper.text()).toContain(paragraph);
+		});
 		expect(wrapper.text()).toContain(projectsPageOne[0].title);
 	});
 

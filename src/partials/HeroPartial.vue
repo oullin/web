@@ -64,5 +64,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import HeroCircuitPartial from '@partials/HeroCircuitPartial.vue';
-import hero from '@fixtures/hero.json';
+import { homePageContent } from '@support/content.ts';
+
+const { hero } = homePageContent;
 </script>

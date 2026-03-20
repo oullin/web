@@ -1,37 +1,28 @@
 <template>
 	<div class="theme min-h-screen contact-page">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">CONTACT // OULLIN // CONVERSATION</p>
-					<h1 class="page-title">Contact Oullin.</h1>
+					<p class="page-kicker">{{ hero.kicker }}</p>
+					<h1 class="page-title">{{ hero.title }}</h1>
 					<div class="page-copy">
-						<p>Oullin is open to conversations about high-availability software, modernisation, architecture, and digital transformation in the AI era.</p>
-						<p>&nbsp;</p>
-						<p>If you are working in a regulated or high-trust environment, or need senior technical leadership close to a difficult system, start the conversation here.</p>
+						<p v-for="(paragraph, index) in hero.copy" :key="paragraph" :class="{ 'mt-6': index > 0 }">{{ paragraph }}</p>
 					</div>
 				</div>
 
 				<div class="page-hero-side">
 					<div class="page-side-block">
-						<div class="page-section-label">Primary channel</div>
+						<div class="page-section-label">{{ sidebar.primaryChannel.label }}</div>
 						<div class="page-panel-title">
 							<a v-if="profile" v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a>
-							<span v-else>Direct email</span>
+							<span v-else>{{ sidebar.primaryChannel.fallbackTitle }}</span>
 						</div>
-						<p class="page-panel-copy">
-							<template v-if="profile">Email is the fastest way to reach Oullin for architecture, modernisation, and transformation enquiries.</template>
-							<template v-else>Contact details are loading or temporarily unavailable.</template>
-						</p>
+						<p class="page-panel-copy">{{ profile ? sidebar.primaryChannel.copy : sidebar.primaryChannel.fallbackCopy }}</p>
 					</div>
 					<div class="page-side-block">
-						<div class="page-section-label">Best fit</div>
+						<div class="page-section-label">{{ sidebar.bestFit.label }}</div>
 						<div class="page-meta-list">
-							<span><strong>Projects:</strong> modernisation, architecture, resilient delivery</span>
-							<span><strong>Environments:</strong> regulated, high-trust, AI-era change</span>
-							<span><strong>Approach:</strong> direct, senior, hands-on</span>
+							<span v-for="item in sidebar.bestFit.items" :key="item" v-html="item"></span>
 						</div>
 					</div>
 				</div>
@@ -40,28 +31,36 @@
 			<section class="page-band">
 				<div class="page-band-intro">
 					<div>
-						<span class="page-section-label">Ways to Reach Us</span>
-						<h2 class="page-section-title">Choose the channel that suits the conversation.</h2>
+						<span class="page-section-label">{{ intro.label }}</span>
+						<h2 class="page-section-title">{{ intro.title }}</h2>
 					</div>
-					<p class="page-lead">
-						For most enquiries, email first. Many conversations start with a strained system, a modernisation effort, or an AI initiative that needs stronger engineering judgement.
-					</p>
+					<p class="page-lead">{{ intro.lead }}</p>
 				</div>
 
 				<div class="page-editorial">
 					<div class="page-editorial-row">
-						<span class="page-section-label">Email</span>
+						<span class="page-section-label">{{ process.label }}</span>
+						<div>
+							<div class="page-meta-list">
+								<span v-for="item in process.items" :key="item">{{ item }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="page-editorial-sep"></div>
+					<div class="page-editorial-row">
+						<span class="page-section-label">{{ email.label }}</span>
 						<div>
 							<p v-if="profile" class="page-panel-copy">
-								Use <a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a> for architecture, modernisation, advisory, and transformation
-								discussions.
+								{{ email.copyBeforeLink }}
+								<a v-lazy-link class="blog-link" :href="`mailto:${profile.email}`">{{ profile.email }}</a>
+								{{ email.copyAfterLink }}
 							</p>
 							<p v-else class="page-panel-copy">We are currently unable to load the direct email address. Please try again later.</p>
 						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
-						<span class="page-section-label">Social</span>
+						<span class="page-section-label">{{ social.label }}</span>
 						<div>
 							<div v-if="visibleLinks.length > 0" class="page-social-links">
 								<template v-for="(link, index) in visibleLinks" :key="link.uuid">
@@ -71,17 +70,14 @@
 									<span v-if="index < visibleLinks.length - 1" class="page-social-separator" aria-hidden="true">/</span>
 								</template>
 							</div>
-							<p v-else class="page-panel-copy">Social channels are currently unavailable. Email remains the best way to reach Oullin.</p>
+							<p v-else class="page-panel-copy">{{ social.unavailableCopy }}</p>
 						</div>
 					</div>
 					<div class="page-editorial-sep"></div>
 					<div class="page-editorial-row">
-						<span class="page-section-label">Founder</span>
+						<span class="page-section-label">{{ founder.label }}</span>
 						<div>
-							<p class="page-panel-copy">
-								Gustavo Ocanto leads Oullin's work directly, so enquiries stay close to architecture, delivery, and technical decision-making rather than getting filtered through
-								layers.
-							</p>
+							<p class="page-panel-copy">{{ founder.copy }}</p>
 						</div>
 					</div>
 				</div>
@@ -94,62 +90,40 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
+import { contactPageContent, resolveJsonLdArray } from '@support/content.ts';
+import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
 
 const apiStore = useApiStore();
 const profile = ref<ProfileResponse | null>(null);
 const links = ref<LinksResponse[]>([]);
 const hasProfileError = ref(false);
 const hasLinksError = ref(false);
-const fallbackLinks: LinksResponse[] = [
-	{
-		uuid: 'fallback-linkedin',
-		name: 'linkedin',
-		handle: 'gocanto',
-		url: 'https://www.linkedin.com/in/gocanto/',
-		description: 'Professional profile',
-	},
-	{
-		uuid: 'fallback-github',
-		name: 'github',
-		handle: 'gocanto',
-		url: 'https://github.com/gocanto',
-		description: 'Code and projects',
-	},
-];
+const { hero, sidebar, intro, process, email, social, founder, seo } = contactPageContent;
+
+const fallbackLinks: LinksResponse[] = Object.entries(NAV_SOCIAL_FALLBACKS).map(([name, url]) => ({
+	uuid: `social-${name}`,
+	name,
+	handle: '',
+	url,
+	description: '',
+}));
 
 const visibleLinks = computed<LinksResponse[]>(() => {
 	return links.value.length > 0 ? links.value : fallbackLinks;
 });
 
 useSeo({
-	title: 'Contact',
+	title: seo.title,
 	image: SEO_IMAGE,
 	url: siteUrlFor('/contact'),
-	imageAlt: `${SITE_NAME} contact page preview`,
-	description: 'Contact Oullin about architecture, modernisation, highly available software, regulated systems, and digital transformation in the AI era.',
-	keywords: buildKeywords('contact Oullin', 'software architecture', 'digital transformation', 'regulated systems', 'technical advisory', 'highly available software'),
-	jsonLd: [
-		{
-			'@context': 'https://schema.org',
-			'@type': 'ContactPage',
-			name: 'Contact',
-			url: siteUrlFor('/contact'),
-			description: 'Contact Oullin about architecture, modernisation, resilient systems, and AI-era transformation work.',
-		},
-		{
-			'@context': 'https://schema.org',
-			'@type': 'Person',
-			name: 'Gustavo Ocanto',
-			jobTitle: 'Founder of Oullin',
-			url: siteUrlFor('/contact'),
-		},
-		ORGANIZATION_JSON_LD,
-	],
+	imageAlt: seo.imageAlt ?? `${SITE_NAME} contact page preview`,
+	description: seo.description,
+	keywords: buildKeywords(seo.keywords),
+	jsonLd: [...resolveJsonLdArray(seo.jsonLd, siteUrlFor), ORGANIZATION_JSON_LD],
 });
 
 const loadContactData = async () => {

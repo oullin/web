@@ -4,6 +4,7 @@ import { nextTick } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import type { RecommendationsResponse } from '@api/response/index.ts';
+import { siteContent } from '@support/content.ts';
 
 const renderMarkdown = vi.hoisted(() => vi.fn((value: string) => `<p>${value}</p>`));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
@@ -57,9 +58,9 @@ describe('RecommendationPartial', () => {
 	it('does not request recommendations before the dialog is opened', () => {
 		const wrapper = mount(RecommendationPartial);
 
-		expect(wrapper.text()).toContain('who have worked with Gustavo across architecture, delivery, and leadership.');
+		expect(wrapper.text()).toContain(siteContent.recommendations.intro);
 		expect(getRecommendations).not.toHaveBeenCalled();
-		expect(wrapper.get('[data-testid="recommendations-dialog-trigger"]').text()).toBe('People');
+		expect(wrapper.get('[data-testid="recommendations-dialog-trigger"]').text()).toBe(siteContent.recommendations.triggerLabel);
 		expect(wrapper.get('[data-testid="recommendations-dialog-trigger"]').element.tagName).toBe('BUTTON');
 
 		wrapper.unmount();

@@ -8,9 +8,11 @@
 				<p class="page-panel-copy">
 					<Dialog>
 						<DialogTrigger as-child>
-							<button type="button" class="blog-link cursor-pointer bg-transparent p-0 text-left" data-testid="recommendations-dialog-trigger" @click="handleDialogOpen">People</button>
+							<button type="button" class="blog-link cursor-pointer bg-transparent p-0 text-left" data-testid="recommendations-dialog-trigger" @click="handleDialogOpen">
+								{{ recommendationsContent.triggerLabel }}
+							</button>
 						</DialogTrigger>
-						who have worked with Gustavo across architecture, delivery, and leadership.
+						{{ recommendationsContent.intro }}
 
 						<DialogContent
 							:show-close-button="false"
@@ -20,9 +22,9 @@
 							<!-- Header — always visible -->
 							<div class="flex items-start justify-between border-b border-[var(--border)] bg-[var(--bg)] px-8 py-6 lg:px-10">
 								<div class="space-y-2 pr-4">
-									<div class="page-section-label !mb-0">People</div>
-									<DialogTitle id="recommendations-dialog-title" class="page-panel-title !text-xl">Recommendations</DialogTitle>
-									<p class="page-panel-copy !text-[var(--muted)]">People who have worked with Gustavo across architecture, delivery, and leadership.</p>
+									<div class="page-section-label !mb-0">{{ recommendationsContent.dialog.sectionLabel }}</div>
+									<DialogTitle id="recommendations-dialog-title" class="page-panel-title !text-xl">{{ recommendationsContent.dialog.title }}</DialogTitle>
+									<p class="page-panel-copy !text-[var(--muted)]">{{ recommendationsContent.dialog.description }}</p>
 								</div>
 								<DialogClose as-child>
 									<button
@@ -149,12 +151,14 @@ import { useApiStore } from '@api/store.ts';
 import RecommendationDialogSkeletonPartial from '@partials/RecommendationDialogSkeletonPartial.vue';
 import { useDarkMode } from '@/dark-mode.ts';
 import { image, date } from '@/public.ts';
+import { siteContent } from '@support/content.ts';
 import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@support/markdown.ts';
 
 const PAGE_SIZE = 8;
 
 const apiStore = useApiStore();
 const { isDark } = useDarkMode();
+const recommendationsContent = siteContent.recommendations;
 const recommendations = ref<RecommendationsResponse[]>([]);
 const recommendationsContainer = ref<HTMLElement | null>(null);
 const themeLink = ref<HTMLLinkElement | null>(null);

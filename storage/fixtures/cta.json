@@ -1,9 +1,0 @@
-{
-	"watermark": "BUILD",
-	"headline": ["COMPLEX", "SYSTEM?"],
-	"headlineAccent": "LET'S TALK.",
-	"button": {
-		"label": "Start a conversation →",
-		"to": "/contact"
-	}
-}

@@ -1,32 +1,24 @@
 <template>
 	<div class="theme min-h-screen projects-page">
-		<NavPartial />
-
 		<main class="page-shell">
 			<section class="page-hero">
 				<div class="page-hero-main">
-					<p class="page-kicker">BANKING // CONSULTING // SYSTEMS</p>
-					<h1 id="projects-top" class="page-title">Proof from real systems.</h1>
+					<p class="page-kicker">{{ hero.kicker }}</p>
+					<h1 id="projects-top" class="page-title">{{ hero.title }}</h1>
 					<div class="page-copy">
-						<p>
-							This portfolio reflects work shaped by banking, consulting, product teams, and resilient software delivery. It includes open-source tools, internal platforms, and client
-							systems built for availability, security, maintainability, and change.
-						</p>
-						<p>&nbsp;</p>
-						<p>These projects show how architecture, delivery, and product judgement come together when the software has to keep working after launch.</p>
+						<p v-for="(paragraph, index) in hero.copy" :key="paragraph" :class="{ 'mt-6': index > 0 }">{{ paragraph }}</p>
 					</div>
 				</div>
 				<div class="page-hero-side">
 					<div class="page-side-block">
 						<div class="page-stat-value">{{ isLoadingProjects ? '…' : totalProjects }}</div>
-						<div class="page-stat-label">Projects currently indexed</div>
+						<div class="page-stat-label">{{ sidebar.statsLabel }}</div>
 					</div>
 					<div class="page-side-block">
-						<div class="page-section-label">Focus</div>
+						<div class="page-section-label">{{ sidebar.focus.label }}</div>
 						<div class="page-meta-list">
-							<span><strong>Domains:</strong> banking, insurance, SaaS, product</span>
-							<span><strong>Systems:</strong> high-trust, resilient, maintainable</span>
-							<span><strong>Lens:</strong> architecture, delivery, modernisation</span>
+							<!-- Trusted HTML from repo-owned fixtures only. Do not source this from user input or external data. -->
+							<span v-for="item in sidebar.focus.items" :key="item" v-html="item"></span>
 						</div>
 					</div>
 				</div>
@@ -35,10 +27,9 @@
 			<section ref="projectsSection" class="page-band">
 				<div class="page-band-intro">
 					<div>
-						<span class="page-section-label">Selected Work</span>
-						<h2 class="page-section-title">Work inspected through an engineering lens.</h2>
+						<span class="page-section-label">{{ intro.label }}</span>
+						<h2 class="page-section-title">{{ intro.title }}</h2>
 					</div>
-					<p class="page-lead">The point is not novelty. It is evidence of judgement across architecture, product delivery, and systems that need to keep working after launch.</p>
 				</div>
 
 				<div class="relative min-h-[25rem] mt-8">
@@ -78,13 +69,13 @@
 import { ref, onMounted, computed } from 'vue';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
-import NavPartial from '@partials/NavPartial.vue';
 import FooterPartial from '@partials/FooterPartial.vue';
 import ProjectCardPartial from '@partials/ProjectCardPartial.vue';
 import type { ProjectsCollectionResponse, ProjectsResponse } from '@api/response/index.ts';
 import ProjectCardSkeletonPartial from '@partials/ProjectCardSkeletonPartial.vue';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
+import { projectsPageContent, resolveJsonLdArray } from '@support/content.ts';
 
 const DEFAULT_SKELETON_COUNT = 4;
 const apiStore = useApiStore();
@@ -97,38 +88,20 @@ const totalPages = ref(1);
 const totalProjects = ref(0);
 const pageSize = ref(DEFAULT_SKELETON_COUNT);
 let lastRequestId = 0;
+const { hero, sidebar, intro, seo } = projectsPageContent;
 
 const skeletonCount = computed(() => {
 	return projects.value.length > 0 ? projects.value.length : pageSize.value;
 });
 
 useSeo({
-	title: 'Projects',
+	title: seo.title,
 	image: SEO_IMAGE,
 	url: siteUrlFor('/projects'),
-	imageAlt: `${SITE_NAME} project collection preview`,
-	keywords: buildKeywords(
-		'open source tools',
-		'client systems',
-		'software delivery',
-		'platform architecture',
-		'software architecture',
-		'technical management',
-		'digital transformation',
-		'AI transformation',
-		'banking insurance SaaS',
-	),
-	description: `Explore open-source tools, internal platforms, and client systems from ${SITE_NAME}, showing depth across banking, consulting, product delivery, and resilient software.`,
-	jsonLd: [
-		{
-			name: 'Projects',
-			'@type': 'CollectionPage',
-			url: siteUrlFor('/projects'),
-			'@context': 'https://schema.org',
-			description: `Selected open-source and client projects from ${SITE_NAME} across banking, consulting, product delivery, and resilient production systems.`,
-		},
-		ORGANIZATION_JSON_LD,
-	],
+	imageAlt: seo.imageAlt ?? `${SITE_NAME} project collection preview`,
+	keywords: buildKeywords(seo.keywords),
+	description: seo.description,
+	jsonLd: [...resolveJsonLdArray(seo.jsonLd, siteUrlFor), ORGANIZATION_JSON_LD],
 });
 
 const scrollToProjectsStart = async () => {

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import FooterPartial from '@partials/FooterPartial.vue';
-import marquee from '@fixtures/marquee.json';
+import { siteContent } from '@support/content.ts';
 
 const scrollTo = vi.fn();
 
@@ -23,15 +23,15 @@ describe('FooterPartial', () => {
 
 	it('renders copyright', () => {
 		const wrapper = mount(FooterPartial, { global });
-		expect(wrapper.text()).toContain('OULLIN // MOVEMENT // CRAFT');
-		expect(wrapper.text()).toContain('Contact');
-		expect(wrapper.text()).toContain('Terms');
-		expect(wrapper.text()).toContain('Back to top');
+		expect(wrapper.text()).toContain(siteContent.footer.brandLine);
+		expect(wrapper.text()).toContain(siteContent.footer.links[0].label);
+		expect(wrapper.text()).toContain(siteContent.footer.links[1].label);
+		expect(wrapper.text()).toContain(siteContent.footer.backToTopLabel);
 
-		const contactLink = wrapper.findAll('a').find((a) => a.text() === 'Contact');
+		const contactLink = wrapper.findAll('a').find((a) => a.text() === siteContent.footer.links[0].label);
 		expect(contactLink?.attributes('to')).toBe('/contact');
 
-		const termsLink = wrapper.findAll('a').find((a) => a.text() === 'Terms');
+		const termsLink = wrapper.findAll('a').find((a) => a.text() === siteContent.footer.links[1].label);
 		expect(termsLink?.attributes('to')).toBe('/terms-and-conditions');
 	});
 
@@ -47,7 +47,7 @@ describe('FooterPartial', () => {
 		const wrapper = mount(FooterPartial, { global, props: { showMarquee: true } });
 
 		expect(wrapper.find('.marquee-wrap').exists()).toBe(true);
-		marquee.items.forEach((item) => {
+		siteContent.footer.marqueeItems.forEach((item) => {
 			expect(wrapper.text()).toContain(item);
 		});
 		expect(wrapper.text()).not.toContain('///');

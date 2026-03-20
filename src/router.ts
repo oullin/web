@@ -38,6 +38,11 @@ const router: Router = createRouter({
 			component: () => import('@pages/ContactPage.vue'),
 		},
 		{
+			path: '/work-with-us',
+			name: 'WorkWithUs',
+			component: () => import('@pages/WorkWithUsPage.vue'),
+		},
+		{
 			path: '/projects',
 			component: () => import('@pages/ProjectsPage.vue'),
 		},

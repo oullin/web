@@ -1,0 +1,149 @@
+{
+	"hero": {
+		"kicker": "WORK WITH US // OULLIN // ENGAGEMENTS",
+		"title": "Four ways to work with Oullin.",
+		"copy": [
+			"One standard: systems that hold.",
+			"Every engagement is structured around a specific problem. Clarity over hype. High standards over hollow velocity. No retainers that pad hours. No projects that deliver decks and disappear."
+		]
+	},
+	"sidebar": {
+		"engagements": {
+			"label": "Engagements",
+			"items": ["[ 01 ] AI Architecture Sprint", "[ 02 ] Fractional AI Architect", "[ 03 ] Production Hardening", "[ 04 ] AI-Era Team Enablement"]
+		},
+		"standard": {
+			"label": "Standard",
+			"items": ["<strong>Approach:</strong> direct, senior, judgment-first", "<strong>Size:</strong> startups and scale-ups", "<strong>Commitment:</strong> every engagement has a clear scope"]
+		}
+	},
+	"intro": {
+		"label": "Four engagements",
+		"title": "Judgment over implementation. Every time.",
+		"lead": "Agencies sell implementation. Oullin sells judgment. The difference shows up when something breaks — an agency's job ends when the project ships. Ours is making sure what ships doesn't create a 12-month clean-up job."
+	},
+	"engagements": [
+		{
+			"label": "[ 01 ] AI Architecture Sprint",
+			"values": "Values: Clarity over hype · Judgment · Rigour",
+			"summary": "Two weeks. One production-ready AI roadmap — built by engineers, not strategists.",
+			"for": "Pre-Series A to Series A startups exploring AI integration. Teams of 5–25 who know they need AI but don't know what's real versus what's noise.",
+			"includesLabel": "Includes:",
+			"includes": [
+				"— Full audit of current stack, data infrastructure, and engineering workflows",
+				"— AI readiness assessment: data quality, pipeline maturity, team capability",
+				"— 3–5 highest-ROI AI integration opportunities, prioritised",
+				"— Build-vs-buy analysis for each (off-the-shelf AI tools vs. custom solutions)",
+				"— Architectural blueprint: technology recommendations, sequence, risk",
+				"— 90-day execution plan with milestones and resource requirements",
+				"— Two 90-minute working sessions with the founding/engineering team"
+			],
+			"outcome": "A clear, honest answer to where AI fits in your stack — and an architectural plan that survives contact with production.",
+			"price": "From $8,000 · Fixed fee",
+			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+		},
+		{
+			"label": "[ 02 ] Fractional AI Architect",
+			"values": "Values: Movement · Craft · Judgment",
+			"summary": "Embedded 2 days a week. Reviewing what your engineers and AI tools produce. Making sure what ships holds.",
+			"for": "Series A to Series B startups that have committed to AI integration and need ongoing senior judgment. Engineering teams of 10–50 shipping AI-assisted features without a senior architect who understands both the AI and the production systems it touches.",
+			"includesLabel": "Includes:",
+			"includes": [
+				"— 2 days/week embedded (8–10 hours)",
+				"— Architectural review of all AI-related code, pipelines, and integrations",
+				"— Build-vs-buy guidance as new tools emerge",
+				"— Code review and quality assurance for AI-generated and AI-assisted code",
+				"— Engineering team mentorship on AI-era practices",
+				"— Monthly architecture health report",
+				"— Direct async access for architectural decisions between sessions",
+				"— Quarterly roadmap refresh aligned to business goals"
+			],
+			"outcome": "Senior architectural oversight without a full-time hire. A team that gets better at building as the engagement runs.",
+			"price": "From $8,000/mo · 3-month minimum",
+			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+		},
+		{
+			"label": "[ 03 ] Production Hardening",
+			"values": "Values: Rigour · Systems that hold · Clarity over hype",
+			"summary": "Your AI prototype works in demos. We make it work at scale, under load, and under regulatory scrutiny.",
+			"for": "Series A to Series C startups hitting reliability, performance, or compliance walls with AI features already in production. Especially relevant for fintech, healthtech, and insurtech — where prototype-grade architecture carries real risk.",
+			"includesLabel": "Includes:",
+			"includes": [
+				"— Deep-dive audit of existing AI features, integrations, or pipelines",
+				"— Performance profiling, bottleneck identification, and scalability assessment",
+				"— Security and data governance review",
+				"— Refactoring plan: prototype → production-grade architecture",
+				"— Hands-on implementation of critical fixes and architectural improvements",
+				"— Monitoring, observability, and alerting setup for AI systems",
+				"— Runbook and incident response documentation",
+				"— 2-week async support window post-engagement"
+			],
+			"outcome": "AI features that hold under real conditions. Documentation your team owns. No dependency on us to keep it running.",
+			"price": "From $15,000 · Scoped after a paid discovery session ($2,500)",
+			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+		},
+		{
+			"label": "[ 04 ] AI-Era Team Enablement",
+			"values": "Values: Movement · Craft · Clarity over hype",
+			"summary": "Workshops and pair programming that give your engineers real judgment — not just faster tools.",
+			"for": "Any startup (Seed to Series C) whose engineering team is adopting AI tools but lacks structure, consistency, or confidence in AI-assisted development. Engineering leaders who want to raise the team's capability, not create external dependency.",
+			"includesLabel": "Includes:",
+			"includes": [
+				"— Assessment of current AI tool usage across the team",
+				"— Workshop series (3–4 sessions over 4 weeks): AI-assisted development workflows, code review practices for AI-generated code, prompt engineering for production systems, architectural decision-making with AI",
+				"— Internal AI usage guidelines tailored to your stack and risk profile",
+				"— Pair programming sessions with senior engineers",
+				"— Assessment framework: what tools to keep, what to cut",
+				"— A written playbook the team owns after we leave"
+			],
+			"outcome": "Engineers who can build with AI and review what it produces with real judgment. The capability stays in your team.",
+			"price": "From $6,000 · 4-week programme",
+			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+		}
+	],
+	"faq": {
+		"label": "// FAQ",
+		"items": [
+			{
+				"question": "We don't know if we need a sprint or a retainer. How do we decide?",
+				"answer": "Start a conversation. In 30 minutes we can tell you where you are and what the right first step is. If the answer is \"you don't need either,\" we'll say that."
+			},
+			{
+				"question": "We already have a senior engineer. Why do we need Oullin?",
+				"answer": "Your senior engineer is building features. We review the architectural decisions that affect the entire system. Most startups can't pull their best person off product to do both jobs. We do one of them."
+			},
+			{
+				"question": "We're seed-stage. Are we too early?",
+				"answer": "Possibly. The AI Architecture Sprint was designed for teams exploring where AI fits — it doesn't assume you've built anything yet. If you're about to make a stack decision that's hard to reverse, that's worth a conversation."
+			},
+			{
+				"question": "How is this different from an AI agency?",
+				"answer": "Agencies sell implementation. We sell judgment. The difference shows up when something breaks — an agency's job ends when the project ships; ours is making sure what ships doesn't create a 12-month clean-up job."
+			},
+			{
+				"question": "Do you take equity?",
+				"answer": "Case-by-case for early-stage companies where cash is constrained and the engagement is long-term. Raise it on the call."
+			}
+		]
+	},
+	"cta": {
+		"label": "Start here",
+		"copy": "Every engagement starts with a conversation. No pitch decks. No proposals that take two weeks. A 30-minute call, then a straight answer.",
+		"button": { "label": "START A CONVERSATION →", "to": "/contact" }
+	},
+	"seo": {
+		"title": "Work With Us",
+		"description": "Four ways to work with Oullin: AI Architecture Sprint, Fractional AI Architect, Production Hardening, and AI-Era Team Enablement. Judgment-first engagements for startups and scale-ups.",
+		"keywords": ["AI architecture sprint", "fractional AI architect", "production hardening", "AI team enablement", "AI consulting", "startup AI architecture", "judgment-first engagements"],
+		"imageAlt": "Oullin engagements",
+		"jsonLd": [
+			{
+				"name": "Work With Us",
+				"@type": "WebPage",
+				"urlPath": "/work-with-us",
+				"@context": "https://schema.org",
+				"description": "Four AI consulting engagements for startups and scale-ups: AI Architecture Sprint, Fractional AI Architect, Production Hardening, and AI-Era Team Enablement."
+			}
+		]
+	}
+}

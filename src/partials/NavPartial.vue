@@ -18,7 +18,7 @@
 					<NavigationMenuList>
 						<NavigationMenuItem v-for="link in navLinks" :key="link.to">
 							<NavigationMenuLink as-child>
-								<RouterLink :to="link.to">{{ link.label }}</RouterLink>
+								<RouterLink :to="link.to" class="whitespace-nowrap">{{ link.label }}</RouterLink>
 							</NavigationMenuLink>
 						</NavigationMenuItem>
 					</NavigationMenuList>
@@ -27,17 +27,17 @@
 
 			<!-- Right column: social links + desktop theme toggle + mobile hamburger -->
 			<div class="nav-inner-right">
-				<a v-if="linkedinUrl" :href="linkedinUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link hidden md:flex">
+				<a :href="linkedinUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link">
 					<Linkedin :size="18" />
 				</a>
-				<a v-if="xUrl" :href="xUrl" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="nav-social-link hidden md:flex">
+				<a :href="xUrl" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="nav-social-link">
 					<Twitter :size="18" />
 				</a>
-				<a v-if="githubUrl" :href="githubUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link hidden md:flex">
+				<a :href="githubUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link">
 					<Github :size="18" />
 				</a>
 
-				<button type="button" class="nav-theme-icon hidden md:flex" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
+				<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
 					<Sun v-if="isDark" :size="18" />
 					<Moon v-else :size="18" />
 				</button>
@@ -56,21 +56,6 @@
 									{{ link.label }}
 								</RouterLink>
 							</nav>
-							<div class="nav-sheet-footer">
-								<a v-if="linkedinUrl" :href="linkedinUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link">
-									<Linkedin :size="18" />
-								</a>
-								<a v-if="xUrl" :href="xUrl" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="nav-social-link">
-									<Twitter :size="18" />
-								</a>
-								<a v-if="githubUrl" :href="githubUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link">
-									<Github :size="18" />
-								</a>
-								<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
-									<Sun v-if="isDark" :size="18" />
-									<Moon v-else :size="18" />
-								</button>
-							</div>
 						</SheetContent>
 					</Sheet>
 				</div>
@@ -86,32 +71,29 @@ import { Github, Linkedin, Menu, Moon, Sun, Twitter } from 'lucide-vue-next';
 import { useDarkMode } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
+import { NAV_SOCIAL_FALLBACKS, resolveNavSocialLinks } from '@support/links.ts';
+import { siteContent } from '@support/content.ts';
 import { NavigationMenu, NavigationMenuLink, NavigationMenuItem, NavigationMenuList } from '@components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@components/ui/sheet';
 
 const { isDark, toggleDarkMode } = useDarkMode();
 const apiStore = useApiStore();
 
-const linkedinUrl = ref('');
-const xUrl = ref('');
-const githubUrl = ref('');
+const linkedinUrl = ref(NAV_SOCIAL_FALLBACKS.linkedin);
+const xUrl = ref(NAV_SOCIAL_FALLBACKS.x);
+const githubUrl = ref(NAV_SOCIAL_FALLBACKS.github);
 
 onMounted(async () => {
 	try {
 		const response = await apiStore.getLinks();
-		const data = response.data ?? [];
-		linkedinUrl.value = data.find((l) => l.name === 'linkedin')?.url ?? '';
-		xUrl.value = data.find((l) => l.name === 'x')?.url ?? '';
-		githubUrl.value = data.find((l) => l.name === 'github')?.url ?? '';
+		const resolvedLinks = resolveNavSocialLinks(response.data ?? []);
+		linkedinUrl.value = resolvedLinks.linkedin;
+		xUrl.value = resolvedLinks.x;
+		githubUrl.value = resolvedLinks.github;
 	} catch (error) {
 		debugError(error);
 	}
 });
 
-const navLinks = [
-	{ to: '/writing', label: 'writing' },
-	{ to: '/projects', label: 'projects' },
-	{ to: '/about', label: 'about' },
-	{ to: '/contact', label: 'contact' },
-];
+const navLinks = siteContent.nav.links;
 </script>

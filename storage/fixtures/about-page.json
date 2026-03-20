@@ -1,0 +1,101 @@
+{
+	"hero": {
+		"kicker": "ABOUT // OULLIN // MOVEMENT // CRAFT",
+		"title": "Oullin.",
+		"copy": [
+			"Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust environments.",
+			"We work close to architecture and delivery. Not above it. The focus is software that has to last — resilient platforms, modernisation programmes, AI-era change, and technical decision-making under pressure."
+		]
+	},
+	"sidebar": {
+		"founder": {
+			"label": "// founder & lead architect",
+			"name": "Gustavo Ocanto",
+			"copy": "Engineering leader with 20+ years across software engineering, consulting, architecture, AI-first products and companies, and technical management. 10+ years in banking and fintech.",
+			"linkLabel": "LinkedIn Profile →",
+			"linkUrl": "https://www.linkedin.com/in/gocanto/"
+		},
+		"proof": {
+			"label": "// proof",
+			"items": ["20+ years in software", "10+ years in banking", "High-availability systems"]
+		}
+	},
+	"intro": {
+		"label": "The Firm",
+		"title": "Small by design. Senior by default.",
+		"lead": "Oullin is deliberately small. We take a limited number of engagements at a time so every client gets the senior architectural attention their systems require. We don't scale headcount to fill projects. We scale judgment."
+	},
+	"sections": [
+		{
+			"label": "The Firm",
+			"paragraphs": [
+				"Oullin is a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust environments. We work close to architecture and delivery. Not above it.",
+				"The focus is software that has to last — resilient platforms, modernisation programmes, AI-era change, and technical decision-making under pressure."
+			]
+		},
+		{
+			"label": "The Name",
+			"paragraphs": [
+				"Oullin is a deliberate misspelling of Ollin — the Aztec sacred day-sign of movement and transformation. The name still points to movement. But here, movement is carried by engineering depth and a practical standard: keep moving, modernise with intent, and build software that survives contact with production. Movement is not optional. Neither is rigour."
+			]
+		},
+		{
+			"label": "How We Work",
+			"paragraphs": [
+				"Clarity over hype. High standards over hollow velocity. Modernisation that respects constraints. Architecture decisions made to survive production, not just presentations.",
+				"We only recommend AI where it is the right answer. We don't dress up good engineering in buzzwords. We don't take engagements we can't deliver with senior attention. And we don't produce roadmaps that disappear into a drawer.",
+				"The work is the standard. Movement is not optional."
+			]
+		},
+		{
+			"label": "// founder's note",
+			"paragraphs": [
+				"I started Oullin because I kept seeing the same pattern: companies adopting AI at the feature layer without anyone asking what happens to that code in six months, at ten times the load, in a regulated market.",
+				"I've been building production systems for over 20 years. I've been the Head of Engineering. I've been the founding engineer. I've been the person called at 3 AM when production goes down. I know what breaks and why.",
+				"The name Oullin comes from Ollin — movement and transformation. But I chose it because I believe movement without rigour is just chaos with momentum. The work has always been about systems that hold. The AI era made that work more urgent, not different.",
+				"If your team is moving fast and needs someone to make sure the architecture holds the pace — that's the conversation I want to have.",
+				"— Gustavo Ocanto, Founder & Lead Architect"
+			]
+		}
+	],
+	"connect": {
+		"label": "Connect",
+		"copyBeforeLink": "Reach out by",
+		"linkLabel": "email",
+		"copyAfterLink": "if your team is modernising core systems, designing AI-era capabilities, or needs stronger architecture and technical leadership close to delivery."
+	},
+	"seo": {
+		"title": "About",
+		"description": "A boutique software engineering and architecture consultancy. Movement and craft in service of systems that hold. Led by Gustavo Ocanto.",
+		"keywords": [
+			"about Oullin",
+			"Gustavo Ocanto",
+			"highly available software",
+			"software architecture",
+			"software engineering",
+			"banking technology",
+			"technical management",
+			"digital transformation",
+			"AI transformation",
+			"regulated systems"
+		],
+		"imageAlt": "Oullin brand story",
+		"jsonLd": [
+			{
+				"name": "About",
+				"@type": "AboutPage",
+				"urlPath": "/about",
+				"@context": "https://schema.org",
+				"description": "About Oullin, a boutique software engineering and architecture consultancy focused on resilient systems, AI-era modernisation, and delivery in regulated and high-trust environments."
+			},
+			{
+				"@context": "https://schema.org",
+				"@type": "Person",
+				"name": "Gustavo Ocanto",
+				"jobTitle": "Founder of Oullin",
+				"urlPath": "/about",
+				"description": "Founder of Oullin and engineering leader working across architecture, modernisation, banking-domain systems, and software delivery."
+			}
+		]
+	}
+}
