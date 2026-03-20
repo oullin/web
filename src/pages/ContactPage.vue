@@ -94,7 +94,8 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { contactPageContent, resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/content.ts';
+import { contactPageContent } from '@support/content/contact-page.ts';
 import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
 
 const apiStore = useApiStore();

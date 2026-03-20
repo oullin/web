@@ -48,7 +48,8 @@ const renderMarkdown = vi.hoisted(() => vi.fn(() => '<p></p>'));
 const initializeHighlighter = vi.hoisted(() => vi.fn(() => Promise.resolve()));
 const loadHighlightTheme = vi.hoisted(() => vi.fn());
 
-vi.mock('@/support/markdown.ts', () => ({ renderMarkdown, initializeHighlighter, loadHighlightTheme }));
+vi.mock('@/support/markdown/render.ts', () => ({ renderMarkdown }));
+vi.mock('@/support/markdown/highlight.ts', () => ({ initializeHighlighter, loadHighlightTheme }));
 vi.mock('dompurify', () => ({ default: { sanitize: vi.fn((html: string) => html) } }));
 vi.mock('highlight.js/lib/core', () => ({
 	default: {
@@ -120,13 +121,24 @@ describe('PostPage', () => {
 		expect(wrapper.text()).toContain(post.title);
 	});
 
-	it('initializes highlight.js on mount', async () => {
+	it('skips highlight initialization when rendered content has no code blocks', async () => {
 		const wrapper = await mountComponent();
 		await flushPromises();
+		expect(initializeHighlighter).not.toHaveBeenCalled();
+		expect(loadHighlightTheme).not.toHaveBeenCalled();
+		expect(wrapper.exists()).toBe(true);
+	});
+
+	it('initializes highlight.js only when rendered content contains code blocks', async () => {
+		renderMarkdown.mockReturnValueOnce('<pre><code class="language-js">const answer = 42;</code></pre>');
+
+		const wrapper = await mountComponent();
+		await flushPromises();
+
 		const highlightCore = await import('highlight.js/lib/core');
 		expect(initializeHighlighter).toHaveBeenCalledWith(highlightCore.default);
-		expect(initializeHighlighter).toHaveBeenCalledTimes(2);
-		expect(wrapper.exists()).toBe(true);
+		expect(loadHighlightTheme).toHaveBeenCalled();
+		expect(wrapper.html()).toContain('const answer = 42;');
 	});
 
 	it('processes markdown content', async () => {

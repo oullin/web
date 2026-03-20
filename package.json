@@ -10,8 +10,8 @@
 		"test": "vitest run --coverage",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
-		"format": "oxfmt --write . '!**/.vite-build-check/**'",
-		"format:check": "oxfmt . '!**/.vite-build-check/**'",
+		"format": "oxfmt --write . '!**/.vite-build-check/**' '!dist/**' '!dist-plan/**' '!dist-verify/**'",
+		"format:check": "oxfmt . '!**/.vite-build-check/**' '!dist/**' '!dist-plan/**' '!dist-verify/**'",
 		"preinstall": "node -e \"if(!(process.env.npm_config_user_agent || '').startsWith('pnpm/')){console.error('Use pnpm.');process.exit(1)}\""
 	},
 	"dependencies": {

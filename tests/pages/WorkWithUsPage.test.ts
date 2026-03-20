@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import WorkWithUsPage from '@pages/WorkWithUsPage.vue';
-import { workWithUsPageContent } from '@support/content.ts';
+import { workWithUsPageContent } from '@support/content/work-with-us-page.ts';
 
 const global = {
 	stubs: {

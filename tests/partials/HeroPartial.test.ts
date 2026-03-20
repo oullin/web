@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import HeroPartial from '@partials/HeroPartial.vue';
 import HeroCircuitPartial from '@partials/HeroCircuitPartial.vue';
-import { homePageContent } from '@support/content.ts';
+import { homePageContent } from '@support/content/home-page.ts';
 
 const { hero } = homePageContent;
 

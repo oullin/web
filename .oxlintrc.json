@@ -60,5 +60,5 @@
 			}
 		}
 	],
-	"ignorePatterns": ["dist/", "build/", "node_modules/", ".git/", ".vscode/", ".idea/", "*.min.js", "*.css.map", "public/", "src/fonts/", "src/images/"]
+	"ignorePatterns": ["dist/", "dist-plan/", "dist-verify/", "build/", "node_modules/", ".git/", ".vscode/", ".idea/", "*.min.js", "*.css.map", "public/", "src/fonts/", "src/images/"]
 }

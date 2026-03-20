@@ -71,17 +71,19 @@ import DOMPurify from 'dompurify';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useApiStore } from '@api/store.ts';
 import { useDarkMode } from '@/dark-mode.ts';
-import highlight from 'highlight.js/lib/core';
 import { debugError } from '@api/http-error.ts';
 import { date, getReadingTime, goBack } from '@/public.ts';
 import FooterPartial from '@partials/FooterPartial.vue';
 import PostPageSkeletonPartial from '@partials/PostPageSkeletonPartial.vue';
 import type { PostResponse } from '@api/response/index.ts';
-import { siteUrlFor, useSeoFromPost } from '@support/seo';
+import { useSeoFromPost } from '@support/seo';
 import { formatLabel, routeFor } from '@support/tags.ts';
 import CoverImageLoader from '@components/CoverImageLoader.vue';
-import { onMounted, onUnmounted, ref, computed, watch, nextTick, watchEffect } from 'vue';
-import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@support/markdown.ts';
+import { onMounted, onUnmounted, ref, computed, watch, nextTick } from 'vue';
+import { renderMarkdown } from '@support/markdown/render.ts';
+
+type HighlightSupport = typeof import('@support/markdown/highlight.ts');
+type HighlightCore = typeof import('highlight.js/lib/core').default;
 
 // --- Component
 const route = useRoute();
@@ -94,6 +96,8 @@ const isLoading = ref(true);
 const postContainer = ref<HTMLElement | null>(null);
 const slug = ref<string>(route.params.slug as string);
 const themeLink = ref<HTMLLinkElement | null>(null);
+let highlightSupport: HighlightSupport | null = null;
+let highlightCore: HighlightCore | null = null;
 
 useSeoFromPost(post);
 
@@ -105,36 +109,44 @@ const htmlContent = computed(() => {
 	return '';
 });
 
-const fullURLFor = (item: PostResponse) => siteUrlFor(`/post/${item.slug}`);
-
-watchEffect(() => {
-	loadHighlightTheme(isDark.value, themeLink);
-});
-
-onUnmounted(() => {
+const clearHighlightTheme = () => {
 	if (themeLink.value) {
 		themeLink.value.remove();
 		themeLink.value = null;
 	}
+};
+
+const ensureHighlighterReady = async () => {
+	if (highlightSupport && highlightCore) {
+		return { highlightSupport, highlightCore };
+	}
+
+	const [highlightSupportModule, highlightCoreModule] = await Promise.all([import('@support/markdown/highlight.ts'), import('highlight.js/lib/core')]);
+
+	highlightSupport = highlightSupportModule;
+	highlightCore = highlightCoreModule.default;
+
+	await highlightSupport.initializeHighlighter(highlightCore);
+
+	return { highlightSupport, highlightCore };
+};
+
+onUnmounted(() => {
+	clearHighlightTheme();
 });
 
-watch(htmlContent, async (newContent) => {
+watch([htmlContent, isDark], async ([newContent]) => {
 	if (!newContent) {
+		clearHighlightTheme();
 		return;
 	}
 
 	await nextTick();
-	await initializeHighlighter(highlight);
 
 	const container = postContainer.value;
 	if (!container) {
 		return;
 	}
-
-	const blocks = container.querySelectorAll('pre code');
-	blocks.forEach((block) => {
-		highlight.highlightElement(block as HTMLElement);
-	});
 
 	const images = container.querySelectorAll('img');
 	images.forEach((image) => {
@@ -144,11 +156,23 @@ watch(htmlContent, async (newContent) => {
 			image.setAttribute('fetchpriority', 'low');
 		}
 	});
+
+	const blocks = container.querySelectorAll('pre code');
+	if (blocks.length === 0) {
+		clearHighlightTheme();
+		return;
+	}
+
+	const { highlightSupport, highlightCore } = await ensureHighlighterReady();
+
+	highlightSupport.loadHighlightTheme(isDark.value, themeLink);
+
+	blocks.forEach((block) => {
+		highlightCore.highlightElement(block as HTMLElement);
+	});
 });
 
 onMounted(async () => {
-	await initializeHighlighter(highlight);
-
 	try {
 		post.value = (await apiStore.getPost(slug.value)) as PostResponse;
 	} catch (error) {

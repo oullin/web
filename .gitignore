@@ -5,6 +5,7 @@ stats.html
 
 # --- Build output
 dist/
+dist-plan/
 # ad-hoc build output for verifying production builds without overwriting dist/
 dist-verify/
 .vite/
@@ -17,6 +18,8 @@ node_modules/
 pnpm-debug.log
 package-lock.json
 .vite-build-check/
+public/brand/
+
 
 # --- Storage
 !storage/.gitkeep

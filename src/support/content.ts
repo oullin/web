@@ -1,11 +1,4 @@
 import site from '@fixtures/site.json';
-import homePage from '@fixtures/home-page.json';
-import aboutPage from '@fixtures/about-page.json';
-import workWithUsPage from '@fixtures/work-with-us-page.json';
-import contactPage from '@fixtures/contact-page.json';
-import projectsPage from '@fixtures/projects-page.json';
-import writingPage from '@fixtures/writing-page.json';
-import termsAndPoliciesPage from '@fixtures/terms-and-policies-page.json';
 
 type JsonLdEntry = Record<string, unknown>;
 export type JsonLdContent = JsonLdEntry | JsonLdEntry[];
@@ -333,13 +326,6 @@ export interface TermsAndPoliciesPageContent {
 }
 
 export const siteContent: SiteContent = site;
-export const homePageContent: HomePageContent = homePage;
-export const aboutPageContent: AboutPageContent = aboutPage;
-export const workWithUsPageContent: WorkWithUsPageContent = workWithUsPage;
-export const contactPageContent: ContactPageContent = contactPage;
-export const projectsPageContent: ProjectsPageContent = projectsPage;
-export const writingPageContent: WritingPageContent = writingPage;
-export const termsAndPoliciesPageContent: TermsAndPoliciesPageContent = termsAndPoliciesPage;
 
 function isJsonLdEntry(value: unknown): value is JsonLdEntry {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);

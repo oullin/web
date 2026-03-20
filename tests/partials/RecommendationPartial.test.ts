@@ -15,18 +15,18 @@ vi.mock('@api/store.ts', () => ({
 	useApiStore: () => ({ getRecommendations }),
 }));
 vi.mock('@api/http-error.ts', () => ({ debugError: vi.fn() }));
-vi.mock('@/support/markdown.ts', async (importOriginal) => {
-	const actual = await importOriginal();
-	return {
-		...actual,
-		renderMarkdown,
-		initializeHighlighter,
-		loadHighlightTheme,
-	};
-});
+vi.mock('@/support/markdown/render.ts', () => ({ renderMarkdown }));
+vi.mock('@/support/markdown/highlight.ts', () => ({ initializeHighlighter, loadHighlightTheme }));
 vi.mock('@/public.ts', () => ({
 	image: (p: string) => `/img/${p}`,
 	date: () => ({ format: () => 'now' }),
+}));
+vi.mock('highlight.js/lib/core', () => ({
+	default: {
+		highlightElement: vi.fn(),
+		registerLanguage: vi.fn(),
+		registerAliases: vi.fn(),
+	},
 }));
 
 const buildRecommendation = (index: number): RecommendationsResponse => ({
@@ -60,6 +60,8 @@ describe('RecommendationPartial', () => {
 
 		expect(wrapper.text()).toContain(siteContent.recommendations.intro);
 		expect(getRecommendations).not.toHaveBeenCalled();
+		expect(renderMarkdown).not.toHaveBeenCalled();
+		expect(initializeHighlighter).not.toHaveBeenCalled();
 		expect(wrapper.get('[data-testid="recommendations-dialog-trigger"]').text()).toBe(siteContent.recommendations.triggerLabel);
 		expect(wrapper.get('[data-testid="recommendations-dialog-trigger"]').element.tagName).toBe('BUTTON');
 

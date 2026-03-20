@@ -47,7 +47,7 @@
 							<!-- Scrollable body — accordion only -->
 							<div class="custom-scrollbar flex-1 min-h-0 overflow-y-auto">
 								<div class="px-8 py-8 lg:px-10">
-									<RecommendationDialogSkeletonPartial v-if="isDialogAnimating || isLoadingRecommendations" :count="PAGE_SIZE" />
+									<RecommendationDialogSkeletonPartial v-if="isPreparingRecommendations" :count="PAGE_SIZE" />
 									<p v-else-if="hasRecommendationsError" class="page-panel-copy" data-testid="recommendations-dialog-error">
 										Recommendations are currently unavailable. Please try again later.
 									</p>
@@ -140,9 +140,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
+import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
 import DOMPurify from 'dompurify';
-import highlight from 'highlight.js/lib/core';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@components/ui/accordion';
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@components/ui/dialog';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationNext, PaginationPrevious } from '@components/ui/pagination';
@@ -152,7 +151,10 @@ import RecommendationDialogSkeletonPartial from '@partials/RecommendationDialogS
 import { useDarkMode } from '@/dark-mode.ts';
 import { image, date } from '@/public.ts';
 import { siteContent } from '@support/content.ts';
-import { initializeHighlighter, loadHighlightTheme, renderMarkdown } from '@support/markdown.ts';
+
+type RenderMarkdownFn = typeof import('@support/markdown/render.ts').renderMarkdown;
+type HighlightSupport = typeof import('@support/markdown/highlight.ts');
+type HighlightCore = typeof import('highlight.js/lib/core').default;
 
 const PAGE_SIZE = 8;
 
@@ -162,6 +164,7 @@ const recommendationsContent = siteContent.recommendations;
 const recommendations = ref<RecommendationsResponse[]>([]);
 const recommendationsContainer = ref<HTMLElement | null>(null);
 const themeLink = ref<HTMLLinkElement | null>(null);
+const renderMarkdown = ref<RenderMarkdownFn | null>(null);
 const currentPage = ref(1);
 const openRecommendation = ref<string>('');
 const isLoadingRecommendations = ref(false);
@@ -170,11 +173,13 @@ const hasLoadedRecommendations = ref(false);
 const hasRecommendationsError = ref(false);
 
 let animationTimer: ReturnType<typeof setTimeout> | null = null;
+let highlightSupport: HighlightSupport | null = null;
+let highlightCore: HighlightCore | null = null;
 
 const processedRecommendations = computed(() =>
 	recommendations.value.map((item) => ({
 		...item,
-		html: DOMPurify.sanitize(renderMarkdown(item.text)),
+		html: renderMarkdown.value ? DOMPurify.sanitize(renderMarkdown.value(item.text)) : '',
 		formattedDate: date().format(new Date(item.created_at)),
 	})),
 );
@@ -184,7 +189,39 @@ const paginatedRecommendations = computed(() => {
 	const start = (currentPage.value - 1) * PAGE_SIZE;
 	return processedRecommendations.value.slice(start, start + PAGE_SIZE);
 });
+const isPreparingRecommendations = computed(() => isDialogAnimating.value || isLoadingRecommendations.value || (hasLoadedRecommendations.value && !renderMarkdown.value));
 const showPagination = computed(() => !isDialogAnimating.value && !isLoadingRecommendations.value && !hasRecommendationsError.value && processedRecommendations.value.length > PAGE_SIZE);
+
+const clearHighlightTheme = () => {
+	if (themeLink.value) {
+		themeLink.value.remove();
+		themeLink.value = null;
+	}
+};
+
+const ensureMarkdownLoaded = async () => {
+	if (renderMarkdown.value) {
+		return;
+	}
+
+	const module = await import('@support/markdown/render.ts');
+	renderMarkdown.value = module.renderMarkdown;
+};
+
+const ensureHighlightSupportLoaded = async () => {
+	if (highlightSupport && highlightCore) {
+		return { highlightSupport, highlightCore };
+	}
+
+	const [highlightSupportModule, highlightCoreModule] = await Promise.all([import('@support/markdown/highlight.ts'), import('highlight.js/lib/core')]);
+
+	highlightSupport = highlightSupportModule;
+	highlightCore = highlightCoreModule.default;
+
+	await highlightSupport.initializeHighlighter(highlightCore);
+
+	return { highlightSupport, highlightCore };
+};
 
 const ensureRecommendationsLoaded = async () => {
 	if (isLoadingRecommendations.value || hasLoadedRecommendations.value) {
@@ -217,6 +254,7 @@ const handleDialogOpen = () => {
 	animationTimer = setTimeout(() => {
 		isDialogAnimating.value = false;
 	}, 150);
+	void ensureMarkdownLoaded();
 	void ensureRecommendationsLoaded();
 };
 
@@ -231,27 +269,19 @@ watch(totalPages, (pageCount) => {
 	}
 });
 
-watchEffect(() => {
-	loadHighlightTheme(isDark.value, themeLink);
-});
-
 onUnmounted(() => {
-	if (themeLink.value) {
-		themeLink.value.remove();
-		themeLink.value = null;
-	}
+	clearHighlightTheme();
 	if (animationTimer) clearTimeout(animationTimer);
 });
 
 watch(
-	paginatedRecommendations,
-	async (newRecommendations) => {
-		if (!newRecommendations || newRecommendations.length === 0 || isLoadingRecommendations.value || hasRecommendationsError.value) {
+	[paginatedRecommendations, isDark],
+	async ([newRecommendations]) => {
+		if (!newRecommendations || newRecommendations.length === 0 || isLoadingRecommendations.value || hasRecommendationsError.value || !renderMarkdown.value) {
 			return;
 		}
 
 		await nextTick();
-		await initializeHighlighter(highlight);
 
 		const container = recommendationsContainer.value;
 		if (!container) {
@@ -259,14 +289,19 @@ watch(
 		}
 
 		const blocks = container.querySelectorAll('pre code');
+		if (blocks.length === 0) {
+			clearHighlightTheme();
+			return;
+		}
+
+		const { highlightSupport, highlightCore } = await ensureHighlightSupportLoaded();
+
+		highlightSupport.loadHighlightTheme(isDark.value, themeLink);
+
 		blocks.forEach((block) => {
-			highlight.highlightElement(block as HTMLElement);
+			highlightCore.highlightElement(block as HTMLElement);
 		});
 	},
 	{ immediate: true },
 );
-
-onMounted(async () => {
-	await initializeHighlighter(highlight);
-});
 </script>

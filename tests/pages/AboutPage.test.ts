@@ -5,7 +5,7 @@ import AboutPage from '@pages/AboutPage.vue';
 import type { ProfileResponse, ProfileSkillResponse } from '@api/response/index.ts';
 import { createRouter, createMemoryHistory, RouterView, type Router } from 'vue-router';
 import { defineComponent } from 'vue';
-import { aboutPageContent } from '@support/content.ts';
+import { aboutPageContent } from '@support/content/about-page.ts';
 
 const skills: ProfileSkillResponse[] = [
 	{

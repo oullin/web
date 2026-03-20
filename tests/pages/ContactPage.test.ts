@@ -2,7 +2,7 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import ContactPage from '@pages/ContactPage.vue';
 import type { ProfileResponse, LinksResponse } from '@api/response/index.ts';
-import { contactPageContent } from '@support/content.ts';
+import { contactPageContent } from '@support/content/contact-page.ts';
 import { NAV_SOCIAL_FALLBACKS } from '@support/links.ts';
 
 const profile: ProfileResponse = {

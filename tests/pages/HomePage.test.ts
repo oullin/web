@@ -2,7 +2,7 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import HomePage from '@pages/HomePage.vue';
 import { defineComponent } from 'vue';
-import { homePageContent } from '@support/content.ts';
+import { homePageContent } from '@support/content/home-page.ts';
 
 const global = {
 	stubs: {

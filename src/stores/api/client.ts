@@ -23,6 +23,10 @@ interface CacheEntry<T> {
 	data: T;
 }
 
+interface GetOptions {
+	useMemoryCache?: boolean;
+}
+
 export interface ApiResponse<T> {
 	version: string;
 	data: T;
@@ -34,6 +38,8 @@ export class ApiClient {
 	private readonly hostURL: string;
 	private readonly basedURL: string;
 	private readonly apiUsername: string;
+	private readonly inFlightGets = new Map<string, Promise<unknown>>();
+	private readonly memoryCache = new Map<string, unknown>();
 
 	// Default to 0, updated dynamically via server responses
 	private clockOffsetMs = 0;
@@ -246,7 +252,7 @@ export class ApiClient {
 		return await response.json();
 	}
 
-	public async get<T>(url: string): Promise<T> {
+	private async performGet<T>(url: string, options: GetOptions): Promise<T> {
 		const nonce = this.createNonce();
 		const headers = this.createHeaders();
 		const cached = this.getFromCache<T>(url);
@@ -268,8 +274,13 @@ export class ApiClient {
 		this.syncClockOffset(response, startTime);
 
 		if (response.status === 304) {
-			// We can safely assert cached is not null here.
-			return cached!.data;
+			const responseData = cached!.data;
+
+			if (options.useMemoryCache) {
+				this.memoryCache.set(url, responseData);
+			}
+
+			return responseData;
 		}
 
 		if (!response.ok) {
@@ -283,6 +294,30 @@ export class ApiClient {
 			this.setToCache(url, eTag, payload);
 		}
 
+		if (options.useMemoryCache) {
+			this.memoryCache.set(url, payload);
+		}
+
 		return payload;
+	}
+
+	public async get<T>(url: string, options: GetOptions = {}): Promise<T> {
+		if (options.useMemoryCache && this.memoryCache.has(url)) {
+			return this.memoryCache.get(url) as T;
+		}
+
+		const inFlight = this.inFlightGets.get(url);
+
+		if (inFlight) {
+			return inFlight as Promise<T>;
+		}
+
+		const request = this.performGet<T>(url, options).finally(() => {
+			this.inFlightGets.delete(url);
+		});
+
+		this.inFlightGets.set(url, request);
+
+		return request;
 	}
 }

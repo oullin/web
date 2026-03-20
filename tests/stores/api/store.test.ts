@@ -45,7 +45,7 @@ describe('useApiStore', () => {
 	it('gets profile', async () => {
 		client.get.mockResolvedValue({ data: { name: 'gus' } });
 		const res = await store.getProfile();
-		expect(client.get).toHaveBeenCalledWith('profile');
+		expect(client.get).toHaveBeenCalledWith('profile', { useMemoryCache: true });
 		expect(res).toEqual({ data: { name: 'gus' } });
 	});
 
@@ -149,7 +149,7 @@ describe('useApiStore', () => {
 	it('gets links', async () => {
 		client.get.mockResolvedValue({ list: [] });
 		const res = await store.getLinks();
-		expect(client.get).toHaveBeenCalledWith('links');
+		expect(client.get).toHaveBeenCalledWith('links', { useMemoryCache: true });
 		expect(res).toEqual({ list: [] });
 	});
 

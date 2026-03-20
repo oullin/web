@@ -49,7 +49,8 @@
 import { RouterLink } from 'vue-router';
 import FooterPartial from '@partials/FooterPartial.vue';
 import { useSeo, siteUrlFor, buildKeywords } from '@support/seo';
-import { resolveJsonLd, termsAndPoliciesPageContent, type RouteLink } from '@support/content.ts';
+import { resolveJsonLd, type RouteLink } from '@support/content.ts';
+import { termsAndPoliciesPageContent } from '@support/content/terms-and-policies-page.ts';
 
 const { hero, sidebar, legalSections, seo } = termsAndPoliciesPageContent;
 const splitContactLinkParagraph = (paragraph: string, contactLink?: RouteLink) => {

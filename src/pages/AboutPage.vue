@@ -77,7 +77,8 @@ import FooterPartial from '@partials/FooterPartial.vue';
 import AboutConnectSkeletonPartial from '@partials/AboutConnectSkeletonPartial.vue';
 import RecommendationPartial from '@partials/RecommendationPartial.vue';
 import { useSeo, SITE_NAME, SEO_IMAGE, siteUrlFor, buildKeywords, ORGANIZATION_JSON_LD } from '@support/seo';
-import { aboutPageContent, resolveJsonLdArray } from '@support/content.ts';
+import { resolveJsonLdArray } from '@support/content.ts';
+import { aboutPageContent } from '@support/content/about-page.ts';
 
 import { useApiStore } from '@api/store.ts';
 import type { ProfileResponse } from '@api/response/index.ts';

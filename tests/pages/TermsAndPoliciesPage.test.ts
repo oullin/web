@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import TermsAndPoliciesPage from '@pages/TermsAndPoliciesPage.vue';
-import { termsAndPoliciesPageContent } from '@support/content.ts';
+import { termsAndPoliciesPageContent } from '@support/content/terms-and-policies-page.ts';
 
 const global = {
 	stubs: {

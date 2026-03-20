@@ -43,7 +43,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 			const url = 'profile';
 
 			try {
-				return await this.client.get<ApiResponse<ProfileResponse>>(url);
+				return await this.client.get<ApiResponse<ProfileResponse>>(url, { useMemoryCache: true });
 			} catch (error) {
 				return parseError(error);
 			}
@@ -88,7 +88,7 @@ export const useApiStore = defineStore(STORE_KEY, {
 			const url = 'links';
 
 			try {
-				return await this.client.get<ApiResponse<LinksResponse[]>>(url);
+				return await this.client.get<ApiResponse<LinksResponse[]>>(url, { useMemoryCache: true });
 			} catch (error) {
 				return parseError(error);
 			}
