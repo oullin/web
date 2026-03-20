@@ -123,7 +123,10 @@ useSeo({
 const loadContactData = async () => {
 	try {
 		const profileResponse = await apiStore.getProfile();
-		if (profileResponse.data) profile.value = profileResponse.data;
+
+		if (profileResponse.data) {
+			profile.value = profileResponse.data;
+		}
 	} catch {
 		hasProfileError.value = true;
 	}
@@ -138,6 +141,7 @@ const refreshLinks = async () => {
 		}
 
 		const resolvedLinks = resolveNavSocialLinks(linksResponse.data ?? []);
+
 		links.value = buildNavSocialLinkEntries(resolvedLinks);
 	} catch {
 		hasLinksError.value = true;
@@ -146,6 +150,7 @@ const refreshLinks = async () => {
 
 onMounted(() => {
 	void loadContactData();
+
 	cancelDeferredRefresh = runAfterLoadAndIdle(() => {
 		void refreshLinks();
 	});
@@ -153,6 +158,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
 	isActive = false;
+
 	cancelDeferredRefresh();
 });
 </script>

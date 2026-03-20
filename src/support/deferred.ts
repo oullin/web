@@ -15,6 +15,7 @@ export function runAfterLoad(task: () => void): DeferredCleanup {
 
 	if (document.readyState === 'complete') {
 		const handle = window.setTimeout(task, 0);
+
 		return () => window.clearTimeout(handle);
 	}
 
@@ -38,12 +39,14 @@ export function runWhenIdle(task: () => void, timeout = 1500): DeferredCleanup {
 
 	if (typeof idleWindow.requestIdleCallback === 'function') {
 		const handle = idleWindow.requestIdleCallback(task, { timeout });
+
 		return () => {
 			idleWindow.cancelIdleCallback?.(handle);
 		};
 	}
 
 	const handle = window.setTimeout(task, 120);
+
 	return () => window.clearTimeout(handle);
 }
 

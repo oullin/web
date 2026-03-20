@@ -111,7 +111,10 @@ const loadAboutPageData = async () => {
 
 	try {
 		const res = await apiStore.getProfile();
-		if (res.data) profile.value = res.data;
+
+		if (res.data) {
+			profile.value = res.data;
+		}
 	} catch {
 		hasProfileError.value = true;
 	} finally {
@@ -124,6 +127,7 @@ onMounted(() => {
 
 	if (!target || typeof window === 'undefined' || !('IntersectionObserver' in window)) {
 		void loadAboutPageData();
+
 		return;
 	}
 

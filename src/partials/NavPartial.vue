@@ -28,13 +28,13 @@
 			<!-- Right column: social links + desktop theme toggle + mobile hamburger -->
 			<div class="nav-inner-right">
 				<a :href="linkedinUrl" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="nav-social-link">
-					<Linkedin :size="18" />
+					<LinkedinIcon :size="18" />
 				</a>
 				<a :href="xUrl" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="nav-social-link">
-					<Twitter :size="18" />
+					<XIcon :size="18" />
 				</a>
 				<a :href="githubUrl" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="nav-social-link">
-					<Github :size="18" />
+					<GithubIcon :size="18" />
 				</a>
 
 				<button type="button" class="nav-theme-icon" :aria-pressed="isDark" :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'" @click="toggleDarkMode">
@@ -67,7 +67,10 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { Github, Linkedin, Menu, Moon, Sun, Twitter } from 'lucide-vue-next';
+import { Menu, Moon, Sun } from 'lucide-vue-next';
+import GithubIcon from '@components/icons/GithubIcon.vue';
+import LinkedinIcon from '@components/icons/LinkedinIcon.vue';
+import XIcon from '@components/icons/XIcon.vue';
 import { useDarkMode } from '@/dark-mode.ts';
 import { useApiStore } from '@api/store.ts';
 import { debugError } from '@api/http-error.ts';
@@ -83,6 +86,7 @@ const apiStore = useApiStore();
 const linkedinUrl = ref(NAV_SOCIAL_FALLBACKS.linkedin);
 const xUrl = ref(NAV_SOCIAL_FALLBACKS.x);
 const githubUrl = ref(NAV_SOCIAL_FALLBACKS.github);
+
 let isActive = true;
 let cancelDeferredRefresh: DeferredCleanup = () => {};
 
@@ -95,6 +99,7 @@ const refreshSocialLinks = async () => {
 		}
 
 		const resolvedLinks = resolveNavSocialLinks(response.data ?? []);
+
 		linkedinUrl.value = resolvedLinks.linkedin;
 		xUrl.value = resolvedLinks.x;
 		githubUrl.value = resolvedLinks.github;
@@ -111,6 +116,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
 	isActive = false;
+
 	cancelDeferredRefresh();
 });
 

@@ -185,6 +185,7 @@ const processedRecommendations = computed(() =>
 );
 
 const totalPages = computed(() => Math.max(1, Math.ceil(processedRecommendations.value.length / PAGE_SIZE)));
+
 const paginatedRecommendations = computed(() => {
 	const start = (currentPage.value - 1) * PAGE_SIZE;
 	return processedRecommendations.value.slice(start, start + PAGE_SIZE);
@@ -210,6 +211,7 @@ const ensureMarkdownLoaded = async () => {
 
 	try {
 		const module = await import('@support/markdown/render.ts');
+
 		renderMarkdown.value = module.renderMarkdown;
 	} catch {
 		hasRecommendationsError.value = true;
@@ -245,6 +247,7 @@ const ensureRecommendationsLoaded = async () => {
 
 	try {
 		const response = await apiStore.getRecommendations();
+
 		recommendations.value = response.data ?? [];
 		hasLoadedRecommendations.value = true;
 	} catch {
@@ -279,6 +282,7 @@ const handleDialogOpen = () => {
 
 const goToPage = (pageNumber: number) => {
 	currentPage.value = Math.min(Math.max(1, pageNumber), totalPages.value);
+
 	openRecommendation.value = '';
 };
 
@@ -306,11 +310,13 @@ watch(
 		await nextTick();
 
 		const container = recommendationsContainer.value;
+
 		if (!container) {
 			return;
 		}
 
 		const blocks = container.querySelectorAll('pre code');
+
 		if (blocks.length === 0) {
 			clearHighlightTheme();
 

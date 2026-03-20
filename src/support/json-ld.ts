@@ -7,27 +7,29 @@ function isJsonLdEntry(value: unknown): value is JsonLdEntry {
 }
 
 function resolveJsonLdEntry(entry: JsonLdEntry, resolveUrl: (path: string) => string): JsonLdEntry {
-	const resolved = Object.entries(entry).reduce<JsonLdEntry>((acc, [key, value]) => {
+	return Object.entries(entry).reduce<JsonLdEntry>((acc, [key, value]) => {
 		if (key === 'urlPath' && typeof value === 'string') {
 			acc.url = resolveUrl(value);
+
 			return acc;
 		}
 
 		if (Array.isArray(value)) {
 			acc[key] = value.map((item) => (isJsonLdEntry(item) ? resolveJsonLdEntry(item, resolveUrl) : item));
+
 			return acc;
 		}
 
 		if (isJsonLdEntry(value)) {
 			acc[key] = resolveJsonLdEntry(value, resolveUrl);
+
 			return acc;
 		}
 
 		acc[key] = value;
+
 		return acc;
 	}, {});
-
-	return resolved;
 }
 
 export function resolveJsonLd(jsonLd: JsonLdContent, resolveUrl: (path: string) => string): JsonLdContent {
@@ -40,5 +42,6 @@ export function resolveJsonLd(jsonLd: JsonLdContent, resolveUrl: (path: string) 
 
 export function resolveJsonLdArray(jsonLd: JsonLdContent, resolveUrl: (path: string) => string): JsonLdEntry[] {
 	const resolvedJsonLd = resolveJsonLd(jsonLd, resolveUrl);
+
 	return Array.isArray(resolvedJsonLd) ? resolvedJsonLd : [resolvedJsonLd];
 }
