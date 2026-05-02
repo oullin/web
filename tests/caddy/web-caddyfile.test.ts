@@ -13,7 +13,7 @@ describe('production web Caddy relay contract', () => {
 	it('answers relay preflight requests without proxying upstream', () => {
 		expect(caddyfile).toMatch(/@relay_preflight\s*{[^}]*path \/relay\/\*[^}]*method OPTIONS[^}]*}/s);
 		expect(caddyfile).toMatch(
-			/handle @relay_preflight\s*{[^}]*Access-Control-Allow-Methods "POST, OPTIONS"[^}]*Access-Control-Allow-Headers "[^"]+"[^}]*Access-Control-Max-Age "86400"[^}]*respond 204[^}]*}/s,
+			/handle @relay_preflight\s*{[^}]*Access-Control-Allow-Methods "POST, OPTIONS"[^}]*Access-Control-Allow-Headers "X-API-Key, X-API-Username, X-API-Timestamp, X-Request-ID, Content-Type, User-Agent, X-API-Intended-Origin"[^}]*Access-Control-Max-Age "86400"[^}]*respond 204[^}]*}/s,
 		);
 	});
 
@@ -24,10 +24,15 @@ describe('production web Caddy relay contract', () => {
 	});
 
 	it('proxies relay POSTs to the API Caddy mTLS endpoint through the shared alias', () => {
-		expect(caddyfile).toContain('handle_path /relay/*');
+		expect(caddyfile).toMatch(/@relay_post\s*{[^}]*path \/relay\/\*[^}]*method POST[^}]*}/s);
+		expect(caddyfile).toMatch(/handle @relay_post\s*{[^}]*uri strip_prefix \/relay[^}]*rewrite \* \/api{path}/s);
 		expect(caddyfile).toContain('rewrite * /api{path}');
 		expect(caddyfile).toContain('reverse_proxy https://proxy:8443');
 		expect(caddyfile).toContain('tls_server_name oullin_proxy_prod');
+	});
+
+	it('rejects non-POST relay requests after preflight handling', () => {
+		expect(caddyfile).toMatch(/handle \/relay\/\*\s*{\s*respond 405\s*}/s);
 	});
 
 	it('keeps the mTLS client certificate configuration pinned', () => {

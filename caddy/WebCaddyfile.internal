@@ -21,6 +21,11 @@
         method OPTIONS
     }
 
+    @relay_post {
+        path /relay/*
+        method POST
+    }
+
     handle @relay_preflight {
         header Access-Control-Allow-Methods "POST, OPTIONS"
         header Access-Control-Allow-Headers "X-API-Key, X-API-Username, X-API-Timestamp, X-Request-ID, Content-Type, User-Agent, X-API-Intended-Origin"
@@ -29,7 +34,8 @@
         respond 204
     }
 
-    handle_path /relay/* {
+    handle @relay_post {
+        uri strip_prefix /relay
         rewrite * /api{path}
         reverse_proxy https://proxy:8443 {
             header_up Host oullin_proxy_prod
@@ -40,6 +46,10 @@
                 tls_trust_pool file /etc/caddy/mtls/ca.pem
             }
         }
+    }
+
+    handle /relay/* {
+        respond 405
     }
 
     # --- Normalise trailing slashes ("/about/" -> "/about") ---
