@@ -3,6 +3,8 @@
 # patched runtime directly from nodejs.org in the build image.
 FROM debian:bookworm-slim AS builder
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG NODE_VERSION=25.8.2
 ARG TARGETARCH
 

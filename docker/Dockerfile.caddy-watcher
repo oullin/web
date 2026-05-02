@@ -1,5 +1,7 @@
 FROM debian:bookworm-slim
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ARG NODE_VERSION=25.8.2
 ARG TARGETARCH
 

@@ -12,7 +12,15 @@ describe('production web Caddy relay contract', () => {
 
 	it('answers relay preflight requests without proxying upstream', () => {
 		expect(caddyfile).toMatch(/@relay_preflight\s*{[^}]*path \/relay\/\*[^}]*method OPTIONS[^}]*}/s);
-		expect(caddyfile).toMatch(/handle @relay_preflight\s*{[^}]*Access-Control-Allow-Methods "POST, OPTIONS"[^}]*respond 204[^}]*}/s);
+		expect(caddyfile).toMatch(
+			/handle @relay_preflight\s*{[^}]*Access-Control-Allow-Methods "POST, OPTIONS"[^}]*Access-Control-Allow-Headers "[^"]+"[^}]*Access-Control-Max-Age "86400"[^}]*respond 204[^}]*}/s,
+		);
+	});
+
+	it('applies relay CORS response headers to preflight and proxied requests', () => {
+		expect(caddyfile).toMatch(/@relay_cors\s*{[^}]*path \/relay\/\*[^}]*}/s);
+		expect(caddyfile).toContain('header @relay_cors Access-Control-Allow-Origin "https://oullin.io"');
+		expect(caddyfile).toContain('header @relay_cors Vary "Origin"');
 	});
 
 	it('proxies relay POSTs to the API Caddy mTLS endpoint through the shared alias', () => {

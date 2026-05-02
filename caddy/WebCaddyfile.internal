@@ -9,17 +9,22 @@
         respond 405
     }
 
+    @relay_cors {
+        path /relay/*
+    }
+
+    header @relay_cors Access-Control-Allow-Origin "https://oullin.io"
+    header @relay_cors Vary "Origin"
+
     @relay_preflight {
         path /relay/*
         method OPTIONS
     }
 
     handle @relay_preflight {
-        header Access-Control-Allow-Origin "https://oullin.io"
         header Access-Control-Allow-Methods "POST, OPTIONS"
         header Access-Control-Allow-Headers "X-API-Key, X-API-Username, X-API-Timestamp, X-Request-ID, Content-Type, User-Agent, X-API-Intended-Origin"
         header Access-Control-Max-Age "86400"
-        header Vary "Origin"
 
         respond 204
     }
