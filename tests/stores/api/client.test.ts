@@ -211,4 +211,21 @@ describe('ApiClient.get', () => {
 		expect(second).toEqual(first);
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
+
+	it('requests signatures from the browser-facing relay on the current origin', async () => {
+		const fetchMock = vi
+			.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>()
+			.mockResolvedValueOnce(signatureResponse())
+			.mockResolvedValueOnce(jsonResponse({ data: { email: 'hello@oullin.io' } }));
+
+		vi.stubGlobal('fetch', fetchMock);
+
+		const client = new ApiClient({ env: 'development', apiKey: 'public-key', apiUsername: 'oullin' });
+		vi.spyOn(client, 'createNonce').mockReturnValue('nonce');
+		(client as { basedURL: string }).basedURL = 'https://api.example.com/';
+
+		await client.get<{ data: { email: string } }>('profile');
+
+		expect(fetchMock.mock.calls[0]?.[0]).toBe(`${window.location.origin}/relay/generate-signature`);
+	});
 });

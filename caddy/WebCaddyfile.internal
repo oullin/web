@@ -9,9 +9,24 @@
         respond 405
     }
 
+    @relay_preflight {
+        path /relay/*
+        method OPTIONS
+    }
+
+    handle @relay_preflight {
+        header Access-Control-Allow-Origin "https://oullin.io"
+        header Access-Control-Allow-Methods "POST, OPTIONS"
+        header Access-Control-Allow-Headers "X-API-Key, X-API-Username, X-API-Timestamp, X-Request-ID, Content-Type, User-Agent, X-API-Intended-Origin"
+        header Access-Control-Max-Age "86400"
+        header Vary "Origin"
+
+        respond 204
+    }
+
     handle_path /relay/* {
         rewrite * /api{path}
-        reverse_proxy https://oullin_proxy_prod:8443 {
+        reverse_proxy https://proxy:8443 {
             header_up Host oullin_proxy_prod
             transport http {
                 tls
