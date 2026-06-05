@@ -45,4 +45,8 @@ describe('production web Caddy relay contract', () => {
 
 		expect(relayExclusions.length).toBeGreaterThanOrEqual(2);
 	});
+
+	it('serves /.well-known (security.txt) as static files without SPA fallback', () => {
+		expect(caddyfile).toMatch(/handle \/\.well-known\/\*\s*{[^}]*root \* \/usr\/share\/caddy[^}]*file_server[^}]*}/s);
+	});
 });

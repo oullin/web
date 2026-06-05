@@ -73,6 +73,14 @@
 		file_server
 	}
 
+	# --- Serve /.well-known (security.txt, RFC 9116) without SPA fallback ---
+	handle /.well-known/* {
+		root * /usr/share/caddy
+		encode zstd gzip
+		header Cache-Control "public, max-age=86400"
+		file_server
+	}
+
 	# --- Serve SPA (simple) ---
 	handle @spa {
 		root * /usr/share/caddy
