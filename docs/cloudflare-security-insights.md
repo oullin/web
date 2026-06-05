@@ -31,13 +31,13 @@ all of them. The API sends no email, so this is purely DNS/mail-infra.
 
 Cloudflare dashboard → **DNS** → add:
 
-```
+```txt
 Type:  TXT
 Name:  _dmarc
 Value: v=DMARC1; p=none; rua=mailto:gustavoocanto@gmail.com; fo=1
 ```
 
-- Start with `p=none` (monitor only). DMARC only *passes* if SPF and/or DKIM are configured for the
+- Start with `p=none` (monitor only). DMARC only _passes_ if SPF and/or DKIM are configured for the
   sending mail provider — confirm those exist first.
 - After reviewing `rua` aggregate reports for clean alignment, tighten to `p=quarantine`, then
   `p=reject`.
