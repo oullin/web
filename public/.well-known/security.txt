@@ -1,0 +1,4 @@
+Contact: mailto:gustavoocanto@gmail.com
+Expires: 2027-06-05T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://oullin.io/.well-known/security.txt
