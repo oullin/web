@@ -51,7 +51,7 @@
 									<span v-for="item in engagement.includes" :key="item">{{ item }}</span>
 								</div>
 								<p class="page-panel-copy mt-5"><strong>You leave with:</strong> {{ engagement.outcome }}</p>
-								<RouterLink :to="engagement.cta.to" class="blog-link mt-5 inline-block">{{ engagement.cta.label }}</RouterLink>
+								<RouterLink :to="engagement.cta.to" class="blog-link mt-5 inline-block" :aria-label="`More info about ${engagement.label}`">{{ engagement.cta.label }}</RouterLink>
 							</div>
 						</div>
 						<div class="page-editorial-sep"></div>

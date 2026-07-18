@@ -54,7 +54,13 @@ describe('SEO content fixtures', () => {
 			name: 'Gustavo Ocanto',
 			url: 'https://gocanto.sh',
 		});
-		expect(indexHtml).toContain('"url": "https://gocanto.sh"');
+
+		const jsonLdMatch = indexHtml.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
+		expect(jsonLdMatch?.[1]).toBeDefined();
+
+		const indexJsonLd = JSON.parse(jsonLdMatch?.[1] ?? '[]') as Array<Record<string, unknown>>;
+		const indexOrganization = indexJsonLd.find((entry) => entry['@type'] === 'Organization');
+		expect(indexOrganization?.founder).toEqual(ORGANIZATION_JSON_LD.founder);
 	});
 });
 

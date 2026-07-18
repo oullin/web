@@ -28,9 +28,10 @@ describe('WorkWithUsPage', () => {
 		const moreInfoLinks = wrapper.findAll('a').filter((link) => link.text() === 'More info');
 
 		expect(moreInfoLinks).toHaveLength(workWithUsPageContent.engagements.length);
-		moreInfoLinks.forEach((link) => {
+		moreInfoLinks.forEach((link, index) => {
 			expect(link.attributes('to')).toBe('/contact');
+			expect(link.attributes('aria-label')).toBe(`More info about ${workWithUsPageContent.engagements[index]?.label}`);
 		});
-		expect(wrapper.text()).not.toMatch(/\$[\d,]+/);
+		expect(wrapper.text()).not.toMatch(/(?:[$€£]\s*\d[\d,.]*(?:[km])?|\b\d[\d,.]*(?:[km])?\s*(?:USD|EUR|GBP)\b)/i);
 	});
 });
