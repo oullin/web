@@ -22,4 +22,16 @@ describe('WorkWithUsPage', () => {
 		expect(wrapper.text()).toContain(workWithUsPageContent.faq.items[0].question);
 		expect(wrapper.text()).toContain(workWithUsPageContent.cta.button.label);
 	});
+
+	it('replaces engagement prices with contact links', () => {
+		const wrapper = mount(WorkWithUsPage, { global });
+		const moreInfoLinks = wrapper.findAll('a').filter((link) => link.text() === 'More info');
+
+		expect(moreInfoLinks).toHaveLength(workWithUsPageContent.engagements.length);
+		moreInfoLinks.forEach((link, index) => {
+			expect(link.attributes('to')).toBe('/contact');
+			expect(link.attributes('aria-label')).toBe(`${workWithUsPageContent.engagements[index]?.cta.label} about ${workWithUsPageContent.engagements[index]?.label}`);
+		});
+		expect(wrapper.text()).not.toMatch(/(?:[$€£]\s*\d[\d,.]*(?:[km])?|\b\d[\d,.]*(?:[km])?\s*(?:USD|EUR|GBP)\b)/i);
+	});
 });

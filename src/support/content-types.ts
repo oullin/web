@@ -30,6 +30,10 @@ export interface SiteContent {
 	organization: {
 		description: string;
 		sameAs: string[];
+		founder: {
+			name: string;
+			url: string;
+		};
 	};
 	nav: {
 		links: RouteLink[];
@@ -204,7 +208,6 @@ export interface WorkWithUsPageContent {
 		includesLabel: string;
 		includes: string[];
 		outcome: string;
-		price: string;
 		cta: RouteLink;
 	}>;
 	faq: {
