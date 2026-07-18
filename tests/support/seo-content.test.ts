@@ -9,6 +9,7 @@ import { siteContent } from '@/support/content.ts';
 import { termsAndPoliciesPageContent } from '@/support/content/terms-and-policies-page.ts';
 import { workWithUsPageContent } from '@/support/content/work-with-us-page.ts';
 import { writingPageContent } from '@/support/content/writing-page.ts';
+import { ORGANIZATION_JSON_LD } from '@/support/seo.ts';
 
 const indexHtml = readFileSync(resolve(process.cwd(), 'index.html'), 'utf8');
 const staleGustavoTitle = 'Gustavo Ocanto - Engineering, Leadership, Fintech & eCommerce | Software Engineer, Architect, AI , AI Architect & Manager';
@@ -45,6 +46,15 @@ describe('SEO content fixtures', () => {
 		expect(projectsPageContent.seo.description).toContain('resilient software delivery');
 		expect(writingPageContent.seo.description).toContain('engineering judgment');
 		expect(termsAndPoliciesPageContent.seo.description).toContain("Oullin's terms and policies");
+	});
+
+	it('connects the organization founder metadata to the canonical bio site', () => {
+		expect(ORGANIZATION_JSON_LD.founder).toEqual({
+			'@type': 'Person',
+			name: 'Gustavo Ocanto',
+			url: 'https://gocanto.sh',
+		});
+		expect(indexHtml).toContain('"url": "https://gocanto.sh"');
 	});
 });
 

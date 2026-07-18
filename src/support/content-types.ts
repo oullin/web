@@ -30,6 +30,10 @@ export interface SiteContent {
 	organization: {
 		description: string;
 		sameAs: string[];
+		founder: {
+			name: string;
+			url: string;
+		};
 	};
 	nav: {
 		links: RouteLink[];

@@ -26,6 +26,11 @@ export const ORGANIZATION_JSON_LD = {
 	image: siteUrlFor(SITE_LOGO),
 	description: siteContent.organization.description,
 	sameAs: siteContent.organization.sameAs,
+	founder: {
+		'@type': 'Person',
+		name: siteContent.organization.founder.name,
+		url: siteContent.organization.founder.url,
+	},
 };
 
 type TwitterCard = 'summary' | 'summary_large_image' | 'app' | 'player';

@@ -16,7 +16,7 @@
 						<div class="page-panel-title">{{ sidebar.founder.name }}</div>
 						<p class="page-panel-copy">{{ sidebar.founder.copy }}</p>
 						<div class="mt-4">
-							<a v-lazy-link :href="sidebar.founder.linkUrl" target="_blank" rel="noopener noreferrer" class="blog-link">{{ sidebar.founder.linkLabel }}</a>
+							<a v-lazy-link :href="sidebar.founder.linkUrl" target="_blank" rel="me noopener noreferrer" class="blog-link">{{ sidebar.founder.linkLabel }}</a>
 						</div>
 					</div>
 					<div class="page-side-block">

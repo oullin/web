@@ -75,7 +75,9 @@ describe('AboutPage', () => {
 		expect(wrapper.text()).toContain(aboutPageContent.sidebar.founder.copy);
 		expect(wrapper.text()).toContain(aboutPageContent.sidebar.proof.items[1]);
 		expect(wrapper.find('[data-testid="recommendation-partial"]').text()).toContain('Recommendations partial');
-		expect(wrapper.html()).toContain(aboutPageContent.sidebar.founder.linkUrl);
+		const founderLink = wrapper.find(`a[href="${aboutPageContent.sidebar.founder.linkUrl}"]`);
+		expect(founderLink.text()).toBe('Founder bio →');
+		expect(founderLink.attributes('rel')).toContain('me');
 	});
 
 	it('renders the about footer without the skills marquee band', async () => {
