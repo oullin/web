@@ -204,7 +204,6 @@ export interface WorkWithUsPageContent {
 		includesLabel: string;
 		includes: string[];
 		outcome: string;
-		price: string;
 		cta: RouteLink;
 	}>;
 	faq: {

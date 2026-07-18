@@ -22,4 +22,15 @@ describe('WorkWithUsPage', () => {
 		expect(wrapper.text()).toContain(workWithUsPageContent.faq.items[0].question);
 		expect(wrapper.text()).toContain(workWithUsPageContent.cta.button.label);
 	});
+
+	it('replaces engagement prices with contact links', () => {
+		const wrapper = mount(WorkWithUsPage, { global });
+		const moreInfoLinks = wrapper.findAll('a').filter((link) => link.text() === 'More info');
+
+		expect(moreInfoLinks).toHaveLength(workWithUsPageContent.engagements.length);
+		moreInfoLinks.forEach((link) => {
+			expect(link.attributes('to')).toBe('/contact');
+		});
+		expect(wrapper.text()).not.toMatch(/\$[\d,]+/);
+	});
 });

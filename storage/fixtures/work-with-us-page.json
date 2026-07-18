@@ -39,8 +39,7 @@
 				"— Two 90-minute working sessions with the founding/engineering team"
 			],
 			"outcome": "A clear, honest answer to where AI fits in your stack — and an architectural plan that survives contact with production.",
-			"price": "From $8,000 · Fixed fee",
-			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+			"cta": { "label": "More info", "to": "/contact" }
 		},
 		{
 			"label": "[ 02 ] Fractional AI Architect",
@@ -59,8 +58,7 @@
 				"— Quarterly roadmap refresh aligned to business goals"
 			],
 			"outcome": "Senior architectural oversight without a full-time hire. A team that gets better at building as the engagement runs.",
-			"price": "From $8,000/mo · 3-month minimum",
-			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+			"cta": { "label": "More info", "to": "/contact" }
 		},
 		{
 			"label": "[ 03 ] Production Hardening",
@@ -79,8 +77,7 @@
 				"— 2-week async support window post-engagement"
 			],
 			"outcome": "AI features that hold under real conditions. Documentation your team owns. No dependency on us to keep it running.",
-			"price": "From $15,000 · Scoped after a paid discovery session ($2,500)",
-			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+			"cta": { "label": "More info", "to": "/contact" }
 		},
 		{
 			"label": "[ 04 ] AI-Era Team Enablement",
@@ -97,8 +94,7 @@
 				"— A written playbook the team owns after we leave"
 			],
 			"outcome": "Engineers who can build with AI and review what it produces with real judgment. The capability stays in your team.",
-			"price": "From $6,000 · 4-week programme",
-			"cta": { "label": "START A CONVERSATION →", "to": "/contact" }
+			"cta": { "label": "More info", "to": "/contact" }
 		}
 	],
 	"faq": {
