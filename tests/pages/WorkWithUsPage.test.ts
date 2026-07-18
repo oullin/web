@@ -30,7 +30,7 @@ describe('WorkWithUsPage', () => {
 		expect(moreInfoLinks).toHaveLength(workWithUsPageContent.engagements.length);
 		moreInfoLinks.forEach((link, index) => {
 			expect(link.attributes('to')).toBe('/contact');
-			expect(link.attributes('aria-label')).toBe(`More info about ${workWithUsPageContent.engagements[index]?.label}`);
+			expect(link.attributes('aria-label')).toBe(`${workWithUsPageContent.engagements[index]?.cta.label} about ${workWithUsPageContent.engagements[index]?.label}`);
 		});
 		expect(wrapper.text()).not.toMatch(/(?:[$€£]\s*\d[\d,.]*(?:[km])?|\b\d[\d,.]*(?:[km])?\s*(?:USD|EUR|GBP)\b)/i);
 	});
