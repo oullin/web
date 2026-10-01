@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, Router } from 'vue-router';
 import { scrollBehavior } from '@support/scrolls';
+import { createArchiveNavigationGuard } from '@support/archive-navigation';
 
 const routerHistory = createWebHistory();
 
@@ -53,5 +54,7 @@ const router: Router = createRouter({
 		},
 	],
 });
+
+router.beforeEach(createArchiveNavigationGuard());
 
 export default router;
