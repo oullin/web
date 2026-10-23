@@ -1,11 +1,11 @@
 # --- Builder Stage ---
-# Official Node Docker tags have not caught up to 25.8.2 yet, so install the
-# patched runtime directly from nodejs.org in the build image.
+# Install the patched Node runtime directly from nodejs.org in the build image,
+# verified against the committed release keyring.
 FROM debian:bookworm-slim AS builder
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-ARG NODE_VERSION=25.8.2
+ARG NODE_VERSION=24.22.1
 ARG TARGETARCH
 
 ARG PNPM_VERSION=10.31.0
